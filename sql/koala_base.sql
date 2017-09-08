@@ -121,6 +121,16 @@ CREATE TABLE `t_module` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='功能模块表';
 
+/*Table structure for table `t_module_privilege` */
+
+DROP TABLE IF EXISTS `t_module_privilege`;
+
+CREATE TABLE `t_module_privilege` (
+  `module_id` int(11) NOT NULL COMMENT '模块ID',
+  `privilege_id` int(11) NOT NULL COMMENT '权限ID',
+  PRIMARY KEY (`module_id`,`privilege_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='模块权限表';
+
 /*Table structure for table `t_occupancy_record` */
 
 DROP TABLE IF EXISTS `t_occupancy_record`;
@@ -198,9 +208,21 @@ DROP TABLE IF EXISTS `t_privilege`;
 
 CREATE TABLE `t_privilege` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '权限ID',
+  `group_id` int(11) NOT NULL COMMENT '分组ID',
   `name` varchar(100) NOT NULL COMMENT '权限名称',
+  `code` varchar(50) NOT NULL COMMENT '权限编码',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='权限表';
+
+/*Table structure for table `t_privilege_group` */
+
+DROP TABLE IF EXISTS `t_privilege_group`;
+
+CREATE TABLE `t_privilege_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分组ID',
+  `name` varchar(100) NOT NULL COMMENT '分组名称',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='权限分组';
 
 /*Table structure for table `t_region` */
 
