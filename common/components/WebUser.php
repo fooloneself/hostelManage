@@ -5,6 +5,7 @@ use yii\base\Component;
 class WebUser extends Component{
     private $_adminId;
     private $_token;
+    private $_admin;
     public function init(){
         $helper=\Yii::$app->requestHelper;
         $this->_adminId=$helper->getUid();
@@ -32,7 +33,8 @@ class WebUser extends Component{
      * @return static
      */
     public function getAdmin(){
-        return Admin::byId($this->getAdminId());
+        if($this->_admin===null)$this->_admin=Admin::byId($this->getAdminId());
+        return $this->_admin;
     }
 }
 
