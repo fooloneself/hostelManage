@@ -22,13 +22,15 @@ DROP TABLE IF EXISTS `t_admin`;
 
 CREATE TABLE `t_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '管理账号ID',
-  `mch_id` int(11) NOT NULL COMMENT '0本系统管理员 !0 商户管理员',
+  `mch_id` int(11) NOT NULL DEFAULT '0' COMMENT '0本系统管理员 !0 商户管理员',
+  `expire` int(11) DEFAULT '0' COMMENT '过期时间',
+  `last_login_time` int(11) DEFAULT '0' COMMENT '最后登录时间',
   `is_super` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0否 1是',
   `user_name` varchar(100) NOT NULL COMMENT '账号',
   `password` varchar(100) NOT NULL COMMENT '密码',
   `token` varchar(100) DEFAULT NULL COMMENT '会话令牌',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='后台账户表';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='后台账户表';
 
 /*Table structure for table `t_admin_role` */
 
@@ -66,8 +68,8 @@ DROP TABLE IF EXISTS `t_mch_module`;
 
 CREATE TABLE `t_mch_module` (
   `mch_id` int(11) NOT NULL COMMENT '商户ID',
-  `module_id` int(11) NOT NULL COMMENT '模块ID',
-  PRIMARY KEY (`mch_id`,`module_id`)
+  `module_code` varchar(100) NOT NULL COMMENT '模块编码',
+  PRIMARY KEY (`mch_id`,`module_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='商户模块表';
 
 /*Table structure for table `t_merchant` */
@@ -84,7 +86,7 @@ CREATE TABLE `t_merchant` (
   `name` varchar(200) DEFAULT NULL COMMENT '商户名称',
   `address` varchar(500) DEFAULT NULL COMMENT '办公地址',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='商户表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='商户表';
 
 /*Table structure for table `t_merchant_business_place` */
 
@@ -110,26 +112,6 @@ CREATE TABLE `t_merchant_info` (
   `introduce` text COMMENT '商户介绍',
   PRIMARY KEY (`mch_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='商户信息补充表';
-
-/*Table structure for table `t_module` */
-
-DROP TABLE IF EXISTS `t_module`;
-
-CREATE TABLE `t_module` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '模块ID',
-  `name` varchar(100) NOT NULL COMMENT '模块名称',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='功能模块表';
-
-/*Table structure for table `t_module_privilege` */
-
-DROP TABLE IF EXISTS `t_module_privilege`;
-
-CREATE TABLE `t_module_privilege` (
-  `module_id` int(11) NOT NULL COMMENT '模块ID',
-  `privilege_id` int(11) NOT NULL COMMENT '权限ID',
-  PRIMARY KEY (`module_id`,`privilege_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='模块权限表';
 
 /*Table structure for table `t_occupancy_record` */
 
@@ -202,28 +184,6 @@ CREATE TABLE `t_order_room` (
   PRIMARY KEY (`order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='预定房间信息';
 
-/*Table structure for table `t_privilege` */
-
-DROP TABLE IF EXISTS `t_privilege`;
-
-CREATE TABLE `t_privilege` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '权限ID',
-  `group_id` int(11) NOT NULL COMMENT '分组ID',
-  `name` varchar(100) NOT NULL COMMENT '权限名称',
-  `code` varchar(50) NOT NULL COMMENT '权限编码',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='权限表';
-
-/*Table structure for table `t_privilege_group` */
-
-DROP TABLE IF EXISTS `t_privilege_group`;
-
-CREATE TABLE `t_privilege_group` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分组ID',
-  `name` varchar(100) NOT NULL COMMENT '分组名称',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='权限分组';
-
 /*Table structure for table `t_region` */
 
 DROP TABLE IF EXISTS `t_region`;
@@ -242,6 +202,7 @@ DROP TABLE IF EXISTS `t_role`;
 
 CREATE TABLE `t_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `mch_id` int(11) NOT NULL COMMENT '商户id',
   `name` varchar(100) NOT NULL COMMENT '角色名',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色管理';
@@ -252,8 +213,9 @@ DROP TABLE IF EXISTS `t_role_privilege`;
 
 CREATE TABLE `t_role_privilege` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
-  `privilege_id` int(11) NOT NULL COMMENT '权限ID',
-  PRIMARY KEY (`role_id`,`privilege_id`)
+  `module_code` varchar(100) NOT NULL COMMENT '模块编码',
+  `privilege_code` varchar(100) NOT NULL COMMENT '权限编码',
+  PRIMARY KEY (`role_id`,`privilege_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色权限表';
 
 /*Table structure for table `t_room` */
