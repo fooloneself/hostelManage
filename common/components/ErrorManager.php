@@ -14,8 +14,9 @@ class ErrorManager extends Component{
     const ERROR_USER_FROZEN             =100006;
     const ERROR_PARAM_TYPE_WRONG        =100007;
     const ERROR_PARAM_INSERT_FAIL       =100008;
-    const ERROR_FILE_SAVE_FAIL          =100009;
-    const ERROR_FILE_FORMAT             =100010;
+    const ERROR_NOT_PRIVILEGE           =100009;
+    const ERROR_NOT_LOGIN               =100010;
+    const ERROR_LOGIN_EXPIRE             =100011;
     //错误信息 common\components\Error的实例
     private $_error;
 

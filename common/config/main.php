@@ -45,18 +45,11 @@ $config= [
             'class'=>'app\common\components\ErrorHandler'
         ],*/
     ],
+    'modules'=>[
+        'backend'=>'modules\backend\Module'
+    ],
     'params'=>[
-        'icSocket'=>[
-            'IC_API_IP'             =>'192.168.2.127',      //IC卡接口地址
-            'IC_API_PORT'           =>9999,                 //IC卡接口端口号
-            'MAC_IP'                =>'192.168.20.117',     //      加密机地址
-            'MAC_PORT'              =>6666,                 //加密机端口号
-            'IC_API_USERNAME'       =>'phoneid',            //IC卡接口帐号
-            'IC_API_PWD'            =>'123321',             //IC卡接口密码
-            'IC_API_TERMID'         =>'00000450',           //终端编号
-            'IC_API_TRBRANCH'       =>'510990310400307',    //交易机构
-            'IC_API_TRBRANCH_HXT'   =>'510990120600084',    //和信通交易机构
-        ]
+        'expire_time'=>172800, //2天
     ]
 ];
 if(YII_ENV_DEV){

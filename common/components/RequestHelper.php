@@ -6,11 +6,18 @@ class RequestHelper extends Component{
     public $subUserId='uid';
     public $subToken='token';
     public $subVersion='version';
-    protected $request;
     private $_requestParams;
     public function init(){
         parent::init();
-        $this->request=\Yii::$app->getRequest();
+        $param=\Yii::$app->request->getRawBody();
+        $this->_requestParams=json_decode($param,true);
+        $this->_requestParams=[
+            'uid'=>1,
+            'token'=>'824FC2C9-BCF5-2747-60C4-E09073572267'
+        ];
+        if(empty($this->_requestParams)){
+            $this->_requestParams=[];
+        }
     }
 
     /**
@@ -21,13 +28,6 @@ class RequestHelper extends Component{
      * @return bool|mixed|null
      */
     public function post($name=null,$default=null,$type=null){
-        if($this->_requestParams===null){
-            $this->_requestParams=json_decode($this->request->post('t'),true);
-        }
-        if($this->_requestParams===null){
-            $this->_requestParams=false;
-            return false;
-        }
         if($name){
             $param= isset($this->_requestParams[$name])?$this->_requestParams[$name]:$default;
             if(isset($type) && isset($params) && Variable::instance()->setValue($param)->is($type)===false){

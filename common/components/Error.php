@@ -11,8 +11,9 @@ class Error{
         ErrorManager::ERROR_PARAM_TYPE_WRONG=>'请求参数类型错误',
         ErrorManager::ERROR_SYSTEM=>'系统错误',
         ErrorManager::ERROR_PARAM_INSERT_FAIL=>'数据库插入失败',
-        ErrorManager::ERROR_FILE_SAVE_FAIL=>'文件保存失败',
-        ErrorManager::ERROR_FILE_FORMAT=>'文件格式不正确',
+        ErrorManager::ERROR_NOT_PRIVILEGE=>'无权访问接口',
+        ErrorManager::ERROR_NOT_LOGIN=>'未登录',
+        ErrorManager::ERROR_LOGIN_EXPIRE=>'登录已过期',
     ];
     //错误码
     public $status;

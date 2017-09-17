@@ -1,6 +1,6 @@
 <?php
 namespace common\components;
-class BaseServer{
+class Server{
     private $_error;
     public static function className(){
         return get_called_class();

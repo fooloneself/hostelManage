@@ -1,7 +1,7 @@
 <?php
 namespace common\components;
-use yii\base\Component;
 use common\components\Error;
+use yii\base\Component;
 class ResponseHelper extends Component{
     //返回的数据信息
     private $_data=[];
@@ -13,23 +13,17 @@ class ResponseHelper extends Component{
     private $_msg='';
 
     /**
-     * 设置返回的数据信息
-     * @param array $data
-     * @return $this
-     */
-    public function setResponseData(array $data){
-        $this->_data=$data;
-        return $this;
-    }
-
-    /**
      * 设置错误返回
      * @param $status
      * @param string $msg
      * @return $this
      */
     public function error($status,$msg=''){
-        $error=\Yii::$app->errorManager->generateError($status,$msg);
+        if($status instanceof Error){
+            $error=$status;
+        }else{
+            $error=\Yii::$app->errorManager->generateError($status,$msg);
+        }
         $this->setErrorObj($error);
         return $this;
     }
@@ -40,7 +34,7 @@ class ResponseHelper extends Component{
      * @return ResponseHelper
      */
 
-    public function setErrorObj(Error $error){
+    protected function setErrorObj(Error $error){
         $this->_status=$error->getStatus();
         $this->_msg=$error->getMsg();
         $this->_result=0;
@@ -52,7 +46,7 @@ class ResponseHelper extends Component{
      * @param string $msg
      * @return $this
      */
-    public function success(array $data=[],$msg=''){
+    public function success($data=[],$msg=''){
         $this->_status=ErrorManager::STATUS_SUCCESS;
         $this->_msg=$msg;
         $this->setData($data);
@@ -92,7 +86,7 @@ class ResponseHelper extends Component{
      */
     public function response($end=false){
         $response=\Yii::$app->getResponse();
-        $response->data=json_encode($this->constructData());
+        $response->data=json_encode($this->constructData(),JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
         if($end===true){
             $this->end();
         }else{
