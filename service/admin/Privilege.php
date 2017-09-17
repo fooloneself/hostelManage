@@ -9,7 +9,7 @@ class Privilege extends Server{
     //权限数组
     private $_privileges;
 
-    public function __construct(Admin $admin)
+    public function __construct(\service\admin\Admin $admin)
     {
         $this->admin=$admin;
     }
@@ -27,7 +27,11 @@ class Privilege extends Server{
                     $this->_privileges=\Yii::$app->getModule('backend')->allPrivilege();
                 }
             }else{
-                $this->_privileges=AdminRole::getPrivilegeByAdminId($this->admin->getAdminId());
+                if($this->admin->isAdminOfMerchant()){
+                    $this->_privileges=\common\models\Admin::getPrivilegeOfMerchantByAdminId($this->admin->getAdminId());
+                }else{
+                    $this->_privileges=AdminRole::getPrivilegeByAdminId($this->admin->getAdminId());
+                }
             }
         }
         return $this->_privileges;

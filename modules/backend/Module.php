@@ -7,6 +7,7 @@ class Module extends \common\components\Module{
         'merchant'=>[
             '_label'=>'商户',
             'edit-info'=>'修改基本信息',
+            'modules'=>'模块'
         ],
         'privilege'=>[
             '_label'=>'权限'

@@ -8,7 +8,8 @@ use Yii;
  * This is the model class for table "{{%role_privilege}}".
  *
  * @property integer $role_id
- * @property integer $privilege_code
+ * @property string $module_code
+ * @property string $privilege_code
  */
 class RolePrivilege extends \common\components\ActiveRecord
 {
@@ -26,8 +27,9 @@ class RolePrivilege extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['role_id', 'privilege_code'], 'required'],
-            [['role_id', 'privilege_code'], 'integer'],
+            [['role_id', 'module_code', 'privilege_code'], 'required'],
+            [['role_id'], 'integer'],
+            [['module_code', 'privilege_code'], 'string', 'max' => 100],
         ];
     }
 
@@ -38,6 +40,7 @@ class RolePrivilege extends \common\components\ActiveRecord
     {
         return [
             'role_id' => 'Role ID',
+            'module_code' => 'Module Code',
             'privilege_code' => 'Privilege Code',
         ];
     }

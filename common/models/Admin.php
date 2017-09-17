@@ -54,4 +54,21 @@ class Admin extends \common\components\ActiveRecord
             'token' => 'Token',
         ];
     }
+
+    /**
+     * 获取管理员的全部权限(商户）
+     * @param $adminId
+     * @return array
+     */
+    public static function getPrivilegeOfMerchantByAdminId($adminId){
+        return self::find()
+            ->alias('a')
+            ->select('rp.privilege_code')
+            ->leftJoin(MchModule::tableName().' mm','mm.mch_id=a.mch_id')
+            ->leftJoin(AdminRole::tableName().' ar','a.id=ar.admin_id')
+            ->leftJoin(RolePrivilege::tableName().' rp','rp.role_id=ar.role_id and rp.module_code=mm.module_code')
+            ->where(['a.id'=>$adminId])
+            ->andWhere(['is not','rp.role_id',null])
+            ->column();
+    }
 }
