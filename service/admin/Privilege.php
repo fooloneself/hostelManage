@@ -44,7 +44,11 @@ class Privilege extends Server{
      */
     public function hasPrivilege($privilegeCode){
         if($this->admin->isSuper()){
-            return true;
+            if($this->admin->isAdminOfMerchant()){
+                return in_array($privilegeCode,$this->all());
+            }else{
+                return true;
+            }
         }else{
             $privileges=$this->all();
             return in_array($privilegeCode,$privileges,true);
