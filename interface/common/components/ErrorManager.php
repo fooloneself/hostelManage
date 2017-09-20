@@ -17,6 +17,8 @@ class ErrorManager extends Component{
     const ERROR_NOT_PRIVILEGE           =100009;
     const ERROR_NOT_LOGIN               =100010;
     const ERROR_LOGIN_EXPIRE             =100011;
+    const ERROR_INTERFACE_UN_OPEN        =100012;
+    const ERROR_INTERFACE_ERROR        =100013;
     //错误信息 common\components\Error的实例
     private $_error;
 

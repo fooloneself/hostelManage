@@ -5,7 +5,7 @@ $config= [
     'basePath'=>        $basePath,
     'vendorPath' =>     $basePath .DIRECTORY_SEPARATOR. 'vendor',
     'viewPath'=>        $basePath .DIRECTORY_SEPARATOR. 'view',
-    'defaultRoute'=>    '/common/error/error',
+    'defaultRoute'=>    '/error/error',
     'aliases'=>[
         'common'    =>  $basePath.'/common',
         'modules'   =>  $basePath.'/modules',
@@ -41,9 +41,9 @@ $config= [
         'requestHelper'=>'common\components\RequestHelper',
         'responseHelper'=>'common\components\ResponseHelper',
         'errorManager'=>'common\components\ErrorManager',
-        /*'errorHandler' => [
+        'errorHandler' => [
             'class'=>'app\common\components\ErrorHandler'
-        ],*/
+        ],
     ],
     'modules'=>[
         'backend'=>'modules\backend\Module'

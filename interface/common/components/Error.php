@@ -14,6 +14,8 @@ class Error{
         ErrorManager::ERROR_NOT_PRIVILEGE=>'无权访问接口',
         ErrorManager::ERROR_NOT_LOGIN=>'未登录',
         ErrorManager::ERROR_LOGIN_EXPIRE=>'登录已过期',
+        ErrorManager::ERROR_INTERFACE_UN_OPEN=>'接口未开放',
+        ErrorManager::ERROR_INTERFACE_ERROR=>'接口错误',
     ];
     //错误码
     public $status;
