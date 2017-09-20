@@ -35,7 +35,7 @@ class Merchant extends Server{
         $this->modules=MchModule::allModuleOfMerchant($this->id);
         $labels=[];
         foreach ($this->modules as $module){
-            $label=\Yii::$app->getModule('backend')->moduleLabel($module);
+            $label=\Yii::$app->getModule('merchant')->moduleLabel($module);
             if($label===false)continue;
             $labels[$module]=$label;
         }

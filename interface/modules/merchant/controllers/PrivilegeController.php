@@ -1,5 +1,5 @@
 <?php
-namespace modules\backend\controllers;
+namespace modules\merchant\controllers;
 use common\components\Controller;
 
 class PrivilegeController extends Controller{

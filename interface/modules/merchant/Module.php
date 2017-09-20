@@ -1,5 +1,5 @@
 <?php
-namespace modules\backend;
+namespace modules\merchant;
 use common\components\ErrorManager;
 
 class Module extends \common\components\Module{

@@ -22,9 +22,9 @@ class Privilege extends Server{
         if($this->_privileges===null){
             if($this->admin->isSuper()){
                 if($this->admin->isAdminOfMerchant()){
-                    $this->_privileges=\Yii::$app->getModule('backend')->allPrivilegeOfModules($this->admin->allModules());
+                    $this->_privileges=\Yii::$app->getModule('merchant')->allPrivilegeOfModules($this->admin->allModules());
                 }else{
-                    $this->_privileges=\Yii::$app->getModule('backend')->allPrivilege();
+                    $this->_privileges=\Yii::$app->getModule('admin')->allPrivilege();
                 }
             }else{
                 if($this->admin->isAdminOfMerchant()){
