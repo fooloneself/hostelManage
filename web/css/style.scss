@@ -1,7 +1,7 @@
 /*common*/
 $mainColor: #2980B9;
 $mainHoverColor: #3498DB;
-$borderColor: #EEEEEE;
+$borderColor: #DDDDDD;
 $fontSize: 14px;
 $color: #333333;
 $greyColor: #AAAAAA;
@@ -36,36 +36,82 @@ a,a:hover,a:active,a:visited{
 	border: $border;
 	border-radius: 5px;
 	padding: 0 10px;
+	width: 400px;
+	&.input_half{
+		width: 187px;
+	}
 }
 .select{
 	height: 40px;
 	line-height: 40px;
 	border: $border;
 	border-radius: 5px;
+	width: 422px;
+	padding-left: 10px;
 }
 .textarea{
 	border: $border;
 	border-radius: 5px;
+	width: 400px;
+	padding: 10px;
 }
-.col3{
-	width: 30%;
+.table{
+	background: $borderColor;
+	width: 100%;
+	td{
+		background: #FFF;
+		padding-left: 10px;
+		height: 40px;
+		line-height: 40px;
+		a{
+			margin-right: 5px;
+		}
+	}
+	thead td{
+		background: $borderColor;
+		font-weight: bolder;
+	}
 }
-.col4{
-	width: 40%;
+.pagination{
+	margin-top: 20px;
+	a{
+		display: inline-block;
+		height: 30px;
+		line-height: 30px;
+		width: 30px;
+		text-align: center;
+		border: $border;
+		border-radius: 5px;
+	}
+	span{
+		display: inline-block;
+		height: 32px;
+		line-height: 32px;
+		width: 32px;
+		text-align: center;
+		border: none;
+	}
+	select{
+		height: 32px;
+		border: $border;
+		border-radius: 5px;		
+	}
 }
 .btn{
 	border: none;
 	background: $mainColor;
 	color: #FFF;
-	padding: 7px 15px;
+	padding: 0 15px;
+	height: 30px;
 	border-radius: 5px;
-	margin-right: 10px;
+	margin-right: 5px;
 	&:hover{
 		background: $mainHoverColor;
 	}
 	&.btn_block{
 		width: 100%;
-		padding: 12px 15px;
+		height: 40px;
+		padding: 0 15px;
 		margin: 0;
 		letter-spacing: 0.2em;
 	}
@@ -138,7 +184,6 @@ a,a:hover,a:active,a:visited{
 	line-height: 60px;
 	background: $mainColor;
 	color: #FFF;
-	margin-bottom: 40px;
 	.logo{
 		float: left;
 		font-size: 20px;
@@ -170,6 +215,13 @@ a,a:hover,a:active,a:visited{
 	}
 }
 .middle{
+	padding: 20px;
+	position: absolute;
+	top: 60px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
 	.canlender a{
 		float: left;
 		width: 12.5%;
@@ -228,7 +280,7 @@ a,a:hover,a:active,a:visited{
 	}
 	.order_panel{
 		position: absolute;
-		top: 60px;
+		top: 0px;
 		bottom: 0;
 		right: 0;
 		width: 450px;
@@ -296,5 +348,21 @@ a,a:hover,a:active,a:visited{
 		width: 1100px;
 		float: right;
 		height: 400px;
+		.tab_menu{
+			border-bottom: $border;
+			a{
+				display: inline-block;
+				height: 30px;
+				margin-right: 20px;
+				&.current{
+					color: $greyColor;
+				}
+			}
+		}
+	}
+	.form{
+		.label{
+			margin-bottom: 5px;
+		}
 	}
 }
