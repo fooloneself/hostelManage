@@ -1,0 +1,295 @@
+/*common*/
+$mainColor: #2980B9;
+$mainHoverColor: #3498DB;
+$borderColor: #EEEEEE;
+$fontSize: 14px;
+$color: #333333;
+$greyColor: #AAAAAA;
+$border: 1px solid $borderColor;
+
+body{
+	margin: 0;
+	padding: 0;
+	font-size: $fontSize;
+	font-family: "microsoft yahei";
+	color: $color;
+}
+ul,li,dl,dt,dd{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+a,a:hover,a:active,a:visited{
+	text-decoration: none;
+	color: $mainColor;
+
+}
+
+/*style*/
+.container{
+	width: 1300px;
+	margin: 0 auto;
+}
+.input{
+	height: 40px;
+	line-height: 40px;
+	border: $border;
+	border-radius: 5px;
+	padding: 0 10px;
+}
+.select{
+	height: 40px;
+	line-height: 40px;
+	border: $border;
+	border-radius: 5px;
+}
+.textarea{
+	border: $border;
+	border-radius: 5px;
+}
+.col3{
+	width: 30%;
+}
+.col4{
+	width: 40%;
+}
+.btn{
+	border: none;
+	background: $mainColor;
+	color: #FFF;
+	padding: 7px 15px;
+	border-radius: 5px;
+	margin-right: 10px;
+	&:hover{
+		background: $mainHoverColor;
+	}
+	&.btn_block{
+		width: 100%;
+		padding: 12px 15px;
+		margin: 0;
+		letter-spacing: 0.2em;
+	}
+}
+.mb20{
+	margin-bottom: 20px;
+}
+.cls{
+	clear: both;
+}
+
+/*login*/
+.body_bg{
+	background: $mainColor;
+}
+.login{
+	margin: 150px auto;
+	width: 340px;
+	background: #FFF;
+	padding: 60px 30px;
+	.title{
+		font-size: 30px;
+		text-align: center;
+		font-weight: bolder;
+		margin-bottom: 60px;
+		color: $mainColor;
+		letter-spacing: 0.1em;
+	}
+	.input{
+		border: none;
+		border-bottom: $border;
+		border-radius: 0;
+		padding: 0 0 0 10px;
+		width: 330px;
+		&.input_code{
+			width: 230px;
+		}
+	}
+	.code{
+		float: right;
+		width: 100px;
+		border-bottom: $border;
+		height: 40px;
+		line-height: 40px;
+		text-align: right;
+		font-style: italic;
+		font-weight: bolder;
+		font-size: 18px;
+		color: $greyColor;
+	}
+	.success{
+		text-align: center;
+		padding-left: 20px;
+		font-size: 18px;
+		.fa{
+			font-size: 100px;
+			color: $mainColor;
+		}
+	}
+}
+
+/*system*/
+.header{
+	height: 60px;
+	line-height: 60px;
+	background: $mainColor;
+	color: #FFF;
+	margin-bottom: 40px;
+	.logo{
+		float: left;
+		font-size: 20px;
+		margin-right: 100px;
+	}
+	.menu{
+		float: left;
+		a{
+			color: #FFF;
+			display: inline-block;
+			height: 100%;
+			padding: 0 15px;
+			&:hover,&.currentS{
+				background: $mainHoverColor;
+			}
+		}
+	}
+	.user{
+		float: right;
+		color: #FFF;
+		a{
+			color: #FFF;
+			font-weight: bolder;
+		}
+		.fa{
+			font-size: 18px;
+			margin-left: 10px;
+		}
+	}
+}
+.middle{
+	.canlender a{
+		float: left;
+		width: 12.5%;
+		padding: 10px 0;
+		text-align: center;
+		color: $mainColor;
+		&.pick{
+			line-height: 38px;
+			background: rgba($mainColor,0.1);
+			font-weight: bolder;
+			border-radius: 5px;
+		}
+		&.current,&:hover{
+			color: $color;
+		}
+	}
+	.house_area{
+		margin-top: 40px;
+		.house{
+			width: 140px;
+			height: 140px;
+			line-height: 140px;
+			text-align: center;
+			font-size: 34px;
+			font-weight: bolder;
+			border-radius: 50%;
+			position: relative;
+			border: $border;
+			float: left;
+			margin: 10px;
+			&.current,&:hover{
+				background: $borderColor;
+			}
+			.status{
+				width: 30px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 14px;
+				background: #FFF;
+				border-radius: 50%;
+				position: absolute;
+				top: 10px;
+				left: 55px;
+			}
+			.type{
+				width: 100%;
+				text-align: center;
+				line-height: 0;
+				text-align: center;
+				font-size: 14px;
+				font-weight: normal;
+				position: absolute;
+				bottom: 30px;
+			}
+		}
+	}
+	.order_panel{
+		position: absolute;
+		top: 60px;
+		bottom: 0;
+		right: 0;
+		width: 450px;
+		background: #F5F5F5;
+		.title{
+			height: 40px;
+			line-height: 40px;
+			padding-left: 10px;
+			background: $greyColor;
+			color: #FFF;
+		}
+		.order{
+			padding: 0 20px;
+			.money{
+				height: 40px;
+				line-height: 40px;
+				border-bottom: 1px dotted $greyColor;
+				span{
+					color: #E74C3C;
+					margin-right: 10px;
+					font-weight: bolder;
+				}
+			}
+			.edit{
+				border-bottom: 1px dotted $greyColor;
+				padding-bottom: 10px;
+				.info{
+					height: 40px;
+					line-height: 40px;
+					color: $greyColor;
+				}
+				.add_info{
+					margin-top: 10px;
+				}
+			}
+		}
+	}
+	.sidebar{
+		width: 159px;
+		float: left;
+		border-right: $border;
+		.menu{
+			dt{
+				height: 40px;
+				line-height: 40px;
+				color: $greyColor;
+			}
+			dd{
+				height: 40px;
+				line-height: 40px;
+				a{
+					padding-left: 10px;
+					color: $color;
+					display: block;
+					&:hover,&.current{
+						padding-left: 6px;
+						border-left: 4px solid $mainColor;
+						background: rgba($mainColor,0.1);
+					}
+				}
+			}
+		}
+	}
+	.frame{
+		width: 1100px;
+		float: right;
+		height: 400px;
+	}
+}
