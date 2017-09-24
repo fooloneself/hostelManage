@@ -79,12 +79,13 @@ a,a:hover,a:active,a:visited{
 
 /*login*/
 .body_bg{
-	background: $mainColor;
+	background: url("../image/bg.jpg");
 }
 .login{
 	margin: 150px auto;
 	width: 340px;
-	background: #FFF;
+	border-radius: 5px;
+	background: rgba(255,255,255,0.5);
 	padding: 60px 30px;
 	.title{
 		font-size: 30px;
@@ -97,11 +98,12 @@ a,a:hover,a:active,a:visited{
 	.input{
 		border: none;
 		border-bottom: $border;
-		border-radius: 0;
 		padding: 0 0 0 10px;
 		width: 330px;
 		&.input_code{
 			width: 230px;
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
 		}
 	}
 	.code{
@@ -110,11 +112,14 @@ a,a:hover,a:active,a:visited{
 		border-bottom: $border;
 		height: 40px;
 		line-height: 40px;
-		text-align: right;
+		text-align: center;
 		font-style: italic;
 		font-weight: bolder;
 		font-size: 18px;
+		background: #FFF;
 		color: $greyColor;
+		border-bottom-right-radius: 5px;
+		border-top-right-radius: 5px;
 	}
 	.success{
 		text-align: center;
