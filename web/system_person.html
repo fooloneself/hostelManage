@@ -28,52 +28,50 @@
 	<div class="container">
 		<div class="sidebar">
 			<dl class="menu">
-				<dt>订单管理</dt>
-				<dd><a href="">今日新办</a></dd>
-				<dd><a href="">今日离店</a></dd>
-				<dd><a href="">全部订单</a></dd>
-				<dd><a href="">异常订单</a></dd>
-				<dt>房间管理</dt>
-				<dd><a href="house_type.html">房间类型</a></dd>
-				<dd><a href="house_list.html" class="current">房间列表</a></dd>
+				<dt>鉴权中心</dt>
+				<dd><a href="">菜单配置</a></dd>
+				<dd><a href="">角色配置</a></dd>
+				<dd><a href="">账号管理</a></dd>
+				<dt>基础中心</dt>
+				<dd><a href="">数据字典</a></dd>
+				<dd><a href="">联动菜单</a></dd>
+				<dd><a href="">渠道对接</a></dd>
+				<dt>管理员中心</dt>
+				<dd><a href="" class="current">个人资料</a></dd>
+				<dd><a href="">头像设置</a></dd>
+				<dd><a href="">修改密码</a></dd>
 			</dl>
 		</div>
 		<div class="frame">
 			<form action="" class="form">
-				<div class="tab_menu mb20">
-					<a href="" class="current">周末浮动价格</a>
-					<a href="">特殊浮动价格</a>
+				<div class="mb20">
+					<div class="label">账户名称：</div>
+					<input type="text" class="input" readonly="readonly" value="Admin Dun">
 				</div>
 				<div class="mb20">
-					<div class="label">周一价格：</div>
+					<div class="label">真实姓名：</div>
 					<input type="text" class="input">
 				</div>
 				<div class="mb20">
-					<div class="label">周二价格：</div>
+					<div class="label">上传头像：</div>
+					<input type="file" class="input">
+				</div>
+				<div class="mb20">
+					<div class="label">性别：</div>
+					<select name="" id="" class="select">
+						<option value="" selected="selected">男</option>
+						<option value="">女</option>
+					</select>
+				</div>
+				<div class="mb20">
+					<div class="label">联系方式：</div>
 					<input type="text" class="input">
 				</div>
 				<div class="mb20">
-					<div class="label">周三价格：</div>
-					<input type="text" class="input">
+					<div class="label">出生日期：</div>
+					<input type="date" class="input">
 				</div>
-				<div class="mb20">
-					<div class="label">周四价格：</div>
-					<input type="text" class="input">
-				</div>
-				<div class="mb20">
-					<div class="label">周五价格：</div>
-					<input type="text" class="input">
-				</div>
-				<div class="mb20">
-					<div class="label">周六价格：</div>
-					<input type="text" class="input">
-				</div>
-				<div class="mb20">
-					<div class="label">周日价格：</div>
-					<input type="text" class="input">
-				</div>
-				<button class="btn">取消</button>
-				<button class="btn">提交</button>
+				<button class="btn">保存</button>
 			</form>
 		</div>
 	</div>

@@ -12,8 +12,8 @@
 	<div class="container">
 		<div class="logo">考拉客房管理系统</div>
 		<div class="menu">
-			<a href="" class="current">收银管理</a>
-			<a href="">门店管理</a>
+			<a href="">收银管理</a>
+			<a href="" class="current">门店管理</a>
 			<a href="">会员管理</a>
 			<a href="">系统配置</a>
 		</div>
@@ -32,25 +32,26 @@
 				<dd><a href="">今日新办</a></dd>
 				<dd><a href="">今日离店</a></dd>
 				<dd><a href="">全部订单</a></dd>
-				<dd><a href="">异常订单</a></dd>
+				<dd><a href="" class="current">异常订单</a></dd>
 				<dt>房间管理</dt>
 				<dd><a href="house_type.html">房间类型</a></dd>
-				<dd><a href="house_list.html" class="current">房间列表</a></dd>
+				<dd><a href="house_list.html">房间列表</a></dd>
 			</dl>
 		</div>
 		<div class="frame">
-			<div class="menu mb20">
-				<button class="btn">新增</button>
-			</div>
 			<table class="table" cellpadding="0" cellspacing="1">
 				<thead>
 					<tr>
 						<td width="6%">序号</td>
-						<td width="20%">房间类型</td>
-						<td width="10%">默认价格</td>
-						<td width="10%">房间号</td>
-						<td>房屋状态</td>
-						<td width="20%">操作</td>
+						<td width="14%">入住/退房时间</td>
+						<td width="8%">客人来源</td>
+						<td width="8%">支付方式</td>
+						<td width="10%">房屋类型</td>
+						<td width="6%">房间号</td>
+						<td width="10%">入住人</td>
+						<td width="10%">联系方式</td>
+						<td width="8%">费用共计</td>
+						<td>操作</td>
 					</tr>
 				</thead>
 				<tbody v-for="page in pages">
@@ -60,10 +61,13 @@
 						<td></td>
 						<td></td>
 						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 						<td>
-							<a href="">锁房</a>
-							<a href="">编辑</a>
-							<a href="">删除</a>
+							<a href="">退房</a>
+							<a href="">查看</a>
 						</td>
 					</tr>
 				</tbody>

@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>考拉客房管理系统</title>
+	<script src="./js/vue.js"></script>
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
@@ -23,17 +24,13 @@
 		</div>
 	</div>
 	</div>
-	<div class="middle">
+	<div class="middle" id="middle">
 	<div class="container">
 		<div class="canlender">
 			<a href="" class="pick">日历选择</a>
-			<a href="" class="current">09-05 星期二<br/>剩余15间</a>
-			<a href="">09-05 星期二<br/>剩余15间</a>
-			<a href="">09-05 星期二<br/>剩余15间</a>
-			<a href="">09-05 星期二<br/>剩余15间</a>
-			<a href="">09-05 星期二<br/>剩余15间</a>
-			<a href="">09-05 星期二<br/>剩余15间</a>
-			<a href="">09-05 星期二<br/>剩余15间</a>
+			<template v-for="week in weekday">
+				<a href="" class="current">09-05 星期{{week}}<br/>剩余15间</a>
+			</template>
 			<div class="cls"></div>
 		</div>
 		<div class="house_area">
@@ -42,64 +39,8 @@
 				<div class="type">普通房</div>
 				201
 			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
 			<div class="house current">
 				<div class="status">订</div>
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
 				<div class="type">普通房</div>
 				201
 			</div>
@@ -108,21 +49,15 @@
 				<div class="type">普通房</div>
 				201
 			</div>
-			<div class="house">
+			<template v-for="house in houseNum">
+			<div class="house" v-on:click="showOrder">
 				<div class="type">普通房</div>
 				201
 			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
-			<div class="house">
-				<div class="type">普通房</div>
-				201
-			</div>
+			</template>
 		</div>
 	</div>
-	<div class="order_panel" id="editOrder">
+	<div class="order_panel" id="editOrder" v-if="order">
 		<div class="title">编辑订单</div>
 		<div class="order">
 			<div class="money">
@@ -176,10 +111,28 @@
 				<textarea name="" id="" cols="50" rows="10" class="textarea" style="width: 370px"></textarea>
 			</div>
 			<div>
-				<button class="btn">返回</button><button class="btn">确认</button>
+				<button class="btn" v-on:click="hideOrder">返回</button><button class="btn">确认</button>
 			</div>
 		</div>
 	</div>
 	</div>
+<script>
+new Vue({
+	el: '#middle',
+	data:{
+		houseNum:20,
+		order:false,
+		weekday:['一','二','三','四','五','六','日'],
+	},
+	methods:{
+		showOrder: function(){
+			this.order=true;
+		},
+		hideOrder: function(){
+			this.order=false;
+		}
+	}
+});
+</script>
 </body>
 </html>

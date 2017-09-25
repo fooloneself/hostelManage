@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>考拉客房管理系统</title>
+	<script src="./js/vue.js"></script>
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
@@ -23,7 +24,7 @@
 		</div>
 	</div>
 	</div>
-	<div class="middle">
+	<div class="middle" id="middle">
 	<div class="container">
 		<div class="sidebar">
 			<dl class="menu">
@@ -59,9 +60,9 @@
 						<td width="16%">操作</td>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody v-for="page in pages">
 					<tr>
-						<td></td>
+						<td>{{page}}</td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -70,94 +71,6 @@
 							<a href="">编辑</a>
 							<a href="">删除</a>
 						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
 					</tr>
 				</tbody>
 			</table>
@@ -174,15 +87,23 @@
 				<a href="">16</a>
 				<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
 				<a href=""><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-				<select name="" id="">
-					<option value="">每页12条</option>
-					<option value="">每页24条</option>
-					<option value="">每页36条</option>
-					<option value="">每页48条</option>
+				<select name="" id="" v-model="pages">
+					<option v-bind:value="12">每页12条</option>
+					<option v-bind:value="24">每页24条</option>
+					<option v-bind:value="36">每页36条</option>
+					<option v-bind:value="48">每页48条</option>
 				</select>
 			</div>
 		</div>
 	</div>
 	</div>
+<script>
+	new Vue({
+		el:'#middle',
+		data:{
+			pages:12
+		}
+	})
+</script>
 </body>
 </html>
