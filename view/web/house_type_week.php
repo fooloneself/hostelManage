@@ -4,8 +4,8 @@
 	<div class="frame">
 		<form action="" class="form">
 			<div class="tab_menu mb20">
-				<a href="" class="current">周末浮动价格</a>
-				<a href="">特殊浮动价格</a>
+				<a href="house_type_week.php" class="current">周末浮动价格</a>
+				<a href="house_type_date.php">特殊浮动价格</a>
 			</div>
 			<div class="mb20">
 				<div class="label">周一价格：</div>
@@ -35,9 +35,10 @@
 				<div class="label">周日价格：</div>
 				<input type="text" class="input">
 			</div>
-			<button class="btn">取消</button>
-			<button class="btn">提交</button>
+			<a class="btn" href="house_type.php">取消</a>
+			<button class="btn" type="submit">提交</button>
 		</form>
 	</div>
+</div>
 </div>
 <?php include 'common/footer.php';?>

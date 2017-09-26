@@ -3,11 +3,12 @@
 	<?php include 'common/sidebar_house.php';?>
 	<div class="frame">
 		<div class="tab_menu mb20">
-			<a href="">周末浮动价格</a>
-			<a href="" class="current">特殊浮动价格</a>
+			<a href="house_type_week.php">周末浮动价格</a>
+			<a href="house_type_date.php" class="current">特殊浮动价格</a>
 		</div>
 		<div class="btn_group mb20">
-			<button class="btn">新增</button>
+			<a class="btn" href="house_type.php">返回</a>
+			<a href="house_type_date_edit.php" class="btn">新增</a>
 		</div>
 		<table class="table" cellpadding="0" cellspacing="1">
 			<thead>
@@ -27,7 +28,7 @@
 					<td></td>
 					<td>
 						<a href="">锁房</a>
-						<a href="">编辑</a>
+						<a href="house_type_date_edit.php">编辑</a>
 						<a href="">删除</a>
 					</td>
 				</tr>
@@ -54,6 +55,7 @@
 			</select>
 		</div>
 	</div>
+</div>
 </div>
 <script>
 	new Vue({

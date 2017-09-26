@@ -15,10 +15,11 @@
 				<div class="label">字典说明：</div>
 				<textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
 			</div>
-			<button class="btn">取消</button>
-			<button class="btn">提交后退出</button>
-			<button class="btn">提交并新增</button>
+			<a class="btn" href="javascript:history.go(-1)">取消</a>
+			<button class="btn" type="submit">提交后退出</button>
+			<button class="btn" type="reset">提交并新增</button>
 		</form>
 	</div>
+</div>
 </div>
 <?php include 'common/footer.php';?>

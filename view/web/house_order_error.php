@@ -57,6 +57,7 @@
 		</div>
 	</div>
 </div>
+</div>
 <script>
 	new Vue({
 		el:'#middle',

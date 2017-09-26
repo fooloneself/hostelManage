@@ -3,10 +3,8 @@
 	<?php include 'common/sidebar_system.php';?>
 	<div class="frame">
 		<div class="menu mb20">
-			<button class="btn">
-			<i class="fa fa-chevron-left" aria-hidden="true"></i>
-			</button>
-			<button class="btn">新增</button>
+			<a href="system_dict.php" class="btn">返回</a>
+			<a href="system_dict_child_edit.php" class="btn">新增</a>
 		</div>
 		<table class="table" cellpadding="0" cellspacing="1">
 			<thead>
@@ -27,7 +25,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<a href="">编辑</a>
+						<a href="system_dict_child_edit.php">编辑</a>
 						<a href="">删除</a>
 					</td>
 				</tr>
@@ -54,6 +52,7 @@
 			</select>
 		</div>
 	</div>
+</div>
 </div>
 <script>
 	new Vue({

@@ -3,7 +3,7 @@
 	<?php include 'common/sidebar_member.php';?>
 	<div class="frame">
 		<div class="btn_group mb20">
-			<button class="btn">新增</button>
+			<a href="member_type_edit.php" class="btn">新增</a>
 		</div>
 		<table class="table" cellpadding="0" cellspacing="1">
 			<thead>
@@ -22,7 +22,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<a href="">编辑</a>
+						<a href="member_type_edit.php">编辑</a>
 						<a href="">删除</a>
 					</td>
 				</tr>
@@ -49,6 +49,7 @@
 			</select>
 		</div>
 	</div>
+</div>
 </div>
 <script>
 	new Vue({

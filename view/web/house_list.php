@@ -3,7 +3,7 @@
 	<?php include 'common/sidebar_house.php';?>
 	<div class="frame">
 		<div class="menu mb20">
-			<button class="btn">新增</button>
+			<a href="house_list_edit.php" class="btn">新增</a>
 		</div>
 		<table class="table" cellpadding="0" cellspacing="1">
 			<thead>
@@ -25,8 +25,8 @@
 					<td></td>
 					<td>
 						<a href="">锁房</a>
-						<a href="">编辑</a>
-						<a href="">删除</a>
+						<a href="house_list_edit.php">编辑</a>
+						<a href="javascript:;" v-on:click="showOrder">删除</a>
 					</td>
 				</tr>
 			</tbody>
@@ -53,11 +53,34 @@
 		</div>
 	</div>
 </div>
+<div class="dialog" v-if="order">
+	<div class="mask"></div>
+	<div class="dialog_main">
+		<div class="dialog_header">提示</div>
+		<div class="dialog_middle">
+		请问是否需要删除这一条数据？
+		</div>
+		<div class="dialog_footer">
+			<button class="btn" v-on:click="hideOrder">取消</button>
+			<button class="btn">确认</button>
+		</div>
+	</div>
+</div>
+</div>
 <script>
 	new Vue({
 		el:'#middle',
 		data:{
 			pages:12,
+			order:false
+		},
+		methods:{
+			showOrder: function(){
+				this.order=true;
+			},
+			hideOrder: function(){
+				this.order=false;
+			}
 		}
 	});
 </script>
