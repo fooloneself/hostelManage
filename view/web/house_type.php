@@ -26,7 +26,7 @@
 					<td>
 						<a href="house_type_week.php">价格浮动</a>
 						<a href="house_type_edit.php">编辑</a>
-						<a href="">删除</a>
+						<a href="javascript:;" @click="showModal">删除</a>
 					</td>
 				</tr>
 			</tbody>
@@ -45,20 +45,37 @@
 			<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
 			<a href=""><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 			<select name="" id="" v-model="pages">
-				<option v-bind:value="10">每页10条</option>
-				<option v-bind:value="20">每页20条</option>
-				<option v-bind:value="30">每页30条</option>
-				<option v-bind:value="40">每页40条</option>
+				<option :value="10">每页10条</option>
+				<option :value="20">每页20条</option>
+				<option :value="30">每页30条</option>
+				<option :value="40">每页40条</option>
 			</select>
 		</div>
 	</div>
 </div>
+<d-modal @iscancel="cancel" @isconfirm="confirm" :isshow="show">
+<span slot="header">波妹儿</span>
+我去你大爷的
+</d-modal>
 </div>
+<?php include 'components/modal.php';?>
 <script>
 new Vue({
 	el:'#middle',
 	data:{
 		pages:10,
+		show:false
+	},
+	methods:{
+		showModal:function(){
+			this.show=true;
+		},
+		cancel:function(){
+			this.show=false;
+		},
+		confirm:function(){
+			this.show=false;			
+		}
 	}
 });
 </script>
