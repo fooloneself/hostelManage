@@ -2,35 +2,37 @@
 <div class="container">
 	<div class="canlender">
 		<a href="" class="pick">
-		<i class="fa fa-calendar" aria-hidden="true"></i>日历选择
+			<i class="fa fa-calendar" aria-hidden="true"></i>日历选择
 		</a>
 		<template v-for="week in weekday">
 			<a href="" class="current">09-05 星期{{week}}<br/>剩余15间</a>
 		</template>
 		<div class="cls"></div>
 	</div>
-	<div class="house_area">
-		<div class="house current">
-			<div class="status">住</div>
-			<div class="type">普通房</div>
-			201
+	<div class="house">
+		<div class="house_status fl">
+			<a href="">全部</a>
+			<a href="">入住</a>
+			<a href="">预订</a>
+			<a href="">钟点</a>
+			<a href="">脏房</a>
+			<a href="">空房</a>
+			<a href="">锁房</a>
 		</div>
-		<div class="house current">
-			<div class="status">订</div>
-			<div class="type">普通房</div>
-			201
+		<div class="house_type fr">
+			<a href="">全部</a>
+			<a href="">普通房</a>
+			<a href="">大床房</a>
+			<a href="">麻将房</a>
+			<a href="">套房</a>
+			<a href="">豪华房</a>
 		</div>
-		<div class="house current">
-			<div class="status">钟</div>
+		<div class="cls"></div>
+		<div class="house_list" v-for="house in houseNum" v-on:click="showOrder">
 			<div class="type">普通房</div>
-			201
+			<div class="number">201</div>
 		</div>
-		<template v-for="house in houseNum">
-		<div class="house" v-on:click="showOrder">
-			<div class="type">普通房</div>
-			201
-		</div>
-		</template>
+		<div class="cls"></div>
 	</div>
 </div>
 <div class="dialog" id="editOrder" v-if="order">
@@ -100,7 +102,7 @@
 new Vue({
 	el: '#middle',
 	data:{
-		houseNum:20,
+		houseNum:49,
 		order:false,
 		weekday:['一','二','三','四','五','六','日'],
 	},

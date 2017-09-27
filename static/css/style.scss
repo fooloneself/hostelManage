@@ -63,20 +63,24 @@ a,a:hover,a:active,a:visited{
 	font-size: $fontSize;
 }
 .table{
-	background: $borderColor;
 	width: 100%;
-	td{
-		background: #FFF;
+	tbody tr{
+		&:nth-child(2n){
+			background: #F5F5F5;
+		}
+	}
+	thead td{
+		font-weight: bolder;
+		padding: 0 10px 10px;
+		border-bottom: 2px solid $borderColor;
+	}
+	tbody td{
 		padding-left: 10px;
 		height: 40px;
 		line-height: 40px;
 		a{
 			margin-right: 5px;
 		}
-	}
-	thead td{
-		background: $borderColor;
-		font-weight: bolder;
 	}
 }
 .pagination{
@@ -270,7 +274,7 @@ a.btn,.btn{
 		float: left;
 		a{
 			color: #FFF;
-			display: inline-block;
+			float: left;
 			height: 100%;
 			padding: 0 15px;
 			&:hover,&.current{
@@ -305,43 +309,54 @@ a.btn,.btn{
 		padding: 10px 0;
 		text-align: center;
 		color: $mainColor;
-		font-size: 14px;
+		font-size: 12px;
 		&.pick{
-			line-height: 38px;
-			background: rgba($mainColor,0.1);
+			line-height: 34px;
+			font-size: 16px;
 			font-weight: bolder;
 		}
 		&.current,&:hover{
 			color: $color;
 		}
 	}
-	.house_area{
-		margin-top: 40px;
-		.house{
-			width: 140px;
-			height: 140px;
-			line-height: 140px;
-			text-align: center;
-			font-size: 34px;
-			font-weight: bolder;
-			border-radius: 50%;
+	.house{
+		.house_status,.house_type{
+			margin: 20px 5px;
+			a{
+				float: left;
+				padding: 5px 10px;
+				border: $border;
+				margin-left: -1px;
+				&:first-child{
+					margin-left: 0px;
+					border-top-left-radius: 5px;
+					border-bottom-left-radius: 5px;
+				}
+				&:last-child{
+					border-top-right-radius: 5px;
+					border-bottom-right-radius: 5px;					
+				}
+			}
+		}
+		.house_list{
+			width: 88px;
+			height: 88px;
+			border-radius: 5px;
 			position: relative;
 			border: $border;
 			float: left;
-			margin: 10px;
-			&.current,&:hover{
+			margin: 5px;
+			color: $greyColor;
+			&:hover{
 				background: $borderColor;
 			}
-			.status{
-				width: 30px;
-				height: 30px;
-				line-height: 30px;
-				font-size: 14px;
-				background: #FFF;
-				border-radius: 50%;
+			.number{
+				width: 100%;
+				font-size: 28px;
 				position: absolute;
-				top: 10px;
-				left: 55px;
+				bottom: 15px;
+				font-weight: bolder;
+				text-align: center;
 			}
 			.type{
 				width: 100%;
@@ -351,7 +366,7 @@ a.btn,.btn{
 				font-size: 14px;
 				font-weight: normal;
 				position: absolute;
-				bottom: 30px;
+				top: 15px;
 			}
 		}
 	}

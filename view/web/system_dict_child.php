@@ -6,7 +6,7 @@
 			<a href="system_dict.php" class="btn">返回</a>
 			<a href="system_dict_child_edit.php" class="btn">新增</a>
 		</div>
-		<table class="table" cellpadding="0" cellspacing="1">
+		<table class="table" cellpadding="0" cellspacing="0">
 			<thead>
 				<tr>
 					<td width="6%">序号</td>
@@ -17,8 +17,8 @@
 					<td width="16%">操作</td>
 				</tr>
 			</thead>
-			<tbody v-for="page in pages">
-				<tr>
+			<tbody>
+				<tr v-for="page in pages">
 					<td>{{page}}</td>
 					<td></td>
 					<td></td>
@@ -45,10 +45,10 @@
 			<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
 			<a href=""><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 			<select name="" id="" v-model="pages">
-				<option v-bind:value="12">每页12条</option>
-				<option v-bind:value="24">每页24条</option>
-				<option v-bind:value="36">每页36条</option>
-				<option v-bind:value="48">每页48条</option>
+				<option v-bind:value="10">每页10条</option>
+				<option v-bind:value="20">每页20条</option>
+				<option v-bind:value="30">每页30条</option>
+				<option v-bind:value="40">每页40条</option>
 			</select>
 		</div>
 	</div>
@@ -58,7 +58,7 @@
 	new Vue({
 		el:'#middle',
 		data:{
-			pages:12
+			pages:10
 		}
 	})
 </script>

@@ -15,7 +15,7 @@
 			<span class="login_title">考拉客房管理系统</span>
 		</div>
 		<div class="menu">
-			<a href="pos.php" class="current">收银管理</a>
+			<a href="pos.php" class="current">客房登记</a>
 			<a href="house_order_into.php">门店管理</a>
 			<a href="member_list.php">会员管理</a>
 			<a href="system_account_edit.php">系统配置</a>
