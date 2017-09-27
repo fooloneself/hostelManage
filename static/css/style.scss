@@ -43,7 +43,9 @@ a,a:hover,a:active,a:visited{
 	width: 400px;
 	font-size: $fontSize;
 	&.input_half{
-		width: 192px;
+		float: left;
+		width: 190px;
+		margin-right: 8px;
 	}
 }
 .select{
@@ -86,21 +88,23 @@ a,a:hover,a:active,a:visited{
 .pagination{
 	margin-top: 20px;
 	a{
-		display: inline-block;
+		float: left;
 		height: 30px;
 		line-height: 30px;
 		width: 30px;
 		text-align: center;
 		border: $border;
 		border-radius: 5px;
+		margin-right: 5px;
 	}
 	span{
-		display: inline-block;
+		float: left;
 		height: 32px;
 		line-height: 32px;
 		width: 32px;
 		text-align: center;
 		border: none;
+		margin-right: 5px;
 	}
 	select{
 		height: 32px;
@@ -125,7 +129,7 @@ a.btn,.btn{
 		background: $mainHoverColor;
 	}
 }
-.dialog{
+.modal{
 	.mask{
 		position: absolute;
 		top: 0;
@@ -134,26 +138,29 @@ a.btn,.btn{
 		left: 0;
 		background: rgba(0,0,0,0.8);
 	}
-	.dialog_main{
+	.modal_main{
 		position: fixed;
 		top: 150px;
 		left: 50%;
 		margin-left: -250px;
 		background: #F5F5F5;
-		.dialog_header{
+		.modal_header{
 			height: 40px;
 			line-height: 40px;
-			padding-left: 10px;
+			padding: 0 10px;
 			color: #FFF;
 			background: $extColor;
+			a{
+				color: #FFF;
+			}
 		}
-		.dialog_middle{
+		.modal_middle{
 			width: 400px;
 			max-height: 400px;
 			padding: 20px;
 			overflow-y: auto;
 		}
-		.dialog_footer{
+		.modal_footer{
 			text-align: right;
 			padding-right: 10px;
 			border-top: $border;
@@ -165,7 +172,7 @@ a.btn,.btn{
 .mb20{
 	margin-bottom: 20px;
 }
-.fa{
+.mr5{
 	margin-right: 5px;
 }
 .fl{
@@ -339,6 +346,7 @@ a.btn,.btn{
 			}
 		}
 		.house_list{
+			cursor: pointer;
 			width: 88px;
 			height: 88px;
 			border-radius: 5px;

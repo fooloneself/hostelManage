@@ -31,34 +31,15 @@
 				</tr>
 			</tbody>
 		</table>
-		<div class="pagination">
-			<a href=""><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-			<a href=""><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-			<a href="">1</a>
-			<span>2</span>
-			<a href="">3</a>
-			<a href="">4</a>
-			<a href="">5</a>
-			<a href="">6</a>
-			<span>…</span>
-			<a href="">16</a>
-			<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-			<a href=""><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-			<select name="" id="" v-model="pages">
-				<option :value="10">每页10条</option>
-				<option :value="20">每页20条</option>
-				<option :value="30">每页30条</option>
-				<option :value="40">每页40条</option>
-			</select>
-		</div>
+		<d-page :pages="pages"></d-page>
 	</div>
 </div>
 <d-modal @iscancel="cancel" @isconfirm="confirm" :isshow="show">
-<span slot="header">波妹儿</span>
-我去你大爷的
+是否确否需要删除该条数据？
 </d-modal>
 </div>
-<?php include 'components/modal.php';?>
+<?php include 'components/comModal.php';?>
+<?php include 'components/comPage.php';?>
 <script>
 new Vue({
 	el:'#middle',

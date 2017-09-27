@@ -3,22 +3,10 @@
 	<?php include 'common/sidebar_system.php';?>
 	<div class="frame">
 		<form action="system_dict_child.php" class="form">
-			<div class="mb20">
-				<div class="label">字典类型：</div>
-				<input type="text" class="input" readonly="readonly" value="性别">
-			</div>
-			<div class="mb20">
-				<div class="label">数据名称：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">数据值：</div>
-				<input type="number" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">同级排序：</div>
-				<input type="number" class="input">
-			</div>
+			<div class="label mb20">字典类型：性别</div>
+			<d-input>数据名称：</d-input>
+			<d-input :type="'number'">数据值：</d-input>
+			<d-input :type="'number'">同级排序：</d-input>
 			<a class="btn" href="javascript:history.go(-1)">取消</a>
 			<button class="btn" type="submit">提交后退出</button>
 			<button class="btn" type="reset">提交并新增</button>
@@ -26,4 +14,10 @@
 	</div>
 </div>
 </div>
+<?php include 'components/comInput.php';?>
+<script>
+new Vue({
+	el:'#middle'
+});
+</script>
 <?php include 'common/footer.php';?>

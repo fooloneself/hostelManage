@@ -35,29 +35,11 @@
 				</tr>
 			</tbody>
 		</table>
-		<div class="pagination">
-			<a href=""><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-			<a href=""><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-			<a href="">1</a>
-			<span>2</span>
-			<a href="">3</a>
-			<a href="">4</a>
-			<a href="">5</a>
-			<a href="">6</a>
-			<span>…</span>
-			<a href="">16</a>
-			<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-			<a href=""><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-			<select name="" id="" v-model="pages">
-				<option v-bind:value="10">每页10条</option>
-				<option v-bind:value="20">每页20条</option>
-				<option v-bind:value="30">每页30条</option>
-				<option v-bind:value="40">每页40条</option>
-			</select>
-		</div>
+		<d-page :pages="pages"></d-page>
 	</div>
 </div>
 </div>
+<?php include 'components/comPage.php';?>
 <script>
 	new Vue({
 		el:'#middle',

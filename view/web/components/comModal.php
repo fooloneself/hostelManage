@@ -1,21 +1,24 @@
 <template id="d-modal">
-	<div class="dialog" v-if="isshow">
+	<div class="modal" v-if="isshow">
 		<div class="mask"></div>
-		<div class="dialog_main">
-			<div class="dialog_header">
+		<div class="modal_main">
+			<div class="modal_header">
 				<slot name="header">提示</slot>
+				<a href="javascript:;" @click="buttonCancel" class="fr">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</a>
 			</div>
-			<div class="dialog_middle">
+			<div class="modal_middle">
 				<slot></slot>
 			</div>
-			<div class="dialog_footer">
+			<div class="modal_footer">
 				<button class="btn" @click="buttonCancel">取消</button>
 				<button class="btn" @click="buttonConfirm">确定</button>
 			</div>
 		</div>
 	</div>
 </template>
-<!-- Register Dialog -->
+<!-- Register Modal -->
 <script>
 Vue.component('d-modal', {
 	props:['isshow'],

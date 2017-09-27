@@ -3,30 +3,11 @@
 	<?php include 'common/sidebar_house.php';?>
 	<div class="frame">
 		<form action="house_type.php" class="form">
-			<div class="mb20">
-				<div class="label">房屋类型：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">默认价格：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">钟点房开关：</div>
-				<select name="" id="" class="select">
-					<option value="">开</option>
-					<option value="" selected="selected">关</option>
-				</select>
-			</div>
-			<div class="mb20">
-				<div class="label">钟点房时间：</div>
-				<input type="time" class="input input_half">
-				<input type="time" class="input input_half">
-			</div>
-			<div class="mb20">
-				<div class="label">类型说明：</div>
-				<textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
-			</div>
+			<d-input :name="'type'">房屋类型：</d-input>
+			<d-input :name="'price'">默认价格：</d-input>
+			<d-input :type="'select'" :items="options">钟点房开关：</d-input>
+			<d-input :type="'multi'" :items="inputs">钟点房时间：</d-input>
+			<d-input :type="'textarea'">类型说明：</d-input>
 			<a class="btn" href="javascript:history.go(-1)">取消</a>
 			<button class="btn" type="submit">提交后退出</button>
 			<button class="btn" type="reset">提交并新增</button>
@@ -34,4 +15,20 @@
 	</div>
 </div>
 </div>
+<?php include 'components/comInput.php';?>
+<script>
+new Vue({
+	el:'#middle',
+	data:{
+		options:[
+			{key:0,value:'关'},
+			{key:1,value:'开'}
+		],
+		inputs:[
+			{type:'time',name:''},
+			{type:'time',name:''}
+		]
+	}
+});
+</script>
 <?php include 'common/footer.php';?>
