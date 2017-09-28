@@ -2,8 +2,8 @@
 	<div class="mb20" v-if="dType=='select'">
 		<div class="label"><slot></slot></div>
 		<select :name="name" class="select">
-		<template v-for="item in items">
-			<option :value="item.key">{{item.value}}</option>
+		<template v-for="i in items">
+			<option :value="i.key">{{i.value}}</option>
 		</template>
 		</select>
 	</div>
@@ -13,8 +13,8 @@
 	</div>
 	<div class="mb20" v-else-if="dType=='multi'">
 		<div class="label"><slot></slot></div>
-		<template v-for="item in items">
-			<input :type="item.type" :name="item.name" class="input input_half">
+		<template v-for="i in items">
+			<input :type="i.type" :name="i.name" class="input input_half">
 		</template>
 		<div class="cls"></div>
 	</div>
@@ -23,7 +23,7 @@
 		<input :type="dType" :name="name" class="input">
 	</div>
 </template>
-<!-- Register Pagination -->
+<!-- Register Input -->
 <script>
 Vue.component('d-input', {
 	props:['type','name','items'],

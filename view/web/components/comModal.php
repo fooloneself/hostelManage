@@ -1,15 +1,15 @@
 <template id="d-modal">
-	<div class="modal" v-if="isshow">
+	<div class="modal" v-if="modal.visible">
 		<div class="mask"></div>
 		<div class="modal_main">
 			<div class="modal_header">
-				<slot name="header">提示</slot>
+				提示
 				<a href="javascript:;" @click="buttonCancel" class="fr">
 					<i class="fa fa-times" aria-hidden="true"></i>
 				</a>
 			</div>
 			<div class="modal_middle">
-				<slot></slot>
+				{{modal.message}}
 			</div>
 			<div class="modal_footer">
 				<button class="btn" @click="buttonCancel">取消</button>
@@ -21,14 +21,14 @@
 <!-- Register Modal -->
 <script>
 Vue.component('d-modal', {
-	props:['isshow'],
+	props:['modal'],
 	template: '#d-modal',
 	methods:{
 		buttonCancel: function(){
-			this.$emit('iscancel');
+			this.$emit('cancel');
 		},
 		buttonConfirm:function(){
-			this.$emit('isconfirm');
+			this.$emit('confirm');
 		}
 	}
 });

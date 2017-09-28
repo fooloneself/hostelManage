@@ -12,4 +12,10 @@
 	</div>
 </div>
 </div>
+<?php include 'components/comInput.php';?>
+<script>
+new Vue({
+	el:'#middle'
+});
+</script>
 <?php include 'common/footer.php';?>
