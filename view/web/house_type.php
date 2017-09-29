@@ -2,79 +2,69 @@
 <div class="container">
 	<?php include 'common/sidebar_house.php';?>
 	<div class="frame">
-		<div class="btn_group mb20">
-			<a href="house_type_edit.php" class="btn">新增</a>
-		</div>
-		<table class="table" cellpadding="0" cellspacing="0">
-			<thead>
-				<tr>
-					<td width="6%">序号</td>
-					<td width="20%">房间类型</td>
-					<td width="10%">默认价格</td>
-					<td width="10%">今日价格</td>
-					<td>房型说明</td>
-					<td width="20%">操作</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="page in pages">
-					<td>{{page}}</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>
-						<a href="house_type_week.php">价格浮动</a>
-						<a href="house_type_edit.php">编辑</a>
-						<a href="javascript:;" @click="showModal">删除</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="pagination">
-			<a href=""><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
-			<a href=""><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-			<a href="">1</a>
-			<span>2</span>
-			<a href="">3</a>
-			<a href="">4</a>
-			<a href="">5</a>
-			<a href="">6</a>
-			<span>…</span>
-			<a href="">16</a>
-			<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-			<a href=""><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-			<select name="" id="" v-model="pages">
-				<option :value="10">每页10条</option>
-				<option :value="20">每页20条</option>
-				<option :value="30">每页30条</option>
-				<option :value="40">每页40条</option>
-			</select>
-		</div>
+	<!-- 创建一个窗体table，并且表明需要用到窗体modal，触发方法为showModal -->
+		<dtable :table="table" @alert="showAlert"></dtable>
 	</div>
 </div>
-<d-modal @iscancel="cancel" @isconfirm="confirm" :isshow="show">
-<span slot="header">波妹儿</span>
-我去你大爷的
-</d-modal>
+<!-- 窗体取消触发方法cancel，确认触发方法confirm -->
+<dalert :alert="alert" @cancel="cancel" @confirm="confirm">
+</dalert>
 </div>
-<?php include 'components/modal.php';?>
+<?php
+include 'components/comAlert.php';
+include 'components/comTable.php';
+?>
 <script>
 new Vue({
 	el:'#middle',
 	data:{
-		pages:10,
-		show:false
+		table:{
+			buttons:[
+				{url:'house_type_edit.php',name:'新增'},
+				{url:'house_type_edit.php',name:'编辑'},
+				{url:'alert',name:'删除'},//将窗体授权给删除按钮
+				{url:'house_type_week.php',name:'价格浮动'}
+			],
+			thead:[
+				{width:'6%',name:'序号'},
+				{width:'20%',name:'房间类型'},
+				{width:'10%',name:'默认价格'},
+				{width:'10%',name:'今日价格'},
+				{width:'',name:'房型说明'}
+			],
+			items:[
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example'],
+				[1,'House Example','￥100.00','￥150.00','House Example']
+			],
+			pages:{
+				count:13,
+				current:7,
+				preUrl:'house_list.php?p='
+			}
+		},
+		alert:{
+			visible:false,
+			message:''
+		}
 	},
 	methods:{
-		showModal:function(){
-			this.show=true;
+		showAlert:function(){
+			this.alert.visible=true;
+			this.alert.message='猜到我是怎么实现的没？';
 		},
 		cancel:function(){
-			this.show=false;
+			this.alert.visible=false;
 		},
 		confirm:function(){
-			this.show=false;			
+			this.alert.visible=false;
 		}
 	}
 });

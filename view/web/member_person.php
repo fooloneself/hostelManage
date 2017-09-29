@@ -3,25 +3,19 @@
 	<?php include 'common/sidebar_member.php';?>
 	<div class="frame">
 		<form action="" class="form">
-			<div class="mb20">
-				<div class="label">会员名称：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">手机号：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">微信号：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">生日：</div>
-				<input type="date" class="input">
-			</div>
+			<d-input>会员名称：</d-input>
+			<d-input>手机号：</d-input>
+			<d-input>微信号：</d-input>
+			<d-input :type="'date'">生日：</d-input>
 			<button class="btn">保存</button>
 		</form>
 	</div>
 </div>
 </div>
+<?php include 'components/comInput.php';?>
+<script>
+new Vue({
+	el:'#middle'
+});
+</script>
 <?php include 'common/footer.php';?>

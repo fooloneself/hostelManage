@@ -2,34 +2,43 @@
 <div class="container">
 	<?php include 'common/sidebar_house.php';?>
 	<div class="frame">
-		<form action="house_list.php" class="form">
-			<div class="mb20">
-				<div class="label">房屋类型：</div>
-				<select name="" id="" class="select">
-					<option value="">普通房</option>
-					<option value="" selected="selected">大床房</option>
-				</select>
-			</div>
-			<div class="mb20">
-				<div class="label">房间号：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">是否锁房：</div>
-				<select name="" id="" class="select">
-					<option value="">锁房</option>
-					<option value="" selected="selected">不锁</option>
-				</select>
-			</div>
-			<div class="mb20">
-				<div class="label">房间说明：</div>
-				<textarea name="" id="" cols="30" rows="10" class="textarea"></textarea>
-			</div>
-			<a class="btn" href="javascript:history.go(-1)">取消</a>
-			<button class="btn" type="submit">提交后退出</button>
-			<button class="btn" type="reset">提交并新增</button>
-		</form>
+		<dform :form="form" @saveQuit="saveQuit" @saveNew="saveNew" @cancel="cancel"></dform>
 	</div>
 </div>
 </div>
+<?php include 'components/comForm.php';?>
+<script>
+new Vue({
+	el:'#middle',
+	data:{
+		form:{
+			inputs:[
+				{label:'房屋类型：',type:'select',items:{
+					name:'',
+					option:[
+						{key:0,value:'普通房'},
+						{key:1,value:'大床房'}
+					]
+				}},
+				{label:'房间号：',type:'text',items:{name:''}},
+				{label:'是否锁房：',type:'select',items:{
+					name:'',
+					option:[
+						{key:0,value:'不锁'},
+						{key:1,value:'锁房'}
+					]
+				}},
+				{label:'房间说明：',type:'textarea',items:{name:''}}
+			],
+			buttons:['saveQuit','saveNew','cancel']
+		}
+
+	},
+	methods:{
+		saveQuit:function(){},
+		saveNew:function(){},
+		cancel:function(){}
+	}
+});
+</script>
 <?php include 'common/footer.php';?>

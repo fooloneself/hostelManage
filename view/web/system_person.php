@@ -3,36 +3,29 @@
 	<?php include 'common/sidebar_system.php';?>
 	<div class="frame">
 		<form action="" class="form">
-			<div class="mb20">
-				<div class="label">账户名称：</div>
-				<input type="text" class="input" readonly="readonly" value="Admin Dun">
-			</div>
-			<div class="mb20">
-				<div class="label">真实姓名：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">上传头像：</div>
-				<input type="file" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">性别：</div>
-				<select name="" id="" class="select">
-					<option value="" selected="selected">男</option>
-					<option value="">女</option>
-				</select>
-			</div>
-			<div class="mb20">
-				<div class="label">联系方式：</div>
-				<input type="text" class="input">
-			</div>
-			<div class="mb20">
-				<div class="label">出生日期：</div>
-				<input type="date" class="input">
-			</div>
+			<d-input>账户名称：</d-input>
+			<d-input>真实姓名：</d-input>
+			<d-input :type="'password'">账户密码：</d-input>
+			<d-input :type="'date'">有效期限：</d-input>
+			<d-input :type="'file'">上传头像：</d-input>
+			<d-input :type="'select'" :items="options">性别：</d-input>
+			<d-input>联系方式：</d-input>
+			<d-input :type="'date'">出生日期：</d-input>
 			<button class="btn">保存</button>
 		</form>
 	</div>
 </div>
 </div>
+<?php include 'components/comInput.php';?>
+<script>
+new Vue({
+	el:'#middle',
+	data:{
+		options:[
+			{type:'0',name:'女'},
+			{key:'1',name:'男'}
+		]
+	}
+});
+</script>
 <?php include 'common/footer.php';?>

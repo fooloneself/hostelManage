@@ -2,7 +2,7 @@
 <div class="container">
 	<div class="canlender">
 		<a href="" class="pick">
-			<i class="fa fa-calendar" aria-hidden="true"></i>日历选择
+			<i class="fa fa-calendar mr5" aria-hidden="true"></i>日历选择
 		</a>
 		<template v-for="week in weekday">
 			<a href="" class="current">09-05 星期{{week}}<br/>剩余15间</a>
