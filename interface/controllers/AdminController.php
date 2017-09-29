@@ -7,9 +7,10 @@ use service\admin\Login;
 class AdminController extends Controller{
 
     public function actionLogin(){
-        $userName=\Yii::$app->requestHelper->post('userName',null,'string');
-        $password=\Yii::$app->requestHelper->post('password',null,'string');
-        if(empty($userName) || empty($password)){
+        $userName=\Yii::$app->requestHelper->post('userName');
+        $password=\Yii::$app->requestHelper->post('password');
+        $code=\Yii::$app->requestHelper->post('code');
+        if(empty($userName) || empty($password) || empty($code)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
         }
         $login=new Login($userName,$password);

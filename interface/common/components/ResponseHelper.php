@@ -40,13 +40,14 @@ class ResponseHelper extends Component{
         $this->_result=0;
         return $this;
     }
+
     /**
      * 设置成功信息
-     * @param array $data
+     * @param string $data
      * @param string $msg
      * @return $this
      */
-    public function success($data=[],$msg=''){
+    public function success($data='',$msg=''){
         $this->_status=ErrorManager::STATUS_SUCCESS;
         $this->_msg=$msg;
         $this->setData($data);
@@ -59,7 +60,7 @@ class ResponseHelper extends Component{
      * @param array $data
      * @return $this
      */
-    public function setData(array $data){
+    public function setData($data){
         $this->_data=$data;
         return $this;
     }

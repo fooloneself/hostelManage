@@ -11,10 +11,6 @@ class RequestHelper extends Component{
         parent::init();
         $param=\Yii::$app->request->getRawBody();
         $this->_requestParams=json_decode($param,true);
-        $this->_requestParams=[
-            'uid'=>1,
-            'token'=>'824FC2C9-BCF5-2747-60C4-E09073572267'
-        ];
         if(empty($this->_requestParams)){
             $this->_requestParams=[];
         }
