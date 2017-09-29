@@ -1,5 +1,5 @@
-<template id="d-modal">
-	<div class="modal" v-if="modal.visible">
+<template id="dalert">
+	<div class="modal" v-if="alert.visible">
 		<div class="mask"></div>
 		<div class="modal_main">
 			<div class="modal_header">
@@ -9,7 +9,7 @@
 				</a>
 			</div>
 			<div class="modal_middle">
-				{{modal.message}}
+				{{alert.message}}
 			</div>
 			<div class="modal_footer">
 				<button class="btn" @click="buttonCancel">取消</button>
@@ -20,9 +20,9 @@
 </template>
 <!-- Register Modal -->
 <script>
-Vue.component('d-modal', {
-	props:['modal'],
-	template: '#d-modal',
+Vue.component('dalert', {
+	props:['alert'],
+	template: '#dalert',
 	methods:{
 		buttonCancel: function(){
 			this.$emit('cancel');

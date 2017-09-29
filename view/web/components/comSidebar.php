@@ -1,8 +1,8 @@
-<template id="d-sidebar">
+<template id="dsidebar">
 	<div class="sidebar">
 		<dl class="menu">
-		<template v-for="i in items">
-			<dt v-if="i.url===''">{{i.name}}</dt>
+		<template v-for="i in sidebar">
+			<dt v-if="i.url==''">{{i.name}}</dt>
 			<dd v-else :href="i.url">{{i.name}}</dd>
 		</template>
 		</dl>
@@ -10,8 +10,8 @@
 </template>
 <!-- Register Sidebar -->
 <script>
-Vue.component('d-sidebar', {
-	props:['items'],
-	template: '#d-sidebar'
+Vue.component('dsidebar', {
+	props:['sidebar'],
+	template: '#dsidebar'
 });
 </script>

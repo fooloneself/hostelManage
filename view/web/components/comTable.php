@@ -1,11 +1,11 @@
-<template id="d-table">
+<template id="dtable">
 <div>
 	<div class="mb20" v-if="table.buttons">
 		<template v-for="i in table.buttons">
-		<a v-if="i.url!='modal'" :href="i.url" class="btn">
+		<a v-if="i.url!='alert'" :href="i.url" class="btn">
 			{{i.name}}
 		</a>
-		<a v-else href="javascript:;" @click="showModal" class="btn">{{i.name}}</a>
+		<a v-else href="javascript:;" @click="doAlert" class="btn">{{i.name}}</a>
 		</template>
 	</div>
 	<table class="table" cellpadding="0" cellspacing="0">
@@ -20,35 +20,52 @@
 			</tr>
 		</tbody>
 	</table>
-	<div class="pagination">
-		<a href=""><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+	<div class="pagination" v-if="table.buttons">
 		<a href=""><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-		<template v-for="i in page">
-			<a href="" v-if="i!=1 && i!='…'">{{i}}</a>
+		<template v-for="i in page.count">
+			<a :href="page.url+i" v-if="i!=page.current && i!='…'">{{i}}</a>
 			<span v-else>{{i}}</span>
 		</template>
 		<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-		<a href=""><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 	</div>
 </div>
 </template>
 <!-- Register Table -->
 <script>
-Vue.component('d-table', {
+Vue.component('dtable', {
 	props:['table'],
-	template: '#d-table',
+	template: '#dtable',
 	computed:{
 		page:function(){
-			if(this.table.pages>=6){
-				return [1,2,3,4,5,6,'…',this.table.pages];
+			var arr=[];
+			var count=this.table.pages.count;
+			var current=this.table.pages.current;
+			if(count>=10){
+				if(current-3<=3){
+					arr = [1,2,3,4,5,6,7,'…',count];
+				}
+				else if (current>=count-5) {
+					arr = [1,'…'];
+					for(var i=count-8;i<=count;i++){
+						arr.push(i)
+					}
+				}
+				else {
+					arr = [1,'…'];
+					for(var i=current-3;i<=current+3;i++){
+						arr.push(i);
+					}
+					arr.push('…',count);
+				}
+				return {count:arr,current:current,url:this.table.pages.preUrl};
 			} else {
 				return this.table.pages;
 			}
 		}
 	},
 	methods:{
-		showModal:function(){
-			this.$emit('modal');
+		doAlert:function(){
+			this.$emit('alert');
 		}
 	}
 });

@@ -187,10 +187,15 @@ a.btn,.btn{
 
 /*login*/
 .body_bg{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
 	background: #34495E;
 }
 .login{
-	position: fixed;
+	position: absolute;
 	left: 50%;
 	top: 50%;
 	margin-left: -330px;
