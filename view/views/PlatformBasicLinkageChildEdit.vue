@@ -1,0 +1,33 @@
+<template>
+<div class="form">
+	<Form :model="formItem" label-position="right" :label-width="80">
+		<FormItem label="父级菜单：">父级菜单</FormItem>
+		<FormItem label="菜单名称：">
+			<Input></Input>
+        </FormItem>
+		<FormItem label="排序：">
+			<Input></Input>
+        </FormItem>
+		<FormItem label="菜单说明：">
+            <Input type="textarea" :rows="5"></Input>
+        </FormItem>
+		<FormItem>
+            <Button type="primary">保存</Button>
+            <Button type="ghost" style="margin-left: 8px">返回</Button>
+        </FormItem>
+    </Form>
+</div>
+</template>
+
+<script>
+export default{
+	data () {
+		return {
+			formItem:{
+				personIdType:'1',
+				radio:'0'
+			}
+		}
+	}
+}
+</script>
