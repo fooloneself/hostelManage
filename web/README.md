@@ -1,30 +1,21 @@
-# web
+# iView-project
 
-> a vue.js project
+This project is build for Vue.js 2 + vue-router + webpack2 + iView 2, just install and run.
 
-## Build Setup
-
-``` bash
-# install dependencies
+## Install
+```bush
+// install dependencies
 npm install
-
-# serve with hot reload at localhost:8080
+```
+## Run
+### Development
+```bush
+// For the first time, run init to create index.html
+npm run init
 npm run dev
-
-# build for production with minification
+```
+### Production(Build)
+```bush
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

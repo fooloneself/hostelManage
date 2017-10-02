@@ -14,7 +14,7 @@
 
 <template>
     <div class="layout">
-        <Menu mode="horizontal" :theme="theme" active-name="1">
+        <Menu mode="horizontal" :theme="theme" active-name="1" style="background: #34495E">
             <div class="container nav">
                 <Row>
                     <Col span="5" class="logo">
