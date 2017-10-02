@@ -1,6 +1,6 @@
 <template>
-	<div>
-        <div class="main-menu fl">
+	<Row>
+        <Col span="5">
             <Menu :theme="'light'" active-name="1">
                 <MenuGroup title="个人中心">
                     <MenuItem name="person_info">
@@ -45,11 +45,11 @@
                     </MenuItem>
                 </MenuGroup>
             </Menu>
-        </div>
-        <div class="main-body fr">
+        </Col>
+        <Col span="19">
             <router-view></router-view>
-        </div>
-    </div>
+        </Col>
+    </Row>
 </template>
 
 <script>

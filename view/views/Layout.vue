@@ -1,47 +1,59 @@
 <style scoped>
-    .layout-logo{
-        height: 60px;
-        line-height: 60px;
-        color: #FFF;
+.nav{
+    height: 60px;
+    line-height: 60px;
+    color: #FFF;
+    .logo{
         font-size: 18px;
     }
-    .layout-nav{
-        margin-left: 60px;
+    a{
+        color: #FFF;
     }
-    .layout-body{
-        margin-top: 40px;
-    }
+}
 </style>
 
 <template>
     <div class="layout">
         <Menu mode="horizontal" :theme="theme" active-name="1">
-        <div class="container">
-            <div class="layout-logo fl">
-                考拉客房管理系统
+            <div class="container nav">
+                <Row>
+                    <Col span="5" class="logo">
+                        考拉客房管理系统
+                    </Col>
+                    <Col span="15">
+                        <MenuItem name="checkstand">
+                            客房登记
+                        </MenuItem>
+                        <MenuItem name="store">
+                            门店管理
+                        </MenuItem>
+                        <MenuItem name="system">
+                            系统设置
+                        </MenuItem>
+                        <MenuItem name="platform">
+                            平台管理
+                        </MenuItem>
+                    </Col>
+                    <Col span="4" class="tr">
+                        <Dropdown class="tl">
+                            <a href="javascript:void(0)">
+                                Admin Dun
+                                <Icon type="arrow-down-b"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>个人资料</DropdownItem>
+                                <DropdownItem>修改头像</DropdownItem>
+                                <DropdownItem>修改密码</DropdownItem>
+                                <DropdownItem divided>退出登录</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </Col>
+                </Row>
             </div>
-            <div class="layout-nav fl">
-                <MenuItem name="checkstand">
-                    客房登记
-                </MenuItem>
-                <MenuItem name="store">
-                    门店管理
-                </MenuItem>
-                <MenuItem name="system">
-                    系统设置
-                </MenuItem>
-                <MenuItem name="platform">
-                    平台管理
-                </MenuItem>
-                <div class="cls"></div>
-            </div>
-        </div>
         </Menu>
-        <div class="layout-body">
-            <div class="container">
-                <router-view></router-view>
-            </div>
-            <div class="cls"></div>
+        <div class="mb"></div>
+        <div class="container">
+            <router-view></router-view>
         </div>
     </div>
 </template>

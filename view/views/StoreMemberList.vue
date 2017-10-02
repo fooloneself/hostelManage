@@ -1,29 +1,29 @@
 <template>
 <div>
     <Form inline>
-    <Row>
-    <Col span="6">
-        <FormItem>
-            <Button type="primary">新增</Button>
-        </FormItem>
-    </Col>
-    <Col span="18" style="text-align: right;">
-        <FormItem>
-            <Select placeholder="会员等级" style="text-align: left;">
-                <Option value="1">普通</Option>
-                <Option value="2">黄金</Option>
-                <Option value="3">铂金</Option>
-                <Option value="4">钻石</Option>
-            </Select>
-        </FormItem>
-        <FormItem>
-            <Input placeholder="姓名/电话"></Input>
-        </FormItem>
-        <FormItem>
-            <Button type="primary">查询</Button>
-        </FormItem>
-    </Col>
-    </Row>
+        <Row>
+            <Col span="6">
+                <FormItem>
+                    <Button type="primary">新增</Button>
+                </FormItem>
+            </Col>
+            <Col span="18" style="text-align: right;">
+                <FormItem>
+                    <Select placeholder="会员等级" style="text-align: left;">
+                        <Option value="1">普通</Option>
+                        <Option value="2">黄金</Option>
+                        <Option value="3">铂金</Option>
+                        <Option value="4">钻石</Option>
+                    </Select>
+                </FormItem>
+                <FormItem>
+                    <Input placeholder="姓名/电话"></Input>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary">查询</Button>
+                </FormItem>
+            </Col>
+        </Row>
     </Form>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>

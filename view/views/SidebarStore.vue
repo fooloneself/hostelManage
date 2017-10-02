@@ -1,6 +1,6 @@
 <template>
-	<div>
-        <div class="main-menu fl">
+	<Row>
+        <Col span="5">
             <Menu :theme="'light'" active-name="1">
                 <MenuGroup title="订单管理">
                     <MenuItem name="order_in">
@@ -31,11 +31,11 @@
                     </MenuItem>
                 </MenuGroup>
             </Menu>
-        </div>
-        <div class="main-body fr">
+        </Col>
+        <Col span="19">
             <router-view></router-view>
-        </div>
-    </div>
+        </Col>
+    </Row>
 </template>
 
 <script>
