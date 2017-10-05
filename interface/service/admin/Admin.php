@@ -8,23 +8,6 @@ class Admin extends Server{
     protected $admin;
 
     /**
-     * 阻止外部实例化
-     * Admin constructor.
-     */
-    protected function __construct()
-    {
-    }
-
-    /**
-     * 阻止克隆
-     * @return bool
-     */
-    public function __clone()
-    {
-        return false;
-    }
-
-    /**
      * 加载 admin model
      * @param \common\models\Admin $admin
      * @return $this
@@ -138,7 +121,7 @@ class Admin extends Server{
         $this->admin->setAttribute('token',$this->makeToken());
         $this->admin->setAttribute('last_login_time',$_SERVER['REQUEST_TIME']);
         $this->admin->setAttribute('expire',intval($_SERVER['REQUEST_TIME'])+\Yii::$app->params['expire_time']);
-        $this->admin->save();
+        $this->admin->save(true,['token','last_login_time','expire']);
         return $this;
     }
 

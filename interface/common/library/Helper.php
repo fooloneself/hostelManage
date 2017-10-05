@@ -37,4 +37,22 @@ class Helper{
         }
         return $simpleXmlElement;
     }
+
+    /**
+     * 校验账号
+     * @param $userName
+     * @return bool
+     */
+    public static function checkUsername($userName){
+        return preg_match('/^\w{6,18}$/',$userName)==1? true: false;
+    }
+
+    /**
+     * 校验密码
+     * @param $password
+     * @return bool
+     */
+    public static function checkPwd($password){
+        return preg_match('/(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^.{6,16}$/',$password)==1? true: false;
+    }
 }

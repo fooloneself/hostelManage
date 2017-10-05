@@ -10,12 +10,19 @@ class Error{
         ErrorManager::ERROR_USER_FROZEN=>'账户冻结',
         ErrorManager::ERROR_PARAM_TYPE_WRONG=>'请求参数类型错误',
         ErrorManager::ERROR_SYSTEM=>'系统错误',
-        ErrorManager::ERROR_PARAM_INSERT_FAIL=>'数据库插入失败',
+        ErrorManager::ERROR_INSERT_FAIL=>'数据库插入失败',
         ErrorManager::ERROR_NOT_PRIVILEGE=>'无权访问接口',
         ErrorManager::ERROR_NOT_LOGIN=>'未登录',
         ErrorManager::ERROR_LOGIN_EXPIRE=>'登录已过期',
         ErrorManager::ERROR_INTERFACE_UN_OPEN=>'接口未开放',
         ErrorManager::ERROR_INTERFACE_ERROR=>'接口错误',
+        ErrorManager::ERROR_USER_EXISTS=>'账号已存在',
+        ErrorManager::ERROR_DICTIONARY_KEY_EXISTS=>'已存在于字典',
+        ErrorManager::ERROR_DELETE_FAIL=>'删除失败',
+        ErrorManager::ERROR_DICTIONARY_KEY_NOT_EXISTS=>'不存在于字典',
+        ErrorManager::ERROR_UPDATE_FAIL=>'修改失败',
+        ErrorManager::ERROR_MENU_NOT_EXISTS=>'菜单不存在',
+        ErrorManager::ERROR_DELETE_CANNOT=>'不能删除',
     ];
     //错误码
     public $status;
