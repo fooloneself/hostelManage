@@ -1,22 +1,17 @@
 <?php
 namespace service\merchant;
+use common\components\ErrorManager;
 use common\components\Server;
+use common\models\LinkageMenu;
 use common\models\MchModule;
-use common\models\MerchantInfo;
 
 class Merchant extends Server{
-    public $id;
     protected $merchant;
-    protected $merchantInfo;
     protected $modules;
     protected $moduleLabels;
-    public function __construct($id)
+    public function __construct(\common\models\Merchant $merchant)
     {
-        $this->id=$id;
-        $this->merchant=\common\models\Merchant::findOne(['id'=>$id]);
-        if(empty($this->merchant))$this->merchant=new \common\models\Merchant();
-        $this->merchantInfo=MerchantInfo::findOne(['mch_id'=>$id]);
-        if(empty($this->merchantInfo))$this->merchantInfo=new merchantInfo();
+        $this->merchant=$merchant;
     }
 
     /**
@@ -24,7 +19,7 @@ class Merchant extends Server{
      * @return array
      */
     public function show(){
-        return array_merge($this->merchant->getAttributes(),$this->merchantInfo->getAttributes());
+        return $this->merchant->getAttributes();
     }
 
     /**
@@ -70,6 +65,46 @@ class Merchant extends Server{
      * @return bool
      */
     public function isExists(){
-        return intval($this->merchant->getAttribute('id'))>0;
+        return $this->getId()>0;
+    }
+
+    /**
+     * 获取商户id
+     * @return int
+     */
+    public function getId(){
+        return intval($this->merchant->getAttribute('id'));
+    }
+    /**
+     * 通过id获取商户信息
+     * @param $id
+     * @return static
+     */
+    public static function byId($id){
+        $model=\common\models\Merchant::findOne(['id'=>$id]);
+        if(empty($model))$model=new \common\models\Merchant();
+        return new static($model);
+    }
+
+    /**
+     * 注册商户
+     * @return bool
+     */
+    public function register(){
+        $city=LinkageMenu::findOne(['type'=>LinkageMenu::TYPE_REGION,'id'=>$this->merchant->getAttribute('city')]);
+        if(empty($city)){
+            $this->setError(ErrorManager::ERROR_PARAM_WRONG,'未找到所属地区');
+            return false;
+        }else if(!in_array($this->merchant->type,\common\models\Merchant::$types,true)){
+            $this->setError(ErrorManager::ERROR_PARAM_WRONG,'类型错误');
+            return false;
+        }
+        $this->merchant->create_time=time();
+        if($this->merchant->insert()){
+            return true;
+        }else{
+            $this->setError(ErrorManager::ERROR_INSERT_FAIL,json_encode($this->merchant->getErrors()));
+            return false;
+        }
     }
 }

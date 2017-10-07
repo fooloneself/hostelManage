@@ -14,6 +14,7 @@ use Yii;
  */
 class LinkageMenu extends \common\components\ActiveRecord
 {
+    const TYPE_REGION   = 1;
     /**
      * @inheritdoc
      */

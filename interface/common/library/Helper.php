@@ -55,4 +55,23 @@ class Helper{
     public static function checkPwd($password){
         return preg_match('/(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^.{6,16}$/',$password)==1? true: false;
     }
+
+    /**
+     * 房间号
+     * @param $floor
+     * @param $num
+     * @return string
+     */
+    public static function getRoomNo($floor,$num){
+        return $floor.str_pad($num,3,'0',STR_PAD_LEFT);
+    }
+
+    /**
+     * 加密登录密码
+     * @param $pwd
+     * @return string
+     */
+    public static function encryptPwd($pwd){
+        return md5($pwd);
+    }
 }

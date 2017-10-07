@@ -1,6 +1,8 @@
 <?php
 namespace service\admin;
+use common\components\ErrorManager;
 use common\components\Server;
+use common\library\Helper;
 use service\merchant\Merchant;
 
 class Admin extends Server{
@@ -150,7 +152,7 @@ class Admin extends Server{
      * @return bool
      */
     public function isAdminOfMerchant(){
-        return $this->getMchId()>0;
+        return $this->getMchId()!=-1;
     }
 
     /**
@@ -159,7 +161,7 @@ class Admin extends Server{
      */
     public function getMerchant(){
         if($this->isAdminOfMerchant()){
-            return new Merchant($this->getMchId());
+            return Merchant::byId($this->getMchId());
         }else{
             return false;
         }
@@ -221,5 +223,47 @@ class Admin extends Server{
     public function hasModule($module){
         $modules=$this->allModules();
         return in_array($module,$modules);
+    }
+
+    /**
+     * 是否绑定商户
+     * @return bool
+     */
+    public function hasBindMerchant(){
+        return $this->getMchId()>0;
+    }
+
+    /**
+     * 绑定商户
+     * @param Merchant $merchant
+     * @return bool
+     */
+    public function bindMerchant(Merchant $merchant){
+        $this->admin->mch_id=$merchant->getId();
+        if($this->admin->save(false,['mch_id'])){
+            return true;
+        }else{
+            $this->setError(ErrorManager::ERROR_UPDATE_FAIL,'商户绑定失败');
+            return false;
+        }
+    }
+
+    /**
+     * 校验密码是否相同
+     * @param $pwd
+     * @return bool
+     */
+    public function isEqualToPwd($pwd){
+        return $this->getPassword()==Helper::encryptPwd($pwd);
+    }
+
+    /**
+     * 重设密码
+     * @param $pwd
+     * @return mixed
+     */
+    public function resetPwd($pwd){
+        $this->admin->setAttribute('password',Helper::encryptPwd($pwd));
+        return $this->admin->save(false,['password']);
     }
 }

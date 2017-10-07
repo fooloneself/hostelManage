@@ -11,6 +11,17 @@ class RequestHelper extends Component{
         parent::init();
         $param=\Yii::$app->request->getRawBody();
         $this->_requestParams=json_decode($param,true);
+        $this->_requestParams=[
+            'uid'=>3,
+            'token'=>'86241E0E-5809-6E9F-D11E-F627D7611917',
+            'city'=>5,
+            'name'=>'费率并',
+            'address'=>'成都少陵路218号',
+            'type'=>1,
+            'premises'=>1,
+            'number'=>12,
+            'floor'=>7
+        ];
         if(empty($this->_requestParams)){
             $this->_requestParams=[];
         }

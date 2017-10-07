@@ -8,13 +8,16 @@ use Yii;
  * This is the model class for table "{{%merchant}}".
  *
  * @property integer $id
- * @property integer $number
- * @property integer $province
  * @property integer $city
+ * @property integer $create_time
  * @property integer $status
  * @property integer $type
+ * @property string $contact_name
  * @property string $name
+ * @property string $mobile
+ * @property string $telephone
  * @property string $address
+ * @property string $introduce
  */
 class Merchant extends \common\components\ActiveRecord
 {
@@ -32,9 +35,12 @@ class Merchant extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['number', 'province', 'city'], 'required'],
-            [['number', 'province', 'city', 'status', 'type'], 'integer'],
+            [['city'], 'required'],
+            [['city', 'create_time', 'status', 'type'], 'integer'],
+            [['introduce'], 'string'],
+            [['contact_name'], 'string', 'max' => 100],
             [['name'], 'string', 'max' => 200],
+            [['mobile', 'telephone'], 'string', 'max' => 50],
             [['address'], 'string', 'max' => 500],
         ];
     }
@@ -46,13 +52,16 @@ class Merchant extends \common\components\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'number' => 'Number',
-            'province' => 'Province',
             'city' => 'City',
+            'create_time' => 'Create Time',
             'status' => 'Status',
             'type' => 'Type',
+            'contact_name' => 'Contact Name',
             'name' => 'Name',
+            'mobile' => 'Mobile',
+            'telephone' => 'Telephone',
             'address' => 'Address',
+            'introduce' => 'Introduce',
         ];
     }
 }

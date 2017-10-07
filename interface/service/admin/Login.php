@@ -18,7 +18,7 @@ class Login extends Server {
         if(!$admin->isExists()){
             $this->setError(ErrorManager::ERROR_USER_NOT_EXISTS);
             return false;
-        }else if($this->password!=$admin->getPassword()){
+        }else if(!$admin->isEqualToPwd($this->password)){
             $this->setError(ErrorManager::ERROR_PWD_ERROR);
             return false;
         }else{

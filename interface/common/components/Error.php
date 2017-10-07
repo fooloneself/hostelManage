@@ -23,6 +23,8 @@ class Error{
         ErrorManager::ERROR_UPDATE_FAIL=>'修改失败',
         ErrorManager::ERROR_MENU_NOT_EXISTS=>'菜单不存在',
         ErrorManager::ERROR_DELETE_CANNOT=>'不能删除',
+        ErrorManager::ERROR_PARAM_WRONG=>'参数错误',
+        ErrorManager::ERROR_ACCOUNT_ERROR=>'账号错误',
     ];
     //错误码
     public $status;

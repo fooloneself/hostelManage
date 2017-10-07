@@ -13,7 +13,7 @@ class ErrorManager extends Component{
     const ERROR_PWD_ERROR                   =100005;
     const ERROR_USER_FROZEN                 =100006;
     const ERROR_PARAM_TYPE_WRONG            =100007;
-    const ERROR_PARAM_INSERT_FAIL           =100008;
+    const ERROR_INSERT_FAIL                 =100008;
     const ERROR_NOT_PRIVILEGE               =100009;
     const ERROR_NOT_LOGIN                    =100010;
     const ERROR_LOGIN_EXPIRE                =100011;
@@ -26,6 +26,8 @@ class ErrorManager extends Component{
     const ERROR_UPDATE_FAIL                 =1000018;
     const ERROR_MENU_NOT_EXISTS             =1000019;
     const ERROR_DELETE_CANNOT               =1000020;
+    const ERROR_PARAM_WRONG                 =1000021;
+    const ERROR_ACCOUNT_ERROR                =1000022;
     //错误信息 common\components\Error的实例
     private $_error;
 

@@ -20,7 +20,7 @@ class Register extends Server{
      */
     public function exe(){
         if($this->check()===false)return false;
-        $this->admin->password=md5($this->admin->password);
+        $this->admin->password=Helper::encryptPwd($this->admin->password);
         if($this->admin->insert()){
             return (new \service\admin\Admin())->load($this->admin);
         }else{
