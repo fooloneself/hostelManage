@@ -1,31 +1,31 @@
 <template>
 	<Row>
         <Col span="5">
-            <Menu :theme="'light'" active-name="1">
+            <Menu theme="light" active-name="1" @on-select="turnUrl">
                 <MenuGroup title="订单管理">
-                    <MenuItem name="order_in">
+                    <MenuItem name="orderIn">
                         <Icon type="document-text"></Icon>
                         今日新办
                     </MenuItem>
-                    <MenuItem name="order_out">
+                    <MenuItem name="orderOut">
                         <Icon type="chatbubbles"></Icon>
                         即将离店
                     </MenuItem>
-                    <MenuItem name="order_all">
+                    <MenuItem name="orderAll">
                         <Icon type="chatbubbles"></Icon>
                         全部订单
                     </MenuItem>
-                    <MenuItem name="order_error">
+                    <MenuItem name="orderError">
                         <Icon type="chatbubbles"></Icon>
                         异常订单
                     </MenuItem>
                 </MenuGroup>
                 <MenuGroup title="会员管理">
-                    <MenuItem name="member_rank">
+                    <MenuItem name="memberRank">
                         <Icon type="document-text"></Icon>
                         会员等级
                     </MenuItem>
-                    <MenuItem name="member_list">
+                    <MenuItem name="memberList">
                         <Icon type="chatbubbles"></Icon>
                         会员列表
                     </MenuItem>
@@ -39,5 +39,11 @@
 </template>
 
 <script>
-export default{}
+export default{
+    methods:{
+        turnUrl:function(name){
+            this.$router.push(name);
+        }
+    }
+}
 </script>

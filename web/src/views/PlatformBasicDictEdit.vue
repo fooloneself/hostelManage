@@ -12,8 +12,8 @@
 	            <Input type="textarea" :rows="10"></Input>
 	        </FormItem>
 			<FormItem>
-	            <Button type="primary">保存</Button>
-	            <Button type="ghost" style="margin-left: 8px">返回</Button>
+	            <Button type="primary" @click="goBack">保存</Button>
+	            <Button type="ghost" style="margin-left: 8px" @click="goBack">返回</Button>
 	        </FormItem>
 	    </Form>
 	</Col>
@@ -25,9 +25,13 @@ export default{
 	data () {
 		return {
 			formItem:{
-				personIdType:'1',
-				radio:'0'
+				personIdType:'1'
 			}
+		}
+	},
+	methods:{
+		goBack:function(){
+			history.go(-1);
 		}
 	}
 }

@@ -106,7 +106,7 @@
 export default{
 	methods:{
 		submit:function(){
-			router.push('checkstand')
+			this.$router.push('checkstand')
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="primary">新增</Button>
+    <Button type="primary" @click="turnUrl('basicDictInfoEdit')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
@@ -41,6 +41,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('basicDictInfoEdit',{id:params.row.id})
+                                        }
                                     }
                                 }, '编辑'),
                                 h('Button', {
@@ -56,6 +61,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }

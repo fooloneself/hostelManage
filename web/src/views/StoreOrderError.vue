@@ -29,8 +29,7 @@
                         width: 100
                     },
                     {
-                        title: '入住/退房时间',
-                        width: 180
+                        title: '入住/退房时间'
                     },
                     {
                         title: '支付方式',
@@ -54,13 +53,12 @@
                     },
                     {
                         title: '手机号',
-                        width: 100
+                        width: 110
                     },
                     {
                         title: '操作',
                         key: 'action',
-                        fixed: 'right',
-                        width: 60,
+                        width: 100,
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
