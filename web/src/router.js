@@ -1,12 +1,12 @@
 const checkstand = {
-	path: '/checkstand',
+	path: 'checkstand',
     meta: {
         title: '客房登记'
     },
 	component: (resolve) => require(['./views/Checkstand.vue'], resolve)
 };
 const store = {
-	path: '/',
+	path: '',
 	component: (resolve) => require(['./views/SidebarStore.vue'], resolve),
 	children:[
 		{
@@ -75,7 +75,7 @@ const store = {
 	]
 };
 const system = {
-	path: '/',
+	path: '',
 	component: (resolve) => require(['./views/SidebarSystem.vue'], resolve),
 	children:[
 		{
@@ -158,7 +158,7 @@ const system = {
 	]
 };
 const platform = {
-	path: '/',
+	path: '',
 	component: (resolve) => require(['./views/SidebarPlatform.vue'], resolve),
 	children:[
 		{
@@ -218,18 +218,18 @@ const platform = {
         	component: (resolve) => require(['./views/PlatformPowerRoleEdit.vue'], resolve)
 		},
 		{
-			path: 'powerAccout',
+			path: 'powerAccount',
 	        meta: {
 	            title: '账号管理'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerAccout.vue'], resolve)
+        	component: (resolve) => require(['./views/PlatformPowerAccount.vue'], resolve)
 		},
 		{
-			path: 'powerAccoutEdit',
+			path: 'powerAccountEdit',
 	        meta: {
 	            title: '账号管理 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerAccoutEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/PlatformPowerAccountEdit.vue'], resolve)
 		},
 		{
 			path: 'basicDict',
@@ -293,15 +293,15 @@ const platform = {
 const routers = [
     {
         path: '/',
+        component: (resolve) => require(['./views/Layout.vue'], resolve),
+        children:[checkstand,store,system,platform]
+    },
+    {
+        path: '/login',
         meta: {
             title: '登录'
         },
         component: (resolve) => require(['./views/Login.vue'], resolve)
-    },
-    {
-        path: '',
-        component: (resolve) => require(['./views/Layout.vue'], resolve),
-        children:[checkstand,store,system,platform]
     }
 ];
 export default routers;

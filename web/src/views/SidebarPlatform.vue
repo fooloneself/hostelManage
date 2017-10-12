@@ -1,45 +1,45 @@
 <template>
 	<Row>
         <Col span="5">
-            <Menu :theme="'light'" active-name="1">
+            <Menu theme="light" active-name="1" @on-select="turnUrl">
                 <MenuGroup title="个人中心">
-                    <MenuItem name="manager_info">
+                    <MenuItem name="managerInfo">
                         <Icon type="document-text"></Icon>
                         个人资料
                     </MenuItem>
-                    <MenuItem name="manager_photo">
+                    <MenuItem name="managerPhoto">
                         <Icon type="chatbubbles"></Icon>
                         修改头像
                     </MenuItem>
-                    <MenuItem name="manager_password">
+                    <MenuItem name="managerPassword">
                         <Icon type="chatbubbles"></Icon>
                         修改密码
                     </MenuItem>
                 </MenuGroup>
                 <MenuGroup title="鉴权中心">
-                    <MenuItem name="power_menu">
+                    <MenuItem name="powerMenu">
                         <Icon type="document-text"></Icon>
                         菜单配置
                     </MenuItem>
-                    <MenuItem name="power_role">
+                    <MenuItem name="powerRole">
                         <Icon type="chatbubbles"></Icon>
                         角色配置
                     </MenuItem>
-                    <MenuItem name="power_account">
+                    <MenuItem name="powerAccount">
                         <Icon type="chatbubbles"></Icon>
                         账号管理
                     </MenuItem>
                 </MenuGroup>
                 <MenuGroup title="基础中心">
-                    <MenuItem name="basic_dict">
+                    <MenuItem name="basicDict">
                         <Icon type="document-text"></Icon>
                         数据字典
                     </MenuItem>
-                    <MenuItem name="basic_linkage">
+                    <MenuItem name="basicLinkage">
                         <Icon type="chatbubbles"></Icon>
                         联动菜单
                     </MenuItem>
-                    <MenuItem name="basic_notice">
+                    <MenuItem name="basicNotice">
                         <Icon type="chatbubbles"></Icon>
                         通知公告
                     </MenuItem>
@@ -53,5 +53,11 @@
 </template>
 
 <script>
-export default{}
+export default{
+    methods:{
+        turnUrl:function(name){
+            this.$router.push(name);
+        }
+    }
+}
 </script>

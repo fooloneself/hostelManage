@@ -1,45 +1,45 @@
 <template>
 	<Row>
         <Col span="5">
-            <Menu :theme="'light'" active-name="1">
+            <Menu theme="light" active-name="1" @on-select="turnUrl">
                 <MenuGroup title="个人中心">
-                    <MenuItem name="person_info">
+                    <MenuItem name="personInfo">
                         <Icon type="document-text"></Icon>
                         个人资料
                     </MenuItem>
-                    <MenuItem name="person_photo">
+                    <MenuItem name="personPhoto">
                         <Icon type="chatbubbles"></Icon>
                         修改头像
                     </MenuItem>
-                    <MenuItem name="person_password">
+                    <MenuItem name="personPassword">
                         <Icon type="chatbubbles"></Icon>
                         修改密码
                     </MenuItem>
-                    <MenuItem name="person_notice">
+                    <MenuItem name="personNotice">
                         <Icon type="chatbubbles"></Icon>
                         通知公告
                     </MenuItem>
-                    <MenuItem name="person_tips">
+                    <MenuItem name="personTips">
                         <Icon type="chatbubbles"></Icon>
                         意见反馈
                     </MenuItem>
                 </MenuGroup>
                 <MenuGroup title="房间配置">
-                    <MenuItem name="room_type">
+                    <MenuItem name="roomType">
                         <Icon type="chatbubbles"></Icon>
                         房间类型
                     </MenuItem>
-                    <MenuItem name="room_list">
+                    <MenuItem name="roomList">
                         <Icon type="chatbubbles"></Icon>
                         房间列表
                     </MenuItem>
                 </MenuGroup>
                 <MenuGroup title="功能配置">
-                    <MenuItem name="config_store">
+                    <MenuItem name="configStore">
                         <Icon type="chatbubbles"></Icon>
                         门店配置
                     </MenuItem>
-                    <MenuItem name="config_channel">
+                    <MenuItem name="configChannel">
                         <Icon type="chatbubbles"></Icon>
                         渠道配置
                     </MenuItem>
@@ -53,5 +53,11 @@
 </template>
 
 <script>
-export default{}
+export default{
+    methods:{
+        turnUrl:function(name){
+            this.$router.push(name);
+        }
+    }
+}
 </script>

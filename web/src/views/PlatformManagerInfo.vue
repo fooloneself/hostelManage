@@ -1,8 +1,8 @@
 <template>
 <Row>
 	<Col span="12">
-		<Form :model="formItem" label-position="right" :label-width="60">
-			<FormItem label="账号：">Admin Dun</FormItem>
+		<Form :model="formItem" label-position="right" :label-width="80">
+			<FormItem label="登录账号：">Admin Dun</FormItem>
 			<FormItem label="姓名：">
 				<Input></Input>
 	        </FormItem>
