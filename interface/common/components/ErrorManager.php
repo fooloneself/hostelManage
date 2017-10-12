@@ -28,6 +28,12 @@ class ErrorManager extends Component{
     const ERROR_DELETE_CANNOT               =1000020;
     const ERROR_PARAM_WRONG                 =1000021;
     const ERROR_ACCOUNT_ERROR                =1000022;
+    const ERROR_MENU_EXISTS                 =1000023;
+    const ERROR_CHANNEL_EXISTS              =1000024;
+    const ERROR_CHANNEL_NOT_EXISTS         =1000025;
+    const ERROR_NOT_EXISTS                  =1000026;
+    const ERROR_EXISTS                      =1000027;
+    const ERROR_OPERATE_FAIL                =1000028;
     //错误信息 common\components\Error的实例
     private $_error;
 

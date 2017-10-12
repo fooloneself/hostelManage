@@ -8,13 +8,12 @@ use Yii;
  * This is the model class for table "{{%linkage_menu}}".
  *
  * @property integer $id
- * @property integer $type
- * @property integer $pid
  * @property string $label
+ * @property string $code
+ * @property string $introduce
  */
 class LinkageMenu extends \common\components\ActiveRecord
 {
-    const TYPE_REGION   = 1;
     /**
      * @inheritdoc
      */
@@ -29,9 +28,8 @@ class LinkageMenu extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'label'], 'required'],
-            [['type', 'pid'], 'integer'],
-            [['label'], 'string', 'max' => 100],
+            [['introduce'], 'string'],
+            [['label', 'code'], 'string', 'max' => 200],
         ];
     }
 
@@ -42,9 +40,9 @@ class LinkageMenu extends \common\components\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'type' => 'Type',
-            'pid' => 'Pid',
             'label' => 'Label',
+            'code' => 'Code',
+            'introduce' => 'Introduce',
         ];
     }
 }

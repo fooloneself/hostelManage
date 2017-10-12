@@ -5,21 +5,22 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%dictionary}}".
+ * This is the model class for table "{{%channel}}".
  *
  * @property integer $id
- * @property string $label
- * @property string $code
+ * @property integer $mch_id
+ * @property string $commission
+ * @property string $name
  * @property string $introduce
  */
-class Dictionary extends \common\components\ActiveRecord
+class Channel extends \common\components\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%dictionary}}';
+        return '{{%channel}}';
     }
 
     /**
@@ -28,8 +29,9 @@ class Dictionary extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['label', 'code', 'introduce'], 'required'],
-            [['label', 'code'], 'string', 'max' => 100],
+            [['mch_id'], 'integer'],
+            [['commission'], 'number'],
+            [['name'], 'string', 'max' => 100],
             [['introduce'], 'string', 'max' => 500],
         ];
     }
@@ -41,8 +43,9 @@ class Dictionary extends \common\components\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'label' => 'Label',
-            'code' => 'Code',
+            'mch_id' => 'Mch ID',
+            'commission' => 'Commission',
+            'name' => 'Name',
             'introduce' => 'Introduce',
         ];
     }

@@ -25,6 +25,12 @@ class Error{
         ErrorManager::ERROR_DELETE_CANNOT=>'不能删除',
         ErrorManager::ERROR_PARAM_WRONG=>'参数错误',
         ErrorManager::ERROR_ACCOUNT_ERROR=>'账号错误',
+        ErrorManager::ERROR_MENU_EXISTS=>'菜单已存在',
+        ErrorManager::ERROR_CHANNEL_EXISTS=>'渠道已存在',
+        ErrorManager::ERROR_CHANNEL_NOT_EXISTS=>'渠道不存在',
+        ErrorManager::ERROR_NOT_EXISTS=>'不存在',
+        ErrorManager::ERROR_EXISTS=>'已存在',
+        ErrorManager::ERROR_OPERATE_FAIL=>'操作失败',
     ];
     //错误码
     public $status;

@@ -14,13 +14,9 @@ class RequestHelper extends Component{
         $this->_requestParams=[
             'uid'=>3,
             'token'=>'86241E0E-5809-6E9F-D11E-F627D7611917',
-            'city'=>5,
-            'name'=>'费率并',
-            'address'=>'成都少陵路218号',
-            'type'=>1,
-            'premises'=>1,
-            'number'=>12,
-            'floor'=>7
+            'label'=>'微信',
+            'commission'=>10,
+            'introduce'=>'',
         ];
         if(empty($this->_requestParams)){
             $this->_requestParams=[];
@@ -37,7 +33,7 @@ class RequestHelper extends Component{
     public function post($name=null,$default=null,$type=null){
         if($name){
             $param= isset($this->_requestParams[$name])?$this->_requestParams[$name]:$default;
-            if(isset($type) && isset($params) && Variable::instance()->setValue($param)->is($type)===false){
+            if(isset($type) && isset($param) && Variable::instance()->setValue($param)->is($type)===false){
                 \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_TYPE_WRONG)->response(true);
             }
             return $param;
