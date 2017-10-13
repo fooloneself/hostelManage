@@ -40,8 +40,7 @@
                         width: 60
                     },
                     {
-                        title: '人员姓名',
-                        width: 100
+                        title: '人员姓名'
                     },
                     {
                         title: '手机号',
@@ -49,27 +48,27 @@
                     },
                     {
                         title: '微信号',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '生日',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '会员等级',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '消费金额',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '积分',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '注册时间',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '操作',
@@ -82,6 +81,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('memberListEdit')
+                                        }
                                     }
                                 }, '编辑'),
                                 h('Button', {
@@ -103,6 +107,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }

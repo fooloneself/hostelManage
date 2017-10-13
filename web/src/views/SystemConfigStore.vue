@@ -58,6 +58,9 @@
                         <FormItem label="钟点房开放时间：">
                             <TimePicker type="timerange" placeholder="选择时间"></TimePicker>
                         </FormItem>
+                        <FormItem label="钟点房时长：">
+                            <InputNumber :max="12" :min="1" :step="0.5"></InputNumber>&nbsp;&nbsp;小时
+                        </FormItem>
                         <FormItem>
                             <Button type="primary">保存</Button>
                         </FormItem>
@@ -74,9 +77,11 @@
 <script>
     export default {
         data () {
-            return {
-                
+        return {
+            formItem:{
+                select:'2'
             }
         }
+    }
     }
 </script>

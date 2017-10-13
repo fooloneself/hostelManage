@@ -57,3 +57,7 @@
         </TabPane>
     </Tabs>
 </template>
+
+<script>
+	export default {}
+</script>

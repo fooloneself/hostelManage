@@ -45,6 +45,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('roomListEdit')
+                                        }
                                     }
                                 }, '编辑'),
                                 h('Button', {
@@ -66,6 +71,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }

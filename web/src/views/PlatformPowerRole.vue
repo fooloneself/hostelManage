@@ -29,8 +29,7 @@
                         width: 100
                     },
                     {
-                        title: '角色说明',
-                        width: 600
+                        title: '角色说明'
                     },
                     {
                         title: '操作',
@@ -43,6 +42,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerRoleEdit')
+                                        }
                                     }
                                 }, '编辑'),
                                 h('Button', {
@@ -61,6 +65,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerRoleEdit')
+                                        }
                                     }
                                 }, '克隆'),
                                 h('Button', {
@@ -82,6 +91,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }

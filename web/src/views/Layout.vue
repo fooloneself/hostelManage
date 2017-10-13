@@ -1,41 +1,62 @@
 <style scoped>
-.nav{
+.layout-nav{
     height: 60px;
     line-height: 60px;
     color: #FFF;
+    background: #34495E;
     .logo{
-        font-size: 18px;
+        height: 60px;
+        line-height: 60px;
+        .ivu-icon{
+            font-size: 30px;
+            position: relative;
+            top: 3px;
+        }
+        a{
+            font-size: 18px;
+            margin-left: 8px;
+        }
     }
     a{
         color: #FFF;
+    }
+    .menu{
+        width: 450px;
+        margin: 0 auto;
+        background: #34495E;
     }
 }
 </style>
 
 <template>
     <div class="layout">
-        <Menu mode="horizontal" theme="dark" active-name="1" @on-select="turnUrl" style="background: #34495E">
-            <div class="container nav">
+        <div class="layout-nav">
+            <div class="container">
                 <Row>
-                    <Col span="5" class="logo">
-                        <router-link to="checkstand">考拉客房管理系统</router-link>
+                    <Col span="4">
+                        <div class="logo">
+                            <Icon type="cube"></Icon>
+                            <router-link to="">考拉客房管理系统</router-link>
+                        </div>
                     </Col>
-                    <Col span="15">
-                        <MenuItem name="checkstand">
-                            客房登记
-                        </MenuItem>
-                        <MenuItem name="orderIn">
-                            门店管理
-                        </MenuItem>
-                        <MenuItem name="personInfo">
-                            系统设置
-                        </MenuItem>
-                        <MenuItem name="managerInfo">
-                            平台管理
-                        </MenuItem>
+                    <Col span="16">
+                        <Menu mode="horizontal" theme="dark" active-name="checkstand" @on-select="turnUrl" class="menu">
+                            <MenuItem name="checkstand">
+                                <Icon type="home"></Icon>客房登记
+                            </MenuItem>
+                            <MenuItem name="orderIn">
+                                <Icon type="home"></Icon>门店管理
+                            </MenuItem>
+                            <MenuItem name="personInfo">
+                                <Icon type="home"></Icon>系统设置
+                            </MenuItem>
+                            <MenuItem name="managerInfo">
+                                <Icon type="home"></Icon>平台管理
+                            </MenuItem>
+                        </Menu>
                     </Col>
                     <Col span="4" class="tr">
-                        <Dropdown @on-click="turnUrl">
+                        <Dropdown @on-click="turnUrl" style="margin-left: 8px;">
                             <a href="javascript:void(0)">
                                 Admin Dun
                                 <Icon type="arrow-down-b"></Icon>
@@ -50,11 +71,8 @@
                     </Col>
                 </Row>
             </div>
-        </Menu>
-        <div class="mb"></div>
-        <div class="container">
-            <router-view></router-view>
         </div>
+        <router-view></router-view>
     </div>
 </template>
 

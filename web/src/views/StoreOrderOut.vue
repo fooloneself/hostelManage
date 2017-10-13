@@ -25,7 +25,7 @@
                     },
                     {
                         title: '客人来源',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '入住/退房时间',
@@ -36,8 +36,7 @@
                         width: 100
                     },
                     {
-                        title: '房间类型',
-                        width: 100
+                        title: '房间类型'
                     },
                     {
                         title: '房号',
@@ -87,6 +86,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }

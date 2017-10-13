@@ -18,15 +18,14 @@
                     },
                     {
                         title: '菜单名称',
-                        width: 180
+                        width: 200
                     },
                     {
                         title: '菜单类型',
-                        width: 100
+                        width: 180
                     },
                     {
-                        title: '访问URL',
-                        width: 200
+                        title: '访问URL'
                     },
                     {
                         title: '菜单状态',
@@ -47,18 +46,33 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerMenuChild')
+                                        }
                                     }
                                 }, '管理子菜单'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerMenuChildEdit')
+                                        }
                                     }
                                 }, '新增子菜单'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerMenuEdit')
+                                        }
                                     }
                                 }, '编辑'),
                                 h('Button', {
@@ -80,6 +94,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }

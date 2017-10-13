@@ -26,18 +26,18 @@
                     },
                     {
                         title: '客人来源',
-                        width: 100
+                        width: 180
                     },
                     {
-                        title: '入住/退房时间'
+                        title: '入住/退房时间',
+                        width: 180
                     },
                     {
                         title: '支付方式',
                         width: 100
                     },
                     {
-                        title: '房间类型',
-                        width: 100
+                        title: '房间类型'
                     },
                     {
                         title: '房号',
@@ -74,6 +74,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }

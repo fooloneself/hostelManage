@@ -17,8 +17,7 @@
                         width: 60
                     },
                     {
-                        title: '登录账号',
-                        width: 200
+                        title: '登录账号'
                     },
                     {
                         title: '姓名',
@@ -47,6 +46,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerAccountEdit')
+                                        }
                                     }
                                 }, '编辑'),
                                 h('Button', {
@@ -80,6 +84,11 @@
                 data: [
                     {},{},{},{},{},{},{},{},{},{}
                 ]
+            }
+        },
+        methods:{
+            turnUrl:function(url,query){
+                this.$router.push(url)
             }
         }
     }
