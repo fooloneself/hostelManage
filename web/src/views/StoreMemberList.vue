@@ -1,15 +1,13 @@
 <template>
 <div>
-    <Form inline>
-        <Row>
-            <Col span="6">
+    <Row>
+        <Col span="6">
+            <Button type="primary">新增</Button>
+        </Col>
+        <Col span="18" class="tr">
+            <Form inline>
                 <FormItem>
-                    <Button type="primary">新增</Button>
-                </FormItem>
-            </Col>
-            <Col span="18" style="text-align: right;">
-                <FormItem>
-                    <Select placeholder="会员等级" style="text-align: left;">
+                    <Select placeholder="会员等级" class="tl">
                         <Option value="1">普通</Option>
                         <Option value="2">黄金</Option>
                         <Option value="3">铂金</Option>
@@ -22,12 +20,16 @@
                 <FormItem>
                     <Button type="primary">查询</Button>
                 </FormItem>
-            </Col>
-        </Row>
-    </Form>
-    <Table :columns="columns" :data="data" stripe></Table>
-    <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+            </Form>
+        </Col>
+    </Row>
+    <Row>
+        <Col span="24">
+            <Table :columns="columns" :data="data" stripe></Table>
+            <div class="mb"></div>
+            <Page :total="100" show-total></Page>
+        </Col>
+    </Row>
 </div>
 </template>
 <script>
