@@ -1,4 +1,7 @@
 <style scoped>
+.layout{
+    min-width: 1200px;
+}
 .layout-nav{
     height: 60px;
     line-height: 60px;

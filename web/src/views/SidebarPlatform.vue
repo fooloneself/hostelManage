@@ -2,7 +2,7 @@
 <div class="layout-body">
     <Row>
         <Col span="4">
-            <Menu theme="light" active-name="managerInfo" @on-select="turnUrl">
+            <Menu theme="light" active-name="managerInfo" @on-select="turnUrl" style="width: auto">
                 <MenuGroup name="manager" title="个人中心">
                     <MenuItem name="managerInfo">
                         <i class="fa fa-user fa-fw" aria-hidden="true"></i>个人资料
@@ -35,7 +35,7 @@
                 </MenuGroup>
             </Menu>
         </Col>
-        <Col span="20">
+        <Col span="20" style="padding-left: 24px;">
             <router-view></router-view>
         </Col>
     </Row>
