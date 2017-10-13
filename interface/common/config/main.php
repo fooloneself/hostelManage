@@ -41,9 +41,9 @@ $config= [
         'requestHelper'=>'common\components\RequestHelper',
         'responseHelper'=>'common\components\ResponseHelper',
         'errorManager'=>'common\components\ErrorManager',
-        'errorHandler' => [
+       /* 'errorHandler' => [
             'class'=>'app\common\components\ErrorHandler'
-        ],
+        ],*/
     ],
     'modules'=>[
         'platform'=>'modules\platform\Module',
