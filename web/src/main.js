@@ -5,6 +5,7 @@ import Routers from './router';
 import Util from './libs/util';
 import App from './app.vue';
 import 'iview/dist/styles/iview.css';
+import './styles/font-awesome.min.css';
 import './styles/common.less';
 
 Vue.use(VueRouter);

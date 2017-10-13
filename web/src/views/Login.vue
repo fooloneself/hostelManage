@@ -83,7 +83,7 @@
 		<div class="body_bg"></div>
 		<div class="login">
 			<div class="login_logo fl">
-				<div class="logo"><Icon type="cube"></Icon></div>
+				<div class="logo"><i class="fa fa-gg" aria-hidden="true"></i></div>
 				<div class="title">考拉客房管理系统</div>
 			</div>
 			<div class="login_form fr">
