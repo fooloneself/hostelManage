@@ -4,11 +4,19 @@ import VueRouter from 'vue-router';
 import Routers from './router';
 import Util from './libs/util';
 import App from './app.vue';
-import 'iview/dist/styles/iview.css';
-import './styles/common.less';
+import Resource from 'vue-resource';
 
 Vue.use(VueRouter);
 Vue.use(iView);
+Vue.use(Resource);
+
+import 'iview/dist/styles/iview.css';
+import './styles/common.less';
+import host from  './js/host';
+import server from './server';
+import responseHandler from './js/responseHandler';
+Vue.prototype.host=host(server);
+Vue.prototype.response=responseHandler;
 
 // 路由配置
 const RouterConfig = {
@@ -28,8 +36,9 @@ router.afterEach((to, from, next) => {
     window.scrollTo(0, 0);
 });
 
-new Vue({
+let v=new Vue({
     el: '#app',
     router: router,
     render: h => h(App)
 });
+v.host.setApp(v);
