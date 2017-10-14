@@ -16,14 +16,20 @@ class Login extends Server {
     public function exe(){
         $admin=Admin::byUserName($this->userName);
         if(!$admin->isExists()){
-            $this->setError(ErrorManager::ERROR_USER_NOT_EXISTS);
+            $this->setError(ErrorManager::ERROR_USER_NOT_EXISTS,'账号或密码错误');
             return false;
         }else if(!$admin->isEqualToPwd($this->password)){
-            $this->setError(ErrorManager::ERROR_PWD_ERROR);
+            $this->setError(ErrorManager::ERROR_PWD_ERROR,'账号或密码错误');
             return false;
         }else{
             $admin->resetToken();
+            self::putLoginInfoToSession($admin);
             return $admin;
         }
+    }
+
+    protected static function putLoginInfoToSession(Admin $admin){
+        \Yii::$app->session->set('uid',$admin->getAdminId());
+        \Yii::$app->session->set('token',$admin->getToken());
     }
 }

@@ -15,9 +15,7 @@ import './styles/font-awesome.min.css';
 import './styles/common.less';
 import host from  './js/host';
 import server from './server';
-import responseHandler from './js/responseHandler';
 Vue.prototype.host=host(server);
-Vue.prototype.response=responseHandler;
 
 // 路由配置
 const RouterConfig = {
@@ -27,6 +25,7 @@ const RouterConfig = {
 const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
+    document.cookie="pin=test;domain=hotel.com;";
     iView.LoadingBar.start();
     Util.title(to.meta.title);
     next();

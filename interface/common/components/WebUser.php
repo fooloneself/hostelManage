@@ -7,9 +7,8 @@ class WebUser extends Component{
     private $_token;
     private $_admin;
     public function init(){
-        $helper=\Yii::$app->requestHelper;
-        $this->_adminId=$helper->getUid();
-        $this->_token=$helper->getToken();
+        $this->_adminId=intval(\Yii::$app->session->get('uid'));
+        $this->_token=\Yii::$app->session->get('token');
     }
 
     /**

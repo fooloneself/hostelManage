@@ -113,12 +113,11 @@ export default{
     },
 	methods:{
 		submit:function(){
-		    this.host.post('login',{'userName': this.userName,'password':this.password,'code': this.code}).then(function(data){
-		        let res=this.response(data);
+		    this.host.post('login',{'userName': this.userName,'password':this.password,'code': this.code}).then(function(res){
 		        if(res.isSuccess()){
 		            this.$router.push('checkstand');
 		        }else{
-		            alert(res.errorCode()+':'+res.error());
+		            alert(res.error());
 		        }
 		    })
 		}

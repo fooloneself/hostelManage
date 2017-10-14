@@ -155,6 +155,11 @@ export default{
 		}
 	},
 	beforeCreate (){
+	    this.host.post('resetMchPwd',[]).then(function(res){
+	    });
+	    this.host.post('resetMchPwd',[]).then(function(res){
+
+	    });
 	}
 }
 </script>
