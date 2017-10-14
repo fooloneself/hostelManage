@@ -114,9 +114,10 @@ export default{
     },
 	methods:{
 		submit:function(){
+		    var that=this;
 		    this.host.post('login',{'userName': this.userName,'password':this.password,'code': this.code}).then(function(res){
 		        if(res.isSuccess()){
-		            this.host.setSession(res.data().id,res.data().token)
+		            this.host.setSession(res.data().id,that.userName,res.data().token)
 		            this.$router.push('checkstand');
 		        }else{
 		            alert(res.error());

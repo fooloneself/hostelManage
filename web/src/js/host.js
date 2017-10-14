@@ -69,9 +69,10 @@ Host.prototype={
         }
         return false;
     },
-    setSession:function (uid,token) {
+    setSession:function (uid,userName,token) {
         localStorage.setItem('uid',uid);
         localStorage.setItem('token',token);
+        localStorage.setItem('userName',userName);
         return this;
     },
     getUid:function () {
@@ -79,6 +80,9 @@ Host.prototype={
     },
     getToken:function () {
         return localStorage.getItem('token');
+    },
+    getUserName:function () {
+        return localStorage.getItem('userName');
     }
 }
 export default function (config) {
