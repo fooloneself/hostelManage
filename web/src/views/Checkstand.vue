@@ -67,7 +67,8 @@
 }
 </style>
 <template>
-<div>
+<div style="position: relative;">
+	<Spin size="large" fix v-if="spinShow"></Spin>
 	<Row class="date-pick">
 		<div class="container">
 			<Col span="2" class="tc">
@@ -150,8 +151,9 @@
 export default{
 	data (){
 		return {
-			rooms:36,
-			weekday:['一','二','三','四','五','六','日','一','二','三','四']
+			spinShow: false,
+			rooms: 36,
+			weekday: ['一','二','三','四','五','六','日','一','二','三','四']
 		}
 	}
 }

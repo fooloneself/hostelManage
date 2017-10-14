@@ -25,9 +25,10 @@
         font-size: 14px;
     }
     .menu{
-        width: 500px;
+        width: 384px;
         margin: 0 auto;
         background: #34495E;
+        z-index: auto;
     }
 }
 </style>

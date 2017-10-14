@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Table :columns="columns" :data="data" stripe></Table>
+    <Table :columns="columns" :loading="loading" :data="data" stripe></Table>
     <div class="mb"></div>
     <Page :total="100" show-total></Page>
 </div>
@@ -9,6 +9,7 @@
     export default {
         data () {
             return {
+                loading: false,
                 columns: [
                     {
                         title: '序号',
