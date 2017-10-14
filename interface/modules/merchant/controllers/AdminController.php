@@ -32,7 +32,7 @@ class AdminController extends Controller{
      * 账号补充信息
      * @return mixed
      */
-    public function actionInfo(){
+    public function actionInfoModify(){
         $name=\Yii::$app->requestHelper->post('name','','string');
         $mobile=\Yii::$app->requestHelper->post('mobile','','string');
         $sex=\Yii::$app->requestHelper->post('sex',0,'int');
@@ -42,17 +42,32 @@ class AdminController extends Controller{
         }
         $adminId=\Yii::$app->user->getAdminId();
         $model=AdminInfo::findOne(['admin_id'=>$adminId]);
-        if(empty($model))$model=new AdminInfo();
+        if(empty($model)){
+            $model=new AdminInfo();
+            $model->admin_id=$adminId;
+        }
         $model->setAttributes([
             'name'=>$name,
             'mobile'=>$mobile,
             'sex'=>$sex,
-            'birthday'=>$birthday
+            'birthday'=>intval($birthday)
         ]);
         if($model->save()){
             return \Yii::$app->responseHelper->success()->response();
         }else{
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_UPDATE_FAIL)->response();
         }
+    }
+
+    /**
+     * 查看个人信息
+     * @return mixed
+     */
+    public function actionInfo(){
+        $admin=AdminInfo::find()->where(['admin_id'=>\Yii::$app->user->getAdminId()])->asArray()->one();
+        if($admin){
+            $admin['birthday']=$admin['birthday']>0?date('Y-m-d',$admin['birthday']):'';
+        }
+        return \Yii::$app->responseHelper->success($admin)->response();
     }
 }

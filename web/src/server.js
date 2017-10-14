@@ -1,12 +1,14 @@
 const interfaces={
     'login': 'admin/login',
+    'sex':'site/sex',
     'register': 'admin/register',
-    'resetMchPwd': 'merchant/admin/reset-password'
+    'resetMchPwd': 'merchant/admin/reset-password',
+    'adminInfo': 'merchant/admin/info',
+    'adminInfoModify': 'merchant/admin/info-modify'
 };
-const logoutCode=[100010,100011];
 const server={
     'host': 'http://www.hotel.com',
-    'logoutCode': logoutCode,
+    'logoutCode': [100010,100011],
     'loginPath': '/login',
     'interface': interfaces
 };

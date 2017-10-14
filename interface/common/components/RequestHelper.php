@@ -26,9 +26,9 @@ class RequestHelper extends Component{
     public function post($name=null,$default=null,$type=null){
         if($name){
             $param= isset($this->_requestParams[$name])?$this->_requestParams[$name]:$default;
-            if(isset($type) && isset($param) && Variable::instance()->setValue($param)->is($type)===false){
+            /*if(isset($type) && isset($param) && Variable::instance()->setValue($param)->is($type)===false){
                 \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_TYPE_WRONG)->response(true);
-            }
+            }*/
             return $param;
         }else{
             return $this->_requestParams;
