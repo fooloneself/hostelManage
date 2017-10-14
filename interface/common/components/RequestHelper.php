@@ -11,13 +11,6 @@ class RequestHelper extends Component{
         parent::init();
         $param=\Yii::$app->request->getRawBody();
         $this->_requestParams=json_decode($param,true);
-        $this->_requestParams=[
-            'uid'=>3,
-            'token'=>'86241E0E-5809-6E9F-D11E-F627D7611917',
-            'label'=>'微信',
-            'commission'=>10,
-            'introduce'=>'',
-        ];
         if(empty($this->_requestParams)){
             $this->_requestParams=[];
         }

@@ -89,11 +89,11 @@
 			<div class="login_form fr">
 				<p>登录 / Login</p>
 				<form style="width: 300px;">
-					<input type="text" class="input" placeholder="请输入用户名">
-					<input type="password" class="input" placeholder="请输入密码">
-					<input type="text" class="input input_code" placeholder="请输入验证码">
+					<input v-model="userName" type="text" class="input" placeholder="请输入用户名">
+					<input v-model="password" type="password" class="input" placeholder="请输入密码">
+					<input v-model="code" type="text" class="input input_code" placeholder="请输入验证码">
 					<span class="code">ASDAFG</span>
-					<Button type="primary" long shape="circle" @click="submit">登录</Button>
+					<Button type="primary" @click='submit' long shape="circle">登录</Button>
 					<div class="cls"></div>
 				</form>
 			</div>
@@ -104,9 +104,23 @@
 
 <script>
 export default{
+    data () {
+        return {
+          userName: '',
+          password: '',
+          code: ''
+        }
+    },
 	methods:{
 		submit:function(){
-			this.$router.push('checkstand')
+		    this.host.post('login',{'userName': this.userName,'password':this.password,'code': this.code}).then(function(res){
+		        if(res.isSuccess()){
+		            this.host.setSession(res.data().id,res.data().token)
+		            this.$router.push('checkstand');
+		        }else{
+		            alert(res.error());
+		        }
+		    })
 		}
 	}
 }

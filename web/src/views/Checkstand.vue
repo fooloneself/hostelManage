@@ -155,6 +155,13 @@ export default{
 			rooms: 36,
 			weekday: ['一','二','三','四','五','六','日','一','二','三','四']
 		}
+	},
+	beforeCreate (){
+	    this.host.post('resetMchPwd',{}).then(function(res){
+	    });
+	    this.host.post('resetMchPwd',{}).then(function(res){
+
+	    });
 	}
 }
 </script>

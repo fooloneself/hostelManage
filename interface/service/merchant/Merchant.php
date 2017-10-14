@@ -27,7 +27,7 @@ class Merchant extends Server{
      * @return $this
      */
     public function flushModule(){
-        $this->modules=MchModule::allModuleOfMerchant($this->id);
+        $this->modules=MchModule::allModuleOfMerchant($this->getId());
         $labels=[];
         foreach ($this->modules as $module){
             $label=\Yii::$app->getModule('merchant')->moduleLabel($module);
