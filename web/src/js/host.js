@@ -45,6 +45,9 @@ Host.prototype={
         return this.__config.host+'/'+this.__config.interface[name];
     },
     post: function (name,param) {
+        param=(param instanceof Object && !(param instanceof Array))?param:{};
+        param.uid=this.getUid();
+        param.token=this.getToken();
         var promise=this.__app.$http.post(this.getUrl(name),param);
         return new Response(promise,this);
     },
@@ -65,6 +68,17 @@ Host.prototype={
             }
         }
         return false;
+    },
+    setSession:function (uid,token) {
+        localStorage.setItem('uid',uid);
+        localStorage.setItem('token',token);
+        return this;
+    },
+    getUid:function () {
+        return localStorage.getItem('uid');
+    },
+    getToken:function () {
+        return localStorage.getItem('token');
     }
 }
 export default function (config) {

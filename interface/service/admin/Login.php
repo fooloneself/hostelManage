@@ -23,13 +23,7 @@ class Login extends Server {
             return false;
         }else{
             $admin->resetToken();
-            self::putLoginInfoToSession($admin);
             return $admin;
         }
-    }
-
-    protected static function putLoginInfoToSession(Admin $admin){
-        \Yii::$app->session->set('uid',$admin->getAdminId());
-        \Yii::$app->session->set('token',$admin->getToken());
     }
 }
