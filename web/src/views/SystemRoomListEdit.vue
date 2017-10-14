@@ -1,3 +1,36 @@
+<style scoped>
+.photos{
+    margin: 8px -8px;
+    .img-list{
+        position: relative;
+        display: inline-block;
+        width: 140px;
+        height: 140px;
+        text-align: center;
+        line-height: 140px;
+        margin: 8px;
+        img{
+            width: 100%;
+            height: 100%;
+        }
+        .img-cover{
+            display: none;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,.6);
+            font-size: 30px;
+            color: #FFF;
+        }
+        &:hover .img-cover{
+            display: block;
+        }
+    }
+}
+</style>
+
 <template>
     <Tabs value="info">
         <TabPane label="基本信息" name="info">
@@ -40,19 +73,49 @@
             </Row>
         </TabPane>
         <TabPane label="上传相册" name="photo">
+            <Upload multiple action="" :show-upload-list="false">
+                <Button type="ghost"><i class="fa fa-upload fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;选择要上传的文件</Button>
+            </Upload>
+            <div class="photos">
+                <div v-for="i in imgNum" class="img-list">
+                    <img src="../images/timg.jpg" alt="">
+                    <div class="img-cover">
+                        <Tooltip placement="top" content="设为封面">
+                            <Icon type="ios-home-outline" @click.native="handleView()"></Icon>
+                        </Tooltip>
+                        <Tooltip placement="top" content="查看图片">
+                            <Icon type="ios-eye-outline" @click.native="handleView()" style="margin: 0 8px;"></Icon>
+                        </Tooltip>
+                        <Tooltip placement="top" content="删除图片">
+                            <Icon type="ios-trash-outline" @click.native="handleRemove()"></Icon>
+                        </Tooltip>
+                    </div>
+                </div>
+            </div>
+            <Modal title="查看图片" v-model="visible">
+                <img :src="'/src/images/timg.jpg'" v-if="visible" style="width: 100%">
+            </Modal>
         </TabPane>
     </Tabs>
 </template>
 
 <script>
-export default{
-	data () {
-		return {
-			formItem:{
-                select:'beijing',
-                radio:'1'
-            }
-		}
-	}
-}
+    export default{
+    	data () {
+    		return {
+    			formItem:{
+                    select:'beijing',
+                    radio:'1'
+                },
+                imgNum:25,
+                visible:false
+    		}
+    	},
+        methods:{
+            handleView() {
+                this.visible = true;
+            },
+            handleRemove() {}
+        }
+    }
 </script>

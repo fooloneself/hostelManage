@@ -149,6 +149,13 @@ const system = {
         	component: (resolve) => require(['./views/SystemPersonPassword.vue'], resolve)
 		},
 		{
+			path: 'personNotice',
+	        meta: {
+	            title: '联动菜单 - 子菜单'
+	        },
+        	component: (resolve) => require(['./views/SystemPersonNotice.vue'], resolve)
+		},
+		{
 			path: 'personTips',
 	        meta: {
 	            title: '意见反馈'
@@ -286,6 +293,20 @@ const platform = {
 	            title: '联动菜单 - 子菜单编辑'
 	        },
         	component: (resolve) => require(['./views/PlatformBasicLinkageChildEdit.vue'], resolve)
+		},
+		{
+			path: 'basicNotice',
+	        meta: {
+	            title: '联动菜单 - 子菜单'
+	        },
+        	component: (resolve) => require(['./views/PlatformBasicNotice.vue'], resolve)
+		},
+		{
+			path: 'basicNoticeEdit',
+	        meta: {
+	            title: '联动菜单 - 子菜单编辑'
+	        },
+        	component: (resolve) => require(['./views/PlatformBasicNoticeEdit.vue'], resolve)
 		}
 	]
 };

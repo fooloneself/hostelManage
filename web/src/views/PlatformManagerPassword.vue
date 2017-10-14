@@ -3,13 +3,13 @@
 	<Col span="12">
 		<Form label-position="right" :label-width="80">
 			<FormItem label="旧密码：">
-				<Input></Input>
+				<Input type="password"></Input>
 	        </FormItem>
 			<FormItem label="新密码：">
-				<Input></Input>
+				<Input type="password"></Input>
 	        </FormItem>
 			<FormItem label="重复密码：">
-				<Input></Input>
+				<Input type="password"></Input>
 	        </FormItem>
 			<FormItem>
 	            <Button type="primary">保存</Button>

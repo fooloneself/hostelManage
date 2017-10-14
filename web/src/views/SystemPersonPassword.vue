@@ -3,13 +3,13 @@
 	<Col span="12">
 		<Form :model="formItem" label-position="right" :label-width="80">
 			<FormItem label="旧密码：">
-				<Input v-model="formItem.oldPassword"></Input>
+				<Input v-model="formItem.oldPassword" type="password"></Input>
 	        </FormItem>
 			<FormItem label="新密码：">
-				<Input v-model="formItem.newPassword"></Input>
+				<Input v-model="formItem.newPassword" type="password"></Input>
 	        </FormItem>
 			<FormItem label="重复密码：">
-				<Input v-model="formItem.confirmPassword"></Input>
+				<Input v-model="formItem.confirmPassword" type="password"></Input>
 	        </FormItem>
 			<FormItem>
 	            <Button @click="submit" type="primary">保存</Button>
