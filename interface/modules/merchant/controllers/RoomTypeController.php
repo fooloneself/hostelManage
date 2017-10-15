@@ -16,6 +16,9 @@ class RoomTypeController extends Controller{
         $allowHourRoom=\Yii::$app->requestHelper->post('allowHourRoom',0,'int');
         $hourRoomPrice=\Yii::$app->requestHelper->post('hourRoomPrice',0,'float');
         $introduce=\Yii::$app->requestHelper->post('introduce','','string');
+        if($allowHourRoom && $hourRoomPrice<=0){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
+        }
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
         $id=\Yii::$app->requestHelper->post('id');
         if($id>0){
@@ -41,6 +44,7 @@ class RoomTypeController extends Controller{
             $roomType->allow_hour_room=$allowHourRoom;
             $roomType->hour_room_price=$hourRoomPrice;
             $roomType->introduce=$introduce;
+            $roomType->create_time=time();
             if($roomType->insert(false)){
                 return \Yii::$app->responseHelper->success()->response();
             }else{
@@ -64,6 +68,10 @@ class RoomTypeController extends Controller{
         }
     }
 
+    /**
+     * 列表
+     * @return mixed
+     */
     public function actionList(){
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
         $page=\Yii::$app->requestHelper->post('page',1,'int');
@@ -75,5 +83,22 @@ class RoomTypeController extends Controller{
             'total'=>$count,
             'list'=>$list
         ])->response();
+    }
+
+    /**
+     * 删除
+     * @return mixed
+     */
+    public function actionDelete(){
+        $id=\Yii::$app->requestHelper->post('id',0,'int');
+        if($id<=0){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
+        }
+        $type=RoomType::findOne(['id'=>$id]);
+        if($type && !$type->delete()){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_DELETE_FAIL)->response();
+        }else{
+            return \Yii::$app->responseHelper->success()->response();
+        }
     }
 }

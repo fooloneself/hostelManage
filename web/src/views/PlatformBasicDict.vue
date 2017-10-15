@@ -1,10 +1,10 @@
 <template>
 <div>
-    <Button type="primary" @click="turnUrl('basicDictEdit')">新增</Button>
+    <Button type="primary" @click="turnUrl('basicDictEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+    <Page :total="totalCount" show-total></Page>
 </div>
 </template>
 <script>
@@ -15,17 +15,17 @@
                     {
                         title: '序号',
                         width: 60,
-                        key: 'index'
+                        key: 'id'
                     },
                     {
                         title: '字典名称',
-                        width: 180,
-                        key: 'name'
+                        width: 160,
+                        key: 'label'
 
                     },
                     {
                         title: '唯一代码',
-                        width: 100,
+                        width: 180,
                         key: 'code'
                     },
                     {
@@ -45,7 +45,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicDictInfo',{id:params.row.id})
+                                            this.turnUrl('basicDictInfo/'+params.row.code)
                                         }
                                     }
                                 }, '管理数据'),
@@ -56,7 +56,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicDictInfoEdit',{id:params.row.id})
+                                            this.turnUrl('/basicDictInfoEdit/'+params.row.code)
                                         }
                                     }
                                 }, '添加数据'),
@@ -67,7 +67,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicDictEdit',{id:params.row.id})
+                                            this.turnUrl('basicDictEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -75,20 +75,46 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要删除吗？');
+                                            if(res){
+                                                this.delete(params.row.code);
+                                            }
+                                        }
                                     }
                                 }, '删除')
                             ]);
                         }
                     }
                 ],
-                data: [
-                    {index:1,name:'性别',code:'sex',introduce:'性别',id:'22'},{},{},{},{},{},{},{},{},{}
-                ]
+                data: [],
+                totalCount: 0
             }
         },
+        mounted (){
+            var that=this;
+            this.host.post('dictionaries').then(function(res){
+                if(res.isSuccess()){
+                    that.data=res.data().list;
+                    that.totalCount=parseInt(res.data().total);
+                }
+            })
+        },
         methods:{
-            turnUrl:function(url,query){
+            turnUrl:function(url){
                 this.$router.push(url)
+            },
+            delete:function(code){
+                this.host.post('dictionaryDelete',{code: code}).then(function(res){
+                    if(res.isSuccess()){
+                        alert('删除成功');
+                        location.reload();
+                    }else{
+                        alert(res.error());
+                    }
+                })
             }
         }
     }

@@ -7,7 +7,8 @@ use Yii;
 /**
  * This is the model class for table "{{%room_week_price}}".
  *
- * @property integer $room_id
+ * @property integer $type_id
+ * @property integer $mch_id
  * @property string $monday
  * @property string $tuesday
  * @property string $wensday
@@ -32,8 +33,8 @@ class RoomWeekPrice extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['room_id'], 'required'],
-            [['room_id'], 'integer'],
+            [['type_id'], 'required'],
+            [['type_id', 'mch_id'], 'integer'],
             [['monday', 'tuesday', 'wensday', 'thursday', 'friday', 'saturday', 'sunday'], 'number'],
         ];
     }
@@ -44,7 +45,8 @@ class RoomWeekPrice extends \common\components\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'room_id' => 'Room ID',
+            'type_id' => 'Type ID',
+            'mch_id' => 'Mch ID',
             'monday' => 'Monday',
             'tuesday' => 'Tuesday',
             'wensday' => 'Wensday',

@@ -46,10 +46,10 @@
                     </Col>
                     <Col span="16">
                         <Menu mode="horizontal" theme="dark" active-name="checkstand" @on-select="turnUrl" class="menu">
-                            <MenuItem name="checkstand">客房登记</MenuItem>
-                            <MenuItem name="orderIn">门店管理</MenuItem>
-                            <MenuItem name="personInfo">系统设置</MenuItem>
-                            <MenuItem name="managerInfo">平台管理</MenuItem>
+                            <MenuItem name="/checkstand">客房登记</MenuItem>
+                            <MenuItem name="/orderIn">门店管理</MenuItem>
+                            <MenuItem name="/personInfo">系统设置</MenuItem>
+                            <MenuItem name="/managerInfo">平台管理</MenuItem>
                         </Menu>
                     </Col>
                     <Col span="4" class="tr">

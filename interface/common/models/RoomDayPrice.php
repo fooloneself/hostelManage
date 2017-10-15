@@ -8,7 +8,8 @@ use Yii;
  * This is the model class for table "{{%room_day_price}}".
  *
  * @property integer $id
- * @property integer $room_id
+ * @property integer $type_id
+ * @property integer $mch_id
  * @property integer $year
  * @property integer $month
  * @property integer $day
@@ -30,7 +31,7 @@ class RoomDayPrice extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['room_id', 'year', 'month', 'day'], 'integer'],
+            [['type_id', 'mch_id', 'year', 'month', 'day'], 'integer'],
             [['price'], 'number'],
         ];
     }
@@ -42,7 +43,8 @@ class RoomDayPrice extends \common\components\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'room_id' => 'Room ID',
+            'type_id' => 'Type ID',
+            'mch_id' => 'Mch ID',
             'year' => 'Year',
             'month' => 'Month',
             'day' => 'Day',

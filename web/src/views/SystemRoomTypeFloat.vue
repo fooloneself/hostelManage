@@ -3,30 +3,30 @@
         <TabPane label="周价格浮动" name="week">
 	        <Row>
 	        	<Col span="12">
-			        <Form label-position="right" :label-width="80">
+			        <Form v-model="formItem" label-position="right" :label-width="80">
 						<FormItem label="周一价格：">
-							<Input></Input>
+							<Input v-model="formItem.monday"></Input>
 				        </FormItem>
 						<FormItem label="周二价格：">
-							<Input></Input>
+							<Input v-model="formItem.tuesday"></Input>
 				        </FormItem>
 						<FormItem label="周三价格：">
-							<Input></Input>
+							<Input v-model="formItem.wensday"></Input>
 				        </FormItem>
 						<FormItem label="周四价格：">
-							<Input></Input>
+							<Input v-model="formItem.thursday"></Input>
 				        </FormItem>
 						<FormItem label="周五价格：">
-							<Input></Input>
+							<Input v-model="formItem.friday"></Input>
 				        </FormItem>
 						<FormItem label="周六价格：">
-							<Input></Input>
+							<Input v-model="formItem.saturday"></Input>
 				        </FormItem>
 						<FormItem label="周日价格：">
-							<Input></Input>
+							<Input v-model="formItem.sunday"></Input>
 				        </FormItem>
 						<FormItem>
-					        <Button type="primary">保存</Button>
+					        <Button @click="submit" type="primary">保存</Button>
 					        <Button type="ghost" style="margin-left: 8px">返回</Button>
 					    </FormItem>
 				    </Form>
@@ -59,5 +59,47 @@
 </template>
 
 <script>
-	export default {}
+	export default {
+	    data (){
+	        return {
+	            formItem: {
+	                typeId: this.$route.params.typeId,
+                    monday: null,
+                    tuesday: null,
+                    wensday: null,
+                    thursday: null,
+                    friday: null,
+                    saturday: null,
+                    sunday: null
+                }
+	        }
+	    },
+	    mounted (){
+	        var that=this;
+            this.host.post('roomWeekPrice',{typeId:this.$route.params.typeId}).then(function(res){
+                if(res.isSuccess()){
+                    if( typeof res.data()!='undefined' && res.data()!=null){
+                        var data=res.data();
+                        data.typeId=parseInt(data.type_id);
+                        delete data.type_id;
+                        delete data.mch_id;
+                        that.formItem=data
+                    }
+                }else{
+                    alert(res.error());
+                }
+            })
+	    },
+	    methods:{
+	        submit: function(){
+	            this.host.post('roomWeekPriceSave',this.formItem).then(function(res){
+	                if(res.isSuccess()){
+	                    alert('周价格设置成功');
+	                }else{
+	                    alert(res.error());
+	                }
+	            })
+	        }
+	    }
+	}
 </script>
