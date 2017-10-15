@@ -1,11 +1,7 @@
 <template>
 <div>
-<<<<<<< HEAD
     <Button type="primary" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
-    <Button type="primary" @click="turnUrl('basicDictInfoEdit')">新增</Button>
-=======
     <Button type="primary" @click="toAdd">新增</Button>
->>>>>>> e2828243e5c0208efd36c3838a6108916e70b94b
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
@@ -93,10 +89,9 @@
             turnUrl:function(url){
                 this.$router.push(url)
             },
-<<<<<<< HEAD
             goBack:function(){
                 history.go(-1);
-=======
+            }
             toAdd:function(){
                 this.turnUrl('/basicDictInfoEdit/'+this.$route.params.code+'/0');
             },
@@ -108,7 +103,6 @@
                         alert(res.error());
                     }
                 })
->>>>>>> e2828243e5c0208efd36c3838a6108916e70b94b
             }
         }
     }

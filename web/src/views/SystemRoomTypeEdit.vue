@@ -25,12 +25,7 @@
                 <Input v-model="formItem.introduce" type="textarea" :rows="5"></Input>
             </FormItem>
             <FormItem>
-<<<<<<< HEAD
-                <Button type="primary">保存</Button>
-=======
                 <Button type="primary" @click="submit">保存</Button>
-                <Button type="ghost" style="margin-left: 8px">返回</Button>
->>>>>>> e2828243e5c0208efd36c3838a6108916e70b94b
             </FormItem>
         </Form>
     </Col>
