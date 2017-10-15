@@ -17,6 +17,7 @@
 	.login_logo{
 		padding: 40px 40px 40px;
 		color: #FFF;
+		float: left;
 		.logo{
 			font-size: 100px;
 			text-align: center;
@@ -32,6 +33,7 @@
 		padding: 0 40px;
 		border-left: 1px solid #40586F;
 		color: #FFF;
+		float: right;
 		p{
 			font-size: 16px;
 			margin-bottom: 20px;
@@ -83,11 +85,11 @@
 	<div>
 		<div class="body_bg"></div>
 		<div class="login">
-			<div class="login_logo fl">
+			<div class="login_logo">
 				<div class="logo"><i class="fa fa-gg" aria-hidden="true"></i></div>
 				<div class="title">考拉客房管理系统</div>
 			</div>
-			<div class="login_form fr">
+			<div class="login_form">
 				<p>登录 / Login</p>
 				<form style="width: 300px;">
 					<input v-model="userName" type="text" class="input" placeholder="请输入用户名">
