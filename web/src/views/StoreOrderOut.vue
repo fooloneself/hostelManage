@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Tabs value="today">
+    <Tabs value="today" type="card">
         <TabPane label="今日" name="today">
             <Table :columns="columns" :data="data" stripe></Table>
             <div class="mb"></div>

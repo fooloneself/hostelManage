@@ -1,30 +1,30 @@
 <style scoped>
 .date-pick{
-	background: #EEEEEE;
+	background: #dddee1;
 	padding-top: 10px;
 	padding-bottom: 10px;
+    min-width: 1208px;
+    font-weight: bolder;
+    .current{
+    	color: #49D0B5;
+    }
 }
 .room-pick{
 	cursor: pointer;
-	width: 10%;
-	min-width: 100px;
 	height: 100px;
-	float: left;
 	.room{
-		margin: 5px;
-		border: 1px solid #DDDDDD;
+		border: 1px solid #dddee1;
 		position: relative;
-		color: #666666;
-		height: 90px;
+		height: 84px;
 		border-radius: 5px;
 		&:hover{
-			background: #DDDDDD;
+			background: #dddee1;
 		}
 		.number{
 			width: 100%;
 			font-size: 28px;
 			position: absolute;
-			bottom: 15px;
+			bottom: 8px;
 			font-weight: bolder;
 			text-align: center;
 		}
@@ -36,7 +36,7 @@
 			font-size: 14px;
 			font-weight: normal;
 			position: absolute;
-			top: 16px;
+			top: 24px;
 		}
 		&.room-in{
 			background: #49D0B5;
@@ -70,9 +70,12 @@
 <div style="position: relative;">
 	<Spin size="large" fix v-if="spinShow"></Spin>
 	<Row class="date-pick">
-		<div class="container">
+		<div class="container mlr">
 			<Col span="2" class="tc">
 				<Icon type="calendar" size="34"></Icon>
+			</Col>
+			<Col span="2" class="current tc">
+				09-05 星期一<br/>剩余15间
 			</Col>
 			<Col v-for="week in weekday" span="2" class="tc">
 				09-05 星期{{week}}<br/>剩余15间
@@ -80,7 +83,7 @@
 		</div>
 	</Row>
 	<div class="mb"></div>
-	<div class="container">
+	<div class="container mlr">
 		<Row>
 			<Col span="12">
 				<ButtonGroup size="small">
@@ -105,55 +108,58 @@
 			</Col>
 		</Row>
 		<div class="mb"></div>
-		<div style="margin: -5px;">
-			<div class="room-pick">
-				<div class="room room-in">
+		<Row :gutter="16">
+			<Col span="2" class="room-pick">
+				<div class="room room-in" @click="turnUrl('checkstandView')">
 					<div class="type">普通房</div>
 					<div class="number">201</div>
 				</div>
-			</div>
-			<div class="room-pick">
-				<div class="room room-order">
+			</Col>
+			<Col span="2" class="room-pick">
+				<div class="room room-order" @click="turnUrl('checkstandView')">
 					<div class="type">普通房</div>
 					<div class="number">201</div>
 				</div>
-			</div>
-			<div class="room-pick">
-				<div class="room room-clock">
+			</Col>
+			<Col span="2" class="room-pick">
+				<div class="room room-clock" @click="turnUrl('checkstandView')">
 					<div class="type">普通房</div>
 					<div class="number">201</div>
 				</div>
-			</div>
-			<div class="room-pick">
-				<div class="room room-dirty">
+			</Col>
+			<Col span="2" class="room-pick">
+				<div class="room room-dirty" @click="modalShow=true">
 					<div class="type">普通房</div>
 					<div class="number">201</div>
 				</div>
-			</div>
-			<div class="room-pick">
+			</Col>
+			<Col span="2" class="room-pick">
 				<div class="room room-lock">
 					<div class="type">普通房</div>
 					<div class="number">201</div>
 				</div>
-			</div>
-			<div class="room-pick" v-for="room in rooms">
-				<div class="room">
+			</Col>
+			<Col span="2" class="room-pick" v-for="i in rooms">
+				<div class="room" @click="turnUrl('checkstandEdit')">
 					<div class="type">普通房</div>
 					<div class="number">201</div>
 				</div>
-			</div>
-			<div class="cls"></div>
-		</div>
+			</Col>
+		</Row>
 	</div>
+	<Modal v-model="modalShow" title="提示">
+		<p>请确认是否将该房间从脏房置为空房？</p>
+	</Modal>
 </div>
 </template>
 <script>
 export default{
 	data (){
 		return {
+			modalShow: false,
 			spinShow: false,
 			rooms: 36,
-			weekday: ['一','二','三','四','五','六','日','一','二','三','四']
+			weekday: ['二','三','四','五','六','日','一','二','三','四']
 		}
 	},
 	beforeCreate (){
@@ -162,6 +168,11 @@ export default{
 	    this.host.post('resetMchPwd',{}).then(function(res){
 
 	    });
+	},
+	methods:{
+		turnUrl(url,query){
+            this.$router.push(url)
+        }
 	}
 }
 </script>

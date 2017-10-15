@@ -1,10 +1,3 @@
-const checkstand = {
-	path: 'checkstand',
-    meta: {
-        title: '客房登记'
-    },
-	component: (resolve) => require(['./views/Checkstand.vue'], resolve)
-};
 const store = {
 	path: '',
 	component: (resolve) => require(['./views/SidebarStore.vue'], resolve),
@@ -107,14 +100,14 @@ const system = {
         	component: (resolve) => require(['./views/SystemRoomType.vue'], resolve)
 		},
 		{
-			path: 'roomTypeEdit',
+			path: 'roomTypeEdit/:id',
 	        meta: {
 	            title: '房间类型 - 编辑'
 	        },
         	component: (resolve) => require(['./views/SystemRoomTypeEdit.vue'], resolve)
 		},
 		{
-			path: 'roomTypeFloat',
+			path: 'roomTypeFloat/:typeId',
 	        meta: {
 	            title: '房间类型 - 浮动价格'
 	        },
@@ -246,21 +239,21 @@ const platform = {
         	component: (resolve) => require(['./views/PlatformBasicDict.vue'], resolve)
 		},
 		{
-			path: 'basicDictEdit',
+			path: 'basicDictEdit/:id',
 	        meta: {
 	            title: '数据字典 - 编辑'
 	        },
         	component: (resolve) => require(['./views/PlatformBasicDictEdit.vue'], resolve)
 		},
 		{
-			path: 'basicDictInfo',
+			path: 'basicDictInfo/:code',
 	        meta: {
 	            title: '数据字典 - 数据列表'
 	        },
         	component: (resolve) => require(['./views/PlatformBasicDictInfo.vue'], resolve)
 		},
 		{
-			path: 'basicDictInfoEdit',
+			path: 'basicDictInfoEdit/:code/:id',
 	        meta: {
 	            title: '数据字典 - 编辑数据'
 	        },
@@ -315,7 +308,43 @@ const routers = [
     {
         path: '/',
         component: (resolve) => require(['./views/Layout.vue'], resolve),
-        children:[checkstand,store,system,platform]
+        children:[store,system,platform,
+	        {
+	        	path: 'checkstand',
+			    meta: {
+			        title: '客房登记'
+			    },
+				component: (resolve) => require(['./views/Checkstand.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandEdit',
+			    meta: {
+			        title: '客房登记 - 订单编辑'
+			    },
+				component: (resolve) => require(['./views/CheckstandEdit.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandView',
+			    meta: {
+			        title: '客房登记 - 订单编辑'
+			    },
+				component: (resolve) => require(['./views/CheckstandView.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandChange',
+			    meta: {
+			        title: '客房登记 - 换房'
+			    },
+				component: (resolve) => require(['./views/CheckstandChange.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandOut',
+			    meta: {
+			        title: '客房登记 - 换房'
+			    },
+				component: (resolve) => require(['./views/CheckstandOut.vue'], resolve)
+	        }
+        ]
     },
     {
         path: '/login',

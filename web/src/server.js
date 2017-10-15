@@ -4,7 +4,23 @@ const interfaces={
     'register': 'admin/register',
     'resetMchPwd': 'merchant/admin/reset-password',
     'adminInfo': 'merchant/admin/info',
-    'adminInfoModify': 'merchant/admin/info-modify'
+    'adminInfoModify': 'merchant/admin/info-modify',
+    'tips': 'merchant/merchant/feedback',
+    'roomTypes':'merchant/room-type/list',
+    'roomType':'merchant/room-type/view',
+    'roomTypeEdit':'merchant/room-type/record',
+    'roomTypeDelete':'merchant/room-type/delete',
+    'roomWeekPrice':'merchant/room-price/view-week',
+    'roomWeekPriceSave':'merchant/room-price/record',
+    'dictionaryView':'platform/dictionary/view',
+    'dictionaryViewByCode':'platform/dictionary/view-by-code',
+    'dictionaries':'platform/dictionary/list',
+    'dictionaryDelete':'platform/dictionary/delete',
+    'dictionaryRecord':'platform/dictionary/record',
+    'dictionaryItemRecord':'platform/dictionary/item-record',
+    'dictionaryItemDelete':'platform/dictionary/delete-item',
+    'dictionaryItemList':'platform/dictionary/item-list',
+    'dictionaryItemView':'platform/dictionary/item-view'
 };
 const server={
     'host': 'http://www.hotel.com',

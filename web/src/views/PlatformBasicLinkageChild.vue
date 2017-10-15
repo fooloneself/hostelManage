@@ -1,5 +1,6 @@
 <template>
 <div>
+    <Button type="primary" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
     <Button type="primary">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
@@ -88,6 +89,9 @@
         methods:{
             turnUrl:function(url,query){
                 this.$router.push(url)
+            },
+            goBack:function(){
+                history.go(-1);
             }
         }
     }

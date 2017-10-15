@@ -1,19 +1,23 @@
 <template>
 <Row>
+	<Col span="24">
+		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
+		<div class="mb"></div>
+	</Col>
 	<Col span="12">
-		<Form label-position="right" :label-width="80">
-			<FormItem label="字典名称：">字典名称</FormItem>
+		<Form v-model="formItem" label-position="right" :label-width="80">
+			<FormItem label="字典名称：">{{label}}</FormItem>
 			<FormItem label="数据项：">
-				<Input></Input>
+				<Input v-model="formItem.key"></Input>
 	        </FormItem>
 			<FormItem label="数据值：">
-				<Input></Input>
+				<Input v-model="formItem.value"></Input>
 	        </FormItem>
 			<FormItem label="排序：">
-				<Input></Input>
+				<Input v-model="formItem.order"></Input>
 	        </FormItem>
 			<FormItem>
-	            <Button type="primary" @click="goBack">保存</Button>
+	            <Button type="primary" @click="submit">保存</Button>
 	            <Button type="ghost" style="margin-left: 8px" @click="goBack">返回</Button>
 	        </FormItem>
 	    </Form>
@@ -25,11 +29,52 @@
 export default{
 	data () {
 		return {
+		    formItem: {
+		        id: this.$route.params.id,
+                key: '',
+                value: '',
+                order: 0,
+                code: this.$route.params.code
+		    },
+		    label: ''
 		}
+	},
+	mounted (){
+	    var that=this;
+	    this.host.post('dictionaryViewByCode',{code:this.$route.params.code}).then(function(res){
+            if(res.isSuccess()){
+                if(res.data()!=null)that.label=res.data().label;
+            }else{
+                alert(res.error());
+            }
+	    })
+	    if(this.$route.params.id>0){
+	        this.host.post('dictionaryItemView',{id: this.$route.params.id}).then(function(res){
+                if(res.isSuccess()){
+                    if(res.data()!=null){
+                        that.formItem.key=res.data().key;
+                        that.formItem.value=res.data().value;
+                        that.formItem.order=res.data().order;
+                    }
+                }else{
+                    alert(res.error());
+                }
+            })
+	    }
 	},
 	methods:{
 		goBack:function(){
 			history.go(-1);
+		},
+		submit:function(){
+		    var that=this;
+            this.host.post('dictionaryItemRecord',this.formItem).then(function(res){
+                if(res.isSuccess()){
+                    this.$router.push('/basicDictInfo/'+that.$route.params.code);
+                }else{
+                    alert(res.error());
+                }
+            })
 		}
 	}
 }

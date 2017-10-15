@@ -1,12 +1,12 @@
 <template>
 	<Row>
 		<Col span="12">
-			<Form label-position="right" :label-width="80">
+			<Form :model="formItem" label-position="right" :label-width="80">
 				<FormItem label="建议&意见：">
-		            <Input type="textarea" :rows="10"></Input>
+		            <Input v-model="formItem.content" type="textarea" :rows="10"></Input>
 		        </FormItem>
 				<FormItem>
-		            <Button type="primary">保存</Button>
+		            <Button type="primary" @click="submit">保存</Button>
 		            <Button type="ghost" style="margin-left: 8px">返回</Button>
 		        </FormItem>
 		    </Form>
@@ -18,7 +18,21 @@
 export default{
 	data () {
 		return {
+		    formItem: {
+		        content: ""
+		    }
 		}
+	},
+	methods:{
+	    submit: function(){
+            this.host.post("tips",{feedback: this.formItem.content}).then(function(res){
+                if(res.isSuccess()){
+                    alert("意见反馈成功，我们会尽快处理！");
+                }else{
+                    alert(res.error());
+                }
+            })
+	    }
 	}
 }
 </script>

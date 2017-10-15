@@ -15,6 +15,7 @@ use Yii;
 class Dictionary extends \common\components\ActiveRecord
 {
     const DICTIONARY_SEX='sex';
+    const DICTIONARY_ROOM_SERVER='room_server';
     /**
      * @inheritdoc
      */

@@ -10,11 +10,15 @@ use Yii;
  * @property string $id
  * @property integer $mch_id
  * @property integer $create_time
+ * @property integer $admin_id
  * @property integer $status
  * @property string $content
  */
 class Feedback extends \common\components\ActiveRecord
 {
+    const STATUS_HANDLING=0;//未处理，正在处理中
+    const STATUS_HANDLED=1; //已处理，问题已解决
+    const STATUS_FAIL=2;    //已处理，问题未解决
     /**
      * @inheritdoc
      */
@@ -30,7 +34,7 @@ class Feedback extends \common\components\ActiveRecord
     {
         return [
             [['mch_id'], 'required'],
-            [['mch_id', 'create_time', 'status'], 'integer'],
+            [['mch_id', 'create_time', 'admin_id', 'status'], 'integer'],
             [['content'], 'string'],
         ];
     }
@@ -44,6 +48,7 @@ class Feedback extends \common\components\ActiveRecord
             'id' => 'ID',
             'mch_id' => 'Mch ID',
             'create_time' => 'Create Time',
+            'admin_id' => 'Admin ID',
             'status' => 'Status',
             'content' => 'Content',
         ];

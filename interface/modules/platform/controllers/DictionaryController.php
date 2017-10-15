@@ -74,7 +74,7 @@ class DictionaryController extends Controller{
      * 分页查看
      * @return mixed
      */
-    public function actionView(){
+    public function actionList(){
         $page=\Yii::$app->requestHelper->post('page',1,'int');
         $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $query=Dictionary::find();
@@ -86,6 +86,31 @@ class DictionaryController extends Controller{
         ])->response();
     }
 
+    /**
+     * 查看单个字典
+     * @return mixed
+     */
+    public function actionView(){
+        $id=\Yii::$app->requestHelper->post('id',0,'int');
+        if($id<=0){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
+        }
+        $dictionary=Dictionary::find()->where(['id'=>$id])->asArray()->one();
+        return \Yii::$app->responseHelper->success($dictionary)->response();
+    }
+
+    /**
+     * 通过code获取字典名称
+     * @return mixed
+     */
+    public function actionViewByCode(){
+        $code=\Yii::$app->requestHelper->post('code');
+        if(empty($code)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
+        }
+        $dictionary=Dictionary::find()->where(['code'=>$code])->asArray()->one();
+        return \Yii::$app->responseHelper->success($dictionary)->response();
+    }
     /**
      * 数据项新增、修改
      * @return mixed
@@ -102,11 +127,11 @@ class DictionaryController extends Controller{
         if($id>0){
             $model=DictionaryItem::findOne(['id'=>$id]);
             if(empty($model))return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'未找到数据项')->response();
-            if(DictionaryItem::findOne(['key'=>$key,'code'=>$model->code])){
+            if($code!=$model->code && DictionaryItem::findOne(['key'=>$key,'code'=>$model->code])){
                 return \Yii::$app->responseHelper->error(ErrorManager::ERROR_DICTIONARY_KEY_EXISTS)->response();
             }
-            $model->setAttributes(['key'=>$key,'value'=>$value,'order'=>$order]);
-            if($model->save(false)){
+            $model->setAttributes(['key'=>$key,'value'=>$value,'order'=>$order,'code'=>$code]);
+            if($model->update(false)){
                 return \Yii::$app->responseHelper->success()->response();
             }else{
                 return \Yii::$app->responseHelper->error(ErrorManager::ERROR_UPDATE_FAIL)->response();
@@ -147,14 +172,32 @@ class DictionaryController extends Controller{
      * 数据项列表
      * @return mixed
      */
-    public function actionItemView(){
+    public function actionItemList(){
         $code=\Yii::$app->requestHelper->post('code');
-        $items=DictionaryItem::find()
+        $query=DictionaryItem::find()
             ->alias('di')
+            ->select('di.*,d.label')
             ->leftJoin(Dictionary::tableName().' d','d.code=di.code')
-            ->where(['di.code'=>$code])
-            ->orderBy('di.order asc')
+            ->where(['di.code'=>$code]);
+        $count=$query->count();
+        $items=$query->orderBy('di.order asc')
             ->asArray()->all();
-        return \Yii::$app->responseHelper->success($items)->response();
+        return \Yii::$app->responseHelper->success([
+            'totalCount'=>$count,
+            'list'=>$items
+        ])->response();
+    }
+
+    /**
+     * 单个数据项
+     * @return mixed
+     */
+    public function actionItemView(){
+        $id=\Yii::$app->requestHelper->post('id',0,'int');
+        if($id<=0){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
+        }
+        $item=DictionaryItem::find()->where(['id'=>$id])->asArray()->one();
+        return \Yii::$app->responseHelper->success($item)->response();
     }
 }
