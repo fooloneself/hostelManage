@@ -122,7 +122,10 @@ export default{
 		            this.host.setSession(res.data().id,that.userName,res.data().token)
 		            this.$router.push('checkstand');
 		        }else{
-		            alert(res.error());
+		            this.$Notice.info({
+	                    title: '提示',
+	                    desc: res.error()
+	                });
 		        }
 		    })
 		}
