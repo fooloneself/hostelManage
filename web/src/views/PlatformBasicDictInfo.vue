@@ -91,7 +91,7 @@
             },
             goBack:function(){
                 history.go(-1);
-            }
+            },
             toAdd:function(){
                 this.turnUrl('/basicDictInfoEdit/'+this.$route.params.code+'/0');
             },
