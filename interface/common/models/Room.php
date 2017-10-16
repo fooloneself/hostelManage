@@ -43,7 +43,7 @@ class Room extends \common\components\ActiveRecord
     {
         return [
             [['premises_id', 'number', 'mch_id'], 'required'],
-            [['premises_id', 'number', 'create_time', 'mch_id', 'bed_num', 'floor', 'status', 'type'], 'integer'],
+            [['premises_id', 'number', 'create_time', 'mch_id', 'bed_num', 'status', 'type'], 'integer'],
             [['introduce'], 'string'],
             [['blair_said', 'cover'], 'string', 'max' => 100],
             [['pic'], 'string', 'max' => 400],
@@ -62,7 +62,6 @@ class Room extends \common\components\ActiveRecord
             'create_time' => 'Create Time',
             'mch_id' => 'Mch ID',
             'bed_num' => 'Bed Num',
-            'floor' => 'Floor',
             'status' => 'Status',
             'type' => 'Type',
             'blair_said' => 'Blair Said',

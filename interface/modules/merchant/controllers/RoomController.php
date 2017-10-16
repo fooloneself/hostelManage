@@ -3,8 +3,11 @@ namespace modules\merchant\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
 use common\library\Helper;
+use common\models\Dictionary;
+use common\models\DictionaryItem;
 use common\models\Premises;
 use common\models\Room;
+use common\models\RoomServer;
 use common\models\RoomType;
 
 class RoomController extends Controller{
@@ -17,7 +20,6 @@ class RoomController extends Controller{
         $premises=\Yii::$app->requestHelper->post('premises',0,'int');
         $number=\Yii::$app->requestHelper->post('number',0,'int');
         $bedNumber=\Yii::$app->requestHelper->post('bedNumber',1,'int');
-        $floor=\Yii::$app->requestHelper->post('floor',0,'int');
         $type=\Yii::$app->requestHelper->post('type',0,'int');
         $introduce=\Yii::$app->requestHelper->post('introduce','','string');
         $close=\Yii::$app->requestHelper->post('close',0,'int');
@@ -26,8 +28,6 @@ class RoomController extends Controller{
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'床位数错误')->response();
         }else if($number<1){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'房间编号错误')->response();
-        }else if($floor<1){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'楼层数错误')->response();
         }
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
         $model=RoomType::findOne(['id'=>$type,'mch_id'=>$mchId]);
@@ -36,9 +36,9 @@ class RoomController extends Controller{
         }
         $status=$close===1?Room::STATUS_UN_OPEN:Room::STATUS_CAN_ORDER;
         if($roomId>0){
-            return $this->update($roomId,$mchId,$premises,$floor,$number,$type,$bedNumber,$status,$introduce);
+            return $this->update($roomId,$mchId,$premises,$number,$type,$bedNumber,$status,$introduce);
         }else{
-            return $this->add($mchId,$premises,$floor,$number,$type,$bedNumber,$status,$introduce);
+            return $this->add($mchId,$premises,$number,$type,$bedNumber,$status,$introduce);
         }
     }
 
@@ -46,7 +46,6 @@ class RoomController extends Controller{
      * 新增房间
      * @param $mchId
      * @param $premises
-     * @param $floor
      * @param $number
      * @param $type
      * @param $bedNumber
@@ -54,14 +53,10 @@ class RoomController extends Controller{
      * @param $introduce
      * @return mixed
      */
-    protected function add($mchId,$premises,$floor,$number,$type,$bedNumber,$status,$introduce){
-        $model=Premises::findOne(['id'=>$premises,'mch_id'=>$mchId]);
-        if(empty($model)){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'未找到经营场所')->response();
-        }
-        $model=Room::findOne(['floor'=>$floor,'number'=>$number,'premises_id'=>$premises]);
+    protected function add($mchId,$premises,$number,$type,$bedNumber,$status,$introduce){
+        $model=Room::findOne(['number'=>$number,'premises_id'=>$premises]);
         if($model){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'房间'.Helper::getRoomNo($floor,$number).'已存在')->response();
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'房间'.$number.'已存在')->response();
         }
         $model=new Room();
         $model->setAttributes([
@@ -70,7 +65,6 @@ class RoomController extends Controller{
             'create_time'=>time(),
             'mch_id'=>$mchId,
             'bed_num'=>$bedNumber,
-            'floor'=>$floor,
             'status'=>$status,
             'type'=>$type,
             'introduce'=>$introduce
@@ -87,7 +81,6 @@ class RoomController extends Controller{
      * @param $roomId
      * @param $mchId
      * @param $premisesId
-     * @param $floor
      * @param $number
      * @param $type
      * @param $bedNumber
@@ -95,17 +88,12 @@ class RoomController extends Controller{
      * @param $introduce
      * @return mixed
      */
-    protected function update($roomId,$mchId,$premisesId,$floor,$number,$type,$bedNumber,$status,$introduce){
+    protected function update($roomId,$mchId,$premisesId,$number,$type,$bedNumber,$status,$introduce){
         $room=Room::findOne(['mch_id'=>$mchId,'id'=>$roomId]);
         if(empty($room)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'房间不存在')->response();
-        }else if($room->premises_id!=$premisesId){
-            $model=Premises::findOne(['id'=>$premisesId,'mch_id'=>$mchId]);
-            if(empty($model)){
-                return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'未找到经营场所')->response();
-            }
         }
-        $model=Room::findOne(['premises_id'=>$premisesId,'floor'=>$floor,'number'=>$number]);
+        $model=Room::findOne(['premises_id'=>$premisesId,'number'=>$number]);
         if(!empty($model)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'房间'.Helper::getRoomNo($floor,$number).'已存在')->response();
         }
@@ -115,7 +103,6 @@ class RoomController extends Controller{
             'number'=>$number,
             'mch_id'=>$mchId,
             'bed_num'=>$bedNumber,
-            'floor'=>$floor,
             'status'=>$status,
             'type'=>$type,
             'introduce'=>$introduce
@@ -149,20 +136,71 @@ class RoomController extends Controller{
      * 房间列表
      * @return mixed
      */
-    public function actionView(){
-        $mchId=\Yii::$app->user->getAdmin()->getMerchant()->getId();
-        $rooms=Room::find()
-            ->where(['mch_id'=>$mchId])
-            ->orderBy('floor asc,number asc')
+    public function actionList(){
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $query=Room::find()
+            ->select('r.*,rt.name as type_name,group_concat(di.value) as server_name')
+            ->alias('r')
+            ->leftJoin(RoomType::tableName().' rt','r.type=rt.id')
+            ->leftJoin(RoomServer::tableName().' rs','r.id=rs.room_id')
+            ->leftJoin(DictionaryItem::tableName().' di','rs.dictionary_key=di.key and di.code=:code',[':code'=>Dictionary::DICTIONARY_ROOM_SERVER])
+            ->where(['r.mch_id'=>$mchId])
+            ->groupBy('r.id');
+        $count=$query->count();
+        $rooms=$query->orderBy('number asc')
             ->asArray()->all();
         $res=[];
-        foreach ($rooms as $room){
-            $res[]=[
-                'number'=>Helper::getRoomNo($room['floor'],$room['number']),
-                'status'=>intval($room['status'])
-            ];
+        if(!empty($rooms)){
+            foreach ($rooms as $room){
+                $res[]=[
+                    'id'=>$room['id'],
+                    'typeName'=>$room['type_name'],
+                    'defaultPrice'=>$room['default_price'],
+                    'number'=>$room['number'],
+                    'isLock'=>$room['status']==2?'是':'否',
+                    'serverName'=>$room['server_name']
+                ];
+            }
         }
-        return \Yii::$app->responseHelper->success($res)->response();
+        return \Yii::$app->responseHelper->success([
+            'totalCount'=>$count,
+            'list'=>$res
+        ])->response();
+    }
+
+    /**
+     * 房间列表
+     * @return mixed
+     */
+    public function actionEditPageInfo(){
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $roomId=\Yii::$app->requestHelper->post('id',0,'int');
+        $room=null;
+        if($roomId>0){
+            $res=Room::find()->where(['id'=>$roomId])->asArray()->one();
+            $room=[];
+            $room['type']=$res['type'];
+            $room['lock']=$res['status']==2?1:0;
+            $room['number']=$res['number'];
+            $room['introduce']=$res['introduce'];
+            $room['servers']=RoomServer::find()
+                ->select('dictionary_key')
+                ->where(['room_id'=>$roomId])
+                ->column();
+        }
+        $types=RoomType::find()
+            ->select('id,name')
+            ->where(['mch_id'=>$mchId])
+            ->asArray()->all();
+        $servers=DictionaryItem::find()
+            ->select('key,value')
+            ->where(['code'=>Dictionary::DICTIONARY_ROOM_SERVER])
+            ->asArray()->all();
+        return \Yii::$app->responseHelper->success([
+            'room'=>$room,
+            'types'=>$types,
+            'servers'=>$servers,
+        ])->response();
     }
 
     /**

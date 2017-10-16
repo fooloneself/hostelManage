@@ -1,10 +1,10 @@
 <template>
 <div>
-    <Button type="primary">新增</Button>
+    <Button type="primary" @click="turnUrl('/roomListEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+    <Page :total="totalCount" show-total></Page>
 </div>
 </template>
 <script>
@@ -14,26 +14,32 @@
                 columns: [
                     {
                         title: '序号',
-                        width: 60
+                        width: 60,
+                        key: 'id'
                     },
                     {
                         title: '房间类型',
-                        width: 180
+                        width: 180,
+                        key: 'typeName'
                     },
                     {
                         title: '默认价格',
-                        width: 100
+                        width: 100,
+                        key: 'defaultPrice'
                     },
                     {
                         title: '房号',
-                        width: 100
+                        width: 100,
+                        key: 'number'
                     },
                     {
                         title: '锁房状态',
-                        width: 100
+                        width: 100,
+                        key: 'isLock'
                     },
                     {
-                        title: '房间配套'
+                        title: '房间配套',
+                        key: 'serverName'
                     },
                     {
                         title: '操作',
@@ -68,13 +74,22 @@
                         }
                     }
                 ],
-                data: [
-                    {},{},{},{},{},{},{},{},{},{}
-                ]
+                data: [],
+                totalCount: 0
             }
         },
+        mounted (){
+            this.host.post('roomList').then(function(res){
+                if(res.isSuccess()){
+                    this.data=res.data().list;
+                    this.totalCount=parseInt(res.data().totalCount);
+                }else{
+                    alert(res.error());
+                }
+            })
+        },
         methods:{
-            turnUrl:function(url,query){
+            turnUrl:function(url){
                 this.$router.push(url)
             }
         }

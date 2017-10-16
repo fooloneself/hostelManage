@@ -6,6 +6,8 @@ const interfaces={
     'adminInfo': 'merchant/admin/info',
     'adminInfoModify': 'merchant/admin/info-modify',
     'tips': 'merchant/merchant/feedback',
+    'roomList':'merchant/room/list',
+    'roomEditPageInfo':'merchant/room/edit-page-info',
     'roomTypes':'merchant/room-type/list',
     'roomType':'merchant/room-type/view',
     'roomTypeEdit':'merchant/room-type/record',

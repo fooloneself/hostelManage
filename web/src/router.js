@@ -128,7 +128,7 @@ const system = {
         	component: (resolve) => require(['./views/SystemRoomList.vue'], resolve)
 		},
 		{
-			path: 'roomListEdit',
+			path: 'roomListEdit/:id',
 	        meta: {
 	            title: '房间列表 - 编辑'
 	        },
