@@ -1,5 +1,9 @@
 <template>
 <Row>
+	<Col span="24">
+		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
+		<div class="mb"></div>
+	</Col>
 	<Col span="12">
 		<Form v-model="formItem" label-position="right" :label-width="80">
 			<FormItem label="字典名称：">{{label}}</FormItem>

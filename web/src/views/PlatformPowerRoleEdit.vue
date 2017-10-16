@@ -1,5 +1,9 @@
 <template>
 <Row :gutter="24">
+	<Col span="24">
+		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
+		<div class="mb"></div>
+	</Col>
 	<Col span="10">
 		<Form label-position="right" :label-width="80">
 			<FormItem label="角色名称：">
@@ -20,7 +24,7 @@
 	        </FormItem>
 	    </Form>		
 	</Col>
-	<Col span="10">
+	<Col span="10" offset="1">
 		选择权限：
 		<Tree :data="baseData" show-checkbox></Tree>
 	</Col>

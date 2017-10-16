@@ -1,5 +1,6 @@
 <template>
 <div>
+    <Button type="primary" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
     <Button type="primary" @click="toAdd">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
@@ -87,6 +88,9 @@
         methods:{
             turnUrl:function(url){
                 this.$router.push(url)
+            },
+            goBack:function(){
+                history.go(-1);
             },
             toAdd:function(){
                 this.turnUrl('/basicDictInfoEdit/'+this.$route.params.code+'/0');

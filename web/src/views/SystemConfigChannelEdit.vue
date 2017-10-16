@@ -1,5 +1,9 @@
 <template>
 <Row>
+	<Col span="24">
+		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
+		<div class="mb"></div>
+	</Col>
 	<Col span="12">
 		<Form label-position="right" :label-width="80">
 			<FormItem label="渠道名称：">
@@ -13,7 +17,6 @@
 	        </FormItem>
 			<FormItem>
 	            <Button type="primary">保存</Button>
-	            <Button type="ghost" style="margin-left: 8px">返回</Button>
 	        </FormItem>
 	    </Form>
 	</Col>

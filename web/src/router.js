@@ -1,10 +1,3 @@
-const checkstand = {
-	path: 'checkstand',
-    meta: {
-        title: '客房登记'
-    },
-	component: (resolve) => require(['./views/Checkstand.vue'], resolve)
-};
 const store = {
 	path: '',
 	component: (resolve) => require(['./views/SidebarStore.vue'], resolve),
@@ -315,7 +308,43 @@ const routers = [
     {
         path: '/',
         component: (resolve) => require(['./views/Layout.vue'], resolve),
-        children:[checkstand,store,system,platform]
+        children:[store,system,platform,
+	        {
+	        	path: 'checkstand',
+			    meta: {
+			        title: '客房登记'
+			    },
+				component: (resolve) => require(['./views/Checkstand.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandEdit',
+			    meta: {
+			        title: '客房登记 - 订单编辑'
+			    },
+				component: (resolve) => require(['./views/CheckstandEdit.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandView',
+			    meta: {
+			        title: '客房登记 - 订单编辑'
+			    },
+				component: (resolve) => require(['./views/CheckstandView.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandChange',
+			    meta: {
+			        title: '客房登记 - 换房'
+			    },
+				component: (resolve) => require(['./views/CheckstandChange.vue'], resolve)
+	        },
+	        {
+	        	path: 'checkstandOut',
+			    meta: {
+			        title: '客房登记 - 换房'
+			    },
+				component: (resolve) => require(['./views/CheckstandOut.vue'], resolve)
+	        }
+        ]
     },
     {
         path: '/login',

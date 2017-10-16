@@ -46,7 +46,7 @@
                     },
                     {
                         title: '手机号',
-                        width: 180
+                        width: 120
                     },
                     {
                         title: '微信号',
@@ -66,7 +66,7 @@
                     },
                     {
                         title: '积分',
-                        width: 120
+                        width: 80
                     },
                     {
                         title: '注册时间',

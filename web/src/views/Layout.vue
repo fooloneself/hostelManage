@@ -1,20 +1,13 @@
 <style scoped>
-.layout{
-    min-width: 1200px;
-}
 .layout-nav{
     height: 60px;
     line-height: 60px;
     color: #FFF;
     background: #34495E;
+    min-width: 1208px;
     .logo{
         height: 60px;
         line-height: 60px;
-        .fa{
-            font-size: 30px;
-            position: relative;
-            top: 3px;
-        }
         a{
             font-size: 18px;
             margin-left: 8px;
@@ -34,14 +27,13 @@
 </style>
 
 <template>
-    <div class="layout">
+    <div>
         <div class="layout-nav">
             <div class="container">
                 <Row>
                     <Col span="4">
                         <div class="logo">
-                            <i class="fa fa-gg" aria-hidden="true"></i>
-                            <router-link to="">考拉客房管理系统</router-link>
+                            <router-link to="">优客满客房管理系统</router-link>
                         </div>
                     </Col>
                     <Col span="16">
@@ -53,7 +45,9 @@
                         </Menu>
                     </Col>
                     <Col span="4" class="tr">
-                        <router-link to=""><i class="fa fa-bell" aria-hidden="true"></i></router-link>
+                        <Badge dot>
+                            <router-link to=""><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></router-link>
+                        </Badge>
                         <Dropdown @on-click="turnUrl" style="margin-left: 8px;">
                             <a href="javascript:void(0)">
                                 Admin Dun

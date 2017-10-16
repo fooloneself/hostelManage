@@ -1,5 +1,9 @@
 <template>
 <Row>
+    <Col span="24">
+        <Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
+        <div class="mb"></div>
+    </Col>
     <Col span="12">
         <Form v-model="formItem" label-position="right" :label-width="100">
             <FormItem label="房屋类型：">
@@ -22,7 +26,6 @@
             </FormItem>
             <FormItem>
                 <Button type="primary" @click="submit">保存</Button>
-                <Button type="ghost" style="margin-left: 8px">返回</Button>
             </FormItem>
         </Form>
     </Col>
