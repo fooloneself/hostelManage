@@ -33,7 +33,7 @@
                 <Row>
                     <Col span="4">
                         <div class="logo">
-                            <router-link to="">考拉客房管理系统</router-link>
+                            <router-link to="">优客满客房管理系统</router-link>
                         </div>
                     </Col>
                     <Col span="16">

@@ -87,7 +87,7 @@
 		<div class="login">
 			<div class="login_logo">
 				<div class="logo"><i class="fa fa-gg" aria-hidden="true"></i></div>
-				<div class="title">考拉客房管理系统</div>
+				<div class="title">优客满客房管理系统</div>
 			</div>
 			<div class="login_form">
 				<p>登录 / Login</p>
