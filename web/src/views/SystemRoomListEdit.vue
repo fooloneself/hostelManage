@@ -97,6 +97,7 @@
     	data () {
     		return {
     			formItem:{
+    			    id: this.$route.params.id,
                     type:'',
                     number:'',
                     lock: '0',
@@ -130,7 +131,13 @@
             },
             handleRemove() {},
             baseSubmit (){
-                console.log(this.formItem);
+                this.host.post('roomRecord',this.formItem).then(function(res){
+                    if(res.isSuccess()){
+                        this.$router.push('/roomList');
+                    }else{
+                        alert(res.error());
+                    }
+                })
             }
         }
     }

@@ -7,10 +7,12 @@ const interfaces={
     'adminInfoModify': 'merchant/admin/info-modify',
     'tips': 'merchant/merchant/feedback',
     'roomList':'merchant/room/list',
+    'roomRecord':'merchant/room/record',
+    'roomDelete':'merchant/room/delete',
+    'roomLock':'merchant/room/lock',
     'roomEditPageInfo':'merchant/room/edit-page-info',
     'roomTypes':'merchant/room-type/list',
-    'roomType':'merchant/room-type/view',
-    'roomTypeEdit':'merchant/room-type/record',
+    'roomType':'merchant/room-type/view','roomTypeEdit':'merchant/room-type/record',
     'roomTypeDelete':'merchant/room-type/delete',
     'roomWeekPrice':'merchant/room-price/view-week',
     'roomWeekPriceSave':'merchant/room-price/record',
@@ -22,7 +24,10 @@ const interfaces={
     'dictionaryItemRecord':'platform/dictionary/item-record',
     'dictionaryItemDelete':'platform/dictionary/delete-item',
     'dictionaryItemList':'platform/dictionary/item-list',
-    'dictionaryItemView':'platform/dictionary/item-view'
+    'dictionaryItemView':'platform/dictionary/item-view',
+    'storeBaseSet':'merchant/merchant/base-info-setting',
+    'storeSet':'merchant/merchant/setting',
+    'storeConfig':'merchant/merchant/config'
 };
 const server={
     'host': 'http://www.hotel.com',

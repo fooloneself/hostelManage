@@ -4,14 +4,57 @@ use common\components\ErrorManager;
 use common\components\Server;
 use common\models\LinkageMenu;
 use common\models\MchModule;
+use common\models\Premises;
 
 class Merchant extends Server{
     protected $merchant;
     protected $modules;
     protected $moduleLabels;
+    protected $premise;
+
     public function __construct(\common\models\Merchant $merchant)
     {
         $this->merchant=$merchant;
+    }
+
+    /**
+     * 设置属性
+     * @param $name
+     * @param $value
+     * @return $this
+     */
+    public function set($name,$value){
+        $this->merchant->setAttribute($name,$value);
+        return $this;
+    }
+
+    /**
+     * 获取属性值
+     * @param $name
+     * @return mixed
+     */
+    public function get($name){
+        return $this->merchant->getAttribute($name);
+    }
+
+    /**
+     * 魔术方法-设置属性值
+     * @param $name
+     * @param $value
+     */
+    public function __set($name, $value)
+    {
+        $this->set($name,$value);
+    }
+
+    /**
+     * 魔术方法-获取属性值
+     * @param $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->get($name);
     }
 
     /**
@@ -22,6 +65,14 @@ class Merchant extends Server{
         return $this->merchant->getAttributes();
     }
 
+    /**
+     * 设置多属性在
+     * @param $attrs
+     */
+    public function put($attrs){
+        $this->merchant->setAttributes($attrs);
+        return $this;
+    }
     /**
      * 刷新模块信息
      * @return $this
@@ -90,21 +141,38 @@ class Merchant extends Server{
      * 注册商户
      * @return bool
      */
-    public function register(){
-        $city=LinkageMenu::findOne(['type'=>LinkageMenu::TYPE_REGION,'id'=>$this->merchant->getAttribute('city')]);
-        if(empty($city)){
-            $this->setError(ErrorManager::ERROR_PARAM_WRONG,'未找到所属地区');
-            return false;
-        }else if(!in_array($this->merchant->type,\common\models\Merchant::$types,true)){
-            $this->setError(ErrorManager::ERROR_PARAM_WRONG,'类型错误');
+    public function save(){
+        $this->merchant->create_time=time();
+        if(!$this->merchant->save()){
+            $this->setError(ErrorManager::ERROR_OPERATE_FAIL,'商户设置失败');
             return false;
         }
-        $this->merchant->create_time=time();
-        if($this->merchant->insert()){
+        $premise=$this->getPremise();
+        if(!$premise){
+            $premise=new Premises();
+            $premise->mch_id=$this->merchant->id;
+            $premise->create_time=time();
+            $this->premise=$premise;
+        }
+        $premise->city=0;
+        $premise->address=$this->merchant->address;
+        if($premise->save()){
             return true;
         }else{
-            $this->setError(ErrorManager::ERROR_INSERT_FAIL,json_encode($this->merchant->getErrors()));
+            $this->setError(ErrorManager::ERROR_OPERATE_FAIL,'商户设置失败');
             return false;
         }
+    }
+
+    /**
+     * 获取经营场所
+     * @return static
+     */
+    public function getPremise(){
+        if($this->premise===null){
+            $this->premise=Premises::findOne(['mch_id'=>$this->getId()]);
+            if(empty($this->premise))$this->premise=false;
+        }
+        return $this->premise;
     }
 }

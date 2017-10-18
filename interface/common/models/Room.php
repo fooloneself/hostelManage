@@ -23,11 +23,9 @@ use Yii;
  */
 class Room extends \common\components\ActiveRecord
 {
-    const STATUS_UN_OPEN    =1;//锁定，不对外开放
-    const STATUS_CAN_ORDER  =2;//可定
-    const STATUS_ORDERED    =3;//已定
-    const STATUS_CHECKED_IN =4;//已入住
-    const STATUS_DIRTY       =5;//脏房
+    const STATUS_CAN_ORDER  =0;//可定
+    const STATUS_DIRTY       =1;//脏房
+    const STATUS_UN_OPEN    =2;//锁定，不对外开放
     /**
      * @inheritdoc
      */

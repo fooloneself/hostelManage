@@ -2,60 +2,90 @@
 namespace modules\merchant\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
-use common\models\Feedback;
-use common\models\Merchant;
 use common\models\MerchantSet;
+use service\merchant\Merchant;
 
-class MerchantController extends Controller{
-
+class MerchantController extends Controller {
     /**
-     * 添加商户信息
-     * @return mixed
-     */
+    * 添加商户信息
+    * @return mixed
+    */
     public function actionBaseInfoSetting(){
         $admin=\Yii::$app->user->getAdmin();
-        $city=\Yii::$app->requestHelper->post('city',0,'int');
+        //商户名称
         $name=\Yii::$app->requestHelper->post('name','','string');
+        //联系人
         $contactName=\Yii::$app->requestHelper->post('contactName','','string');
-        $address=\Yii::$app->requestHelper->post('address','','string');
-        $type=\Yii::$app->requestHelper->post('type',0,'int');
+        //联系方式
         $mobile=\Yii::$app->requestHelper->post('mobile','','string');
-        $telephone=\Yii::$app->requestHelper->post('telephone','','string');
+        //门店地址
+        $address=\Yii::$app->requestHelper->post('address','','string');
+        //介绍
         $introduce=\Yii::$app->requestHelper->post('introduce','','string');
         if(!$admin->isAdminOfMerchant()){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ACCOUNT_ERROR,'非商户管理账户')->response();
-        }else if($admin->hasBindMerchant()){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ACCOUNT_ERROR,'已绑定商户')->response();
-        }else if($city<1 || empty($name) || empty($address)){
+        }else if( empty($name) || empty($contactName) || empty($mobile) || empty($address)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
         }
-        $model=new Merchant();
-        $model->setAttributes([
-            'city'=>$city,
-            'type'=>$type,
+        $merchant=$admin->getMerchant();
+        if($merchant==false){
+            $merchant=new Merchant(new \common\models\Merchant());
+        }
+        $merchant->put([
+            'city'=>0,
+            'type'=>0,
             'name'=>$name,
             'mobile'=>$mobile,
-            'telephone'=>$telephone,
+            'telephone'=>'',
             'address'=>$address,
             'introduce'=>$introduce,
             'contact_name'=>$contactName
         ]);
-        $merchant=new \service\merchant\Merchant($model);
         $transaction=\Yii::$app->db->beginTransaction();
-        if($merchant->register()){
-            if($admin->bindMerchant($merchant)){
-                $transaction->commit();
-                return \Yii::$app->responseHelper->success()->response();
-            }else{
-                $transaction->rollBack();
-                return \Yii::$app->responseHelper->error($admin->getError())->response();
-            }
-        }else{
+        if($merchant->save()==false){
             $transaction->rollBack();
             return \Yii::$app->responseHelper->error($merchant->getError())->response();
         }
+        if($admin->bindMerchant($merchant)==false){
+            $transaction->rollBack();
+            return \Yii::$app->responseHelper->error($admin->getError())->response();
+        }
+        $transaction->commit();
+        return \Yii::$app->responseHelper->success()->response();
     }
 
+    /**
+     * 查看商户配置
+     * @return mixed
+     */
+    public function actionConfig(){
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        if($merchant){
+            $merchant=$merchant->show();
+            $res=[];
+            $res['base']=[
+                'name'=>$merchant['name'],
+                'contactName'=>$merchant['contact_name'],
+                'mobile'=>$merchant['mobile'],
+                'address'=>$merchant['address'],
+                'introduce'=>$merchant['introduce']
+            ];
+            $setting=MerchantSet::findOne(['mch_id'=>$merchant['id']]);
+            if($setting){
+                $res['setting']=[
+                    'orderAutoClose'=>intval($setting->auto_close_switch),
+                    'reserveSwitch'=>intval($setting->reserve_switch),
+                    'hourRoomSwitch'=>intval($setting->hour_room_switch),
+                    'checkOutTime'=>$setting->check_out_time,
+                    'hourRoomRange'=>[$setting->hour_room_start_time,$setting->hour_room_end_time],
+                    'reserveRetentionTime'=>intval($setting->reserve_retention_time),
+                ];
+            }
+        }else{
+            $res=null;
+        }
+        return \Yii::$app->responseHelper->success($res)->response();
+    }
     /**
      * 商户开关设置
      * 自动退房、预定、钟点房
@@ -97,7 +127,7 @@ class MerchantController extends Controller{
         if($model->insert()){
             return \Yii::$app->responseHelper->success()->response();
         }else{
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_INSERT_FAIL)->response();
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_INSERT_FAIL,json_encode($model->getErrors()))->response();
         }
     }
 

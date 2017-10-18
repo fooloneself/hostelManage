@@ -23,11 +23,6 @@
                         key: 'typeName'
                     },
                     {
-                        title: '默认价格',
-                        width: 100,
-                        key: 'defaultPrice'
-                    },
-                    {
                         title: '房号',
                         width: 100,
                         key: 'number'
@@ -54,7 +49,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('roomListEdit')
+                                            this.turnUrl('/roomListEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -62,12 +57,34 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要删除吗？');
+                                            if(res){
+                                                this.delete(params.row.id);
+                                            }
+                                        }
                                     }
                                 }, '删除'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要锁房？');
+                                            if(res){
+                                                this.host.post('roomLock',{id: params.row.id}).then(function(res){
+                                                    if(res.isSuccess()){
+                                                        params.row.isLock='是';
+                                                    }else{
+                                                        alert(res.error());
+                                                    }
+                                                })
+                                            }
+                                        }
                                     }
                                 }, '锁房')
                             ]);
@@ -79,10 +96,11 @@
             }
         },
         mounted (){
+            var that=this;
             this.host.post('roomList').then(function(res){
                 if(res.isSuccess()){
-                    this.data=res.data().list;
-                    this.totalCount=parseInt(res.data().totalCount);
+                    that.data=res.data().list;
+                    that.totalCount=parseInt(res.data().totalCount);
                 }else{
                     alert(res.error());
                 }
@@ -91,6 +109,15 @@
         methods:{
             turnUrl:function(url){
                 this.$router.push(url)
+            },
+            delete:function(id){
+                this.host.post("roomDelete",{id: this.$route.params.id}).then(function(res){
+                    if(res.isSuccess()){
+                        location.reload();
+                    }else{
+                        alert(res.error());
+                    }
+                })
             }
         }
     }

@@ -32,24 +32,24 @@
         <TabPane label="基本信息" name="info">
             <Row>
                 <Col span="12">
-                    <Form label-position="right" :label-width="80">
+                    <Form v-model="storeBase" label-position="right" :label-width="80">
                         <FormItem label="门店名称：">
-                            <Input></Input>
+                            <Input v-model="storeBase.name"></Input>
                         </FormItem>
                         <FormItem label="联系人：">
-                            <Input></Input>
+                            <Input v-model="storeBase.contactName"></Input>
                         </FormItem>
                         <FormItem label="联系方式：">
-                            <Input></Input>
+                            <Input v-model="storeBase.mobile"></Input>
                         </FormItem>
                         <FormItem label="门店地址：">
-                            <Input></Input>
+                            <Input v-model="storeBase.address"></Input>
                         </FormItem>
                         <FormItem label="门店介绍：">
-                            <Input type="textarea" :rows="10"></Input>
+                            <Input v-model="storeBase.introduce" type="textarea" :rows="10"></Input>
                         </FormItem>
                         <FormItem>
-                            <Button type="primary">保存</Button>
+                            <Button @click="setStoreBase" type="primary">保存</Button>
                         </FormItem>
                     </Form>
                 </Col>
@@ -58,39 +58,39 @@
         <TabPane label="开关设置" name="setting">
             <Row>
                 <Col span="12">
-                    <Form label-position="right" :label-width="120">
+                    <Form v-model="storeSetting" label-position="right" :label-width="120">
                         <FormItem label="开启自动退房：">
-                            <RadioGroup >
-                                <Radio label="0">是</Radio>
-                                <Radio label="1">否</Radio>
+                            <RadioGroup v-model="storeSetting.orderAutoClose">
+                                <Radio label="1">是</Radio>
+                                <Radio label="0">否</Radio>
                             </RadioGroup>
                         </FormItem>
                         <FormItem label="每日退房时间：">
-                            <TimePicker type="time" placeholder="选择时间"></TimePicker>
+                            <TimePicker v-model="storeSetting.checkOutTime" :value="storeSetting.checkOutTime" type="time" placeholder="选择时间"></TimePicker>
                         </FormItem>
                         <FormItem label="开启预订：">
-                            <RadioGroup >
-                                <Radio label="0">是</Radio>
-                                <Radio label="1">否</Radio>
+                            <RadioGroup v-model="storeSetting.reserveSwitch">
+                                <Radio label="1">是</Radio>
+                                <Radio label="0">否</Radio>
                             </RadioGroup>
                         </FormItem>
                         <FormItem label="预订房保留时间：">
-                            <TimePicker type="time" placeholder="选择时间"></TimePicker>
+                            <TimePicker v-model="storeSetting.reserveRetentionTime" :value="storeSetting.reserveRetentionTime" type="time" placeholder="选择时间"></TimePicker>
                         </FormItem>
                         <FormItem label="开启钟点房：">
-                            <RadioGroup >
-                                <Radio label="0">是</Radio>
-                                <Radio label="1">否</Radio>
+                            <RadioGroup v-model="storeSetting.hourRoomSwitch">
+                                <Radio label="1">是</Radio>
+                                <Radio label="0">否</Radio>
                             </RadioGroup>
                         </FormItem>
                         <FormItem label="钟点房开放时间：">
-                            <TimePicker type="timerange" placeholder="选择时间"></TimePicker>
+                            <TimePicker v-model="storeSetting.hourRoomRange" :value="storeSetting.hourRoomRange" type="timerange" placeholder="选择时间"></TimePicker>
                         </FormItem>
                         <FormItem label="钟点房时长：">
                             <InputNumber :max="12" :min="1" :step="0.5"></InputNumber>&nbsp;&nbsp;小时
                         </FormItem>
                         <FormItem>
-                            <Button type="primary">保存</Button>
+                            <Button @click="setSwitch" type="primary">保存</Button>
                         </FormItem>
                     </Form>
                 </Col>
@@ -129,18 +129,70 @@
     export default {
         data () {
             return {
-                formItem:{
-                    select:'2'
+                storeBase:{},
+                storeSetting:{
+                    orderAutoClose: 0,
+                    reserveSwitch: 0,
+                    hourRoomSwitch: 0
                 },
                 imgNum:25,
                 visible:false
             }
         },
+        mounted (){
+            var that=this;
+            this.host.post('storeConfig').then(function(res){
+                if(res.isSuccess()){
+                    if(res.data()){
+                        if(res.data().base){
+                            that.storeBase=res.data().base;
+                        }
+                        if(res.data().setting){
+                            that.storeSetting=res.data().setting;
+                        }
+                    }
+                }else{
+                    alert(res.error());
+                }
+            })
+        },
         methods:{
             handleView() {
                 this.visible = true;
             },
-            handleRemove() {}
+            handleRemove() {},
+            setStoreBase (){
+                this.host.post('storeBaseSet',this.storeBase).then(function(res){
+                    if(res.isSuccess()){
+                        alert('设置成功');
+                    }else{
+                        alert(res.error());
+                    }
+                })
+            },
+            setSwitch (){
+                function getHour(timestamp){
+                    var date=new Date(timestamp);
+                    return date.getHour()+':'+data.getMinute()+':'+date.getSecond();
+                }
+                console.log(this.storeSetting);return;
+                var param={
+                    orderAutoClose: parseInt(this.storeSetting.orderAutoClose),
+                    reserveSwitch: parseInt(this.storeSetting.reserveSwitch),
+                    hourRoomSwitch: parseInt(this.storeSetting.hourRoomSwitch),
+                    checkOutTime:getHour(this.storeSetting.checkOutTime),
+                    reserveRetentionTime: 0,
+                    hourRoomStartTime:0,
+                    hourRoomEndTime:0
+                }
+                this.host.post('storeSet',param).then(function(res){
+                    if(res.isSuccess()){
+                        alert('设置成功');
+                    }else{
+                        alert(res.error());
+                    }
+                })
+            }
         }
     }
 </script>
