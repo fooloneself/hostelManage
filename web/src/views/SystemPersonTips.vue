@@ -27,9 +27,15 @@ export default{
 	    submit: function(){
             this.host.post("tips",{feedback: this.formItem.content}).then(function(res){
                 if(res.isSuccess()){
-                    alert("意见反馈成功，我们会尽快处理！");
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: '意见反馈成功，我们会尽快处理！'
+                    });
                 }else{
-                    alert(res.error());
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
                 }
             })
 	    }

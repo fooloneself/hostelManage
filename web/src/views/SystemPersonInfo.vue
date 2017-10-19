@@ -44,7 +44,7 @@ export default{
 	    this.host.post('sex').then(function(res){
             that.sex=res.data();
         })
-        this.host.post('adminInfo').then(function(res){
+        this.host.post('merchantAdminInfo').then(function(res){
             if(res.data())that.formItem=res.data();
         })
 	},
@@ -57,11 +57,17 @@ export default{
                     sex:this.formItem.sex,
                     birthday: birthday
                 };
-            this.host.post('adminInfoModify',param).then(function(res){
+            this.host.post('merchantAdminInfoModify',param).then(function(res){
                 if(res.isSuccess()){
-                    alert('成功修改信息');
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: '修改成功'
+                    });
                 }else{
-                    alert(res.error());
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
                 }
             })
         }

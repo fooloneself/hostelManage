@@ -86,7 +86,7 @@ const system = {
         	component: (resolve) => require(['./views/SystemConfigChannel.vue'], resolve)
 		},
 		{
-			path: 'configChannelEdit',
+			path: 'configChannelEdit/:id',
 	        meta: {
 	            title: '渠道配置 - 编辑'
 	        },

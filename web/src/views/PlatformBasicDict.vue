@@ -109,10 +109,12 @@
             delete:function(code){
                 this.host.post('dictionaryDelete',{code: code}).then(function(res){
                     if(res.isSuccess()){
-                        alert('删除成功');
                         location.reload();
                     }else{
-                        alert(res.error());
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
                     }
                 })
             }

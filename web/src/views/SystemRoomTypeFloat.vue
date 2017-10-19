@@ -94,9 +94,15 @@
 	        submit: function(){
 	            this.host.post('roomWeekPriceSave',this.formItem).then(function(res){
 	                if(res.isSuccess()){
-	                    alert('周价格设置成功');
+	                    this.$Notice.info({
+                            title: '提示',
+                            desc: '价格设置成功'
+                        });
 	                }else{
-	                    alert(res.error());
+	                    this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
 	                }
 	            })
 	        }

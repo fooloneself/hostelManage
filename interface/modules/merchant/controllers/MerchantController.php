@@ -106,14 +106,22 @@ class MerchantController extends Controller {
         $hourRoomStartTime=\Yii::$app->requestHelper->post('hourRoomStartTime','','string');
         //钟点房每日结束时间点
         $hourRoomEndTime=\Yii::$app->requestHelper->post('hourRoomEndTime','','string');
-        if($orderAutoClose===1 && empty($checkOutTime)){
+        if($orderAutoClose==1 && empty($checkOutTime)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
-        }else if($reserveSwitch===1 && $reserveRetentionTime<1){
+        }else if($reserveSwitch==1 && $reserveRetentionTime<1){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
-        }else if($hourRoomSwitch===1 && (empty($hourRoomStartTime) || empty($hourRoomEndTime)) && $hourRoomStartTime>$hourRoomEndTime){
+        }else if($hourRoomSwitch==1 && (empty($hourRoomStartTime) || empty($hourRoomEndTime)) && $hourRoomStartTime>$hourRoomEndTime){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
-        $model=new MerchantSet();
+        $checkOutTime=$orderAutoClose===1?$checkOutTime:'';
+        $reserveRetentionTime=$reserveSwitch===1?$reserveRetentionTime:0;
+        if(!$hourRoomSwitch){
+            $hourRoomEndTime=$hourRoomEndTime='';
+        }
+        $checkOutTime=$orderAutoClose===1?$checkOutTime:'';
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $model=MerchantSet::findOne(['mch_id'=>$mchId]);
+        if(!$model)$model=new MerchantSet();
         $model->setAttributes([
             'mch_id'=>\Yii::$app->user->getAdmin()->getMchId(),
             'auto_close_switch'=>$orderAutoClose,
@@ -124,7 +132,7 @@ class MerchantController extends Controller {
             'hour_room_start_time'=>$hourRoomStartTime,
             'hour_room_end_time'=>$hourRoomEndTime
         ]);
-        if($model->insert()){
+        if($model->save()){
             return \Yii::$app->responseHelper->success()->response();
         }else{
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_INSERT_FAIL,json_encode($model->getErrors()))->response();

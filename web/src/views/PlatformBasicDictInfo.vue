@@ -81,7 +81,10 @@
                     that.data=res.data().list;
                     that.totalCount=parseInt(res.data().totalCount);
                 }else{
-                    alert(res.error());
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
                 }
             })
         },
@@ -100,7 +103,10 @@
                     if(res.isSuccess()){
                         location.reload();
                     }else{
-                        alert(res.error());
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
                     }
                 })
             }

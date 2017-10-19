@@ -3,8 +3,11 @@ const interfaces={
     'sex':'site/sex',
     'register': 'admin/register',
     'resetMchPwd': 'merchant/admin/reset-password',
-    'adminInfo': 'merchant/admin/info',
-    'adminInfoModify': 'merchant/admin/info-modify',
+    'merchantAdminInfo': 'merchant/admin/info',
+    'merchantAdminInfoModify': 'merchant/admin/info-modify',
+    'resetPlatformPwd':'platform/admin/reset-password',
+    'platformAdminInfo':'platform/admin/info',
+    'platformAdminInfoModify':'platform/admin/info-modify',
     'tips': 'merchant/merchant/feedback',
     'roomList':'merchant/room/list',
     'roomRecord':'merchant/room/record',
@@ -27,7 +30,11 @@ const interfaces={
     'dictionaryItemView':'platform/dictionary/item-view',
     'storeBaseSet':'merchant/merchant/base-info-setting',
     'storeSet':'merchant/merchant/setting',
-    'storeConfig':'merchant/merchant/config'
+    'storeConfig':'merchant/merchant/config',
+    'channelList':'merchant/channel/list',
+    'channelView':'merchant/channel/view',
+    'channelRecord':'merchant/channel/record',
+    'channelDel':'merchant/channel/delete'
 };
 const server={
     'host': 'http://www.hotel.com',

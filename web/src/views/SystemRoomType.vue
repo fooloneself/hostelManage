@@ -92,7 +92,10 @@
                     that.data=res.data().list;
                     that.totalCount=parseInt(res.data().total);
                 }else{
-                    alert(res.error());
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
                 }
             })
         },
@@ -103,10 +106,12 @@
             deleteType:function(id){
                 this.host.post('roomTypeDelete',{id:id}).then(function(res){
                     if(res.isSuccess()){
-                        alert('删除成功');
                         location.reload();
                     }else{
-                        alert(res.error());
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
                     }
                 })
             }

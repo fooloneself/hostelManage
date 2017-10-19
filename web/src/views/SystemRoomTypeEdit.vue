@@ -60,7 +60,10 @@ export default{
                         introduce: res.data().introduce
                     }
                 }else{
-                    alert(res.error());
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
                 }
             })
         }
@@ -71,7 +74,10 @@ export default{
 	            if(res.isSuccess()){
 	                this.$router.push('/roomType');
 	            }else{
-	                alert(res.error());
+	                this.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
 	            }
 	        })
 	    }

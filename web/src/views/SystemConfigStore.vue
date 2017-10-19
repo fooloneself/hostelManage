@@ -148,11 +148,20 @@
                             that.storeBase=res.data().base;
                         }
                         if(res.data().setting){
+                            if(res.data().setting.reserveRetentionTime>0){
+                                var date=new Date(parseInt(res.data().setting.reserveRetentionTime)*1000);
+                                res.data().setting.reserveRetentionTime=that.getHourOfDate(date);
+                            }else{
+                                res.data().setting.reserveRetentionTime='';
+                            }
                             that.storeSetting=res.data().setting;
                         }
                     }
                 }else{
-                    alert(res.error());
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
                 }
             })
         },
@@ -164,32 +173,55 @@
             setStoreBase (){
                 this.host.post('storeBaseSet',this.storeBase).then(function(res){
                     if(res.isSuccess()){
-                        alert('设置成功');
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: '设置成功'
+                        });
                     }else{
-                        alert(res.error());
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
                     }
                 })
             },
-            setSwitch (){
-                function getHour(timestamp){
-                    var date=new Date(timestamp);
-                    return date.getHour()+':'+data.getMinute()+':'+date.getSecond();
+            getHourOfDate(date){
+                if(!date)return '';
+                date=new Date(date);
+                return this.strPad(date.getHours())+':'+this.strPad(date.getMinutes())+':'+this.strPad(date.getSeconds());
+            },
+            strPad (num){
+                if(num<10){
+                    return '0'+num;
+                }else{
+                    return num
                 }
-                console.log(this.storeSetting);return;
+            },
+            getTime(date){
+                if(!date)return 0;
+                return Math.floor(Date.parse(new Date(date))/1000)%86400;
+            },
+            setSwitch (){
                 var param={
                     orderAutoClose: parseInt(this.storeSetting.orderAutoClose),
                     reserveSwitch: parseInt(this.storeSetting.reserveSwitch),
                     hourRoomSwitch: parseInt(this.storeSetting.hourRoomSwitch),
-                    checkOutTime:getHour(this.storeSetting.checkOutTime),
-                    reserveRetentionTime: 0,
-                    hourRoomStartTime:0,
-                    hourRoomEndTime:0
+                    checkOutTime:this.getHourOfDate(this.storeSetting.checkOutTime),
+                    reserveRetentionTime: this.getTime(this.storeSetting.reserveRetentionTime),
+                    hourRoomStartTime:this.getHourOfDate(this.storeSetting.hourRoomRange[0]),
+                    hourRoomEndTime:this.getHourOfDate(this.storeSetting.hourRoomRange[1])
                 }
                 this.host.post('storeSet',param).then(function(res){
                     if(res.isSuccess()){
-                        alert('设置成功');
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: '设置成功'
+                        });
                     }else{
-                        alert(res.error());
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
                     }
                 })
             }

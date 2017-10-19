@@ -121,7 +121,10 @@
     	            that.servers=data.servers;
     	            that.types=data.types;
     	        }else{
-    	            alert(res.error());
+    	            that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
     	        }
     	    })
     	},
@@ -135,7 +138,10 @@
                     if(res.isSuccess()){
                         this.$router.push('/roomList');
                     }else{
-                        alert(res.error());
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
                     }
                 })
             }

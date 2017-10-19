@@ -1,10 +1,10 @@
 <template>
 <div>
-    <Button type="primary">新增</Button>
+    <Button type="primary" @click="turnUrl('/configChannelEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+    <Page :total="dataCount" show-total></Page>
 </div>
 </template>
 <script>
@@ -14,18 +14,22 @@
                 columns: [
                     {
                         title: '序号',
-                        width: 60
+                        width: 60,
+                        key: 'id'
                     },
                     {
                         title: '渠道名称',
-                        width: 200
+                        width: 200,
+                        key: 'name'
                     },
                     {
                         title: '设置佣金',
-                        width: 150
+                        width: 150,
+                        key: 'commission'
                     },
                     {
-                        title: '渠道说明'
+                        title: '渠道说明',
+                        key: 'introduce'
                     },
                     {
                         title: '操作',
@@ -40,7 +44,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('configChannelEdit')
+                                            this.turnUrl('/configChannelEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -48,20 +52,53 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要删除吗？');
+                                            if(res){
+                                                this.delete(params.row.id);
+                                            }
+                                        }
                                     }
                                 }, '删除')
                             ]);
                         }
                     }
                 ],
-                data: [
-                    {},{},{},{},{},{},{},{},{},{}
-                ]
+                data: [],
+                dataCount: 0
             }
         },
+        mounted (){
+            var that=this;
+            this.host.post('channelList').then(function(res){
+                if(res.isSuccess()){
+                    that.dataCount=res.data().totalCount;
+                    that.data=res.data().list;
+                }else{
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
+                }
+            })
+        },
         methods:{
-            turnUrl:function(url,query){
+            turnUrl:function(url){
                 this.$router.push(url)
+            },
+            delete(id){
+                this.host.post('channelDel',{id: id}).then(function(res){
+                    if(res.isSuccess()){
+                        this.$router.go(0);
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
+                    }
+                })
             }
         }
     }

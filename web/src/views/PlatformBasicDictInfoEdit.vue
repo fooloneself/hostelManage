@@ -45,7 +45,10 @@ export default{
             if(res.isSuccess()){
                 if(res.data()!=null)that.label=res.data().label;
             }else{
-                alert(res.error());
+                that.$Notice.info({
+                    title: '提示',
+                    desc: res.error()
+                });
             }
 	    })
 	    if(this.$route.params.id>0){
@@ -57,7 +60,10 @@ export default{
                         that.formItem.order=res.data().order;
                     }
                 }else{
-                    alert(res.error());
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
                 }
             })
 	    }

@@ -35,10 +35,16 @@ export default{
 	        var that=this;
 	        this.host.post('resetMchPwd',this.formItem).then(function(res){
 	            if(res.isSuccess()){
-	                alert('密码重置成功');
+	                this.$Notice.info({
+                        title: '提示',
+                        desc: '重置密码成功'
+                    });
 	                that.form={};
 	            }else{
-	                alert(res.error());
+	                this.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
 	            }
 	        })
 	    }

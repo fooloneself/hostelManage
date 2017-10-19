@@ -11,7 +11,7 @@ class ChannelController extends Controller{
      * @return mixed
      */
     public function actionRecord(){
-        $label=\Yii::$app->requestHelper->post('label');
+        $name=\Yii::$app->requestHelper->post('name');
         $commission=\Yii::$app->requestHelper->post('commission');
         $introduce=\Yii::$app->requestHelper->post('introduce','');
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
@@ -21,15 +21,15 @@ class ChannelController extends Controller{
             if(empty($channel)){
                 return \Yii::$app->responseHelper->error(ErrorManager::ERROR_CHANNEL_NOT_EXISTS)->response();
             }
-            $channel->setAttributes(['commission'=>$commission,'name'=>$label,'introduce'=>$introduce]);
-            if($channel->save(false)){
+            $channel->setAttributes(['commission'=>$commission,'name'=>$name,'introduce'=>$introduce]);
+            if($channel->update(false)){
                 return \Yii::$app->responseHelper->success()->response();
             }else{
                 return \Yii::$app->responseHelper->error(ErrorManager::ERROR_UPDATE_FAIL)->response();
             }
         }else{
             $channel=new Channel();
-            $channel->setAttributes(['commission'=>$commission,'name'=>$label,'introduce'=>$introduce,'mch_id'=>$mchId]);
+            $channel->setAttributes(['commission'=>$commission,'name'=>$name,'introduce'=>$introduce,'mch_id'=>$mchId]);
             if($channel->insert(false)){
                 return \Yii::$app->responseHelper->success()->response();
             }else{
@@ -59,9 +59,28 @@ class ChannelController extends Controller{
      * 渠道列表
      * @return mixed
      */
-    public function actionView(){
+    public function actionList(){
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
-        $list=Channel::find()->where(['mch_id'=>$mchId])->asArray()->all();
-        return \Yii::$app->responseHelper->success($list)->response();
+        $query=Channel::find()->where(['mch_id'=>$mchId]);
+        $totalCount=intval($query->count());
+        $list=$query->asArray()->all();
+        return \Yii::$app->responseHelper->success([
+            'totalCount'=>$totalCount,
+            'list'=>$list
+        ])->response();
+    }
+
+    /**
+     * 渠道信息
+     * @return mixed
+     */
+    public function actionView(){
+        $channelId=\Yii::$app->requestHelper->post("id",0,'int');
+        if($channelId<=0){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $channel=Channel::find()->where(['id'=>$channelId,'mch_id'=>$mchId])->asArray()->one();
+        return \Yii::$app->responseHelper->success($channel)->response();
     }
 }

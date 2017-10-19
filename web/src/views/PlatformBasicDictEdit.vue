@@ -46,7 +46,10 @@ export default{
                         that.formItem.introduce=res.data().introduce;
 	                }
 	            }else{
-	                alert(res.errro());
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
 	            }
 	        })
 	    }
@@ -59,10 +62,12 @@ export default{
 		    var that=this;
 		    this.host.post('dictionaryRecord',this.formItem).then(function(res){
 		        if(res.isSuccess()){
-		            alert("操作成功");
 		            that.goBack();
 		        }else{
-		            alert(res.error());
+		            this.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    });
 		        }
 		    })
 		}
