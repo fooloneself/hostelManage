@@ -2,6 +2,7 @@
 namespace modules\merchant\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
+use common\models\Feedback;
 use common\models\MerchantSet;
 use service\merchant\Merchant;
 
