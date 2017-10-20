@@ -19,21 +19,21 @@ class ErrorManager extends Component{
     const ERROR_LOGIN_EXPIRE                =100011;
     const ERROR_INTERFACE_UN_OPEN           =100012;
     const ERROR_INTERFACE_ERROR             =100013;
-    const ERROR_USER_EXISTS                 =1000014;
-    const ERROR_DICTIONARY_KEY_EXISTS      =1000015;
-    const ERROR_DELETE_FAIL                 =1000016;
-    const ERROR_DICTIONARY_KEY_NOT_EXISTS =1000017;
-    const ERROR_UPDATE_FAIL                 =1000018;
-    const ERROR_MENU_NOT_EXISTS             =1000019;
-    const ERROR_DELETE_CANNOT               =1000020;
-    const ERROR_PARAM_WRONG                 =1000021;
-    const ERROR_ACCOUNT_ERROR                =1000022;
-    const ERROR_MENU_EXISTS                 =1000023;
-    const ERROR_CHANNEL_EXISTS              =1000024;
-    const ERROR_CHANNEL_NOT_EXISTS         =1000025;
-    const ERROR_NOT_EXISTS                  =1000026;
-    const ERROR_EXISTS                      =1000027;
-    const ERROR_OPERATE_FAIL                =1000028;
+    const ERROR_USER_EXISTS                 =100014;
+    const ERROR_DICTIONARY_KEY_EXISTS      =100015;
+    const ERROR_DELETE_FAIL                 =100016;
+    const ERROR_DICTIONARY_KEY_NOT_EXISTS =100017;
+    const ERROR_UPDATE_FAIL                 =100018;
+    const ERROR_MENU_NOT_EXISTS             =100019;
+    const ERROR_DELETE_CANNOT               =100020;
+const ERROR_PARAM_WRONG                     =100021;
+    const ERROR_ACCOUNT_ERROR                =100022;
+    const ERROR_MENU_EXISTS                 =100023;
+    const ERROR_CHANNEL_EXISTS              =100024;
+    const ERROR_CHANNEL_NOT_EXISTS         =100025;
+    const ERROR_NOT_EXISTS                  =100026;
+    const ERROR_EXISTS                      =100027;
+    const ERROR_OPERATE_FAIL                =100028;
     //错误信息 common\components\Error的实例
     private $_error;
 

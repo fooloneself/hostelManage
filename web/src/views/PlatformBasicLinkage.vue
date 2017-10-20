@@ -1,10 +1,10 @@
 <template>
 <div>
-    <Button type="primary">新增</Button>
+    <Button @click="turnUrl('/basicLinkageEdit/0')" type="primary">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+    <Page :total="totalCount" :current="current" show-total></Page>
 </div>
 </template>
 <script>
@@ -14,18 +14,22 @@
                 columns: [
                     {
                         title: '序号',
-                        width: 60
+                        width: 60,
+                        key: 'id'
                     },
                     {
                         title: '菜单名称',
-                        width: 180
+                        width: 180,
+                        key: 'label'
                     },
                     {
                         title: '唯一代码',
-                        width: 100
+                        width: 100,
+                        key: 'code'
                     },
                     {
-                        title: '菜单描述'
+                        title: '菜单描述',
+                        key: 'introduce'
                     },
                     {
                         title: '操作',
@@ -40,7 +44,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicLinkageChild')
+                                            this.turnUrl('/basicLinkageChild/'+params.row.code+'/0')
                                         }
                                     }
                                 }, '管理子菜单'),
@@ -51,7 +55,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicLinkageChildEdit')
+                                            this.turnUrl('/basicLinkageChildEdit/'+params.row.code+'/0/0')
                                         }
                                     }
                                 }, '新增子菜单'),
@@ -62,7 +66,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicLinkageEdit')
+                                            this.turnUrl('/basicLinkageEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -70,20 +74,54 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要删除吗？');
+                                            if(res){
+                                                this.delete(params.row.id)
+                                            }
+                                        }
                                     }
                                 }, '删除')
                             ]);
                         }
                     }
                 ],
-                data: [
-                    {},{},{},{},{},{},{},{},{},{}
-                ]
+                data: [],
+                totalCount: 0,
+                current:1
             }
         },
+        mounted(){
+            var that=this;
+            this.host.post('linkageMenuList').then(function(res){
+                if(res.isSuccess()){
+                    that.totalCount=res.data().totalCount;
+                    that.data=res.data().list;
+                }else{
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    })
+                }
+            })
+        },
         methods:{
-            turnUrl:function(url,query){
+            turnUrl:function(url){
                 this.$router.push(url)
+            },
+            delete(id){
+                this.host.post('linkageMenuDelete',{id: id}).then(function(res){
+                    if(res.isSuccess()){
+                        this.$router.go(0);
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        })
+                    }
+                })
             }
         }
     }

@@ -11,18 +11,30 @@ class LinkageMenuController extends Controller{
      * 查看联动菜单
      * @return mixed
      */
-    public function actionView(){
+    public function actionList(){
         $page=\Yii::$app->requestHelper->post('page',1,'int');
         $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $query=LinkageMenu::find();
         $count=intval($query->count());
-        $data=$query->offset(($page-1)*$pageSize)->limit($pageSize);
+        $data=$query->offset(($page-1)*$pageSize)->limit($pageSize)->asArray()->all();
         return \Yii::$app->responseHelper->success([
             'total'=>$count,
             'list'=>$data
         ])->response();
     }
 
+    /**
+     * 菜单信息
+     * @return mixed
+     */
+    public function actionView(){
+        $id=\Yii::$app->requestHelper->post('id',0,'int');
+        if($id<=0){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $menu=LinkageMenu::find()->where(['id'=>$id])->asArray()->one();
+        return \Yii::$app->responseHelper->success($menu)->response();
+    }
     /**
      * 菜单新增、修改
      * @return mixed
@@ -135,7 +147,7 @@ class LinkageMenuController extends Controller{
      * 子菜单列表
      * @return mixed
      */
-    public function actionItemView(){
+    public function actionItemList(){
         $pid=\Yii::$app->requestHelper->post('pid',0);
         $code=\Yii::$app->requestHelper->post('code');
         $page=\Yii::$app->requestHelper->post('page',0);
@@ -152,5 +164,18 @@ class LinkageMenuController extends Controller{
             'total'=>$count,
             'list'=>$list
         ])->response();
+    }
+
+    /**
+     * 联动菜单-子菜单项信息
+     * @return mixed
+     */
+    public function actionItemView(){
+        $id=\Yii::$app->requestHelper->post('id',0,'int');
+        if($id<=0){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $item=LinkageMenuItem::find()->where(['id'=>$id])->asArray()->one();
+        return \Yii::$app->responseHelper->success($item)->response();
     }
 }

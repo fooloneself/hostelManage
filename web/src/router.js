@@ -144,9 +144,16 @@ const system = {
 		{
 			path: 'personNotice',
 	        meta: {
-	            title: '联动菜单 - 子菜单'
+	            title: '公告'
 	        },
         	component: (resolve) => require(['./views/SystemPersonNotice.vue'], resolve)
+		},
+		{
+			path: 'personNoticeInfo/:id',
+				meta: {
+				title: '公告-详情'
+			},
+			component: (resolve) => require(['./views/SystemPersonNoticeInfo.vue'], resolve)
 		},
 		{
 			path: 'personTips',
@@ -154,7 +161,7 @@ const system = {
 	            title: '意见反馈'
 	        },
         	component: (resolve) => require(['./views/SystemPersonTips.vue'], resolve)
-		},
+		}
 	]
 };
 const platform = {
@@ -267,21 +274,21 @@ const platform = {
         	component: (resolve) => require(['./views/PlatformBasicLinkage.vue'], resolve)
 		},
 		{
-			path: 'basicLinkageEdit',
+			path: 'basicLinkageEdit/:id',
 	        meta: {
 	            title: '联动菜单 - 编辑'
 	        },
         	component: (resolve) => require(['./views/PlatformBasicLinkageEdit.vue'], resolve)
 		},
 		{
-			path: 'basicLinkageChild',
+			path: 'basicLinkageChild/:code/:pid',
 	        meta: {
 	            title: '联动菜单 - 子菜单'
 	        },
         	component: (resolve) => require(['./views/PlatformBasicLinkageChild.vue'], resolve)
 		},
 		{
-			path: 'basicLinkageChildEdit',
+			path: 'basicLinkageChildEdit/:code/:pid/:id',
 	        meta: {
 	            title: '联动菜单 - 子菜单编辑'
 	        },
@@ -295,7 +302,7 @@ const platform = {
         	component: (resolve) => require(['./views/PlatformBasicNotice.vue'], resolve)
 		},
 		{
-			path: 'basicNoticeEdit',
+			path: 'basicNoticeEdit/:id',
 	        meta: {
 	            title: '联动菜单 - 子菜单编辑'
 	        },

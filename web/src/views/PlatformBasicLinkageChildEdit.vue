@@ -33,6 +33,11 @@ export default{
 				radio:'0'
 			}
 		}
+	},
+	methods:{
+	    goBack (){
+	        this.$router.go(-1);
+	    }
 	}
 }
 </script>

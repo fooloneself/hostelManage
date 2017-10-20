@@ -34,7 +34,23 @@ const interfaces={
     'channelList':'merchant/channel/list',
     'channelView':'merchant/channel/view',
     'channelRecord':'merchant/channel/record',
-    'channelDel':'merchant/channel/delete'
+    'channelDel':'merchant/channel/delete',
+    'mchNoticeList':'merchant/notice/list',
+    'mchNoticeRead':'merchant/notice/read',
+    'platformNoticeList':'platform/notice/list',
+    'platformNoticeView':'platform/notice/view',
+    'platformNoticeEdit':'platform/notice/edit',
+    'platformNoticePublic':'platform/notice/public',
+    'platformNoticeDelete':'platform/notice/delete',
+    'platformNoticeRevoke':'platform/notice/revoke',
+    'linkageMenuList':'platform/linkage-menu/list',
+    'linkageMenuView':'platform/linkage-menu/view',
+    'linkageMenuRecord':'platform/linkage-menu/record',
+    'linkageMenuDelete':'platform/linkage-menu/delete',
+    'linkageMenuItemList':'platform/linkage-menu/item-list',
+    'linkageMenuItemView':'platform/linkage-menu/item-view',
+    'linkageMenuItemRecord':'platform/linkage-menu/item-record',
+    'linkageMenuItemDelete':'platform/linkage-menu/item-delete'
 };
 const server={
     'host': 'http://www.hotel.com',

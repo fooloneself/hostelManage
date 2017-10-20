@@ -1,10 +1,10 @@
 <template>
 <div>
-    <Button type="primary" @click="turnUrl('basicNoticeEdit')">新增</Button>
+    <Button type="primary" @click="turnUrl('/basicNoticeEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+    <Page :total="totalCount" show-total></Page>
 </div>
 </template>
 <script>
@@ -15,7 +15,7 @@
                     {
                         title: '序号',
                         width: 60,
-                        key: 'index'
+                        key: 'id'
                     },
                     {
                         title: '主题',
@@ -23,14 +23,14 @@
 
                     },
                     {
-                        title: '发送状态',
+                        title: '状态',
                         width: 180,
                         key: 'status'
                     },
                     {
                         title: '发送时间',
                         width: 180,
-                        key: 'date'
+                        key: 'publicDate'
                     },
                     {
                         title: '操作',
@@ -45,7 +45,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicNoticeEdit',{id:params.row.id})
+                                            this.turnUrl('/basicNoticeEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -53,32 +53,105 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要发布吗？');
+                                            if(res){
+                                                this.public(params)
+                                            }
+                                        }
                                     }
                                 }, '发送'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要撤回吗？');
+                                            if(res){
+                                                this.revoke(params)
+                                            }
+                                        }
                                     }
                                 }, '撤回'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要删除吗？');
+                                            if(res){
+                                                this.delete(params)
+                                            }
+                                        }
                                     }
                                 }, '删除')
                             ]);
                         }
                     }
                 ],
-                data: [
-                    {status:'草稿'},{status:'发送'},{status:'撤回'},{},{},{},{},{},{},{}
-                ]
+                data: [],
+                totalCount: 0
             }
+        },
+        mounted (){
+            var that=this;
+            this.host.post('platformNoticeList').then(function(res){
+                if(res.isSuccess()){
+                    that.data=res.data().list;
+                    that.totalCount=res.data().totalCount;
+                }else{
+                    that.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    })
+                }
+            })
         },
         methods:{
             turnUrl:function(url,query){
                 this.$router.push(url)
+            },
+            public (param){
+                this.host.post('platformNoticePublic',{id:param.row.id}).then(function(res){
+                    if(res.isSuccess()){
+                        param.row.status='发布';
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        })
+                    }
+                })
+            },
+            revoke (param){
+                this.host.post('platformNoticeRevoke',{id:param.row.id}).then(function(res){
+                    if(res.isSuccess()){
+                        param.row.status='撤回';
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        })
+                    }
+                })
+            },
+            delete (param){
+                this.host.post('platformNoticeDelete',{id:param.row.id}).then(function(res){
+                    if(res.isSuccess()){
+                        location.reload();
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        })
+                    }
+                })
             }
         }
     }
