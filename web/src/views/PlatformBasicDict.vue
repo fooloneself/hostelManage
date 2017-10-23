@@ -56,7 +56,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicDictInfoEdit/'+params.row.code)
+                                            this.turnUrl('/basicDictInfoEdit/'+params.row.code+'/0')
                                         }
                                     }
                                 }, '添加数据'),

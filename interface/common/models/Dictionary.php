@@ -16,6 +16,7 @@ class Dictionary extends \common\components\ActiveRecord
 {
     const DICTIONARY_SEX='sex';
     const DICTIONARY_ROOM_SERVER='room_server';
+    const DICTIONARY_NUMBER_TYPE='number_type';
     /**
      * @inheritdoc
      */

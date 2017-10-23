@@ -94,7 +94,7 @@ class LinkageMenuController extends Controller{
      * 删除子菜单
      * @return mixed
      */
-    public function actionDeleteItem(){
+    public function actionItemDelete(){
         $id=\Yii::$app->requestHelper->post('id');
         $model=LinkageMenuItem::findOne(['id'=>$id]);
         $child=LinkageMenuItem::find()->where(['pid'=>$id])->count();
@@ -160,8 +160,13 @@ class LinkageMenuController extends Controller{
             ->where(['lmi.code'=>$code,'lmi.pid'=>$pid]);
         $count=$query->count();
         $list=$query->orderBy('lmi.order asc')->limit($pageSize)->offset(($page-1)*$pageSize)->asArray()->all();
+        $parentItem=null;
+        if($pid>0){
+            $parentItem=LinkageMenuItem::find()->where(['id'=>$pid])->asArray()->one();
+        }
         return \Yii::$app->responseHelper->success([
             'total'=>$count,
+            'parentItem'=>$parentItem,
             'list'=>$list
         ])->response();
     }
@@ -172,10 +177,18 @@ class LinkageMenuController extends Controller{
      */
     public function actionItemView(){
         $id=\Yii::$app->requestHelper->post('id',0,'int');
-        if($id<=0){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        $pid=\Yii::$app->requestHelper->post('pid',0,'int');
+        $item=null;
+        $parent=null;
+        if($id>0){
+            $item=LinkageMenuItem::find()->where(['id'=>$id])->asArray()->one();
         }
-        $item=LinkageMenuItem::find()->where(['id'=>$id])->asArray()->one();
-        return \Yii::$app->responseHelper->success($item)->response();
+        if($pid>0){
+            $parent=LinkageMenuItem::find()->where(['id'=>$pid])->asArray()->one();
+        }
+        return \Yii::$app->responseHelper->success([
+            'current'=>$item,
+            'parent'=>$parent
+        ])->response();
     }
 }

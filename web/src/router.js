@@ -52,7 +52,7 @@ const store = {
         	component: (resolve) => require(['./views/StoreMemberList.vue'], resolve)
 		},
 		{
-			path: 'memberListEdit',
+			path: 'memberListEdit/:id',
 	        meta: {
 	            title: '会员列表 - 编辑'
 	        },

@@ -2,7 +2,7 @@
 <div>
     <Row>
         <Col span="6">
-            <Button type="primary">新增</Button>
+            <Button @click="turnUrl('/memberListEdit/0')" type="primary">新增</Button>
         </Col>
         <Col span="18" class="tr">
             <Form inline>
@@ -27,7 +27,7 @@
         <Col span="24">
             <Table :columns="columns" :data="data" stripe></Table>
             <div class="mb"></div>
-            <Page :total="100" show-total></Page>
+            <Page :total="totalCount" show-total></Page>
         </Col>
     </Row>
 </div>
@@ -39,38 +39,47 @@
                 columns: [
                     {
                         title: '序号',
-                        width: 60
+                        width: 60,
+                        key: 'id'
                     },
                     {
-                        title: '人员姓名'
+                        title: '人员姓名',
+                        key: 'name'
                     },
                     {
                         title: '手机号',
-                        width: 120
+                        width: 120,
+                        key: 'mobile'
                     },
                     {
                         title: '微信号',
-                        width: 120
+                        width: 120,
+                        key: 'wx_account'
                     },
                     {
                         title: '生日',
-                        width: 120
+                        width: 120,
+                        key: 'birthday'
                     },
                     {
                         title: '会员等级',
-                        width: 120
+                        width: 120,
+                        key: 'rank'
                     },
                     {
                         title: '消费金额',
-                        width: 120
+                        width: 120,
+                        key: 'consumption_amount'
                     },
                     {
                         title: '积分',
-                        width: 80
+                        width: 80,
+                        key: 'integral'
                     },
                     {
                         title: '注册时间',
-                        width: 120
+                        width: 120,
+                        key: 'register_date'
                     },
                     {
                         title: '操作',
@@ -86,7 +95,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('memberListEdit')
+                                            this.turnUrl('/memberListEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -94,6 +103,14 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要删除吗？');
+                                            if(res){
+                                                this.delete(params.row.id);
+                                            }
+                                        }
                                     }
                                 }, '删除'),
                                 h('Button', {
@@ -106,14 +123,39 @@
                         }
                     }
                 ],
-                data: [
-                    {},{},{},{},{},{},{},{},{},{}
-                ]
+                data: [],
+                totalCount: 0
             }
         },
+        mounted (){
+            var that=this;
+            this.host.post('merchantMemberList').then(function(res){
+                if(res.isSuccess()){
+                    that.data=res.data().list;
+                    that.totalCount=res.data().totalCount;
+                }else{
+                    that.$Notice.info({
+                        title:'提示',
+                        desc:res.error()
+                    })
+                }
+            })
+        },
         methods:{
-            turnUrl:function(url,query){
+            turnUrl:function(url){
                 this.$router.push(url)
+            },
+            delete (id){
+                this.host.post('merchantMemberDelete',{id: id}).then(function(res){
+                    if(res.isSuccess()){
+                        this.$router.go(0);
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        })
+                    }
+                })
             }
         }
     }

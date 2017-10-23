@@ -50,7 +50,11 @@ const interfaces={
     'linkageMenuItemList':'platform/linkage-menu/item-list',
     'linkageMenuItemView':'platform/linkage-menu/item-view',
     'linkageMenuItemRecord':'platform/linkage-menu/item-record',
-    'linkageMenuItemDelete':'platform/linkage-menu/item-delete'
+    'linkageMenuItemDelete':'platform/linkage-menu/item-delete',
+    'merchantMemberList':'merchant/member/list',
+    'merchantMemberEdit':'merchant/member/record',
+    'merchantMemberDelete':'merchant/member/delete',
+    'merchantMemberEditInfo':'merchant/member/edit-page-info'
 };
 const server={
     'host': 'http://www.hotel.com',

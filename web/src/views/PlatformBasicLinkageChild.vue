@@ -81,30 +81,29 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            var res=confirm('确定要删除吗？');
+                                            if(res){
+                                                this.delete(params.row.id);
+                                            }
+                                        }
                                     }
                                 }, '删除')
                             ]);
                         }
                     }
                 ],
+                parentItem: null,
                 data: [],
                 totalCount: 0
             }
         },
         mounted(){
-            var that=this;
-            this.host.post('linkageMenuItemList',{code: this.$route.params.code,pid:this.$route.params.pid}).then(function(res){
-                if(res.isSuccess()){
-                    that.totalCount=res.data().totalCount;
-                    that.data=res.data().list;
-                }else{
-                    that.$Notice.info({
-                        title:'提示',
-                        desc: res.error()
-                    })
-                }
-            })
+            this.refresh();
         },
+
         methods:{
             turnUrl:function(url){
                 this.$router.push(url);
@@ -113,7 +112,40 @@
                 this.$router.push('/basicLinkageChildEdit/'+this.$route.params.code+'/'+this.$route.params.pid+'/0');
             },
             goUp:function(){
+                if(this.parentItem){
+                    this.turnUrl('/basicLinkageChild/'+this.$route.params.code+'/'+this.parentItem.pid);
+                }
+            },
+            refresh (){
+                var that=this;
+                this.host.post('linkageMenuItemList',{code: this.$route.params.code,pid:this.$route.params.pid}).then(function(res){
+                    if(res.isSuccess()){
+                        that.totalCount=res.data().totalCount;
+                        that.data=res.data().list;
+                        that.parentItem=res.data().parentItem;
+                    }else{
+                        that.$Notice.info({
+                            title:'提示',
+                            desc: res.error()
+                        })
+                    }
+                })
+            },
+            delete (id){
+                this.host.post('linkageMenuItemDelete',{id: id}).then(function(res){
+                    if(res.isSuccess()){
+                        this.$router.go(0);
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        })
+                    }
+                })
             }
+        },
+        watch:{
+            '$route':'refresh'
         }
     }
 </script>

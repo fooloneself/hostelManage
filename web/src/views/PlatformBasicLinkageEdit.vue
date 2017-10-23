@@ -43,7 +43,7 @@ export default{
 	                if(res.data()){
                         that.formItem.code=res.data().code;
                         that.formItem.label=res.data().label;
-                        that.formItem.code=introduce.data().introduce;
+                        that.formItem.introduce=res.data().introduce;
 	                }
 	            }else{
 	                that.$Notice.info({
