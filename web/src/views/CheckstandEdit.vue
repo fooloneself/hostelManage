@@ -13,7 +13,8 @@
 
 <template>
 <div class="layout-body">
-	<div class="container">
+	<div class="container-body">
+		<div class="mb"></div>
 		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
 		<div class="mb"></div>
 		<Row>

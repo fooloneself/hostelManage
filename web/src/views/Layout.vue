@@ -2,26 +2,25 @@
 .layout-nav{
     height: 60px;
     line-height: 60px;
-    color: #FFF;
-    background: #34495E;
+    border-bottom: 1px solid #dddee1;
+    background: #FFF;
     min-width: 1208px;
+    position: relative;
+    z-index: auto;
     .logo{
         height: 60px;
         line-height: 60px;
-        a{
-            font-size: 18px;
-            margin-left: 8px;
+        img{
+            height: 26px;
+            margin-top: 17px;
         }
     }
     a{
-        color: #FFF;
         font-size: 14px;
+        color: #16A085;
     }
     .menu{
-        width: 384px;
-        margin: 0 auto;
-        background: #34495E;
-        z-index: auto;
+        background: #FFF;
     }
 }
 </style>
@@ -29,19 +28,21 @@
 <template>
     <div>
         <div class="layout-nav">
-            <div class="container">
+            <div class="container-body">
                 <Row>
                     <Col span="4">
                         <div class="logo">
-                            <router-link to="">优客满客房管理系统</router-link>
+                            <router-link to="">
+                                <img src="../images/logo.png" alt="">
+                            </router-link>
                         </div>
                     </Col>
                     <Col span="16">
-                        <Menu mode="horizontal" theme="dark" active-name="checkstand" @on-select="turnUrl" class="menu">
-                            <MenuItem name="/checkstand">客房登记</MenuItem>
-                            <MenuItem name="/orderIn">门店管理</MenuItem>
-                            <MenuItem name="/personInfo">系统设置</MenuItem>
-                            <MenuItem name="/managerInfo">平台管理</MenuItem>
+                        <Menu mode="horizontal" active-name="checkstand" @on-select="turnUrl" class="menu">
+                            <MenuItem name="checkstand">客房登记</MenuItem>
+                            <MenuItem name="orderIn">门店管理</MenuItem>
+                            <MenuItem name="personInfo">系统设置</MenuItem>
+                            <MenuItem name="managerInfo">平台管理</MenuItem>
                         </Menu>
                     </Col>
                     <Col span="4" class="tr">
