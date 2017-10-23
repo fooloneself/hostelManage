@@ -358,7 +358,14 @@ const routers = [
         meta: {
             title: '登录'
         },
-        component: (resolve) => require(['./views/Login.vue'], resolve)
+        component: (resolve) => require(['./views/SignIn.vue'], resolve)
+    },
+    {
+        path: '/register',
+        meta: {
+            title: '登录'
+        },
+        component: (resolve) => require(['./views/SignUp.vue'], resolve)
     }
 ];
 export default routers;

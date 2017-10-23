@@ -1,22 +1,31 @@
 <style scoped>
+.pick-area{
+	position: absolute;
+	top: 60px;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: #FFF;
+}
 .date-pick{
-	background: #dddee1;
+	background: url('../images/bj.png');
 	padding-top: 10px;
 	padding-bottom: 10px;
     min-width: 1208px;
     font-weight: bolder;
     .current{
-    	color: #49D0B5;
+    	color: #000;
     }
 }
 .room-pick{
 	cursor: pointer;
 	height: 100px;
 	.room{
-		border: 1px solid #dddee1;
 		position: relative;
 		height: 84px;
+		background: #FFF;
 		border-radius: 5px;
+		border: 1px solid #dddee1;
 		&:hover{
 			background: #dddee1;
 		}
@@ -67,10 +76,10 @@
 }
 </style>
 <template>
-<div style="position: relative;">
+<div class="pick-area">
 	<Spin size="large" fix v-if="spinShow"></Spin>
 	<Row class="date-pick">
-		<div class="container mlr">
+		<div class="container-body mlr">
 			<Col span="2" class="tc">
 				<Icon type="calendar" size="34"></Icon>
 			</Col>
@@ -83,7 +92,7 @@
 		</div>
 	</Row>
 	<div class="mb"></div>
-	<div class="container mlr">
+	<div class="container-body mlr">
 		<Row>
 			<Col span="12">
 				<ButtonGroup size="small">
