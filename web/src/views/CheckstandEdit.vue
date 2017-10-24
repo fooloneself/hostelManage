@@ -15,8 +15,6 @@
 <div class="layout-body">
 	<div class="container-body">
 		<div class="mb"></div>
-		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
-		<div class="mb"></div>
 		<Row>
 			<Col span="4">
 			    <Row :gutter="16" class="order-info">
@@ -35,6 +33,7 @@
 			    </Row>
 			</Col>
 			<Col span="10" offset="1">
+				<div class="mb"></div>
 				<Form label-position="top">
 					<FormItem label="入住人信息：">
 						<Row :gutter="8">
@@ -173,6 +172,7 @@
 			        </FormItem>
 					<FormItem>
 			            <Button type="primary" @click="goBack">确认</Button>
+                        <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 			        </FormItem>
 			    </Form>
 			</Col>

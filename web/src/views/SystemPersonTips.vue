@@ -1,13 +1,21 @@
 <template>
 	<Row>
+		<Col span="24">
+			<Alert show-icon>
+		        <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
+		        <template slot="desc">
+					对系统有什么建议和想法可以通过下面的文本框反馈给我们，感谢您的反馈！
+		        </template>
+		    </Alert>
+		    <div class="mb"></div>
+		</Col>
 		<Col span="12">
 			<Form :model="formItem" label-position="right" :label-width="80">
 				<FormItem label="建议&意见：">
 		            <Input v-model="formItem.content" type="textarea" :rows="10"></Input>
 		        </FormItem>
 				<FormItem>
-		            <Button type="primary" @click="submit">保存</Button>
-		            <Button type="ghost" style="margin-left: 8px">返回</Button>
+		            <Button type="primary" @click="submit">提交</Button>
 		        </FormItem>
 		    </Form>
 		</Col>

@@ -1,8 +1,18 @@
+<style scoped>
+.title{
+    height: 37px;
+    line-height: 37px;
+    font-weight: bolder;
+}
+</style>
+
 <template>
+<div>
 	<Tabs value="week">
+        <span class="title" slot="extra">房屋类型：豪华大床房</span>
         <TabPane label="周价格浮动" name="week">
 	        <Row>
-	        	<Col span="12">
+	        	<Col span="10">
 			        <Form v-model="formItem" label-position="right" :label-width="80">
 						<FormItem label="周一价格：">
 							<Input v-model="formItem.monday"></Input>
@@ -27,7 +37,7 @@
 				        </FormItem>
 						<FormItem>
 					        <Button @click="submit" type="primary">保存</Button>
-					        <Button type="ghost" style="margin-left: 8px">返回</Button>
+                            <Button type="ghost" class="icon-ml">返回</Button>
 					    </FormItem>
 				    </Form>
 	        	</Col>
@@ -35,27 +45,37 @@
         </TabPane>
         <TabPane label="日价格浮动" name="day">
         <Row>
-        	<Col span="10">
+        	<Col span="6">
         		<Form label-position="right" :label-width="80">
-					<FormItem label="当前日期：">2017-07-09 星期四</FormItem>
+					<FormItem label="日期范围：">
+						<DatePicker type="daterange"></DatePicker>
+					</FormItem>
 					<FormItem label="浮动价格：">
 						<Input></Input>
 			        </FormItem>
 					<FormItem label="浮动说明：">
-						<Input type="textarea" :rows="10"></Input>
+						<Input type="textarea" :rows="14"></Input>
 			        </FormItem>
 					<FormItem>
-				        <Button type="primary">保存</Button>
-				        <Button type="ghost" style="margin-left: 8px">返回</Button>
+				        <Button type="primary">添加</Button>
+                        <Button type="ghost" class="icon-ml">返回</Button>
 				    </FormItem>
 			    </Form>
         	</Col>
-        	<Col span="14">
-				日历
+        	<Col span="17" offset="1">
+        		<Form inline class="tr">
+					<FormItem>
+						<DatePicker type="date" placeholder="请选择查询日期"></DatePicker>
+					</FormItem>
+			    </Form>
+				<Table :columns="columns" :data="data" stripe></Table>
+			    <div class="mb"></div>
+			    <Page :total="100" show-total></Page>
         	</Col>
         </Row>
         </TabPane>
     </Tabs>
+</div>
 </template>
 
 <script>
@@ -71,7 +91,48 @@
                     friday: null,
                     saturday: null,
                     sunday: null
-                }
+                },
+                columns: [
+                    {
+                        title: '序号',
+                        width: 60
+                    },
+                    {
+                        title: '日期范围',
+                        width: 140
+                    },
+                    {
+                        title: '价格',
+                        width: 60
+                    },
+                    {
+                        title: '说明'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 120,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    }
+                                }, '编辑'),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    }
+                                }, '删除')
+                            ]);
+                        }
+                    }
+                ],
+                data: [
+                    {},{},{},{},{},{},{},{}
+                ]
 	        }
 	    },
 	    mounted (){

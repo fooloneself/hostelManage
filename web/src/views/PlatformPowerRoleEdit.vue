@@ -1,9 +1,5 @@
 <template>
 <Row :gutter="24">
-	<Col span="24">
-		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
-		<div class="mb"></div>
-	</Col>
 	<Col span="10">
 		<Form label-position="right" :label-width="80">
 			<FormItem label="角色名称：">
@@ -12,15 +8,18 @@
 			<FormItem label="角色代码：">
 				<Input></Input>
 	        </FormItem>
-			<FormItem label="有效期限：">
-				<DatePicker type="daterange"></DatePicker>
+	        <FormItem label="门店可选：">
+				<RadioGroup v-model="formItem.radio">
+	                <Radio label="0">是</Radio>
+	                <Radio label="1">否</Radio>
+	            </RadioGroup>
 	        </FormItem>
 			<FormItem label="菜单说明：">
 	            <Input type="textarea" :rows="10"></Input>
 	        </FormItem>
 			<FormItem>
 	            <Button type="primary">保存</Button>
-	            <Button type="ghost" style="margin-left: 8px">返回</Button>
+                <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 	        </FormItem>
 	    </Form>		
 	</Col>
@@ -35,6 +34,9 @@
 export default{
 	data () {
 		return {
+			formItem:{
+				radio:'0'
+			},
 			baseData: [{
                 expand: true,
                 title: 'parent 1',

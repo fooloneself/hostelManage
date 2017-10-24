@@ -39,7 +39,7 @@
                         title: '操作',
                         key: 'action',
                         fixed: 'right',
-                        width: 300,
+                        width: 280,
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
@@ -75,6 +75,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerAccountRoleEdit')
+                                        }
                                     }
                                 }, '分配角色')
                             ]);

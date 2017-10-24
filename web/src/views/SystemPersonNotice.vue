@@ -1,6 +1,5 @@
 <template>
 <div>
-    <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
     <Page :total="totalCount" show-total></Page>

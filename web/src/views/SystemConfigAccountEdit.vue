@@ -8,8 +8,12 @@
 			<FormItem label="密码：">
 				<Input type="password"></Input>
 	        </FormItem>
-			<FormItem label="有效期限：">
-				<DatePicker type="daterange"></DatePicker>
+			<FormItem label="分配角色：">
+				<Select placeholder="请选择角色">
+                    <Option>收银员</Option>
+                    <Option>收银员</Option>
+                    <Option>收银员</Option>
+                </Select>
 	        </FormItem>
 			<FormItem label="姓名：">
 				<Input></Input>

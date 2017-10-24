@@ -28,7 +28,7 @@
 </style>
 
 <template>
-    <Tabs value="info" type="card">
+    <Tabs value="info">
         <TabPane label="基本信息" name="info">
             <Row>
                 <Col span="12">

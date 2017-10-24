@@ -1,9 +1,5 @@
 <template>
 <Row>
-	<Col span="24">
-		<Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
-		<div class="mb"></div>
-	</Col>
 	<Col span="12">
 		<Form :model="formItem" label-position="right" :label-width="80">
 			<FormItem label="父级菜单：" v-if="parent">{{parent.label}}</FormItem>
@@ -18,6 +14,7 @@
 	        </FormItem>
 			<FormItem>
 	            <Button @click="submit" type="primary">保存</Button>
+                <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 	        </FormItem>
 	    </Form>
 	</Col>

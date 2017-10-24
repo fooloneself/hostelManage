@@ -32,6 +32,9 @@
                     <MenuItem name="configChannel">
                         <i class="fa fa-cog fa-fw" aria-hidden="true"></i>渠道配置
                     </MenuItem>
+                    <MenuItem name="configAccount">
+                        <i class="fa fa-cog fa-fw" aria-hidden="true"></i>账号配置
+                    </MenuItem>
                 </MenuGroup>
             </Menu>
         </Col>

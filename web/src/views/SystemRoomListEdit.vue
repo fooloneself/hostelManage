@@ -28,7 +28,7 @@
 </style>
 
 <template>
-    <Tabs value="info" type="card">
+    <Tabs value="info">
         <TabPane label="基本信息" name="info">
             <Row>
                 <Col span="12">
@@ -57,7 +57,7 @@
                         </FormItem>
                         <FormItem>
                             <Button @click="baseSubmit" type="primary">保存</Button>
-                            <Button type="ghost" style="margin-left: 8px">返回</Button>
+                            <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
                         </FormItem>
                     </Form>
                 </Col>

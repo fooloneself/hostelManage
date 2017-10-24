@@ -2,18 +2,18 @@
 <div>
     <Row>
         <Col span="24">
-            <Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
-            <div class="mb"></div>
-        </Col>
-    </Row>
-    <Row>
-        <Col span="24">
             <h3>{{title}}</h3>
         </Col>
     </Row>
     <Row>
         <Col span="24">
             <p>{{content}}</p>
+        </Col>
+    </Row>
+    <Row>
+        <Col span="24">
+            <div class="mb"></div>
+            <Button type="ghost" @click="goBack">返回</Button>
         </Col>
     </Row>
 </div>

@@ -1,17 +1,10 @@
 <template>
 <div>
-    <Tabs value="today">
-        <TabPane label="今日" name="today">
-            <Table :columns="columns" :data="data" stripe></Table>
-            <div class="mb"></div>
-            <Page :total="100" show-total></Page>
-        </TabPane>
-        <TabPane label="明日" name="tomorrow">
-            <Table :columns="columns" :data="data" stripe></Table>
-            <div class="mb"></div>
-            <Page :total="100" show-total></Page>
-        </TabPane>
-    </Tabs>
+    <Button type="primary">新增</Button>
+    <div class="mb"></div>
+    <Table :columns="columns" :data="data" stripe></Table>
+    <div class="mb"></div>
+    <Page :total="100" show-total></Page>
 </div>
 </template>
 <script>
@@ -24,61 +17,56 @@
                         width: 60
                     },
                     {
-                        title: '客人来源',
-                        width: 120
+                        title: '登录账号'
                     },
                     {
-                        title: '入住/退房时间',
-                        width: 180
+                        title: '姓名',
+                        width: 200
                     },
                     {
-                        title: '支付方式',
-                        width: 100
+                        title: '分配角色',
+                        width: 200
                     },
                     {
-                        title: '房间类型'
-                    },
-                    {
-                        title: '房号',
-                        width: 100
-                    },
-                    {
-                        title: '费用共计',
-                        width: 100
-                    },
-                    {
-                        title: '入住人',
-                        width: 100
-                    },
-                    {
-                        title: '手机号',
-                        width: 100
+                        title: '数据状态',
+                        width: 200
                     },
                     {
                         title: '操作',
                         key: 'action',
                         fixed: 'right',
-                        width: 160,
+                        width: 240,
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('configAccountEdit')
+                                        }
                                     }
-                                }, '查看'),
+                                }, '编辑'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
                                     }
-                                }, '续住'),
+                                }, '删除'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
                                     }
-                                }, '退房')
+                                }, '停用'),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    }
+                                }, '重置密码')
                             ]);
                         }
                     }

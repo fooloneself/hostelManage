@@ -35,7 +35,7 @@
                         title: '操作',
                         key: 'action',
                         fixed: 'right',
-                        width: 330,
+                        width: 260,
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
@@ -76,14 +76,13 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('powerRoleAccountEdit')
+                                        }
                                     }
-                                }, '分配账号'),
-                                h('Button', {
-                                    props: {
-                                        type: 'text',
-                                        size: 'small'
-                                    }
-                                }, '账号列表')
+                                }, '分配账号')
                             ]);
                         }
                     }

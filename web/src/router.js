@@ -93,6 +93,20 @@ const system = {
         	component: (resolve) => require(['./views/SystemConfigChannelEdit.vue'], resolve)
 		},
 		{
+			path: 'configAccount',
+	        meta: {
+	            title: '账号配置'
+	        },
+        	component: (resolve) => require(['./views/SystemConfigAccount.vue'], resolve)
+		},
+		{
+			path: 'configAccountEdit',
+	        meta: {
+	            title: '账号配置 - 编辑'
+	        },
+        	component: (resolve) => require(['./views/SystemConfigAccountEdit.vue'], resolve)
+		},
+		{
 			path: 'roomType',
 	        meta: {
 	            title: '房间类型'
@@ -225,6 +239,13 @@ const platform = {
         	component: (resolve) => require(['./views/PlatformPowerRoleEdit.vue'], resolve)
 		},
 		{
+			path: 'powerRoleAccountEdit',
+	        meta: {
+	            title: '角色配置 - 分配账号'
+	        },
+        	component: (resolve) => require(['./views/PlatformPowerRoleAccountEdit.vue'], resolve)
+		},
+		{
 			path: 'powerAccount',
 	        meta: {
 	            title: '账号管理'
@@ -237,6 +258,13 @@ const platform = {
 	            title: '账号管理 - 编辑'
 	        },
         	component: (resolve) => require(['./views/PlatformPowerAccountEdit.vue'], resolve)
+		},
+		{
+			path: 'powerAccountRoleEdit',
+	        meta: {
+	            title: '账号管理 - 分配角色'
+	        },
+        	component: (resolve) => require(['./views/PlatformPowerAccountRoleEdit.vue'], resolve)
 		},
 		{
 			path: 'basicDict',
