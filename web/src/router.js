@@ -324,14 +324,14 @@ const routers = [
 				component: (resolve) => require(['./views/Checkstand.vue'], resolve)
 	        },
 	        {
-	        	path: 'checkstandEdit',
+	        	path: 'checkstandEdit/:id',
 			    meta: {
 			        title: '客房登记 - 订单编辑'
 			    },
 				component: (resolve) => require(['./views/CheckstandEdit.vue'], resolve)
 	        },
 	        {
-	        	path: 'checkstandView',
+	        	path: 'checkstandView/:id',
 			    meta: {
 			        title: '客房登记 - 订单编辑'
 			    },

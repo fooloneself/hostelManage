@@ -96,62 +96,27 @@
 		<Row>
 			<Col span="12">
 				<ButtonGroup size="small">
-					<Button type="text">全部状态</Button>
-					<Button type="text"><Icon type="record" style="color:#666666"></Icon><span class="icon-ml">空房</span></Button>
-					<Button type="text"><Icon type="record" style="color:#49D0B5"></Icon><span class="icon-ml">入住</span></Button>
-					<Button type="text"><Icon type="record" style="color:#5688D2"></Icon><span class="icon-ml">预订</span></Button>
-					<Button type="text"><Icon type="record" style="color:#FD9A59"></Icon><span class="icon-ml">钟点</span></Button>
-					<Button type="text"><Icon type="record" style="color:#CCCCCC"></Icon><span class="icon-ml">脏房</span></Button>
-					<Button type="text"><Icon type="record" style="color:#EEEEEE"></Icon><span class="icon-ml">锁房</span></Button>
+					<Button @click="selectStatus(-1)" type="text">全部状态</Button>
+					<Button @click="selectStatus(0)" type="text"><Icon type="record" style="color:#666666"></Icon><span class="icon-ml">空房</span></Button>
+					<Button @click="selectStatus(4)" type="text"><Icon type="record" style="color:#49D0B5"></Icon><span class="icon-ml">入住</span></Button>
+					<Button @click="selectStatus(3)" type="text"><Icon type="record" style="color:#5688D2"></Icon><span class="icon-ml">预订</span></Button>
+					<Button @click="selectStatus(1)" type="text"><Icon type="record" style="color:#CCCCCC"></Icon><span class="icon-ml">脏房</span></Button>
+					<Button @click="selectStatus(2)" type="text"><Icon type="record" style="color:#EEEEEE"></Icon><span class="icon-ml">锁房</span></Button>
 				</ButtonGroup>
 			</Col>
 			<Col span="12" class="tr">
 				<ButtonGroup size="small">
-					<Button type="text">全部房型</Button>
-					<Button type="text">普通房</Button>
-					<Button type="text">大床房</Button>
-					<Button type="text">麻将房</Button>
-					<Button type="text">套房</Button>
-					<Button type="text">豪华房</Button>
+					<Button @click="selectType(0)" type="text">全部房型</Button>
+					<Button v-for="type in types" @click="selectType(type.id)" type="text">{{type.name}}</Button>
 				</ButtonGroup>
 			</Col>
 		</Row>
 		<div class="mb"></div>
 		<Row :gutter="16">
-			<Col span="2" class="room-pick">
-				<div class="room room-in" @click="turnUrl('checkstandView')">
-					<div class="type">普通房</div>
-					<div class="number">201</div>
-				</div>
-			</Col>
-			<Col span="2" class="room-pick">
-				<div class="room room-order" @click="turnUrl('checkstandView')">
-					<div class="type">普通房</div>
-					<div class="number">201</div>
-				</div>
-			</Col>
-			<Col span="2" class="room-pick">
-				<div class="room room-clock" @click="turnUrl('checkstandView')">
-					<div class="type">普通房</div>
-					<div class="number">201</div>
-				</div>
-			</Col>
-			<Col span="2" class="room-pick">
-				<div class="room room-dirty" @click="modalShow=true">
-					<div class="type">普通房</div>
-					<div class="number">201</div>
-				</div>
-			</Col>
-			<Col span="2" class="room-pick">
-				<div class="room room-lock">
-					<div class="type">普通房</div>
-					<div class="number">201</div>
-				</div>
-			</Col>
-			<Col span="2" class="room-pick" v-for="i in rooms">
-				<div class="room" @click="turnUrl('checkstandEdit')">
-					<div class="type">普通房</div>
-					<div class="number">201</div>
+			<Col v-for="room in rooms" span="2" class="room-pick">
+				<div class="room" :class="getClass(room.status)" @click="roomClick(room.id,room.status)">
+					<div class="type">{{room.typeName}}</div>
+					<div class="number">{{room.number}}</div>
 				</div>
 			</Col>
 		</Row>
@@ -167,20 +132,90 @@ export default{
 		return {
 			modalShow: false,
 			spinShow: false,
-			rooms: 36,
-			weekday: ['二','三','四','五','六','日','一','二','三','四']
+			weekday: ['二','三','四','五','六','日','一','二','三','四'],
+			rooms: [],
+			types: [],
+			filter:{
+			    time: 0,
+			    status: -1,
+			    type: 0
+			}
 		}
 	},
-	beforeCreate (){
-	    this.host.post('resetMchPwd',{}).then(function(res){
-	    });
-	    this.host.post('resetMchPwd',{}).then(function(res){
-
-	    });
+	mounted(){
+	    var that=this;
+	    this.host.post('checkstandRoomFilter').then(function(res){
+            if(res.isSuccess()){
+                that.types=res.data().types;
+            }else{
+                that.$Notice.info({
+                    title: '提示',
+                    desc: res.error()
+                })
+            }
+	    })
+	    this.refresh();
 	},
 	methods:{
-		turnUrl(url,query){
-            this.$router.push(url)
+        refresh (){
+            var that=this;
+            this.loading();
+            this.host.post('checkstandRoom',this.filter).then(function(res){
+                that.loaded();
+                if(res.isSuccess()){
+                    that.rooms=res.data();
+                }else{
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.error()
+                    })
+                }
+            })
+        },
+        selectType (type){
+            this.filter.type=type;
+            this.refresh();
+        },
+        selectStatus(status){
+            this.filter.status=status;
+            this.refresh();
+        },
+        roomClick (roomId,status){
+            switch(status){
+                case 0:
+                    this.$router.push('/checkstandEdit/'+roomId);
+                    break;
+                case 1:
+                    this.modalShow=true;
+                    break;
+                default:
+                    this.$router.push('/checkstandView/'+roomId);
+            }
+        },
+        getClass (status){
+            switch(status){
+                case 1:
+                    return 'room-dirty';
+                    break;
+                case 2:
+                    return 'room-clock';
+                    break;
+                case 3:
+                    return 'room-order';
+                    break;
+                case 4:
+                    return 'room-in';
+                    break;
+                case 0:
+                default:
+                    return '';
+            }
+        },
+        loading (){
+            this.spinShow=true;
+        },
+        loaded (){
+            this.spinShow=false;
         }
 	}
 }
