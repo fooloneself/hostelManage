@@ -1,6 +1,6 @@
 <style scoped>
     h3{
-        font-size: 20px;
+        font-size: 16px;
         margin-bottom: 24px;
         color: #464c5b;
     }

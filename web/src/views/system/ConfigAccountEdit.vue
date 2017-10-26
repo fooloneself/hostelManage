@@ -10,9 +10,9 @@
 	        </FormItem>
 			<FormItem label="分配角色：">
 				<Select placeholder="请选择角色">
-                    <Option>收银员</Option>
-                    <Option>收银员</Option>
-                    <Option>收银员</Option>
+                    <Option value="0">收银员</Option>
+                    <Option value="1">收银员</Option>
+                    <Option value="2">收银员</Option>
                 </Select>
 	        </FormItem>
 			<FormItem label="姓名：">
@@ -47,6 +47,11 @@ export default{
 				radio:'0'
 			}
 		}
+	},
+	methods:{
+	    goBack (){
+	        this.$router.go(-1);
+	    },
 	}
 }
 </script>
