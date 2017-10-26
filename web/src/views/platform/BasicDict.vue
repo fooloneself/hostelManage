@@ -4,7 +4,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" @on-change="refresh" :page-size="10" show-total></Page>
+    <Page :total="totalCount" @on-change="pageTo" :page-size="1" show-total></Page>
 </div>
 </template>
 <script>
@@ -94,20 +94,26 @@
                     }
                 ],
                 data: [],
-                totalCount: 0
+                totalCount: 0,
+                current: 1
             }
         },
         mounted (){
-            this.refresh(1);
+            this.refresh();
         },
         methods:{
             turnUrl:function(url){
                 this.$router.push(url)
             },
+            pageTo(page){
+                this.current=page;
+                this.refresh();
+            },
             delete:function(code){
+                var that=this;
                 this.host.post('dictionaryDelete',{code: code}).then(function(res){
                     if(res.isSuccess()){
-                        location.reload();
+                        that.refresh();
                     }else{
                         this.$Notice.info({
                             title: '提示',
@@ -116,9 +122,9 @@
                     }
                 })
             },
-            refresh (page){
+            refresh (){
                 var that=this;
-                this.host.post('dictionaries',{page :page}).then(function(res){
+                this.host.post('dictionaries',{page :this.current}).then(function(res){
                     if(res.isSuccess()){
                         that.data=res.data().list;
                         that.totalCount=parseInt(res.data().total);

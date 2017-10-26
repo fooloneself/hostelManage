@@ -4,6 +4,7 @@ use common\components\Controller;
 use common\components\ErrorManager;
 use common\models\LinkageMenu;
 use common\models\LinkageMenuItem;
+use service\Pager;
 
 class LinkageMenuController extends Controller{
 
@@ -14,9 +15,7 @@ class LinkageMenuController extends Controller{
     public function actionList(){
         $page=\Yii::$app->requestHelper->post('page',1,'int');
         $pageSize=\Yii::$app->requestHelper->post('pageSize',1,'int');
-        $query=LinkageMenu::find();
-        $count=intval($query->count());
-        $data=$query->offset(($page-1)*$pageSize)->limit($pageSize)->asArray()->all();
+        list($count,$data)=Pager::instance(LinkageMenu::find(),$pageSize)->get($page);
         return \Yii::$app->responseHelper->success([
             'total'=>$count,
             'list'=>$data
