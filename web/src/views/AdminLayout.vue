@@ -33,7 +33,7 @@
                     <Col span="4">
                         <div class="logo">
                             <router-link to="">
-                                <img src="../images/logo.png" alt="">
+                                <img src="/src/images/logo.png" alt="">
                             </router-link>
                         </div>
                     </Col>
@@ -57,7 +57,7 @@
                             <DropdownMenu slot="list" class="tl">
                                 <DropdownItem name="personInfo">个人资料</DropdownItem>
                                 <DropdownItem name="personPassword">修改密码</DropdownItem>
-                                <DropdownItem divided name="login">退出登录</DropdownItem>
+                                <DropdownItem divided name="/login">退出登录</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </Col>
