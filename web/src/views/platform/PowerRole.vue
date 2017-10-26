@@ -45,7 +45,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerRoleEdit')
+                                            this.turnUrl('/admin/powerRoleEdit')
                                         }
                                     }
                                 }, '编辑'),
@@ -68,7 +68,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerRoleEdit')
+                                            this.turnUrl('/admin/powerRoleEdit')
                                         }
                                     }
                                 }, '克隆'),
@@ -79,7 +79,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerRoleAccountEdit')
+                                            this.turnUrl('/admin/powerRoleAccountEdit')
                                         }
                                     }
                                 }, '分配账号')

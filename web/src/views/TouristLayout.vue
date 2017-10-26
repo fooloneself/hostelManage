@@ -34,7 +34,7 @@
                 <Row>
                     <Col span="4">
                         <div class="logo">
-                            <router-link to="">
+                            <router-link to="/">
                                 <img src="../images/logo.png" alt="">
                             </router-link>
                         </div>

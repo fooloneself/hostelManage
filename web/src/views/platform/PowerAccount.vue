@@ -49,7 +49,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerAccountEdit')
+                                            this.turnUrl('/admin/powerAccountEdit')
                                         }
                                     }
                                 }, '编辑'),
@@ -78,7 +78,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerAccountRoleEdit')
+                                            this.turnUrl('/admin/powerAccountRoleEdit')
                                         }
                                     }
                                 }, '分配角色')

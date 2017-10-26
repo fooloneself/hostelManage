@@ -50,7 +50,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicLinkageChild/'+this.$route.params.code+'/'+params.row.id)
+                                            this.turnUrl('/admin/basicLinkageChild/'+this.$route.params.code+'/'+params.row.id)
                                             this.$router.go(0);
                                         }
                                     }
@@ -62,7 +62,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicLinkageChildEdit/'+this.$route.params.code+'/'+params.row.id+'/0')
+                                            this.turnUrl('/admin/basicLinkageChildEdit/'+this.$route.params.code+'/'+params.row.id+'/0')
                                         }
                                     }
                                 }, '新增子菜单'),
@@ -73,7 +73,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicLinkageChildEdit/'+this.$route.params.code+'/'+params.row.pid+'/'+params.row.id)
+                                            this.turnUrl('/admin/basicLinkageChildEdit/'+this.$route.params.code+'/'+params.row.pid+'/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -109,11 +109,11 @@
                 this.$router.push(url);
             },
             toAdd (){
-                this.$router.push('/basicLinkageChildEdit/'+this.$route.params.code+'/'+this.$route.params.pid+'/0');
+                this.$router.push('/admin/basicLinkageChildEdit/'+this.$route.params.code+'/'+this.$route.params.pid+'/0');
             },
             goUp:function(){
                 if(this.parentItem){
-                    this.turnUrl('/basicLinkageChild/'+this.$route.params.code+'/'+this.parentItem.pid);
+                    this.turnUrl('/admin/basicLinkageChild/'+this.$route.params.code+'/'+this.parentItem.pid);
                 }
             },
             refresh (){

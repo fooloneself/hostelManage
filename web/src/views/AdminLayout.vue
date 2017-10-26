@@ -32,7 +32,7 @@
                 <Row>
                     <Col span="4">
                         <div class="logo">
-                            <router-link to="">
+                            <router-link to="/admin">
                                 <img src="/src/images/logo.png" alt="">
                             </router-link>
                         </div>

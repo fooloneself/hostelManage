@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="primary" @click="turnUrl('basicDictEdit/0')">新增</Button>
+    <Button type="primary" @click="turnUrl('/admin/basicDictEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
@@ -45,7 +45,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicDictInfo/'+params.row.code)
+                                            this.turnUrl('/admin/basicDictInfo/'+params.row.code)
                                         }
                                     }
                                 }, '管理数据'),
@@ -56,7 +56,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicDictInfoEdit/'+params.row.code+'/0')
+                                            this.turnUrl('/admin/basicDictInfoEdit/'+params.row.code+'/0')
                                         }
                                     }
                                 }, '添加数据'),
@@ -67,7 +67,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicDictEdit/'+params.row.id)
+                                            this.turnUrl('/admin/basicDictEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),

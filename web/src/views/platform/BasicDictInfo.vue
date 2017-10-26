@@ -50,7 +50,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicDictInfoEdit/'+params.row.code+'/'+params.row.id);
+                                            this.turnUrl('/admin/basicDictInfoEdit/'+params.row.code+'/'+params.row.id);
                                         }
                                     }
                                 }, '编辑'),
@@ -96,7 +96,7 @@
                 history.go(-1);
             },
             toAdd:function(){
-                this.turnUrl('/basicDictInfoEdit/'+this.$route.params.code+'/0');
+                this.turnUrl('/admin/basicDictInfoEdit/'+this.$route.params.code+'/0');
             },
             deleteItem:function(id){
                 this.host.post('dictionaryItemDelete',{id:id}).then(function(res){

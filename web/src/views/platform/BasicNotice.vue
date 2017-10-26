@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="primary" @click="turnUrl('/basicNoticeEdit/0')">新增</Button>
+    <Button type="primary" @click="turnUrl('/admin/basicNoticeEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
@@ -45,7 +45,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicNoticeEdit/'+params.row.id)
+                                            this.turnUrl('/admin/basicNoticeEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
