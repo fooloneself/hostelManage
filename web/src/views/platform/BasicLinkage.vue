@@ -4,7 +4,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" @on-change="refresh" show-total></Page>
+    <Page :total="totalCount" @on-change="refresh" :page-size="10" show-total></Page>
 </div>
 </template>
 <script>
@@ -77,10 +77,14 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            var res=confirm('确定要删除吗？');
-                                            if(res){
-                                                this.delete(params.row.id)
-                                            }
+                                            var that=this;
+                                            this.$Modal.confirm({
+                                                title: '删除',
+                                                content: '确定要删除吗？',
+                                                onOk (){
+                                                    that.delete(params.row.id);
+                                                }
+                                            })
                                         }
                                     }
                                 }, '删除')
@@ -103,7 +107,7 @@
             delete(id){
                 this.host.post('linkageMenuDelete',{id: id}).then(function(res){
                     if(res.isSuccess()){
-                        this.$router.go(0);
+                        this.re
                     }else{
                         this.$Notice.info({
                             title: '提示',
@@ -113,10 +117,11 @@
                 })
             },
             refresh(page){
+                this.current=page;
                 var that=this;
                 this.host.post('linkageMenuList',{page: page}).then(function(res){
                     if(res.isSuccess()){
-                        that.totalCount=res.data().totalCount;
+                        that.totalCount=res.data().total;
                         that.data=res.data().list;
                     }else{
                         that.$Notice.info({
