@@ -136,7 +136,7 @@
             baseSubmit (){
                 this.host.post('roomRecord',this.formItem).then(function(res){
                     if(res.isSuccess()){
-                        this.$router.push('/roomList');
+                        this.$router.push('/admin/roomList');
                     }else{
                         this.$Notice.info({
                             title: '提示',

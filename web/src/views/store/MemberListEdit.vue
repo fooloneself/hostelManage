@@ -101,7 +101,7 @@ export default{
             };
             this.host.post('merchantMemberEdit',params).then(function(res){
                 if(res.isSuccess()){
-                    this.$router.push('/memberList');
+                    this.$router.push('/admin/memberList');
                 }else{
                     this.$Notice.info({
                         title: '提示',

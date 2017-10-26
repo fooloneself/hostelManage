@@ -69,7 +69,7 @@ export default{
 	    submit: function(){
 	        this.host.post('roomTypeEdit',this.formItem).then(function(res){
 	            if(res.isSuccess()){
-	                this.$router.push('/roomType');
+	                this.$router.push('/admin/roomType');
 	            }else{
 	                this.$Notice.info({
                         title: '提示',
