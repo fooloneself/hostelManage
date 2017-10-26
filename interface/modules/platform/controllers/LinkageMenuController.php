@@ -13,7 +13,7 @@ class LinkageMenuController extends Controller{
      */
     public function actionList(){
         $page=\Yii::$app->requestHelper->post('page',1,'int');
-        $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
+        $pageSize=\Yii::$app->requestHelper->post('pageSize',1,'int');
         $query=LinkageMenu::find();
         $count=intval($query->count());
         $data=$query->offset(($page-1)*$pageSize)->limit($pageSize)->asArray()->all();

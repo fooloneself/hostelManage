@@ -39,7 +39,7 @@ class NoticeController extends Controller{
         }
         $notice=Notice::find()
             ->select('title,content,id,public_time')
-            ->where(['id'=>$adminId,'status'=>Notice::STATUS_PUBLIC])
+            ->where(['id'=>$id,'status'=>Notice::STATUS_PUBLIC])
             ->asArray()
             ->one();
         $read=NoticeRead::findOne(['admin_id'=>$adminId,'notice_id'=>$id]);

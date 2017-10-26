@@ -4,7 +4,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" @on-change="refresh" :page-size="10" show-total></Page>
+    <Page :total="totalCount" @on-change="pageTo" :current="current" :page-size="1" show-total></Page>
 </div>
 </template>
 <script>
@@ -94,20 +94,25 @@
                 ],
                 data: [],
                 totalCount: 0,
-                current:1
+                current:2
             }
         },
         mounted(){
-            this.refresh(1)
+            this.refresh()
         },
         methods:{
             turnUrl:function(url){
                 this.$router.push(url)
             },
+            pageTo (page){
+                this.current=page;
+                this.refresh();
+            },
             delete(id){
+                var that=this;
                 this.host.post('linkageMenuDelete',{id: id}).then(function(res){
                     if(res.isSuccess()){
-                        this.re
+                        that.refresh();
                     }else{
                         this.$Notice.info({
                             title: '提示',
@@ -116,10 +121,9 @@
                     }
                 })
             },
-            refresh(page){
-                this.current=page;
+            refresh(){
                 var that=this;
-                this.host.post('linkageMenuList',{page: page}).then(function(res){
+                this.host.post('linkageMenuList',{page: this.current}).then(function(res){
                     if(res.isSuccess()){
                         that.totalCount=res.data().total;
                         that.data=res.data().list;

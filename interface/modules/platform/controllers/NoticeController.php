@@ -3,6 +3,7 @@ namespace modules\platform\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
 use common\models\Notice;
+use common\models\NoticeRead;
 use service\notice\PlatformNoticeList;
 
 class NoticeController extends Controller{
@@ -108,6 +109,7 @@ class NoticeController extends Controller{
         if(empty($notice)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG,'未找到公告')->response();
         }
+        NoticeRead::deleteAll(['notice_id'=>$id]);
         $notice->status=Notice::STATUS_REVOKE;
         $notice->revoke_time=time();
         if($notice->update(false)){
