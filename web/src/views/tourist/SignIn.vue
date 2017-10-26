@@ -85,7 +85,7 @@ export default{
 		    this.host.post('login',{'userName': this.userName,'password':this.password,'code': this.code}).then(function(res){
 		        if(res.isSuccess()){
 		            this.host.setSession(res.data().id,that.userName,res.data().token)
-		            this.$router.push('admin/checkstand');
+		            this.$router.push('/admin/checkstand');
 		        }else{
 		            this.$Notice.info({
 	                    title: '提示',

@@ -340,21 +340,21 @@ const platform = {
 };
 const tourist = [
 	{
-    	path: '/',
+    	path: '',
         meta: {
             title: ''
         },
         component: (resolve) => require(['./views/tourist/Index.vue'], resolve)
     },
     {
-    	path: '/login',
+    	path: 'login',
         meta: {
             title: '登录'
         },
         component: (resolve) => require(['./views/tourist/SignIn.vue'], resolve)
     },
     {
-    	path: '/register',
+    	path: 'register',
         meta: {
             title: '登录'
         },
@@ -363,7 +363,7 @@ const tourist = [
 ]
 const routers = [
     {
-        path: '/admin',
+        path: 'admin',
         component: (resolve) => require(['./views/AdminLayout.vue'], resolve),
         children:[store,system,platform,
 	        {
@@ -404,7 +404,7 @@ const routers = [
         ]
     },
     {
-    	path: '/',
+    	path: '',
     	component: (resolve) => require(['./views/TouristLayout.vue'], resolve),
     	children:tourist
     }
