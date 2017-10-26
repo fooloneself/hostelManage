@@ -363,7 +363,12 @@ const tourist = [
 ]
 const routers = [
     {
-        path: 'admin',
+    	path: '/',
+    	component: (resolve) => require(['./views/TouristLayout.vue'], resolve),
+    	children:tourist
+    },
+    {
+        path: '/admin',
         component: (resolve) => require(['./views/AdminLayout.vue'], resolve),
         children:[store,system,platform,
 	        {
@@ -402,11 +407,6 @@ const routers = [
 				component: (resolve) => require(['./views/checkstand/Out.vue'], resolve)
 	        }
         ]
-    },
-    {
-    	path: '',
-    	component: (resolve) => require(['./views/TouristLayout.vue'], resolve),
-    	children:tourist
     }
 ];
 export default routers;
