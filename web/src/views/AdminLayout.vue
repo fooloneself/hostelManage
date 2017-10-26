@@ -38,11 +38,11 @@
                         </div>
                     </Col>
                     <Col span="16">
-                        <Menu mode="horizontal" active-name="checkstand" @on-select="turnUrl" class="menu">
-                            <MenuItem name="checkstand">客房登记</MenuItem>
-                            <MenuItem name="orderIn">门店管理</MenuItem>
-                            <MenuItem name="personInfo">系统设置</MenuItem>
-                            <MenuItem name="managerInfo">平台管理</MenuItem>
+                        <Menu mode="horizontal" active-name="/admin/checkstand" @on-select="turnUrl" class="menu">
+                            <MenuItem name="/admin/checkstand">客房登记</MenuItem>
+                            <MenuItem name="/admin/orderIn">门店管理</MenuItem>
+                            <MenuItem name="/admin/personInfo">系统设置</MenuItem>
+                            <MenuItem name="/admin/managerInfo">平台管理</MenuItem>
                         </Menu>
                     </Col>
                     <Col span="4" class="tr">
@@ -55,8 +55,8 @@
                                 <Icon type="arrow-down-b"></Icon>
                             </a>
                             <DropdownMenu slot="list" class="tl">
-                                <DropdownItem name="personInfo">个人资料</DropdownItem>
-                                <DropdownItem name="personPassword">修改密码</DropdownItem>
+                                <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
+                                <DropdownItem name="/admin/personPassword">修改密码</DropdownItem>
                                 <DropdownItem divided name="/login">退出登录</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
