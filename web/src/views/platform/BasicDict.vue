@@ -4,7 +4,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" show-total></Page>
+    <Page :total="totalCount" @on-change="refresh" :page-size="10" show-total></Page>
 </div>
 </template>
 <script>
@@ -45,7 +45,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicDictInfo/'+params.row.code)
+                                            this.turnUrl('/admin/basicDictInfo/'+params.row.code)
                                         }
                                     }
                                 }, '管理数据'),
@@ -56,7 +56,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicDictInfoEdit/'+params.row.code+'/0')
+                                            this.turnUrl('/admin/basicDictInfoEdit/'+params.row.code+'/0')
                                         }
                                     }
                                 }, '添加数据'),
@@ -67,7 +67,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('basicDictEdit/'+params.row.id)
+                                            this.turnUrl('/admin/basicDictEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -78,10 +78,14 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            var res=confirm('确定要删除吗？');
-                                            if(res){
-                                                this.delete(params.row.code);
-                                            }
+                                            var that=this;
+                                            this.$Modal.confirm({
+                                                title: '删除',
+                                                content: '确定要删除吗',
+                                                onOk (){
+                                                    that.delete(params.row.code);
+                                                }
+                                            })
                                         }
                                     }
                                 }, '删除')
@@ -94,13 +98,7 @@
             }
         },
         mounted (){
-            var that=this;
-            this.host.post('dictionaries').then(function(res){
-                if(res.isSuccess()){
-                    that.data=res.data().list;
-                    that.totalCount=parseInt(res.data().total);
-                }
-            })
+            this.refresh(1);
         },
         methods:{
             turnUrl:function(url){
@@ -115,6 +113,15 @@
                             title: '提示',
                             desc: res.error()
                         });
+                    }
+                })
+            },
+            refresh (page){
+                var that=this;
+                this.host.post('dictionaries',{page :page}).then(function(res){
+                    if(res.isSuccess()){
+                        that.data=res.data().list;
+                        that.totalCount=parseInt(res.data().total);
                     }
                 })
             }
