@@ -25,7 +25,6 @@
 		line-height: 40px;
 		font-size: 14px;
 		margin-bottom: 20px;
-		color: #FFF;
 		&.input_code{
 			float: left;
 			width: 200px;
