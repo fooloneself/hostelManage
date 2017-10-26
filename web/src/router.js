@@ -339,6 +339,13 @@ const platform = {
 	]
 };
 const tourist = [
+	{
+    	path: '/',
+        meta: {
+            title: ''
+        },
+        component: (resolve) => require(['./views/tourist/Index.vue'], resolve)
+    },
     {
     	path: '/login',
         meta: {

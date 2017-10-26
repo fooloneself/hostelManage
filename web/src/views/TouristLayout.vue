@@ -39,14 +39,12 @@
                             </router-link>
                         </div>
                     </Col>
-                    <Col span="16">
-                        <Menu mode="horizontal" active-name="Index" class="menu">
-                            <MenuItem name="Index">首页</MenuItem>
-                            <MenuItem name="Produce">产品介绍</MenuItem>
-                            <MenuItem name="Case">成功案例</MenuItem>
+                    <!-- <Col span="16">
+                        <Menu mode="horizontal" active-name="index" @on-select="turnUrl" class="menu">
+                            <MenuItem name="index">首页</MenuItem>
                         </Menu>
-                    </Col>
-                    <Col span="4" class="tr">
+                    </Col> -->
+                    <Col span="4" offset="16" class="tr">
                         <router-link to="register" style="margin-right: 16px;">注册</router-link>
                         <router-link to="login">登录</router-link>
                     </Col>
@@ -59,8 +57,9 @@
 
 <script>
 export default{
-    data () {
-        return {
+    methods:{
+        turnUrl:function(name){
+            this.$router.push(name);
         }
     }
 }
