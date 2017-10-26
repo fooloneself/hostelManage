@@ -4,7 +4,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" :current="current" show-total></Page>
+    <Page :total="totalCount" @on-change="refresh" show-total></Page>
 </div>
 </template>
 <script>
@@ -94,18 +94,7 @@
             }
         },
         mounted(){
-            var that=this;
-            this.host.post('linkageMenuList').then(function(res){
-                if(res.isSuccess()){
-                    that.totalCount=res.data().totalCount;
-                    that.data=res.data().list;
-                }else{
-                    that.$Notice.info({
-                        title: '提示',
-                        desc: res.error()
-                    })
-                }
-            })
+            this.refresh(1)
         },
         methods:{
             turnUrl:function(url){
@@ -117,6 +106,20 @@
                         this.$router.go(0);
                     }else{
                         this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        })
+                    }
+                })
+            },
+            refresh(page){
+                var that=this;
+                this.host.post('linkageMenuList',{page: page}).then(function(res){
+                    if(res.isSuccess()){
+                        that.totalCount=res.data().totalCount;
+                        that.data=res.data().list;
+                    }else{
+                        that.$Notice.info({
                             title: '提示',
                             desc: res.error()
                         })
