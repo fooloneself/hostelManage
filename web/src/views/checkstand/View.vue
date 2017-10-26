@@ -91,25 +91,25 @@
 					<!-- 这是入住订单的按钮 -->
 					<FormItem>
 			            <Button type="primary" @click="goBack">取消订单</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandEdit')">修改订单</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandChange')">换房</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandOut')">退房</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">修改订单</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandChange')">换房</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandOut')">退房</Button>
 			            <Button type="primary" class="icon-ml" @click="goBack">一键续住</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 			        </FormItem>
 					<!-- 这是预订订单的按钮 -->
 					<FormItem>
 			            <Button type="primary" @click="goBack">取消订单</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandEdit')">办理入住</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">办理入住</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 			        </FormItem>
 					<!-- 这是终点房订单的按钮 -->
 					<FormItem>
 			            <Button type="primary" @click="goBack">取消订单</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandEdit')">修改订单</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandChange')">换房</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandOut')">退房</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('checkstandEdit')">办理入住</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">修改订单</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandChange')">换房</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandOut')">退房</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">办理入住</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 			        </FormItem>
 			    </Form>

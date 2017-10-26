@@ -64,7 +64,7 @@ export default{
 	    submit (){
 	        this.host.post('linkageMenuItemRecord',this.formItem).then(function(res){
 	            if(res.isSuccess()){
-	                this.$router.push('/basicLinkageChild/'+this.$route.params.code+'/'+this.$route.params.pid);
+	                this.$router.push('/admin/basicLinkageChild/'+this.$route.params.code+'/'+this.$route.params.pid);
 	            }else{
 	                this.$Notice.info({
 	                    title:'提示',

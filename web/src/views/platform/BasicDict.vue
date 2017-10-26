@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="primary" @click="turnUrl('basicDictEdit/0')">新增</Button>
+    <Button type="primary" @click="turnUrl('/admin/basicDictEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>

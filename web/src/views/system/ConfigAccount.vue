@@ -45,7 +45,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('configAccountEdit')
+                                            this.turnUrl('/admin/configAccountEdit')
                                         }
                                     }
                                 }, '编辑'),

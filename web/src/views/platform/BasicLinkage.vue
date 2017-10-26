@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button @click="turnUrl('/basicLinkageEdit/0')" type="primary">新增</Button>
+    <Button @click="turnUrl('/admin/basicLinkageEdit/0')" type="primary">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
@@ -44,7 +44,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicLinkageChild/'+params.row.code+'/0')
+                                            this.turnUrl('/admin/basicLinkageChild/'+params.row.code+'/0')
                                         }
                                     }
                                 }, '管理子菜单'),
@@ -55,7 +55,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicLinkageChildEdit/'+params.row.code+'/0/0')
+                                            this.turnUrl('/admin/basicLinkageChildEdit/'+params.row.code+'/0/0')
                                         }
                                     }
                                 }, '新增子菜单'),
@@ -66,7 +66,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/basicLinkageEdit/'+params.row.id)
+                                            this.turnUrl('/admin/basicLinkageEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),

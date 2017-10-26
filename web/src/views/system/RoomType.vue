@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="primary" @click="turnUrl('/roomTypeEdit/0')">新增</Button>
+    <Button type="primary" @click="turnUrl('/admin/roomTypeEdit/0')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
@@ -48,7 +48,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('roomTypeEdit/'+params.row.id)
+                                            this.turnUrl('/admin/roomTypeEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),
@@ -73,7 +73,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/roomTypeFloat/'+params.row.id);
+                                            this.turnUrl('/admin/roomTypeFloat/'+params.row.id);
                                         }
                                     }
                                 }, '浮动价格')

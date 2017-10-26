@@ -43,7 +43,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/personNoticeInfo/'+params.row.id)
+                                            this.turnUrl('/admin/personNoticeInfo/'+params.row.id)
                                         }
                                     }
                                 }, '查看')

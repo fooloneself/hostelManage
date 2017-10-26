@@ -72,7 +72,7 @@ export default{
 		    var that=this;
             this.host.post('dictionaryItemRecord',this.formItem).then(function(res){
                 if(res.isSuccess()){
-                    this.$router.push('/basicDictInfo/'+that.$route.params.code);
+                    this.$router.push('/admin/basicDictInfo/'+that.$route.params.code);
                 }else{
                     alert(res.error());
                 }

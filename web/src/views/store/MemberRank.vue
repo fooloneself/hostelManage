@@ -44,7 +44,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('memberRankEdit')
+                                            this.turnUrl('/admin/memberRankEdit')
                                         }
                                     }
                                 }, '编辑'),

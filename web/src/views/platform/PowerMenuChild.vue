@@ -54,7 +54,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerMenuChild')
+                                            this.turnUrl('/admin/powerMenuChild')
                                         }
                                     }
                                 }, '管理子菜单'),
@@ -65,7 +65,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerMenuChildEdit')
+                                            this.turnUrl('/admin/powerMenuChildEdit')
                                         }
                                     }
                                 }, '新增子菜单'),
@@ -76,7 +76,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('powerMenuEdit')
+                                            this.turnUrl('/admin/powerMenuEdit')
                                         }
                                     }
                                 }, '编辑'),

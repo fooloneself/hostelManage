@@ -2,7 +2,7 @@
 <div>
     <Row>
         <Col span="6">
-            <Button @click="turnUrl('/memberListEdit/0')" type="primary">新增</Button>
+            <Button @click="turnUrl('/admin/memberListEdit/0')" type="primary">新增</Button>
         </Col>
         <Col span="18" class="tr">
             <Form inline>
@@ -95,7 +95,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/memberListEdit/'+params.row.id)
+                                            this.turnUrl('/admin/memberListEdit/'+params.row.id)
                                         }
                                     }
                                 }, '编辑'),

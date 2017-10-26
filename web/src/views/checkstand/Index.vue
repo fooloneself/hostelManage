@@ -183,13 +183,13 @@ export default{
         roomClick (roomId,status){
             switch(status){
                 case 0:
-                    this.$router.push('/checkstandEdit/'+roomId);
+                    this.$router.push('/admin/checkstandEdit/'+roomId);
                     break;
                 case 1:
                     this.modalShow=true;
                     break;
                 default:
-                    this.$router.push('/checkstandView/'+roomId);
+                    this.$router.push('/admin/checkstandView/'+roomId);
             }
         },
         getClass (status){
