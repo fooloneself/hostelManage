@@ -94,7 +94,7 @@
                 ],
                 data: [],
                 totalCount: 0,
-                current:2
+                current:1
             }
         },
         mounted(){
