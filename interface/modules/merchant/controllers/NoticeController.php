@@ -38,7 +38,7 @@ class NoticeController extends Controller{
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
         $notice=Notice::find()
-            ->select('title,content,id')
+            ->select('title,content,id,public_time')
             ->where(['id'=>$adminId,'status'=>Notice::STATUS_PUBLIC])
             ->asArray()
             ->one();
@@ -50,6 +50,8 @@ class NoticeController extends Controller{
             $read->read_time=time();
             $read->insert(false);
         }
+        $notice['publicDate']=date('Y-m-d H:i:s',$notice['public_time']);
+        unset($notice['public_time']);
         return \Yii::$app->responseHelper->success($notice)->response();
     }
 }
