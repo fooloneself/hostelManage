@@ -11,9 +11,9 @@ Vue.use(iView);
 Vue.use(Resource);
 
 import 'iview/dist/styles/iview.css';
-import './styles/font-awesome.min.css';
+import './styles/css/font-awesome.min.css';
 import './styles/common.less';
-import host from  './js/host';
+import host from  './libs/host';
 import server from './server';
 Vue.prototype.host=host(server);
 

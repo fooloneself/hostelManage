@@ -7,63 +7,63 @@ const store = {
 	        meta: {
 	            title: '今日新办'
 	        },
-        	component: (resolve) => require(['./views/StoreOrderIn.vue'], resolve)
+        	component: (resolve) => require(['./views/store/OrderIn.vue'], resolve)
 		},
 		{
 			path: 'orderOut',
 	        meta: {
 	            title: '即将离店'
 	        },
-        	component: (resolve) => require(['./views/StoreOrderOut.vue'], resolve)
+        	component: (resolve) => require(['./views/store/OrderOut.vue'], resolve)
 		},
 		{
 			path: 'orderAll',
 	        meta: {
 	            title: '全部订单'
 	        },
-        	component: (resolve) => require(['./views/StoreOrderAll.vue'], resolve)
+        	component: (resolve) => require(['./views/store/OrderAll.vue'], resolve)
 		},
 		{
 			path: 'orderError',
 	        meta: {
 	            title: '异常订单'
 	        },
-        	component: (resolve) => require(['./views/StoreOrderError.vue'], resolve)
+        	component: (resolve) => require(['./views/store/OrderError.vue'], resolve)
 		},
 		{
 			path: 'memberRank',
 	        meta: {
 	            title: '会员等级'
 	        },
-        	component: (resolve) => require(['./views/StoreMemberRank.vue'], resolve)
+        	component: (resolve) => require(['./views/store/MemberRank.vue'], resolve)
 		},
 		{
 			path: 'memberRankEdit',
 	        meta: {
 	            title: '会员等级 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/StoreMemberRankEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/store/MemberRankEdit.vue'], resolve)
 		},
 		{
 			path: 'memberList',
 	        meta: {
 	            title: '会员列表'
 	        },
-        	component: (resolve) => require(['./views/StoreMemberList.vue'], resolve)
+        	component: (resolve) => require(['./views/store/MemberList.vue'], resolve)
 		},
 		{
 			path: 'memberListEdit/:id',
 	        meta: {
 	            title: '会员列表 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/StoreMemberListEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/store/MemberListEdit.vue'], resolve)
 		},
 		{
 			path: 'memberConsume',
 	        meta: {
 	            title: '会员列表 - 个人消费情况'
 	        },
-        	component: (resolve) => require(['./views/StoreMemberConsume.vue'], resolve)
+        	component: (resolve) => require(['./views/store/MemberConsume.vue'], resolve)
 		}
 	]
 };
@@ -76,105 +76,105 @@ const system = {
 	        meta: {
 	            title: '门店配置'
 	        },
-        	component: (resolve) => require(['./views/SystemConfigStore.vue'], resolve)
+        	component: (resolve) => require(['./views/system/ConfigStore.vue'], resolve)
 		},
 		{
 			path: 'configChannel',
 	        meta: {
 	            title: '渠道配置'
 	        },
-        	component: (resolve) => require(['./views/SystemConfigChannel.vue'], resolve)
+        	component: (resolve) => require(['./views/system/ConfigChannel.vue'], resolve)
 		},
 		{
 			path: 'configChannelEdit/:id',
 	        meta: {
 	            title: '渠道配置 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/SystemConfigChannelEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/system/ConfigChannelEdit.vue'], resolve)
 		},
 		{
 			path: 'configAccount',
 	        meta: {
 	            title: '账号配置'
 	        },
-        	component: (resolve) => require(['./views/SystemConfigAccount.vue'], resolve)
+        	component: (resolve) => require(['./views/system/ConfigAccount.vue'], resolve)
 		},
 		{
 			path: 'configAccountEdit',
 	        meta: {
 	            title: '账号配置 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/SystemConfigAccountEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/system/ConfigAccountEdit.vue'], resolve)
 		},
 		{
 			path: 'roomType',
 	        meta: {
 	            title: '房间类型'
 	        },
-        	component: (resolve) => require(['./views/SystemRoomType.vue'], resolve)
+        	component: (resolve) => require(['./views/system/RoomType.vue'], resolve)
 		},
 		{
 			path: 'roomTypeEdit/:id',
 	        meta: {
 	            title: '房间类型 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/SystemRoomTypeEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/system/RoomTypeEdit.vue'], resolve)
 		},
 		{
 			path: 'roomTypeFloat/:typeId',
 	        meta: {
 	            title: '房间类型 - 浮动价格'
 	        },
-        	component: (resolve) => require(['./views/SystemRoomTypeFloat.vue'], resolve)
+        	component: (resolve) => require(['./views/system/RoomTypeFloat.vue'], resolve)
 		},
 		{
 			path: 'roomList',
 	        meta: {
 	            title: '房间列表'
 	        },
-        	component: (resolve) => require(['./views/SystemRoomList.vue'], resolve)
+        	component: (resolve) => require(['./views/system/RoomList.vue'], resolve)
 		},
 		{
 			path: 'roomListEdit/:id',
 	        meta: {
 	            title: '房间列表 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/SystemRoomListEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/system/RoomListEdit.vue'], resolve)
 		},
 		{
 			path: 'personInfo',
 	        meta: {
 	            title: '个人资料'
 	        },
-        	component: (resolve) => require(['./views/SystemPersonInfo.vue'], resolve)
+        	component: (resolve) => require(['./views/system/PersonInfo.vue'], resolve)
 		},
 		{
 			path: 'personPassword',
 	        meta: {
 	            title: '修改密码'
 	        },
-        	component: (resolve) => require(['./views/SystemPersonPassword.vue'], resolve)
+        	component: (resolve) => require(['./views/system/PersonPassword.vue'], resolve)
 		},
 		{
 			path: 'personNotice',
 	        meta: {
 	            title: '公告'
 	        },
-        	component: (resolve) => require(['./views/SystemPersonNotice.vue'], resolve)
+        	component: (resolve) => require(['./views/system/PersonNotice.vue'], resolve)
 		},
 		{
 			path: 'personNoticeInfo/:id',
 				meta: {
 				title: '公告-详情'
 			},
-			component: (resolve) => require(['./views/SystemPersonNoticeInfo.vue'], resolve)
+			component: (resolve) => require(['./views/system/PersonNoticeInfo.vue'], resolve)
 		},
 		{
 			path: 'personTips',
 	        meta: {
 	            title: '意见反馈'
 	        },
-        	component: (resolve) => require(['./views/SystemPersonTips.vue'], resolve)
+        	component: (resolve) => require(['./views/system/PersonTips.vue'], resolve)
 		}
 	]
 };
@@ -187,213 +187,219 @@ const platform = {
 	        meta: {
 	            title: '个人资料'
 	        },
-        	component: (resolve) => require(['./views/PlatformManagerInfo.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/ManagerInfo.vue'], resolve)
 		},
 		{
 			path: 'managerPassword',
 	        meta: {
 	            title: '修改密码'
 	        },
-        	component: (resolve) => require(['./views/PlatformManagerPassword.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/ManagerPassword.vue'], resolve)
 		},
 		{
 			path: 'powerMenu',
 	        meta: {
 	            title: '系统菜单'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerMenu.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerMenu.vue'], resolve)
 		},
 		{
 			path: 'powerMenuEdit',
 	        meta: {
 	            title: '系统菜单 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerMenuEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerMenuEdit.vue'], resolve)
 		},
 		{
 			path: 'powerMenuChild',
 	        meta: {
 	            title: '系统菜单 - 子菜单'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerMenuChild.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerMenuChild.vue'], resolve)
 		},
 		{
 			path: 'powerMenuChildEdit',
 	        meta: {
 	            title: '系统菜单 - 子菜单编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerMenuEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerMenuEdit.vue'], resolve)
 		},
 		{
 			path: 'powerRole',
 	        meta: {
 	            title: '角色配置'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerRole.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerRole.vue'], resolve)
 		},
 		{
 			path: 'powerRoleEdit',
 	        meta: {
 	            title: '角色配置 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerRoleEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerRoleEdit.vue'], resolve)
 		},
 		{
 			path: 'powerRoleAccountEdit',
 	        meta: {
 	            title: '角色配置 - 分配账号'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerRoleAccountEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerRoleAccountEdit.vue'], resolve)
 		},
 		{
 			path: 'powerAccount',
 	        meta: {
 	            title: '账号管理'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerAccount.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerAccount.vue'], resolve)
 		},
 		{
 			path: 'powerAccountEdit',
 	        meta: {
 	            title: '账号管理 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerAccountEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerAccountEdit.vue'], resolve)
 		},
 		{
 			path: 'powerAccountRoleEdit',
 	        meta: {
 	            title: '账号管理 - 分配角色'
 	        },
-        	component: (resolve) => require(['./views/PlatformPowerAccountRoleEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/PowerAccountRoleEdit.vue'], resolve)
 		},
 		{
 			path: 'basicDict',
 	        meta: {
 	            title: '数据字典'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicDict.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicDict.vue'], resolve)
 		},
 		{
 			path: 'basicDictEdit/:id',
 	        meta: {
 	            title: '数据字典 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicDictEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicDictEdit.vue'], resolve)
 		},
 		{
 			path: 'basicDictInfo/:code',
 	        meta: {
 	            title: '数据字典 - 数据列表'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicDictInfo.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicDictInfo.vue'], resolve)
 		},
 		{
 			path: 'basicDictInfoEdit/:code/:id',
 	        meta: {
 	            title: '数据字典 - 编辑数据'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicDictInfoEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicDictInfoEdit.vue'], resolve)
 		},
 		{
 			path: 'basicLinkage',
 	        meta: {
 	            title: '联动菜单'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicLinkage.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicLinkage.vue'], resolve)
 		},
 		{
 			path: 'basicLinkageEdit/:id',
 	        meta: {
 	            title: '联动菜单 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicLinkageEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicLinkageEdit.vue'], resolve)
 		},
 		{
 			path: 'basicLinkageChild/:code/:pid',
 	        meta: {
 	            title: '联动菜单 - 子菜单'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicLinkageChild.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicLinkageChild.vue'], resolve)
 		},
 		{
 			path: 'basicLinkageChildEdit/:code/:pid/:id',
 	        meta: {
 	            title: '联动菜单 - 子菜单编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicLinkageChildEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicLinkageChildEdit.vue'], resolve)
 		},
 		{
 			path: 'basicNotice',
 	        meta: {
 	            title: '联动菜单 - 子菜单'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicNotice.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicNotice.vue'], resolve)
 		},
 		{
 			path: 'basicNoticeEdit/:id',
 	        meta: {
 	            title: '联动菜单 - 子菜单编辑'
 	        },
-        	component: (resolve) => require(['./views/PlatformBasicNoticeEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/platform/BasicNoticeEdit.vue'], resolve)
 		}
 	]
 };
-
+const tourist = [
+    {
+    	path: '/login',
+        meta: {
+            title: '登录'
+        },
+        component: (resolve) => require(['./views/tourist/SignIn.vue'], resolve)
+    },
+    {
+    	path: '/register',
+        meta: {
+            title: '登录'
+        },
+        component: (resolve) => require(['./views/tourist/SignUp.vue'], resolve)
+    },
+]
 const routers = [
     {
-        path: '/',
-        component: (resolve) => require(['./views/Layout.vue'], resolve),
+        path: '/admin',
+        component: (resolve) => require(['./views/AdminLayout.vue'], resolve),
         children:[store,system,platform,
 	        {
 	        	path: 'checkstand',
 			    meta: {
 			        title: '客房登记'
 			    },
-				component: (resolve) => require(['./views/Checkstand.vue'], resolve)
+				component: (resolve) => require(['./views/checkstand/Index.vue'], resolve)
 	        },
 	        {
 	        	path: 'checkstandEdit/:id',
 			    meta: {
 			        title: '客房登记 - 订单编辑'
 			    },
-				component: (resolve) => require(['./views/CheckstandEdit.vue'], resolve)
+				component: (resolve) => require(['./views/checkstand/Edit.vue'], resolve)
 	        },
 	        {
 	        	path: 'checkstandView/:id',
 			    meta: {
 			        title: '客房登记 - 订单编辑'
 			    },
-				component: (resolve) => require(['./views/CheckstandView.vue'], resolve)
+				component: (resolve) => require(['./views/checkstand/View.vue'], resolve)
 	        },
 	        {
 	        	path: 'checkstandChange',
 			    meta: {
 			        title: '客房登记 - 换房'
 			    },
-				component: (resolve) => require(['./views/CheckstandChange.vue'], resolve)
+				component: (resolve) => require(['./views/checkstand/Change.vue'], resolve)
 	        },
 	        {
 	        	path: 'checkstandOut',
 			    meta: {
 			        title: '客房登记 - 换房'
 			    },
-				component: (resolve) => require(['./views/CheckstandOut.vue'], resolve)
+				component: (resolve) => require(['./views/checkstand/Out.vue'], resolve)
 	        }
         ]
     },
     {
-        path: '/login',
-        meta: {
-            title: '登录'
-        },
-        component: (resolve) => require(['./views/SignIn.vue'], resolve)
-    },
-    {
-        path: '/register',
-        meta: {
-            title: '登录'
-        },
-        component: (resolve) => require(['./views/SignUp.vue'], resolve)
+    	path: '/',
+    	component: (resolve) => require(['./views/TouristLayout.vue'], resolve),
+    	children:tourist
     }
 ];
 export default routers;

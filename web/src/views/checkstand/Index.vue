@@ -8,7 +8,7 @@
 	background: #FFF;
 }
 .date-pick{
-	background: url('../images/bj.png');
+	background: url('/src/images/bj.png');
 	padding-top: 10px;
 	padding-bottom: 10px;
     min-width: 1208px;

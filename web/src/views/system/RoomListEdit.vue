@@ -70,7 +70,7 @@
             <Row :gutter="16" style="margin-top: 8px;">
                 <Col v-for="i in imgNum" span="3">
                     <div class="img-list">
-                        <img src="../images/timg.jpg" alt="">
+                        <img src="/src/images/timg.jpg" alt="">
                         <div class="img-cover">
                             <Tooltip placement="top" content="设为封面">
                                 <Icon type="ios-home-outline" @click.native="handleView()"></Icon>
