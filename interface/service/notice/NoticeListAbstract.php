@@ -1,16 +1,11 @@
 <?php
 namespace service\notice;
+use service\Pager;
+
 abstract class NoticeListAbstract{
     public $page;
     public $pageSize;
     public $adminId;
-    /**
-     * 获取偏移量
-     * @return mixed
-     */
-    protected function getOffset(){
-        return ($this->page-1)*$this->pageSize;
-    }
 
     /**
      * 获取列表
@@ -18,8 +13,7 @@ abstract class NoticeListAbstract{
      */
     public function get(){
         $query=$this->buildQuery();
-        $count=intval($query->count());
-        $list=$query->offset($this->getOffset())->limit($this->pageSize)->asArray()->all();
+        list($count,$list)=Pager::instance($query,$this->pageSize)->get($this->page);
         $list=$this->handleList($list);
         return [$count,$list];
     }

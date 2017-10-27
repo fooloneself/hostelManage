@@ -4,7 +4,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="dataCount" show-total></Page>
+    <Page :total="dataCount" @on-change="pageTo" :page-size="10" show-total></Page>
 </div>
 </template>
 <script>
@@ -15,7 +15,7 @@
                     {
                         title: '序号',
                         width: 60,
-                        key: 'id'
+                        type: 'index'
                     },
                     {
                         title: '渠道名称',
@@ -67,22 +67,12 @@
                     }
                 ],
                 data: [],
-                dataCount: 0
+                dataCount: 0,
+                current: 1
             }
         },
         mounted (){
-            var that=this;
-            this.host.post('channelList').then(function(res){
-                if(res.isSuccess()){
-                    that.dataCount=res.data().totalCount;
-                    that.data=res.data().list;
-                }else{
-                    that.$Notice.info({
-                        title: '提示',
-                        desc: res.error()
-                    });
-                }
-            })
+            this.refresh();
         },
         methods:{
             turnUrl:function(url){
@@ -94,6 +84,24 @@
                         this.$router.go(0);
                     }else{
                         this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
+                    }
+                })
+            },
+            pageTo (page){
+                this.current=page;
+                this.refresh();
+            },
+            refresh (){
+                var that=this;
+                this.host.post('channelList',{page: this.current}).then(function(res){
+                    if(res.isSuccess()){
+                        that.dataCount=res.data().totalCount;
+                        that.data=res.data().list;
+                    }else{
+                        that.$Notice.info({
                             title: '提示',
                             desc: res.error()
                         });

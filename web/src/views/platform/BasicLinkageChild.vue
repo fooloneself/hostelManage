@@ -5,7 +5,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" show-total></Page>
+    <Page :total="totalCount" @on-change="pageTo" show-total></Page>
 </div>
 </template>
 <script>
@@ -97,13 +97,13 @@
                 ],
                 parentItem: null,
                 data: [],
-                totalCount: 0
+                totalCount: 0,
+                current: 1
             }
         },
         mounted(){
             this.refresh();
         },
-
         methods:{
             turnUrl:function(url){
                 this.$router.push(url);
@@ -116,9 +116,13 @@
                     this.turnUrl('/admin/basicLinkageChild/'+this.$route.params.code+'/'+this.parentItem.pid);
                 }
             },
+            pageTo (page){
+                this.current=page;
+                this.refresh();
+            },
             refresh (){
                 var that=this;
-                this.host.post('linkageMenuItemList',{code: this.$route.params.code,pid:this.$route.params.pid}).then(function(res){
+                this.host.post('linkageMenuItemList',{code: this.$route.params.code,pid:this.$route.params.pid,page: this.current}).then(function(res){
                     if(res.isSuccess()){
                         that.totalCount=res.data().totalCount;
                         that.data=res.data().list;

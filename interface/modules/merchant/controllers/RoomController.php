@@ -9,6 +9,7 @@ use common\models\Premises;
 use common\models\Room;
 use common\models\RoomServer;
 use common\models\RoomType;
+use service\Pager;
 
 class RoomController extends Controller{
 
@@ -160,6 +161,8 @@ class RoomController extends Controller{
      * @return mixed
      */
     public function actionList(){
+        $page=\Yii::$app->requestHelper->post('page',1,'int');
+        $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
         $query=Room::find()
             ->select('r.*,rt.name as type_name,group_concat(di.value) as server_name')
@@ -168,10 +171,9 @@ class RoomController extends Controller{
             ->leftJoin(RoomServer::tableName().' rs','r.id=rs.room_id')
             ->leftJoin(DictionaryItem::tableName().' di','rs.dictionary_key=di.key and di.code=:code',[':code'=>Dictionary::DICTIONARY_ROOM_SERVER])
             ->where(['r.mch_id'=>$mchId])
-            ->groupBy('r.id');
-        $count=$query->count();
-        $rooms=$query->orderBy('number asc')
-            ->asArray()->all();
+            ->groupBy('r.id')
+            ->orderBy('number asc');
+        list($count,$rooms)=Pager::instance($query,$pageSize)->get($page);
         $res=[];
         if(!empty($rooms)){
             foreach ($rooms as $room){

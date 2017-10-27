@@ -3,6 +3,7 @@ namespace modules\merchant\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
 use common\models\Channel;
+use service\Pager;
 
 class ChannelController extends Controller{
 
@@ -61,9 +62,10 @@ class ChannelController extends Controller{
      */
     public function actionList(){
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $page=\Yii::$app->requestHelper->post('page',1,'int');
+        $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $query=Channel::find()->where(['mch_id'=>$mchId]);
-        $totalCount=intval($query->count());
-        $list=$query->asArray()->all();
+        list($totalCount,$list)=Pager::instance($query,$pageSize)->get($page);
         return \Yii::$app->responseHelper->success([
             'totalCount'=>$totalCount,
             'list'=>$list

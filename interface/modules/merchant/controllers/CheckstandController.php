@@ -40,4 +40,10 @@ class CheckstandController extends Controller{
             'date'=>date('Y-m-d')
         ])->response();
     }
+
+    public function actionRoomInfo(){
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
+        $time=\Yii::$app->requestHelper->post('')
+    }
 }

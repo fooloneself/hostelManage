@@ -4,6 +4,7 @@ use common\components\Controller;
 use common\components\ErrorManager;
 use common\models\Dictionary;
 use common\models\DictionaryItem;
+use service\Pager;
 
 /**
  * 管理字典
@@ -78,11 +79,10 @@ class DictionaryController extends Controller{
         $page=\Yii::$app->requestHelper->post('page',1,'int');
         $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $query=Dictionary::find();
-        $count=intval($query->count());
-        $data=$query->offset(($page-1)*$pageSize)->limit($pageSize)->asArray()->orderBy('code asc')->all();
+        list($count,$list)=Pager::instance($query,$pageSize)->get($page);
         return \Yii::$app->responseHelper->success([
             'total'=>$count,
-            'list'=>$data
+            'list'=>$list
         ])->response();
     }
 
@@ -174,17 +174,18 @@ class DictionaryController extends Controller{
      */
     public function actionItemList(){
         $code=\Yii::$app->requestHelper->post('code');
+        $page=\Yii::$app->requestHelper->post('page',1,'int');
+        $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $query=DictionaryItem::find()
             ->alias('di')
             ->select('di.*,d.label')
             ->leftJoin(Dictionary::tableName().' d','d.code=di.code')
-            ->where(['di.code'=>$code]);
-        $count=$query->count();
-        $items=$query->orderBy('di.order asc')
-            ->asArray()->all();
+            ->where(['di.code'=>$code])
+            ->orderBy('di.order asc');
+        list($count,$list)=Pager::instance($query,$pageSize)->get($page);
         return \Yii::$app->responseHelper->success([
             'totalCount'=>$count,
-            'list'=>$items
+            'list'=>$list
         ])->response();
     }
 

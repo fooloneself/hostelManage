@@ -14,7 +14,7 @@ class LinkageMenuController extends Controller{
      */
     public function actionList(){
         $page=\Yii::$app->requestHelper->post('page',1,'int');
-        $pageSize=\Yii::$app->requestHelper->post('pageSize',1,'int');
+        $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         list($count,$data)=Pager::instance(LinkageMenu::find(),$pageSize)->get($page);
         return \Yii::$app->responseHelper->success([
             'total'=>$count,
@@ -149,22 +149,22 @@ class LinkageMenuController extends Controller{
     public function actionItemList(){
         $pid=\Yii::$app->requestHelper->post('pid',0);
         $code=\Yii::$app->requestHelper->post('code');
-        $page=\Yii::$app->requestHelper->post('page',0);
-        $pageSize=\Yii::$app->requestHelper->post('pageSize',10);
+        $page=\Yii::$app->requestHelper->post('page',1,'int');
+        $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         if(empty($code))return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
         $query=LinkageMenuItem::find()
             ->alias('lmi')
             ->select('lmi.*,lmi1.label as parent_label')
             ->leftJoin(LinkageMenuItem::tableName().' lmi1','lmi.pid=lmi1.id')
-            ->where(['lmi.code'=>$code,'lmi.pid'=>$pid]);
-        $count=$query->count();
-        $list=$query->orderBy('lmi.order asc')->limit($pageSize)->offset(($page-1)*$pageSize)->asArray()->all();
+            ->where(['lmi.code'=>$code,'lmi.pid'=>$pid])
+            ->orderBy('lmi.order asc');
+        list($count,$list)=Pager::instance($query,$pageSize)->get($page);
         $parentItem=null;
         if($pid>0){
             $parentItem=LinkageMenuItem::find()->where(['id'=>$pid])->asArray()->one();
         }
         return \Yii::$app->responseHelper->success([
-            'total'=>$count,
+            'totalCount'=>$count,
             'parentItem'=>$parentItem,
             'list'=>$list
         ])->response();

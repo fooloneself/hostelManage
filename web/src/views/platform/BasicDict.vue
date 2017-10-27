@@ -4,7 +4,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" @on-change="pageTo" :page-size="1" show-total></Page>
+    <Page :total="totalCount" @on-change="pageTo" :page-size="10" show-total></Page>
 </div>
 </template>
 <script>
@@ -15,7 +15,7 @@
                     {
                         title: '序号',
                         width: 60,
-                        key: 'id'
+                        type: 'index'
                     },
                     {
                         title: '字典名称',
@@ -37,6 +37,7 @@
                         key: 'action',
                         width: 280,
                         render: (h, params) => {
+                            console.log(params)
                             return h('div', [
                                 h('Button', {
                                     props: {

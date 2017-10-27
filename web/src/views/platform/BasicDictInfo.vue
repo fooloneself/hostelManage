@@ -5,7 +5,7 @@
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="totalCount" show-total></Page>
+    <Page :total="totalCount" @on-change="pageTo" :page-size="10" show-total></Page>
 </div>
 </template>
 <script>
@@ -16,7 +16,7 @@
                     {
                         title: '序号',
                         width: 60,
-                        key: 'id'
+                        type: 'index'
                     },
                     {
                         title: '字典名称',
@@ -71,22 +71,12 @@
                     }
                 ],
                 data: [],
-                totalCount:0
+                totalCount:0,
+                current: 1
             }
         },
         mounted (){
-            var that=this;
-            this.host.post('dictionaryItemList',{'code':this.$route.params.code}).then(function(res){
-                if(res.isSuccess()){
-                    that.data=res.data().list;
-                    that.totalCount=parseInt(res.data().totalCount);
-                }else{
-                    that.$Notice.info({
-                        title: '提示',
-                        desc: res.error()
-                    });
-                }
-            })
+            this.refresh();
         },
         methods:{
             turnUrl:function(url){
@@ -104,6 +94,24 @@
                         location.reload();
                     }else{
                         this.$Notice.info({
+                            title: '提示',
+                            desc: res.error()
+                        });
+                    }
+                })
+            },
+            pageTo (page){
+                this.current=page;
+                this.refresh();
+            },
+            refresh(){
+                var that=this;
+                this.host.post('dictionaryItemList',{'code':this.$route.params.code, page: this.current}).then(function(res){
+                    if(res.isSuccess()){
+                        that.data=res.data().list;
+                        that.totalCount=parseInt(res.data().totalCount);
+                    }else{
+                        that.$Notice.info({
                             title: '提示',
                             desc: res.error()
                         });

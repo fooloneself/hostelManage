@@ -3,6 +3,7 @@ namespace modules\merchant\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
 use common\models\RoomType;
+use service\Pager;
 
 class RoomTypeController extends Controller{
 
@@ -77,8 +78,7 @@ class RoomTypeController extends Controller{
         $page=\Yii::$app->requestHelper->post('page',1,'int');
         $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $query=RoomType::find()->where(['mch_id'=>$mchId]);
-        $count=$query->count();
-        $list=$query->offset(($page-1)*$pageSize)->limit($pageSize)->asArray()->all();
+        list($count,$list)=Pager::instance($query,$pageSize)->get($page);
         return \Yii::$app->responseHelper->success([
             'total'=>$count,
             'list'=>$list
