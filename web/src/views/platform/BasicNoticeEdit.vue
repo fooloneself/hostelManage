@@ -11,7 +11,7 @@
 			<FormItem>
 	            <Button type="primary" @click="draft">存草稿</Button>
 	            <Button type="primary" @click="public" class="icon-ml">保存并发送</Button>
-                <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
+                <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 	        </FormItem>
 	    </Form>
 	</Col>

@@ -65,6 +65,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on:{
+                                        click: ()=>{
+                                            this.turnUrl('/admin/checkstandView/0');
+                                        }
                                     }
                                 }, '查看'),
                                 h('Button', {
@@ -77,6 +82,11 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on:{
+                                        click: ()=>{
+                                            this.turnUrl('/admin/checkstandOut');
+                                        }
                                     }
                                 }, '退房')
                             ]);

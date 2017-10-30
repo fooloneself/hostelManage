@@ -81,7 +81,7 @@
                                         click: ()=>{
                                             var that=this;
                                             this.$Modal.confirm({
-                                                title: '删除',
+                                                title: '提示',
                                                 content: '确定要删除吗',
                                                 onOk (){
                                                     that.delete(params.row.code);

@@ -22,7 +22,7 @@
             </FormItem>
             <FormItem>
                 <Button type="primary" @click="submit">保存</Button>
-                <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
+                <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
             </FormItem>
         </Form>
     </Col>

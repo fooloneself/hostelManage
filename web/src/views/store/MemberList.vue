@@ -7,7 +7,7 @@
         <Col span="18" class="tr">
             <Form inline>
                 <FormItem>
-                    <Select placeholder="会员等级" class="tl">
+                    <Select placeholder="会员等级" class="tl" style="width: 100px;">
                         <Option value="1">普通</Option>
                         <Option value="2">黄金</Option>
                         <Option value="3">铂金</Option>
