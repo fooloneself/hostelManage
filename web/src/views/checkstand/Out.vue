@@ -1,12 +1,19 @@
 <style scoped>
 .order-info{
-	line-height: 40px;
-	font-size: 14px;
 	border-right: 1px solid #dddee1;
+	.ivu-form-item{
+		margin-bottom: 16px;
+	}
+	p{
+		font-size: 14px;
+	}
 	span{
 		color: #ff9900;
 		font-weight: bolder;
 		font-size: 18px;
+		&.strong{
+			font-size: 30px;			
+		}
 	}
 }
 </style>
@@ -17,23 +24,15 @@
 		<div class="mb"></div>
 		<Row>
 			<Col span="4">
-			    <Row :gutter="16" class="order-info">
-			    	<Col span="12" class="tr">房间类型：</Col>
-			    	<Col span="12">豪华大床房</Col>
-			    	<Col span="12" class="tr">房间号：</Col>
-			    	<Col span="12">201</Col>
-			    	<Col span="12" class="tr">房间单价：</Col>
-			    	<Col span="12"><span>￥168.00</span></Col>
-			    	<Col span="12" class="tr">订单金额：</Col>
-			    	<Col span="12"><span>￥168.00</span></Col>
-			    	<Col span="12" class="tr">已收金额：</Col>
-			    	<Col span="12"><span>￥168.00</span></Col>
-			    	<Col span="12" class="tr">需补金额：</Col>
-			    	<Col span="12"><span>￥00.00</span></Col>
-			    </Row>
+			    <Form label-position="top" class="order-info">
+					<FormItem label="房间信息"><p>豪华大床房 - 201</p></FormItem>
+					<FormItem label="房间单价"><span>￥168.00</span></FormItem>
+					<FormItem label="订单金额"><span>￥168.00</span></FormItem>
+					<FormItem label="已收金额"><span class="strong">￥168.00</span></FormItem>
+					<FormItem label="需补金额"><span class="strong">￥0.00</span></FormItem>
+			    </Form>
 			</Col>
 			<Col span="10" offset="1">
-				<div class="mb"></div>
 				<Form label-position="top">
 					<FormItem label="入住人信息：">
 						<Row :gutter="8">
@@ -167,6 +166,12 @@ export default{
 	methods:{
 		goBack(){
 			history.go(-1);
+		},
+		addMoney(){
+			this.money++;
+		},
+		deleteMoney(){
+			this.money--;
 		},
 		turnUrl(url,query){
             this.$router.push(url)
