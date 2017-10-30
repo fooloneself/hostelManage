@@ -402,7 +402,7 @@ const routers = [
 	        {
 	        	path: 'checkstandOut',
 			    meta: {
-			        title: '客房登记 - 换房'
+			        title: '客房登记 - 退房'
 			    },
 				component: (resolve) => require(['./views/checkstand/Out.vue'], resolve)
 	        }

@@ -57,18 +57,33 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on:{
+                                        click: ()=>{
+                                            this.turnUrl('/admin/checkstandView/0');
+                                        }
                                     }
                                 }, '查看'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on:{
+                                        click: ()=>{
+                                            this.turnUrl('/admin/checkstandEdit/0');
+                                        }
                                     }
                                 }, '修改订单'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on:{
+                                        click: ()=>{
+                                            this.turnUrl('/admin/checkstandChange');
+                                        }
                                     }
                                 }, '换房'),
                                 h('Button', {

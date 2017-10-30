@@ -1,7 +1,31 @@
 <template>
 <div>
-    <Button type="primary" @click="turnUrl('/admin/roomListEdit/0')">新增</Button>
-    <div class="mb"></div>
+    <Row>
+        <Col span="6">
+            <Button type="primary" @click="turnUrl('/admin/roomListEdit/0')">新增</Button>
+        </Col>
+        <Col span="18">
+            <Form inline class="fr">
+                <FormItem>
+                    <Select placeholder="房间类型" style="width: 100px;">
+                        <Option value="">全部</Option>
+                        <Option value="1">房型一</Option>
+                        <Option value="2">房型二</Option>
+                    </Select>
+                </FormItem>
+                <FormItem>
+                    <Select placeholder="锁房状态" style="width: 100px;">
+                        <Option value="">全部</Option>
+                        <Option value="正常">正常</Option>
+                        <Option value="锁房">锁房</Option>
+                    </Select>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary">查询</Button>
+                </FormItem>
+            </Form>
+        </Col>
+    </Row>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
     <Page :total="totalCount" @on-change="pageTo" :page-size="10" show-total></Page>

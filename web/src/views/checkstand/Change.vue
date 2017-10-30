@@ -169,7 +169,7 @@
 					</FormItem>
 					<FormItem>
 			            <Button type="primary" @click="goBack">确认</Button>
-                        <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
+                        <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 			        </FormItem>
 			    </Form>
 			</Col>
