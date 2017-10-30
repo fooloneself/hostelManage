@@ -32,6 +32,9 @@
                     <MenuItem name="/admin/basicNotice">
                         <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>通知公告
                     </MenuItem>
+                    <MenuItem name="/admin/basicTips">
+                        <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
+                    </MenuItem>
                 </MenuGroup>
             </Menu>
         </Col>

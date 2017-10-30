@@ -335,6 +335,13 @@ const platform = {
 	            title: '联动菜单 - 子菜单编辑'
 	        },
         	component: (resolve) => require(['./views/platform/BasicNoticeEdit.vue'], resolve)
+		},
+		{
+			path: 'basicTips',
+	        meta: {
+	            title: '建议反馈列表'
+	        },
+        	component: (resolve) => require(['./views/platform/BasicTips.vue'], resolve)			
 		}
 	]
 };
