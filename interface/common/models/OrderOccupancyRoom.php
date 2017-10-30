@@ -5,23 +5,22 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%order_room}}".
+ * This is the model class for table "{{%order_occupancy_room}}".
  *
  * @property integer $order_id
  * @property integer $room_id
- * @property integer $plan_in_time
- * @property integer $plan_out_time
+ * @property integer $actual_in_time
+ * @property integer $actual_out_time
  * @property string $amount
- * @property integer $occupancy_status
  */
-class OrderRoom extends \common\components\ActiveRecord
+class OrderOccupancyRoom extends \common\components\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%order_room}}';
+        return '{{%order_occupancy_room}}';
     }
 
     /**
@@ -30,8 +29,8 @@ class OrderRoom extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', 'room_id', 'plan_in_time', 'plan_out_time'], 'required'],
-            [['order_id', 'room_id', 'plan_in_time', 'plan_out_time', 'occupancy_status'], 'integer'],
+            [['order_id', 'room_id'], 'required'],
+            [['order_id', 'room_id', 'actual_in_time', 'actual_out_time'], 'integer'],
             [['amount'], 'number'],
         ];
     }
@@ -44,10 +43,9 @@ class OrderRoom extends \common\components\ActiveRecord
         return [
             'order_id' => 'Order ID',
             'room_id' => 'Room ID',
-            'plan_in_time' => 'Plan In Time',
-            'plan_out_time' => 'Plan Out Time',
+            'actual_in_time' => 'Actual In Time',
+            'actual_out_time' => 'Actual Out Time',
             'amount' => 'Amount',
-            'occupancy_status' => 'Occupancy Status',
         ];
     }
 }

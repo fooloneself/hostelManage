@@ -5,6 +5,10 @@ use common\components\ErrorManager;
 
 class OrderController extends Controller{
 
+    /**
+     * 下单
+     * @return mixed
+     */
     public function actionPlace(){
         $rooms=\Yii::$app->requestHelper->post('rooms',[],'array');
         $IDNumber=\Yii::$app->requestHelper->post('ID','','number');

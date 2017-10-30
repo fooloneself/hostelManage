@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $mch_id
- * @property integer $user_id
+ * @property integer $guest_id
  * @property integer $place_time
  * @property integer $status
  * @property string $amount_payable
@@ -17,6 +17,7 @@ use Yii;
  * @property string $amount_deffer
  * @property string $order_no
  * @property string $channel
+ * @property string $mark
  */
 class Order extends \common\components\ActiveRecord
 {
@@ -35,11 +36,12 @@ class Order extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['mch_id', 'user_id', 'place_time', 'order_no'], 'required'],
-            [['mch_id', 'user_id', 'place_time', 'status'], 'integer'],
+            [['mch_id', 'guest_id', 'place_time', 'order_no'], 'required'],
+            [['mch_id', 'guest_id', 'place_time', 'status'], 'integer'],
             [['amount_payable', 'amount_paid', 'amount_deffer'], 'number'],
             [['order_no'], 'string', 'max' => 20],
             [['channel'], 'string', 'max' => 3],
+            [['mark'], 'string', 'max' => 600],
         ];
     }
 
@@ -51,7 +53,7 @@ class Order extends \common\components\ActiveRecord
         return [
             'id' => 'ID',
             'mch_id' => 'Mch ID',
-            'user_id' => 'User ID',
+            'guest_id' => 'Guest ID',
             'place_time' => 'Place Time',
             'status' => 'Status',
             'amount_payable' => 'Amount Payable',
@@ -59,6 +61,7 @@ class Order extends \common\components\ActiveRecord
             'amount_deffer' => 'Amount Deffer',
             'order_no' => 'Order No',
             'channel' => 'Channel',
+            'mark' => 'Mark',
         ];
     }
 }

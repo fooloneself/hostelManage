@@ -4,6 +4,7 @@ use common\components\ErrorManager;
 use common\components\Server;
 use common\models\LinkageMenu;
 use common\models\MchModule;
+use common\models\MerchantSet;
 use common\models\Premises;
 
 class Merchant extends Server{
@@ -174,5 +175,13 @@ class Merchant extends Server{
             if(empty($this->premise))$this->premise=false;
         }
         return $this->premise;
+    }
+
+    /**
+     * 获取商户设置
+     * @return static
+     */
+    public function getSetting(){
+        return MerchantSet::findOne(['mch_id'=>$this->getId()]);
     }
 }

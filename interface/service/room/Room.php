@@ -3,6 +3,8 @@ namespace service\room;
 use common\components\Server;
 use common\models\OccupancyRecord;
 use common\models\Order;
+use common\models\OrderOccupancyRoom;
+use common\models\OrderReserveRoom;
 use common\models\OrderRoom;
 use common\models\RoomType;
 
@@ -122,8 +124,8 @@ class Room extends Server{
      * @return bool
      */
     protected function hasOccupancy($roomId){
-        $res=OccupancyRecord::find()
-            ->where(['mch_id'=>$this->mchId,'room_id'=>$roomId])
+        $res=OrderOccupancyRoom::find()
+            ->where(['room_id'=>$roomId])
             ->andWhere('actual_in_time<=:time and (actual_out_time =0 or actual_out_time>=:time)',[':time'=>$this->time])
             ->asArray()->one();
         return !empty($res);
@@ -135,7 +137,7 @@ class Room extends Server{
      * @return bool
      */
     protected function hasReserve($roomId){
-        $res=OrderRoom::find()
+        $res=OrderReserveRoom::find()
             ->alias('or')
             ->leftJoin(Order::tableName().' o','or.order_id=o.id')
             ->where(['or.room_id'=>$roomId,'o.mch_id'=>$this->mchId])
