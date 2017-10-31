@@ -55,7 +55,7 @@ export default{
                     expand: true,
                     checked: true,
                     children: [{
-                        title: '<span style="color: red">leaf</span>',
+                        title: 'leaf',
                     }]
                 }]
             }]

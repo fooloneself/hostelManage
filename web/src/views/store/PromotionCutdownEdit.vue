@@ -9,7 +9,7 @@
 	    </Alert>
 	    <div class="mb"></div>
 	</Col>
-	<Col span="12">
+	<Col span="10">
 		<Form label-position="right" :label-width="100">
 			<FormItem label="满减名称：">
 				<Input placeholder="例：满100减10"></Input>
@@ -58,6 +58,10 @@
 	        </FormItem>
 	    </Form>
 	</Col>
+	<Col span="10" offset="1">
+		选择房间：
+		<Tree :data="baseData" show-checkbox></Tree>
+	</Col>
 </Row>
 </template>
 
@@ -66,6 +70,10 @@ export default{
 	data () {
 		return {
 			typeList: [
+                {
+                    value: '0',
+                    label: '非会员'
+                },
                 {
                     value: '1',
                     label: '普通会员'
@@ -83,7 +91,39 @@ export default{
                     label: '钻石会员'
                 }
             ],
-            model: ['1','2','3','4']
+            model: ['0'],
+            baseData: [{
+                expand: true,
+                title: '全部房间',
+                children: [
+	                {
+	                    title: '房间类型 1',
+	                    children: [
+		                    {
+		                        title: '房号 1-1',
+		                    },
+		                    {
+		                        title: '房号 1-1',
+		                    },
+		                    {
+		                        title: '房号 1-1',
+		                    },
+	                    ]
+	                },
+	                {
+	                    title: '房间类型 1',
+	                    children: [{
+	                        title: '房号 1-1',
+	                    }]
+	                },
+	                {
+	                    title: '房间类型 1',
+	                    children: [{
+	                        title: '房号 1-1',
+	                    }]
+	                },
+                ]
+            }]
 		}
 	},
 	methods:{
