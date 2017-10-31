@@ -4,7 +4,7 @@
 			<Alert show-icon>
 		        <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
 		        <template slot="desc">
-					对系统有什么建议和想法可以通过下面的文本框反馈给我们，感谢您的反馈！
+					小提示：对系统有什么建议和想法可以通过下面的文本框反馈给我们，感谢您的反馈！
 		        </template>
 		    </Alert>
 		    <div class="mb"></div>

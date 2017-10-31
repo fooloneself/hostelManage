@@ -59,11 +59,39 @@ const store = {
         	component: (resolve) => require(['./views/store/MemberListEdit.vue'], resolve)
 		},
 		{
-			path: 'memberConsume',
+			path: 'discount',
 	        meta: {
-	            title: '会员列表 - 个人消费情况'
+	            title: '折扣'
 	        },
-        	component: (resolve) => require(['./views/store/MemberConsume.vue'], resolve)
+        	component: (resolve) => require(['./views/store/PromotionDiscount.vue'], resolve)
+		},
+		{
+			path: 'discountEdit',
+	        meta: {
+	            title: '折扣 - 编辑'
+	        },
+        	component: (resolve) => require(['./views/store/PromotionDiscountEdit.vue'], resolve)
+		},
+		{
+			path: 'cutdown',
+	        meta: {
+	            title: '满减'
+	        },
+        	component: (resolve) => require(['./views/store/PromotionCutdown.vue'], resolve)
+		},
+		{
+			path: 'cutdownEdit',
+	        meta: {
+	            title: '满减 - 编辑'
+	        },
+        	component: (resolve) => require(['./views/store/PromotionCutdownEdit.vue'], resolve)
+		},
+		{
+			path: 'planEdit',
+	        meta: {
+	            title: '活动执行计划'
+	        },
+        	component: (resolve) => require(['./views/store/PromotionPlanEdit.vue'], resolve)
 		}
 	]
 };

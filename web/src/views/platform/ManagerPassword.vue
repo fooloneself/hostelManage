@@ -1,5 +1,14 @@
 <template>
 <Row>
+	<Col span="24">
+		<Alert show-icon>
+	        <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
+	        <template slot="desc">
+				小提示：为了您的数据安全，密码必须是8位及以上，包含数字、字母和特殊符号任意两种。
+	        </template>
+	    </Alert>
+		<div class="mb"></div>
+	</Col>
 	<Col span="12">
 		<Form :model="formItem" label-position="right" :label-width="80">
 			<FormItem label="旧密码：">

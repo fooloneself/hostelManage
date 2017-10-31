@@ -1,7 +1,27 @@
 <template>
 <Row>
+	<Col span="24">
+		<Alert show-icon>
+	        <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
+	        <template slot="desc">
+				小提示：您可以随意指定会员的等级，但是该会员的等级不能低于他已经达到的实际等级。
+	        </template>
+	    </Alert>
+		<div class="mb"></div>
+	</Col>
 	<Col span="12">
 		<Form v-model="formItem" label-position="right" :label-width="80">
+			<FormItem label="会员等级：">
+				<Select>
+		            <Option value="0">普通会员</Option>
+		            <Option value="1">黄金会员</Option>
+		            <Option value="2">铂金会员</Option>
+		            <Option value="3">钻石会员</Option>
+		        </Select>
+	        </FormItem>
+			<FormItem label="余额：">
+				<Input placeholder=""><span slot="prepend">￥</span></Input>
+	        </FormItem>
 			<FormItem label="姓名：">
 				<Input v-model="formItem.name"></Input>
 	        </FormItem>
@@ -23,9 +43,9 @@
 			<FormItem label="生日：">
 				<DatePicker v-model="formItem.birthday" :value="formItem.birthday" type="date" placeholder="选择日期"></DatePicker>
 	        </FormItem>
-			<FormItem label="微信号：">
+			<!-- <FormItem label="微信号：">
 				<Input v-model="formItem.wxAccount"></Input>
-	        </FormItem>
+	        </FormItem> -->
 			<FormItem label="备注：">
 	            <Input v-model="formItem.mark" type="textarea" :rows="5"></Input>
 	        </FormItem>
@@ -48,6 +68,7 @@ export default{
 				mobile:'',
 				numberType: 0,
 				number: '',
+				type:'1',
 				sex: 0,
 				birthday: '',
 				wxAccount: '',

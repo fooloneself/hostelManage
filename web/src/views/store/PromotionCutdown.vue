@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="primary">新增</Button>
+    <Button type="primary" @click="turnUrl('/admin/cutdownEdit')">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
@@ -17,24 +17,29 @@
                         width: 60
                     },
                     {
-                        title: '等级名称',
+                        title: '满减名称'
+                    },
+                    {
+                        title: '满减规则',
                         width: 120
                     },
                     {
-                        title: '消费区间',
-                        width: 150
+                        title: '适用会员等级',
+                        width: 200
                     },
                     {
-                        title: '积分区间',
-                        width: 150
+                        title: '活动可叠加',
+                        width: 120
                     },
                     {
-                        title: '等级说明'
+                        title: '会员生日适用',
+                        width: 140
                     },
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
+                        width: 210,
+                        fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
@@ -44,7 +49,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/admin/memberRankEdit')
+                                            this.turnUrl('/admin/cutdownEdit')
                                         }
                                     }
                                 }, '编辑'),
@@ -55,9 +60,20 @@
                                     },
                                     on: {
                                         click: ()=>{
+                                            this.turnUrl('/admin/planEdit')
+                                        }
+                                    }
+                                }, '活动执行计划'),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
                                             this.$Modal.confirm({
                                                 title:'提示',
-                                                content:'会员等级删除以后，该等级下的会员会自动匹配至他满足条件的等级，请确认是否要删除？'
+                                                content:'请确认是否要删除？'
                                             });
                                         }
                                     }

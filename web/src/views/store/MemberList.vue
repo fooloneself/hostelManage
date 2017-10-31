@@ -52,19 +52,13 @@
                         key: 'mobile'
                     },
                     {
-                        title: '微信号',
-                        width: 120,
-                        key: 'wx_account'
-                    },
-                    {
-                        title: '生日',
-                        width: 120,
-                        key: 'birthday'
-                    },
-                    {
                         title: '会员等级',
                         width: 120,
                         key: 'rank'
+                    },
+                    {
+                        title: '余额',
+                        width: 120
                     },
                     {
                         title: '消费金额',
@@ -118,7 +112,7 @@
                                         type: 'text',
                                         size: 'small'
                                     }
-                                }, '消费记录')
+                                }, '查看')
                             ]);
                         }
                     }

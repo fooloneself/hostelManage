@@ -93,7 +93,7 @@
 			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">修改订单</Button>
 			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandChange')">换房</Button>
 			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandOut')">退房</Button>
-			            <Button type="primary" class="icon-ml" @click="goBack">一键续住</Button>
+			            <Button type="primary" class="icon-ml" @click="goBack">续住</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 			        </FormItem>
 					<!-- 这是预订订单的按钮 -->

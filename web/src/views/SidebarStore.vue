@@ -21,6 +21,11 @@
                     <MenuItem name="/admin/memberRank"><i class="fa fa-users fa-fw" aria-hidden="true"></i>会员等级</MenuItem>
                     <MenuItem name="/admin/memberList"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>会员列表</MenuItem>
                 </MenuGroup>
+                <MenuGroup name="promotion" title="活动管理">
+                    <MenuItem name="/admin/discount"><i class="fa fa-rmb fa-fw" aria-hidden="true"></i>折扣</MenuItem>
+                    <MenuItem name="/admin/cutdown"><i class="fa fa-money fa-fw" aria-hidden="true"></i>满减</MenuItem>
+                    <!-- <MenuItem name="/admin/promotion"><i class="fa fa-ticket fa-fw" aria-hidden="true"></i>优惠券</MenuItem> -->
+                </MenuGroup>
             </Menu>
         </Col>
         <Col span="20">

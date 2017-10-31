@@ -30,10 +30,10 @@
                         <i class="fa fa-cog fa-fw" aria-hidden="true"></i>门店配置
                     </MenuItem>
                     <MenuItem name="/admin/configChannel">
-                        <i class="fa fa-cog fa-fw" aria-hidden="true"></i>渠道配置
+                        <i class="fa fa-handshake-o fa-fw" aria-hidden="true"></i>渠道配置
                     </MenuItem>
                     <MenuItem name="/admin/configAccount">
-                        <i class="fa fa-cog fa-fw" aria-hidden="true"></i>账号配置
+                        <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>账号配置
                     </MenuItem>
                 </MenuGroup>
             </Menu>
