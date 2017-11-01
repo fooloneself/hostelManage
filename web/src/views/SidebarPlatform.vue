@@ -2,7 +2,7 @@
 <div class="layout-body">
     <Row>
         <Col span="4">
-            <Menu theme="light" active-name="/admin/managerInfo" @on-select="turnUrl" style="width: auto">
+            <Menu theme="light" active-name="/admin/basicTips" @on-select="turnUrl" style="width: auto">
                 <MenuGroup name="manager" title="个人中心">
                     <MenuItem name="/admin/managerInfo">
                         <i class="fa fa-user fa-fw" aria-hidden="true"></i>个人资料

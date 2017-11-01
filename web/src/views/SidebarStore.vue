@@ -17,14 +17,16 @@
                         <i class="fa fa-calendar-times-o fa-fw" aria-hidden="true"></i>异常订单
                     </MenuItem>
                 </MenuGroup>
-                <MenuGroup name="member" title="会员管理">
-                    <MenuItem name="/admin/memberRank"><i class="fa fa-users fa-fw" aria-hidden="true"></i>会员等级</MenuItem>
-                    <MenuItem name="/admin/memberList"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>会员列表</MenuItem>
-                </MenuGroup>
-                <MenuGroup name="promotion" title="活动管理">
-                    <MenuItem name="/admin/discount"><i class="fa fa-rmb fa-fw" aria-hidden="true"></i>折扣</MenuItem>
-                    <MenuItem name="/admin/cutdown"><i class="fa fa-money fa-fw" aria-hidden="true"></i>满减</MenuItem>
-                    <!-- <MenuItem name="/admin/promotion"><i class="fa fa-ticket fa-fw" aria-hidden="true"></i>优惠券</MenuItem> -->
+                <MenuGroup name="ota" title="OTA渠道管理">
+                    <MenuItem name="/admin/otaXiecheng">
+                        <i class="fa fa-link fa-fw" aria-hidden="true"></i>携程网
+                    </MenuItem>
+                    <MenuItem name="/admin/otaQunaer">
+                        <i class="fa fa-link fa-fw" aria-hidden="true"></i>去哪儿网
+                    </MenuItem>
+                    <MenuItem name="/admin/otaYilong">
+                        <i class="fa fa-link fa-fw" aria-hidden="true"></i>艺龙网
+                    </MenuItem>
                 </MenuGroup>
             </Menu>
         </Col>

@@ -29,69 +29,75 @@ const store = {
 	            title: '异常订单'
 	        },
         	component: (resolve) => require(['./views/store/OrderError.vue'], resolve)
-		},
+		}
+	]
+};
+const market={
+	path: '',
+	component: (resolve) => require(['./views/SidebarMarket.vue'], resolve),
+	children:[
 		{
 			path: 'memberRank',
 	        meta: {
 	            title: '会员等级'
 	        },
-        	component: (resolve) => require(['./views/store/MemberRank.vue'], resolve)
+        	component: (resolve) => require(['./views/market/MemberRank.vue'], resolve)
 		},
 		{
 			path: 'memberRankEdit',
 	        meta: {
 	            title: '会员等级 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/store/MemberRankEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/market/MemberRankEdit.vue'], resolve)
 		},
 		{
 			path: 'memberList',
 	        meta: {
 	            title: '会员列表'
 	        },
-        	component: (resolve) => require(['./views/store/MemberList.vue'], resolve)
+        	component: (resolve) => require(['./views/market/MemberList.vue'], resolve)
 		},
 		{
 			path: 'memberListEdit/:id',
 	        meta: {
 	            title: '会员列表 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/store/MemberListEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/market/MemberListEdit.vue'], resolve)
 		},
 		{
 			path: 'discount',
 	        meta: {
 	            title: '折扣'
 	        },
-        	component: (resolve) => require(['./views/store/PromotionDiscount.vue'], resolve)
+        	component: (resolve) => require(['./views/market/PromotionDiscount.vue'], resolve)
 		},
 		{
 			path: 'discountEdit',
 	        meta: {
 	            title: '折扣 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/store/PromotionDiscountEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/market/PromotionDiscountEdit.vue'], resolve)
 		},
 		{
 			path: 'cutdown',
 	        meta: {
 	            title: '满减'
 	        },
-        	component: (resolve) => require(['./views/store/PromotionCutdown.vue'], resolve)
+        	component: (resolve) => require(['./views/market/PromotionCutdown.vue'], resolve)
 		},
 		{
 			path: 'cutdownEdit',
 	        meta: {
 	            title: '满减 - 编辑'
 	        },
-        	component: (resolve) => require(['./views/store/PromotionCutdownEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/market/PromotionCutdownEdit.vue'], resolve)
 		},
 		{
 			path: 'planEdit',
 	        meta: {
 	            title: '活动执行计划'
 	        },
-        	component: (resolve) => require(['./views/store/PromotionPlanEdit.vue'], resolve)
+        	component: (resolve) => require(['./views/market/PromotionPlanEdit.vue'], resolve)
 		}
 	]
 };
@@ -405,7 +411,7 @@ const routers = [
     {
         path: '/admin',
         component: (resolve) => require(['./views/AdminLayout.vue'], resolve),
-        children:[store,system,platform,
+        children:[store,market,system,platform,
 	        {
 	        	path: 'checkstand',
 			    meta: {

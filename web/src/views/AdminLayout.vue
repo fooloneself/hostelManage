@@ -40,9 +40,10 @@
                     <Col span="16">
                         <Menu mode="horizontal" active-name="/admin/checkstand" @on-select="turnUrl" class="menu">
                             <MenuItem name="/admin/checkstand">客房登记</MenuItem>
-                            <MenuItem name="/admin/orderIn">门店管理</MenuItem>
-                            <MenuItem name="/admin/personInfo">系统设置</MenuItem>
-                            <MenuItem name="/admin/managerInfo">平台管理</MenuItem>
+                            <MenuItem name="/admin/orderIn">渠道订单</MenuItem>
+                            <MenuItem name="/admin/memberList">营销管理</MenuItem>
+                            <MenuItem name="/admin/configStore">系统配置</MenuItem>
+                            <MenuItem name="/admin/basicTips">平台管理</MenuItem>
                         </Menu>
                     </Col>
                     <Col span="4" class="tr">

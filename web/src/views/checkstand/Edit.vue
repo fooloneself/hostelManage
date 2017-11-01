@@ -6,13 +6,15 @@
 	}
 	p{
 		font-size: 14px;
+		padding-left: 8px;
 	}
 	span{
 		color: #ff9900;
+		padding-left: 8px;
 		font-weight: bolder;
 		font-size: 18px;
 		&.strong{
-			font-size: 30px;			
+			font-size: 24px;			
 		}
 	}
 }
@@ -25,11 +27,17 @@
 		<Row>
 			<Col span="4">
 			    <Form label-position="top" class="order-info">
-					<FormItem label="房间信息"><p>豪华大床房 - 201</p></FormItem>
-					<FormItem label="房间单价"><span>￥168.00</span></FormItem>
-					<FormItem label="订单金额"><span>￥168.00</span></FormItem>
-					<FormItem label="已收金额"><span class="strong">￥168.00</span></FormItem>
-					<FormItem label="需补金额"><span class="strong">￥0.00</span></FormItem>
+					<H3 class="mb">豪华大床房 - 201</H3>
+					<FormItem label="房间单价："><span>￥168.00</span></FormItem>
+					<FormItem label="订单金额："><span>￥168.00</span></FormItem>
+					<FormItem label="优惠信息：">
+						<p>普通会员生日</p>
+						<p>九折优惠</p>
+						<p>满100减10</p>
+					</FormItem>
+					<FormItem label="应收金额："><span class="strong">￥141.20</span></FormItem>
+					<FormItem label="已收金额："><span class="strong">￥200.00</span></FormItem>
+					<FormItem label="待收金额："><span class="strong">￥-58.80</span></FormItem>
 			    </Form>
 			</Col>
 			<Col span="10" offset="1">
@@ -108,7 +116,7 @@
 							</Col>
 						</Row>
 			        </FormItem>
-					<FormItem label="费用情况：">
+					<FormItem label="添加费用信息：">
 						<Row :gutter="8">
 							<Col span="5">
 								<Select placeholder="付费项">
