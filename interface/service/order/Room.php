@@ -4,7 +4,9 @@ use common\models\Order;
 use common\models\OrderOccupancyRoom;
 use common\models\OrderReserveRoom;
 use common\models\OrderRoom;
+use common\models\RoomDayPrice;
 use common\models\RoomType;
+use common\models\RoomWeekPrice;
 
 class Room{
     //房间
@@ -31,6 +33,14 @@ class Room{
      */
     public function canPlaceOrder(){
         return $this->room->status!=\common\models\Room::STATUS_CAN_ORDER;
+    }
+
+    /**
+     * 获取房间ID
+     * @return int
+     */
+    public function getRoomId(){
+        return $this->room->id;
     }
 
     /**
@@ -96,7 +106,55 @@ class Room{
         }
     }
 
-    public function cost($startTime,$endTime,$type){
-        if()
+    /**
+     * 计算钟点房费用
+     * @param $startTime
+     * @param $endTime
+     * @return float
+     */
+    public function calculateHourCost($startTime,$endTime){
+        return floor($this->roomType->hour_room_price)*ceil(($endTime-$startTime)/3600);
+    }
+
+    /**
+     * 计算按天算房费
+     * @param $startTime
+     * @param $endTime
+     * @return float
+     */
+    public function calculateDayCost($startTime,$endTime){
+        $days=($endTime-$startTime)/86400;
+        $startWeek=date('w',$startTime);
+        $cycle=floor($days/7);
+        $surplus=$days%7;
+        $weekNum=array_fill(1,7,$cycle);
+        for($key=0;$key<$surplus;$key++){
+            $weekNum[$startWeek+$key]++;
+        }
+        $dayPriceList=RoomDayPrice::getDayPriceList($this->room->mch_id,$this->room->type,$startTime,$endTime);
+        $totalCost=0;
+        foreach ($dayPriceList as $dayPrice){
+            $totalCost+=floatval($dayPrice['price']);
+            $weekNum[$dayPrice['week']]--;
+        }
+        $weekPrice=RoomWeekPrice::find()
+            ->where(['type_id'=>$this->room->type,'mch_id'=>$this->room->mch_id])
+            ->one();
+        $defaultPriceNum=0;
+        if(empty($weekPrice)){
+            $defaultPriceNum=array_sum($weekNum);
+        }else{
+            $weekSub=['monday','tuesday','wensday','thursday','friday','saturday','sunday'];
+            foreach ($weekSub as $sub=>$week){
+                $price=floatval($weekPrice->getAttribute($week));
+                if($price<0){
+                    $defaultPriceNum+=$weekNum[$sub+1];
+                }else{
+                    $totalCost+=$weekNum[$sub+1]*$price;
+                }
+            }
+        }
+        $totalCost+=$defaultPriceNum*floatval($this->roomType->default_price);
+        return $totalCost;
     }
 }
