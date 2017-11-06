@@ -62,7 +62,7 @@ class RoomDayPrice extends \common\components\ActiveRecord
      * @param $typeId
      * @param $startTime
      * @param $endTime
-     * @return array
+     * @return array|\yii\db\ActiveRecord[]
      */
     public static function getDayPriceList($mchId,$typeId,$startTime,$endTime){
         $start=intval(date('Y-m-d',$startTime));
@@ -71,7 +71,6 @@ class RoomDayPrice extends \common\components\ActiveRecord
             ->select('week,price')
             ->where(['mch_id'=>$mchId,'type_id'=>$typeId])
             ->andWhere(['between','date',$start,$end])
-            ->andWhere('date >=:start and date <:end',[':start'=>$start,':end'=>$end])
             ->asArray()->all();
     }
 }

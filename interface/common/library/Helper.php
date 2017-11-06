@@ -57,20 +57,21 @@ class Helper{
     }
 
     /**
+     * 房间号
+     * @param $floor
+     * @param $num
+     * @return string
+     */
+    public static function getRoomNo($floor,$num){
+        return $floor.str_pad($num,3,'0',STR_PAD_LEFT);
+    }
+
+    /**
      * 加密登录密码
      * @param $pwd
      * @return string
      */
     public static function encryptPwd($pwd){
         return md5($pwd);
-    }
-
-    /**
-     * 生产订单号
-     * @param $mchId
-     * @return string
-     */
-    public static function makeOrderNum($mchId){
-        return 'A'.str_pad(base_convert($mchId,10,16),STR_PAD_LEFT,'0',6).date('YmdHis').rand(10,99);
     }
 }

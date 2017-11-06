@@ -26,7 +26,7 @@ class ErrorManager extends Component{
     const ERROR_UPDATE_FAIL                 =100018;
     const ERROR_MENU_NOT_EXISTS             =100019;
     const ERROR_DELETE_CANNOT               =100020;
-    const ERROR_PARAM_WRONG                     =100021;
+const ERROR_PARAM_WRONG                     =100021;
     const ERROR_ACCOUNT_ERROR                =100022;
     const ERROR_MENU_EXISTS                 =100023;
     const ERROR_CHANNEL_EXISTS              =100024;
@@ -34,9 +34,6 @@ class ErrorManager extends Component{
     const ERROR_NOT_EXISTS                  =100026;
     const ERROR_EXISTS                      =100027;
     const ERROR_OPERATE_FAIL                =100028;
-    const ERROR_ROOM_NOT_EXISTS             =100029;//房间不存在
-    const ERROR_ROOM_HAS_RESERVE             =100030;//房间已预定
-    const ERROR_ROOM_HAS_OCCUPANCY             =100031;//房间已入住
     //错误信息 common\components\Error的实例
     private $_error;
 

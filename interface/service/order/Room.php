@@ -13,10 +13,9 @@ class Room{
     protected $room;
     protected $roomType;
 
-    public function __construct(\common\models\Room $room)
+    public function __construct($mchId,$roomId)
     {
-
-        $this->room=$room;
+        $this->room=\common\models\Room::findOne(['mch_id'=>$mchId,'id'=>$roomId]);
         $this->roomType=RoomType::findOne(['id'=>$this->room->type,'mch_id'=>$this->room->mch_id]);
     }
 
@@ -28,13 +27,6 @@ class Room{
         return !empty($this->room);
     }
 
-    /**
-     * 是否已经设置分类
-     * @return bool
-     */
-    public function hasSetType(){
-        return !empty($this->roomType);
-    }
     /**
      * 房间是否可下订单
      * @return bool
@@ -164,16 +156,5 @@ class Room{
         }
         $totalCost+=$defaultPriceNum*floatval($this->roomType->default_price);
         return $totalCost;
-    }
-
-    /**
-     * 通过房间ID实例化类
-     * @param $mchId
-     * @param $roomId
-     * @return static
-     */
-    public static function byId($mchId,$roomId){
-        $room=\common\models\Room::findOne(['mch_id'=>$mchId,'id'=>$roomId]);
-        return new static($room);
     }
 }
