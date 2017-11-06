@@ -74,6 +74,9 @@
 export default{
     data () {
         return {
+        	userName: '',
+			password: '',
+			code: ''
         }
     }
 }

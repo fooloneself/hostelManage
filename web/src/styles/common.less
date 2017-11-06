@@ -50,7 +50,8 @@ body{
     right: 48px;
     border-top-left-radius:5px;
 	border-top-right-radius:5px;
-	overflow: auto;
+	overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /*change*/
@@ -68,4 +69,23 @@ body{
 }
 textarea.ivu-input{
     font-size: 12px;
+}
+
+/*animate*/
+.slideUp-enter-active,.slideRight-enter-active{
+    transition: all 0.4s ease-out;
+}
+.slideUp-enter{
+  transform: translateY(-50px);
+  opacity: .5;
+}
+.slideUp-leave-active{
+    display: none;
+}
+.slideRight-enter{
+  transform: translateX(50px);
+  opacity: .5;
+}
+.slideRight-leave-active{
+    display: none;
 }
