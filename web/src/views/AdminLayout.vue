@@ -6,7 +6,7 @@
     background: #FFF;
     min-width: 1208px;
     position: relative;
-    z-index: auto;
+    z-index: 999;
     .logo{
         height: 60px;
         line-height: 60px;
@@ -65,7 +65,9 @@
                 </Row>
             </div>
         </div>
-        <router-view></router-view>
+        <transition name="slideUp">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 

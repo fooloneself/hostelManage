@@ -51,7 +51,9 @@
                 </Row>
             </div>
         </div>
-        <router-view></router-view>
+        <transition name="slideUp">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 

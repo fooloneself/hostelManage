@@ -19,7 +19,9 @@
         </Col>
         <Col span="20">
             <div class="container-content">
+            <transition name="slideRight">
                 <router-view></router-view>
+            </transition>
             </div>
         </Col>
     </Row>
