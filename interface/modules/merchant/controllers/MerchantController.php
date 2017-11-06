@@ -152,7 +152,7 @@ class MerchantController extends Controller {
             'mch_id'=>\Yii::$app->user->getAdmin()->getMchId(),
             'create_time'=>time(),
             'content'=>$info,
-            'admin_id'=>\Yii::$app->user->getAdminId(),
+            'feedback_admin_id'=>\Yii::$app->user->getAdminId(),
             'status'=>Feedback::STATUS_HANDLING
         ]);
         if($model->insert()){

@@ -31,6 +31,7 @@ class Error{
         ErrorManager::ERROR_NOT_EXISTS=>'不存在',
         ErrorManager::ERROR_EXISTS=>'已存在',
         ErrorManager::ERROR_OPERATE_FAIL=>'操作失败',
+        ErrorManager::ERROR_CANCEL_NO_RIGHT=>'无权取消',
     ];
     //错误码
     public $status;

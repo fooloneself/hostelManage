@@ -56,7 +56,10 @@ const interfaces={
     'merchantMemberDelete':'merchant/member/delete',
     'merchantMemberEditInfo':'merchant/member/edit-page-info',
     'checkstandRoom':'merchant/checkstand/room',
-    'checkstandRoomFilter':'merchant/checkstand/room-filter'
+    'checkstandRoomFilter':'merchant/checkstand/room-filter',
+    'platformFeedbackList':'platform/feedback/list',
+    'platformFeedbackAnswer':'platform/feedback/answer',
+    'platformFeedbackCancel':'platform/feedback/cancel-answer'
 };
 const server={
     'host': 'http://www.hotel.com',

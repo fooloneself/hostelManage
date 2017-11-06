@@ -2,54 +2,102 @@
 <div>
     <Form inline class="fr">
         <FormItem>
-            <Select placeholder="回复状态" v-model="option" style="width: 100px;">
-                <Option value="">全部</Option>
-                <Option value="1">未回复</Option>
-                <Option value="2">已回复</Option>
+            <Select placeholder="回复状态" v-model="filter.status" style="width: 100px;">
+                <Option value="-1">全部</Option>
+                <Option value="0">未回复</Option>
+                <Option value="1">已回复</Option>
             </Select>
         </FormItem>
         <FormItem>
-            <Button type="primary">查询</Button>
+            <Button type="primary" @click="refresh">查询</Button>
         </FormItem>
     </Form>
     <div class="cls"></div>
     <Collapse v-model="value" accordion>
-    <template v-for="i in 5">
-        <Panel>
-            李波美 - 2017/10/10
-            <div slot="content">李波美是一位工业设计师，现任Apple公司设计师兼资深副总裁，英国爵士。他曾参与设计了iPod，iMac，iPhone，iPad等众多苹果产品。除了乔布斯，他是对苹果那些著名的产品最有影响力的人。
-            <Alert class="mt" closable>
-                <span slot="desc">成功的提示描述文案成功的提示描述文案成功的提示描述文案成功的提示描述文案成功的提示描述文案</span>
-                <span slot="close">删除</span>
+    <template>
+        <Panel v-for="item in list">
+            {{item.name}} - {{item.date}}
+            <div slot="content">{{item.content}}
+            <Alert v-show="item.hasAnswer" closable class="mt">
+                <span slot="desc">{{item.answer}}</span>
+                <span slot="close" v-show="item.canCancel" @click="cancelAnswer(item)">删除</span>
             </Alert>
+            <div v-show="!item.hasAnswer" class="mt">
+                <Input v-model="item.answer" type="textarea" :rows="3" placeholder="请输入回复内容..."></Input>
+                <Button type="primary" @click="answer(item)" class="mt">回复</Button>
             </div>
-        </Panel>
-        <Panel>
-            李波美 - 2017/10/10
-            <div slot="content">李波美是一位工业设计师，现任Apple公司设计师兼资深副总裁，英国爵士。他曾参与设计了iPod，iMac，iPhone，iPad等众多苹果产品。除了乔布斯，他是对苹果那些著名的产品最有影响力的人。
-                <div class="mt">
-                    <Input type="textarea" :rows="3" placeholder="请输入回复内容..."></Input>
-                    <Button type="primary" class="mt">回复</Button>
-                </div>
             </div>
         </Panel>
     </template>
     </Collapse>
     <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+    <Page :total="totalCount" show-total :current-page="filter.page" :page-size="filter.pageSize" @on-change="pageTo"></Page>
 </div>
 </template>
 <script>
     export default {
         data () {
             return {
-                option:'1',
-                value:'0'
+                value: '0',
+                totalCount: 0,
+                list :[],
+                filter: {
+                    status: -1,
+                    page: 1,
+                    pageSize: 10
+                }
             }
+        },
+        mounted (){
+            this.refresh();
         },
         methods:{
             turnUrl:function(url,query){
                 this.$router.push(url)
+            },
+            pageTo (page){
+                this.filter.current=page;
+                this.refresh();
+            },
+            refresh (){
+                var that=this;
+                this.host.post('platformFeedbackList',this.filter).then(function(res){
+                    if(res.isSuccess()){
+                        that.totalCount=parseInt(res.data().totalCount);
+                        that.list=res.data().list;
+                    }else{
+                        this.$Notice.info({
+                            title: '错误提示',
+                            desc: res.error()
+                        })
+                    }
+                })
+            },
+            answer (item){
+                this.host.post('platformFeedbackAnswer',{id: item.id,answer: item.answer}).then(function(res){
+                    if(res.isSuccess()){
+                        item.hasAnswer=true;
+                        item.canCancel=true;
+                    }else{
+                        this.$Notice.info({
+                            title: '错误提示',
+                            desc: res.error()
+                        })
+                    }
+                })
+            },
+            cancelAnswer (item){
+                this.host.post('platformFeedbackCancel',{id: item.id}).then(function(res){
+                    if(res.isSuccess()){
+                        item.hasAnswer=false;
+                        item.answer='';
+                    }else{
+                        this.$Notice.info({
+                            title: '错误提示',
+                            desc: res.error()
+                        })
+                    }
+                })
             }
         }
     }

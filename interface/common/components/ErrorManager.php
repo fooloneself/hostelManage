@@ -37,6 +37,7 @@ class ErrorManager extends Component{
     const ERROR_ROOM_NOT_EXISTS             =100029;//房间不存在
     const ERROR_ROOM_HAS_RESERVE             =100030;//房间已预定
     const ERROR_ROOM_HAS_OCCUPANCY             =100031;//房间已入住
+    const ERROR_CANCEL_NO_RIGHT             =100032;//房间已入住
     //错误信息 common\components\Error的实例
     private $_error;
 
