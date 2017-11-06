@@ -9,7 +9,7 @@
             </Select>
         </FormItem>
         <FormItem>
-            <Button type="primary" @click="refresh">查询</Button>
+            <Button type="primary" @click="search">查询</Button>
         </FormItem>
     </Form>
     <div class="cls"></div>
@@ -31,7 +31,7 @@
     </template>
     </Collapse>
     <div class="mb"></div>
-    <Page :total="totalCount" show-total :current-page="filter.page" :page-size="filter.pageSize" @on-change="pageTo"></Page>
+    <Page :total="totalCount" show-total :current="filter.page" :page-size="filter.pageSize" @on-change="pageTo"></Page>
 </div>
 </template>
 <script>
@@ -43,7 +43,7 @@
                 list :[],
                 filter: {
                     status: -1,
-                    page: 1,
+                    page: 2,
                     pageSize: 10
                 }
             }
@@ -55,8 +55,12 @@
             turnUrl:function(url,query){
                 this.$router.push(url)
             },
+            search(){
+                this.filter.page=1;
+                this.refresh();
+            },
             pageTo (page){
-                this.filter.current=page;
+                this.filter.page=page;
                 this.refresh();
             },
             refresh (){
