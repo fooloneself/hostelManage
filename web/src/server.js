@@ -59,7 +59,12 @@ const interfaces={
     'checkstandRoomFilter':'merchant/checkstand/room-filter',
     'platformFeedbackList':'platform/feedback/list',
     'platformFeedbackAnswer':'platform/feedback/answer',
-    'platformFeedbackCancel':'platform/feedback/cancel-answer'
+    'platformFeedbackCancel':'platform/feedback/cancel-answer',
+    'merchantAdminList':'merchant/admin/list',
+    'merchantAdminDel':'merchant/admin/delete',
+    'merchantAdminChange':'merchant/admin/change',
+    'merchantAdminAdd':'merchant/admin/add',
+    'merchantAdminRoles':'merchant/admin/roles'
 };
 const server={
     'host': 'http://www.hotel.com',

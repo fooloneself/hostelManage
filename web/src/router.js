@@ -183,7 +183,7 @@ const system = {
         	component: (resolve) => require(['./views/system/PersonInfo.vue'], resolve)
 		},
 		{
-			path: 'personPassword',
+			path: 'personPassword/:adminId',
 	        meta: {
 	            title: '修改密码'
 	        },

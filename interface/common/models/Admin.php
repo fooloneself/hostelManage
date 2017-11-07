@@ -11,6 +11,9 @@ use Yii;
  * @property integer $mch_id
  * @property integer $expire
  * @property integer $last_login_time
+ * @property integer $account_expire
+ * @property integer $role_id
+ * @property integer $status
  * @property integer $is_super
  * @property string $user_name
  * @property string $password
@@ -18,6 +21,8 @@ use Yii;
  */
 class Admin extends \common\components\ActiveRecord
 {
+    const STATUS_DISABLE    =0;
+    const STATUS_ENABLE     =1;
     /**
      * @inheritdoc
      */
@@ -32,7 +37,7 @@ class Admin extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['mch_id', 'expire', 'last_login_time', 'is_super'], 'integer'],
+            [['mch_id', 'expire', 'last_login_time', 'account_expire', 'role_id', 'status', 'is_super'], 'integer'],
             [['user_name', 'password'], 'required'],
             [['user_name', 'password', 'token'], 'string', 'max' => 100],
         ];
@@ -48,6 +53,9 @@ class Admin extends \common\components\ActiveRecord
             'mch_id' => 'Mch ID',
             'expire' => 'Expire',
             'last_login_time' => 'Last Login Time',
+            'account_expire' => 'Account Expire',
+            'role_id' => 'Role ID',
+            'status' => 'Status',
             'is_super' => 'Is Super',
             'user_name' => 'User Name',
             'password' => 'Password',
