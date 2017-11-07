@@ -34,12 +34,6 @@
 			        <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
 			    </Select>
 	        </FormItem>
-	        <FormItem label="会员生日适用：">
-		        <Switch>
-			        <span slot="open">是</span>
-			        <span slot="close">否</span>
-			    </Switch>
-	        </FormItem>
 			<FormItem label="活动说明：">
 	            <Input type="textarea" :rows="5"></Input>
 	        </FormItem>

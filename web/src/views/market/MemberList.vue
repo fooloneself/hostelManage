@@ -79,7 +79,7 @@
                         title: '操作',
                         key: 'action',
                         fixed: 'right',
-                        width: 180,
+                        width: 240,
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
@@ -93,6 +93,12 @@
                                         }
                                     }
                                 }, '编辑'),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    }
+                                }, '查看'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
@@ -112,7 +118,7 @@
                                         type: 'text',
                                         size: 'small'
                                     }
-                                }, '查看')
+                                }, '加入黑名单')
                             ]);
                         }
                     }

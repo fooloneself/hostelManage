@@ -65,6 +65,13 @@ const market={
         	component: (resolve) => require(['./views/market/MemberListEdit.vue'], resolve)
 		},
 		{
+			path: 'memberBlack',
+	        meta: {
+	            title: '会员列表'
+	        },
+        	component: (resolve) => require(['./views/market/MemberBlack.vue'], resolve)
+		},
+		{
 			path: 'discount',
 	        meta: {
 	            title: '折扣'
