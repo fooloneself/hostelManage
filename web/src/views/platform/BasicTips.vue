@@ -1,3 +1,20 @@
+<style scoped>
+.commit{
+    padding: 16px;
+    border: 1px solid #ccf5e0;
+    background: #e6faf0;
+    border-radius: 6px;
+    color: #657180;
+    margin-top: 8px;
+    line-height: 22px;
+    a{
+        color: #16A085;
+        margin-left: 16px;
+        float: right;
+    }
+}
+</style>
+
 <template>
 <div>
     <Form inline class="fr">
@@ -18,10 +35,13 @@
         <Panel v-for="item in list">
             {{item.name}} - {{item.date}}
             <div slot="content">{{item.content}}
-            <Alert v-show="item.hasAnswer" closable class="mt">
-                <span slot="desc">{{item.answer}}</span>
-                <span slot="close" v-show="item.canCancel" @click="cancelAnswer(item)">删除</span>
-            </Alert>
+            <div class="commit" v-show="item.hasAnswer">
+                {{item.answer}}
+                <a href="javascript:;" v-show="item.canCancel" @click="cancelAnswer(item)">
+                    <i class="fa fa-trash-o icon-mr" aria-hidden="true"></i>删除
+                </a>
+                <div class="cls"></div>
+            </div>
             <div v-show="!item.hasAnswer" class="mt">
                 <Input v-model="item.answer" type="textarea" :rows="3" placeholder="请输入回复内容..."></Input>
                 <Button type="primary" @click="answer(item)" class="mt">回复</Button>
