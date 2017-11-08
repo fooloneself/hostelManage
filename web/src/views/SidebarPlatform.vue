@@ -7,7 +7,7 @@
                     <MenuItem name="/admin/managerInfo">
                         <i class="fa fa-user fa-fw" aria-hidden="true"></i>个人资料
                     </MenuItem>
-                    <MenuItem name="/admin/managerPassword">
+                    <MenuItem name="/admin/managerPassword/0">
                         <i class="fa fa-lock fa-fw" aria-hidden="true"></i>修改密码
                     </MenuItem>
                 </MenuGroup>

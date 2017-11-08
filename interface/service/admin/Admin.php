@@ -152,7 +152,7 @@ class Admin extends Server{
      * @return bool
      */
     public function isAdminOfMerchant(){
-        return $this->getMchId()!=-1;
+        return $this->getMchId()!=0;
     }
 
     /**

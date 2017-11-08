@@ -53,6 +53,9 @@
             reloadMockData () {
                 this.data3 = this.getMockData();
                 this.targetKeys3 = this.getTargetKeys();
+            },
+            goBack(){
+                this.$router.go(-1);
             }
         }
     }

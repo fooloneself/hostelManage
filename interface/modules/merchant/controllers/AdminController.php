@@ -98,7 +98,10 @@ class AdminController extends Controller{
             ->select('a.id,a.user_name,ai.name,r.name as role_name,a.status')
             ->leftJoin(AdminInfo::tableName().' ai','a.id=ai.admin_id')
             ->leftJoin(AdminRole::tableName().' ar','ar.admin_id=a.id')
-            ->leftJoin(Role::tableName().' r','r.id=ar.role_id')
+            ->leftJoin(Role::tableName().' r','r.id=ar.role_id and r.status=:status and r.mch_can=:mchCan',[
+                ':status'=>Role::STATUS_ENABLE,
+                ':mchCan'=>Role::MCH_CAN_YES
+            ])
             ->where(['a.mch_id'=>$mchId]);
         list($count,$list)=Pager::instance($query,$pageSize)->get($page);
         $res=[];
@@ -129,7 +132,7 @@ class AdminController extends Controller{
         if($adminId<1){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
-        $admin=Admin::findOne(['id'=>$adminId,'mch_id'=>$mchId]);
+        $admin=Admin::findOne(['id'=>$adminId,'mch_id'=>$mchId,'is_super'=>Admin::SUPER_NO]);
         if(empty($admin)){
             return \Yii::$app->responseHelper->success()->response();
         }
@@ -198,9 +201,17 @@ class AdminController extends Controller{
         $admin->password=Helper::encryptPwd($password);
         $admin->role_id=$roleId;
         $admin->mch_id=\Yii::$app->user->getAdmin()->getMchId();
+        $admin->is_super=Admin::SUPER_NO;
+        $admin->status=Admin::STATUS_ENABLE;
         if(!$admin->insert()){
             $transaction->rollBack();
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_INSERT_FAIL,'账号添加失败')->response();
+        }
+        if($roleId>0){
+            $model=new AdminRole();
+            $model->admin_id=$admin->id;
+            $model->role_id=$roleId;
+            $model->insert(false);
         }
         $model=new AdminInfo();
         $model->setAttributes([
@@ -224,7 +235,7 @@ class AdminController extends Controller{
      * @return mixed
      */
     public function actionRoles(){
-        $roles=Role::find()->asArray()->all();
+        $roles=Role::find()->where(['status'=>Role::STATUS_ENABLE,'mch_can'=>Role::MCH_CAN_YES])->asArray()->all();
         return \Yii::$app->responseHelper->success($roles)->response();
     }
 }

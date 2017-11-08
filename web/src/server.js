@@ -64,7 +64,17 @@ const interfaces={
     'merchantAdminDel':'merchant/admin/delete',
     'merchantAdminChange':'merchant/admin/change',
     'merchantAdminAdd':'merchant/admin/add',
-    'merchantAdminRoles':'merchant/admin/roles'
+    'merchantAdminRoles':'merchant/admin/roles',
+    'platformAdminList':'platform/admin/list',
+    'platformAdminDel':'platform/admin/delete',
+    'platformAdminChange':'platform/admin/change',
+    'platformAdminAdd':'platform/admin/add',
+    'platformAdminRoles':'platform/admin/roles',
+    'platformRoleList':'platform/role/list',
+    'platformRoleChangeStatus':'platform/role/change-status',
+    'platformRoleDel':'platform/role/delete',
+    'platformRoleDetail':'platform/role/detail',
+    'platformRoleEdit':'platform/role/edit'
 };
 const server={
     'host': 'http://www.hotel.com',

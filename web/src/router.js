@@ -231,7 +231,7 @@ const platform = {
         	component: (resolve) => require(['./views/platform/ManagerInfo.vue'], resolve)
 		},
 		{
-			path: 'managerPassword',
+			path: 'managerPassword/:adminId',
 	        meta: {
 	            title: '修改密码'
 	        },
@@ -273,7 +273,7 @@ const platform = {
         	component: (resolve) => require(['./views/platform/PowerRole.vue'], resolve)
 		},
 		{
-			path: 'powerRoleEdit',
+			path: 'powerRoleEdit/:roleId',
 	        meta: {
 	            title: '角色配置 - 编辑'
 	        },
@@ -294,14 +294,14 @@ const platform = {
         	component: (resolve) => require(['./views/platform/PowerAccount.vue'], resolve)
 		},
 		{
-			path: 'powerAccountEdit',
+			path: 'powerAccountEdit/:adminId',
 	        meta: {
 	            title: '账号管理 - 编辑'
 	        },
         	component: (resolve) => require(['./views/platform/PowerAccountEdit.vue'], resolve)
 		},
 		{
-			path: 'powerAccountRoleEdit',
+			path: 'powerAccountRoleEdit/:adminId',
 	        meta: {
 	            title: '账号管理 - 分配角色'
 	        },

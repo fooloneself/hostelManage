@@ -33,6 +33,7 @@ export default{
 	data () {
 		return {
 		    formItem:{
+		        adminId: this.$route.params.adminId,
 		        oldPassword: "",
 		        newPassword: "",
 		        confirmPassword: ""
@@ -48,7 +49,7 @@ export default{
                         title: '提示',
                         desc: '密码重置成功'
                     });
-	                that.form={};
+	                this.$router.go(-1);
 	            }else{
 	                that.$Notice.info({
                         title: '提示',

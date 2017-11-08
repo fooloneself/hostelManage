@@ -8,11 +8,18 @@ use Yii;
  * This is the model class for table "{{%role}}".
  *
  * @property integer $id
- * @property integer $mch_id
+ * @property integer $status
+ * @property integer $mch_can
+ * @property string $code
  * @property string $name
+ * @property string $mark
  */
 class Role extends \common\components\ActiveRecord
 {
+    const STATUS_DISABLE    =0;
+    const STATUS_ENABLE     =1;
+    const MCH_CAN_NO        =0;
+    const MCH_CAN_YES       =1;
     /**
      * @inheritdoc
      */
@@ -27,9 +34,11 @@ class Role extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['mch_id', 'name'], 'required'],
-            [['mch_id'], 'integer'],
+            [['status', 'mch_can'], 'integer'],
+            [['name'], 'required'],
+            [['code'], 'string', 'max' => 50],
             [['name'], 'string', 'max' => 100],
+            [['mark'], 'string', 'max' => 600],
         ];
     }
 
@@ -40,8 +49,11 @@ class Role extends \common\components\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'mch_id' => 'Mch ID',
+            'status' => 'Status',
+            'mch_can' => 'Mch Can',
+            'code' => 'Code',
             'name' => 'Name',
+            'mark' => 'Mark',
         ];
     }
 }

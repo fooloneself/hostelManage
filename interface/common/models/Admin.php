@@ -21,8 +21,10 @@ use Yii;
  */
 class Admin extends \common\components\ActiveRecord
 {
-    const STATUS_DISABLE    =0;
-    const STATUS_ENABLE     =1;
+    const STATUS_DISABLE        =0;
+    const STATUS_ENABLE         =1;
+    const SUPER_NO               =0;
+    const SUPER_YES             =1;
     /**
      * @inheritdoc
      */
@@ -37,7 +39,7 @@ class Admin extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['mch_id', 'expire', 'last_login_time', 'account_expire', 'role_id', 'status', 'is_super'], 'integer'],
+            [['mch_id', 'expire', 'last_login_time', 'account_expire', 'status', 'is_super'], 'integer'],
             [['user_name', 'password'], 'required'],
             [['user_name', 'password', 'token'], 'string', 'max' => 100],
         ];
@@ -54,7 +56,6 @@ class Admin extends \common\components\ActiveRecord
             'expire' => 'Expire',
             'last_login_time' => 'Last Login Time',
             'account_expire' => 'Account Expire',
-            'role_id' => 'Role ID',
             'status' => 'Status',
             'is_super' => 'Is Super',
             'user_name' => 'User Name',

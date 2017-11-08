@@ -90,7 +90,18 @@
                                             this.turnUrl('/admin/personPassword/'+params.row.id);
                                         }
                                     }
-                                }, '重置密码')
+                                }, '重置密码'),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('/admin/powerAccountRoleEdit/'+params.row.id)
+                                        }
+                                    }
+                                }, '分配角色')
                             ]);
                         }
                     }
