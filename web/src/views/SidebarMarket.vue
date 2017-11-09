@@ -11,7 +11,7 @@
                 <MenuGroup name="promotion" title="活动管理">
                     <MenuItem name="/admin/discount"><i class="fa fa-rmb fa-fw" aria-hidden="true"></i>折扣</MenuItem>
                     <MenuItem name="/admin/cutdown"><i class="fa fa-money fa-fw" aria-hidden="true"></i>满减</MenuItem>
-                    <MenuItem name="/admin/free"><i class="fa fa-bolt fa-fw" aria-hidden="true"></i>特价</MenuItem>
+                    <MenuItem name="/admin/bargain"><i class="fa fa-bolt fa-fw" aria-hidden="true"></i>特价房</MenuItem>
                     <MenuItem name="/admin/coupon"><i class="fa fa-ticket fa-fw" aria-hidden="true"></i>优惠券</MenuItem>
                     <MenuItem name="/admin/gift"><i class="fa fa-gift fa-fw" aria-hidden="true"></i>抽奖</MenuItem>
                 </MenuGroup>

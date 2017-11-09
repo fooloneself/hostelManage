@@ -3,8 +3,9 @@
 	<Col span="6">
 		<h3 class="mb">活动执行计划</h3>
 		<Form label-position="right" :label-width="80">
+            <FormItem label="活动类型：">折扣</FormItem>
 			<FormItem label="活动名称：">活动名称</FormItem>
-			<FormItem label="时间范围：">
+			<FormItem label="时间周期：">
 				<DatePicker type="daterange" placeholder="选择日期"></DatePicker>
 	        </FormItem>
 	        <FormItem>
@@ -36,7 +37,7 @@ export default{
                 {
                     title: '操作',
                     key: 'action',
-                    width: 80,
+                    width: 100,
                     render: (h, params) => {
                             return h('div', [
                                 h('Button', {

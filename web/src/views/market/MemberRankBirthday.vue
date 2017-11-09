@@ -1,12 +1,12 @@
 <template>
 <div>
     <Transfer
-        :titles="['已分配账号', '可分配账号']"
+        :titles="['已分配活动', '可分配活动']"
         :data="data3"
         :target-keys="targetKeys3"
         :list-style="listStyle"
         :render-format="render3"
-        :operations="['添加账号','移去账号']"
+        :operations="['添加活动','移去活动']"
         filterable
         @on-change="handleChange3">
     </Transfer>
@@ -33,8 +33,8 @@
                 for (let i = 1; i <= 20; i++) {
                     mockData.push({
                         key: i.toString(),
-                        label: '账号' + i,
-                        description: '账号' + i + '的描述信息'
+                        label: '折扣' + i,
+                        description: '折扣' + i + '的描述信息'
                     });
                 }
                 return mockData;
@@ -53,6 +53,9 @@
             reloadMockData () {
                 this.data3 = this.getMockData();
                 this.targetKeys3 = this.getTargetKeys();
+            },
+            goBack(){
+                this.$router.go(-1);
             }
         }
     }

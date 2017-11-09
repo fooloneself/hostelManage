@@ -51,6 +51,13 @@ const market={
         	component: (resolve) => require(['./views/market/MemberRankEdit.vue'], resolve)
 		},
 		{
+			path: 'memberRankBirthday',
+	        meta: {
+	            title: '会员等级 - 生日福利'
+	        },
+        	component: (resolve) => require(['./views/market/MemberRankBirthday.vue'], resolve)
+		},
+		{
 			path: 'memberList',
 	        meta: {
 	            title: '会员列表'
@@ -98,6 +105,20 @@ const market={
 	            title: '满减 - 编辑'
 	        },
         	component: (resolve) => require(['./views/market/PromotionCutdownEdit.vue'], resolve)
+		},
+		{
+			path: 'bargain',
+	        meta: {
+	            title: '特价房'
+	        },
+        	component: (resolve) => require(['./views/market/PromotionBargain.vue'], resolve)
+		},
+		{
+			path: 'bargainEdit',
+	        meta: {
+	            title: '特价房 - 编辑'
+	        },
+        	component: (resolve) => require(['./views/market/PromotionBargainEdit.vue'], resolve)
 		},
 		{
 			path: 'planEdit',

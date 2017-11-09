@@ -1,12 +1,12 @@
 <template>
 <div>
     <Transfer
-        :titles="['可分配角色', '已分配角色']"
+        :titles="['已分配角色', '可分配角色']"
         :data="data3"
         :target-keys="targetKeys3"
         :list-style="listStyle"
         :render-format="render3"
-        :operations="['移去角色','添加角色']"
+        :operations="['添加角色','移去角色']"
         filterable
         @on-change="handleChange3">
     </Transfer>
