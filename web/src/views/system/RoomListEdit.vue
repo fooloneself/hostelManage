@@ -28,7 +28,7 @@
 </style>
 
 <template>
-<div style="margin-top: -16px;">
+<div style="margin-top: -24px;">
     <Tabs value="info">
         <TabPane label="基本信息" name="info">
             <Row>
