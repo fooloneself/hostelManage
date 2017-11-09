@@ -56,7 +56,7 @@
 								订单来源：美团
 							</Col>
 							<Col span="6">
-								订单方式：入住
+								入住方式：日租
 							</Col>
 							<Col span="12">
 								订单时间：2017/09/10~2017/09/11
@@ -67,16 +67,16 @@
 						<Row :gutter="8">
 							<Col span="5">
 								<Select placeholder="房间类型">
-					                <Option value="beijing">美团</Option>
-					                <Option value="shanghai">携程</Option>
-					                <Option value="shenzhen">线下</Option>
+					                <Option value="beijing">单间</Option>
+					                <Option value="shanghai">标准</Option>
+					                <Option value="shenzhen">豪华</Option>
 					            </Select>
 							</Col>
 							<Col span="5">
 								<Select placeholder="房间号">
-					                <Option value="beijing">入住</Option>
-					                <Option value="shanghai">预订</Option>
-					                <Option value="shenzhen">钟点</Option>
+					                <Option value="beijing">201</Option>
+					                <Option value="shanghai">202</Option>
+					                <Option value="shenzhen">203</Option>
 					            </Select>
 							</Col>
 							<Col span="10">
@@ -118,10 +118,10 @@
 								<Col span="5">
 									<Select placeholder="付费项">
 						                <Option value="1">收取房费</Option>
-						                <Option value="2">收取定金</Option>
+						                <Option value="2">收取订金</Option>
 						                <Option value="3">收取押金</Option>
 						                <Option value="4">退还房费</Option>
-						                <Option value="5">退还定金</Option>
+						                <Option value="5">退还订金</Option>
 						                <Option value="6">退还押金</Option>
 						            </Select>
 								</Col>

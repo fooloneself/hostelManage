@@ -56,7 +56,7 @@
 								订单来源：美团
 							</Col>
 							<Col span="6">
-								订单方式：入住
+								入住方式：日租
 							</Col>
 							<Col span="12">
 								订单时间：2017/09/10~2017/09/11
@@ -108,15 +108,16 @@
 					<FormItem>
 			            <Button type="primary" @click="goBack">取消订单</Button>
 			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">办理入住</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">修改订单</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 			        </FormItem>
 					<!-- 这是终点房订单的按钮 -->
 					<FormItem>
 			            <Button type="primary" @click="goBack">取消订单</Button>
+			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">办理入住</Button>
 			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">修改订单</Button>
 			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandChange')">换房</Button>
 			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandOut')">退房</Button>
-			            <Button type="primary" class="icon-ml" @click="turnUrl('/admin/checkstandEdit')">办理入住</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 			        </FormItem>
 			    </Form>

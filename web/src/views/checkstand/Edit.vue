@@ -74,9 +74,8 @@
 					            </Select>
 							</Col>
 							<Col span="5">
-								<Select placeholder="订单方式">
-					                <Option value="beijing">入住</Option>
-					                <Option value="shanghai">预订</Option>
+								<Select placeholder="入住方式">
+					                <Option value="beijing">日租</Option>
 					                <Option value="shenzhen">钟点</Option>
 					            </Select>
 							</Col>
@@ -121,10 +120,10 @@
 							<Col span="5">
 								<Select placeholder="付费项">
 					                <Option value="1">收取房费</Option>
-					                <Option value="2">收取定金</Option>
+					                <Option value="2">收取订金</Option>
 					                <Option value="3">收取押金</Option>
 					                <Option value="4">退还房费</Option>
-					                <Option value="5">退还定金</Option>
+					                <Option value="5">退还订金</Option>
 					                <Option value="6">退还押金</Option>
 					            </Select>
 							</Col>
@@ -143,10 +142,10 @@
 							<Col span="5">
 								<Select placeholder="付费项">
 					                <Option value="1">收取房费</Option>
-					                <Option value="2">收取定金</Option>
+					                <Option value="2">收取订金</Option>
 					                <Option value="3">收取押金</Option>
 					                <Option value="4">退还房费</Option>
-					                <Option value="5">退还定金</Option>
+					                <Option value="5">退还订金</Option>
 					                <Option value="6">退还押金</Option>
 					            </Select>
 							</Col>
@@ -178,7 +177,8 @@
 			            <Input type="textarea" :rows="5"></Input>
 			        </FormItem>
 					<FormItem>
-			            <Button type="primary" @click="goBack">确认</Button>
+			            <Button type="primary" @click="goBack">确认入住</Button>
+			            <Button type="warning" @click="goBack" class="icon-ml">确认预订</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 			        </FormItem>
 			    </Form>

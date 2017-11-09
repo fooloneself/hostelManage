@@ -56,7 +56,7 @@
 								订单来源：美团
 							</Col>
 							<Col span="6">
-								订单方式：入住
+								入住方式：日租
 							</Col>
 							<Col span="12">
 								订单时间：2017/09/10~2017/09/11
@@ -97,10 +97,10 @@
 								<Col span="5">
 									<Select placeholder="付费项">
 						                <Option value="1">收取房费</Option>
-						                <Option value="2">收取定金</Option>
+						                <Option value="2">收取订金</Option>
 						                <Option value="3">收取押金</Option>
 						                <Option value="4">退还房费</Option>
-						                <Option value="5">退还定金</Option>
+						                <Option value="5">退还订金</Option>
 						                <Option value="6">退还押金</Option>
 						            </Select>
 								</Col>
@@ -119,10 +119,10 @@
 								<Col span="5">
 									<Select placeholder="付费项">
 						                <Option value="1">收取房费</Option>
-						                <Option value="2">收取定金</Option>
+						                <Option value="2">收取订金</Option>
 						                <Option value="3">收取押金</Option>
 						                <Option value="4">退还房费</Option>
-						                <Option value="5">退还定金</Option>
+						                <Option value="5">退还订金</Option>
 						                <Option value="6">退还押金</Option>
 						            </Select>
 								</Col>
