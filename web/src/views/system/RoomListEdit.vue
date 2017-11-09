@@ -28,6 +28,7 @@
 </style>
 
 <template>
+<div style="margin-top: -16px;">
     <Tabs value="info">
         <TabPane label="基本信息" name="info">
             <Row>
@@ -90,6 +91,7 @@
             </Modal>
         </TabPane>
     </Tabs>
+</div>
 </template>
 
 <script>

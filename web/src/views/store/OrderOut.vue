@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="margin-top: -16px;">
     <Tabs value="today">
         <TabPane label="今日" name="today">
             <Table :columns="columns" :data="data" stripe></Table>

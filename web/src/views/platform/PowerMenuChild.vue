@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回</Button>
+    <Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回上一级</Button>
     <Button type="primary">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>

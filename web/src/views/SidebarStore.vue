@@ -5,7 +5,7 @@
             <Menu theme="light" active-name="/admin/orderIn" @on-select="turnUrl" style="width: auto">
                 <MenuGroup name="order" title="订单管理">
                     <MenuItem name="/admin/orderIn">
-                        <i class="fa fa-calendar-plus-o fa-fw" aria-hidden="true"></i>今日新办
+                        <i class="fa fa-calendar-plus-o fa-fw" aria-hidden="true"></i>今日到店
                     </MenuItem>
                     <MenuItem name="/admin/orderOut">
                         <i class="fa fa-calendar-minus-o fa-fw" aria-hidden="true"></i>即将离店
