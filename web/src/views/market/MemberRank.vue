@@ -21,11 +21,11 @@
                         width: 120
                     },
                     {
-                        title: '消费区间',
+                        title: '消费金额满',
                         width: 150
                     },
                     {
-                        title: '积分区间',
+                        title: '积分满',
                         width: 150
                     },
                     {

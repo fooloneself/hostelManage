@@ -6,8 +6,8 @@
                 <Option value="">全部</Option>
                 <Option value="1">未退房</Option>
                 <Option value="2">未入住</Option>
-                <Option value="3">房费少额</Option>
-                <Option value="4">房费多额</Option>
+                <Option value="3">费用少额</Option>
+                <Option value="4">费用多额</Option>
             </Select>
         </FormItem>
         <FormItem>

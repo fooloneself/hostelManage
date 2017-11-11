@@ -1,6 +1,7 @@
 <style scoped>
 .order-info{
 	border-right: 1px solid #dddee1;
+	padding-left: 24px;
 	.ivu-form-item{
 		margin-bottom: 16px;
 	}
@@ -27,8 +28,6 @@
 		<Row>
 			<Col span="4">
 			    <Form label-position="top" class="order-info">
-					<H3 class="mb">豪华大床房 - 201</H3>
-					<FormItem label="房间单价："><span>￥168.00</span></FormItem>
 					<FormItem label="订单金额："><span>￥168.00</span></FormItem>
 					<FormItem label="优惠信息：">
 						<p>普通会员生日</p>
@@ -42,7 +41,7 @@
 			</Col>
 			<Col span="10" offset="1">
 				<Form label-position="top">
-					<FormItem label="入住人信息：">
+					<FormItem label="入住人：">
 						<Row :gutter="8">
 							<Col span="10"><Input placeholder="手机号"></Input></Col>
 							<Col span="10"><Input placeholder="姓名"></Input></Col>
@@ -50,72 +49,57 @@
 						<Row :gutter="8" class="mt" v-for="i in person">
 							<Col span="10"><Input placeholder="手机号"></Input></Col>
 							<Col span="10"><Input placeholder="姓名"></Input></Col>
-							<Col span="4" class="tr">
+							<Col span="4">
 								<Button type="text" @click="deletePerson">
 									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
 								</Button>
 							</Col>
 						</Row>
 						<Row class="mt">
-							<Col span="24">
+							<Col span="20">
 								<Button type="dashed" long @click="addPerson">
-									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加一行
+									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加入住人
 								</Button>
 							</Col>
 						</Row>				
 			        </FormItem>
-					<FormItem label="入住情况：">
+					<FormItem label="入住：">
 						<Row :gutter="8">
 							<Col span="5">
-								<Select placeholder="订单来源">
-					                <Option value="beijing">美团</Option>
-					                <Option value="shanghai">携程</Option>
-					                <Option value="shenzhen">线下</Option>
-					            </Select>
+								201&nbsp;(豪华大床房)
 							</Col>
 							<Col span="5">
-								<Select placeholder="入住方式">
-					                <Option value="beijing">日租</Option>
-					                <Option value="shenzhen">钟点</Option>
-					            </Select>
+								<Input placeholder="房间单价"></Input>
 							</Col>
-							<Col span="10">
-								<DatePicker format="yyyy/MM/dd" type="daterange" placeholder="选择日期"></DatePicker>
-							</Col>
-						</Row>
-						<Row :gutter="8" class="mt" v-for="i in info">
 							<Col span="5">
 								<Select placeholder="订单来源">
-					                <Option value="beijing">美团</Option>
-					                <Option value="shanghai">携程</Option>
-					                <Option value="shenzhen">线下</Option>
+					                <Option value="1">美团</Option>
+					                <Option value="2">携程</Option>
+					                <Option value="3">艺龙</Option>
+					                <Option value="4">同城</Option>
+					                <Option value="5">线下</Option>
 					            </Select>
 							</Col>
 							<Col span="5">
-								<Select placeholder="订单方式">
-					                <Option value="beijing">入住</Option>
-					                <Option value="shanghai">预订</Option>
-					                <Option value="shenzhen">钟点</Option>
-					            </Select>
-							</Col>
-							<Col span="10">
-								<DatePicker format="yyyy/MM/dd" type="daterange" placeholder="选择日期"></DatePicker>
-							</Col>
-							<Col span="4" class="tr">
-								<Button type="text" @click="deleteInfo">
-									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
-								</Button>
+								<Input placeholder="佣金费用"></Input>
 							</Col>
 						</Row>
-						<Row class="mt">
-							<Col span="24">
-								<Button type="dashed" long @click="addInfo">
-									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加一行
-								</Button>
+						<Row :gutter="8" class="mt">
+							<Col span="5">
+								2017/11/11入住
+							</Col>
+							<Col span="5">
+								<Select placeholder="入住方式" v-model="orderType" @on-change="timeChooseShow">
+					                <Option value="1">日租房</Option>
+					                <Option value="2">钟点房</Option>
+					            </Select>
+							</Col>
+							<Col span="5" v-show="timepick">
+					             <InputNumber :max="360" :min="1" :step="1"></InputNumber><span class="icon-ml">晚</span>
 							</Col>
 						</Row>
 			        </FormItem>
-					<FormItem label="添加费用信息：">
+					<FormItem label="消费：">
 						<Row :gutter="8">
 							<Col span="5">
 								<Select placeholder="付费项">
@@ -129,18 +113,19 @@
 							</Col>
 							<Col span="5">
 								<Select placeholder="付费方式">
-					                <Option value="beijing">现金</Option>
-					                <Option value="shanghai">支付宝</Option>
-					                <Option value="shenzhen">微信</Option>
+					                <Option value="1">现金</Option>
+					                <Option value="2">支付宝</Option>
+					                <Option value="3">微信</Option>
+					                <Option value="3">银联</Option>
 					            </Select>
 							</Col>
 							<Col span="10">
-								<Input placeholder="￥"></Input>
+								<Input placeholder="付费金额"></Input>
 							</Col>
 						</Row>
 						<Row :gutter="8" class="mt" v-for="i in money">
 							<Col span="5">
-								<Select placeholder="付费项">
+								<Select placeholder="消费项">
 					                <Option value="1">收取房费</Option>
 					                <Option value="2">收取订金</Option>
 					                <Option value="3">收取押金</Option>
@@ -150,31 +135,35 @@
 					            </Select>
 							</Col>
 							<Col span="5">
-								<Select placeholder="付费方式">
-					                <Option value="beijing">现金</Option>
-					                <Option value="shanghai">支付宝</Option>
-					                <Option value="shenzhen">微信</Option>
+								<Select placeholder="消费方式">
+					                <Option value="1">现金</Option>
+					                <Option value="2">支付宝</Option>
+					                <Option value="3">微信</Option>
 					            </Select>
 							</Col>
 							<Col span="10">
-								<Input placeholder="￥"></Input>
+								<Input placeholder="付费金额"></Input>
 							</Col>
-							<Col span="4" class="tr">
+							<Col span="4">
 								<Button type="text" @click="deleteMoney">
 									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
 								</Button>
 							</Col>
 						</Row>
 						<Row class="mt">
-							<Col span="24">
+							<Col span="20">
 								<Button type="dashed" long @click="addMoney">
-									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加一行
+									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加消费
 								</Button>
 							</Col>
 						</Row>
 			        </FormItem>
 					<FormItem label="备注：">
-			            <Input type="textarea" :rows="5"></Input>
+						<Row>
+							<Col span="20">
+				            	<Input type="textarea" :rows="5"></Input>
+							</Col>
+						</Row>
 			        </FormItem>
 					<FormItem>
 			            <Button type="primary" @click="goBack">确认入住</Button>
@@ -193,7 +182,8 @@ export default{
 	data () {
 		return {
 			person:0,
-			info:0,
+			timepick:true,
+			orderType:'1',
 			money:0
 		}
 	},
@@ -204,20 +194,18 @@ export default{
 		addPerson(){
 			this.person++;
 		},
-		addInfo(){
-			this.info++;
-		},
 		addMoney(){
 			this.money++;
 		},
 		deletePerson(){
 			this.person--;
 		},
-		deleteInfo(){
-			this.info--;
-		},
 		deleteMoney(){
 			this.money--;
+		},
+		timeChooseShow(){
+			if(this.orderType==1) this.timepick=true;
+			else this.timepick=false;
 		}
 	}
 }

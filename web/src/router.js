@@ -74,9 +74,16 @@ const market={
 		{
 			path: 'memberBlack',
 	        meta: {
-	            title: '会员列表'
+	            title: '黑名单'
 	        },
         	component: (resolve) => require(['./views/market/MemberBlack.vue'], resolve)
+		},
+		{
+			path: 'memberBlackEdit',
+	        meta: {
+	            title: '黑名单 - 添加'
+	        },
+        	component: (resolve) => require(['./views/market/MemberBlackEdit.vue'], resolve)
 		},
 		{
 			path: 'discount',

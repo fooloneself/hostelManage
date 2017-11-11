@@ -104,6 +104,12 @@
                                         type: 'text',
                                         size: 'small'
                                     },
+                                }, '移入黑名单'),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    },
                                     on: {
                                         click: ()=>{
                                             var res=confirm('确定要删除吗？');
@@ -112,13 +118,7 @@
                                             }
                                         }
                                     }
-                                }, '删除'),
-                                h('Button', {
-                                    props: {
-                                        type: 'text',
-                                        size: 'small'
-                                    }
-                                }, '加入黑名单')
+                                }, '删除')
                             ]);
                         }
                     }
