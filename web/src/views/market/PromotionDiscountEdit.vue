@@ -1,14 +1,5 @@
 <template>
 <Row>
-	<Col span="24">
-	    <Alert show-icon>
-	        <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
-	        <template slot="desc">
-	            小提示：会员生日适用开关打开时，无论会员处于什么等级，当前日期是否有效，会员生日当天都可以享受该活动；
-	        </template>
-	    </Alert>
-	    <div class="mb"></div>
-	</Col>
 	<Col span="10">
 		<Form label-position="right" :label-width="100">
 			<FormItem label="折扣名称：">

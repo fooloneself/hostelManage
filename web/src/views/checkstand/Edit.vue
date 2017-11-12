@@ -43,6 +43,20 @@
 				<Form label-position="top">
 					<FormItem label="入住人：">
 						<Row :gutter="8">
+							<Col span="5">
+								<Select placeholder="客人来源">
+					                <Option value="1">美团</Option>
+					                <Option value="2">携程</Option>
+					                <Option value="3">艺龙</Option>
+					                <Option value="4">同城</Option>
+					                <Option value="5">线下</Option>
+					            </Select>
+							</Col>
+							<Col span="5">
+								<Input placeholder="佣金费用"></Input>
+							</Col>
+						</Row>
+						<Row :gutter="8" class="mt">
 							<Col span="10"><Input placeholder="手机号"></Input></Col>
 							<Col span="10"><Input placeholder="姓名"></Input></Col>
 						</Row>
@@ -65,27 +79,15 @@
 			        </FormItem>
 					<FormItem label="入住：">
 						<Row :gutter="8">
-							<Col span="5">
+							<Col span="6">
 								201&nbsp;(豪华大床房)
 							</Col>
-							<Col span="5">
-								<Input placeholder="房间单价"></Input>
-							</Col>
-							<Col span="5">
-								<Select placeholder="订单来源">
-					                <Option value="1">美团</Option>
-					                <Option value="2">携程</Option>
-					                <Option value="3">艺龙</Option>
-					                <Option value="4">同城</Option>
-					                <Option value="5">线下</Option>
-					            </Select>
-							</Col>
-							<Col span="5">
-								<Input placeholder="佣金费用"></Input>
+							<Col span="10">
+								<Input placeholder="原房价：￥168.00"></Input>
 							</Col>
 						</Row>
 						<Row :gutter="8" class="mt">
-							<Col span="5">
+							<Col span="6">
 								2017/11/11入住
 							</Col>
 							<Col span="5">
@@ -96,6 +98,9 @@
 							</Col>
 							<Col span="5" v-show="timepick">
 					             <InputNumber :max="360" :min="1" :step="1"></InputNumber><span class="icon-ml">晚</span>
+							</Col>
+							<Col span="5" v-show="!timepick">
+					             <TimePicker type="time" placement="bottom-end" placeholder="时间选择"></TimePicker>
 							</Col>
 						</Row>
 			        </FormItem>

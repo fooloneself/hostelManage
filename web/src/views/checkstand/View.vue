@@ -19,6 +19,9 @@
 		}
 	}
 }
+span.extra{
+	color: #9ea7b4;
+}
 </style>
 
 <template>
@@ -43,6 +46,14 @@
 				<Form label-position="top">
 					<FormItem label="入住人：">
 						<Row :gutter="8">
+							<Col span="10">
+								<span class="extra">客人来源：</span>美团
+							</Col>
+							<Col span="10">
+								<span class="extra">佣金费用：</span>￥10
+							</Col>
+						</Row>
+						<Row :gutter="8">
 							<Col span="10"><span class="extra">手机号：</span>13800138000</Col>
 							<Col span="10"><span class="extra">姓名：</span>D.Seeyou</Col>
 						</Row>		
@@ -53,13 +64,10 @@
 								201&nbsp;(豪华大床房)
 							</Col>
 							<Col span="5">
-								<span class="extra">房间单价：</span>￥168
+								<span class="extra">原房价：</span>￥168
 							</Col>
-							<Col span="5">
-								<span class="extra">订单来源：</span>美团
-							</Col>
-							<Col span="5">
-								<span class="extra">佣金费用：</span>￥10
+							<Col span="10">
+								<span class="extra">入住房价：</span>￥168
 							</Col>
 						</Row>
 						<Row :gutter="8">
@@ -69,7 +77,7 @@
 							<Col span="5">
 								<span class="extra">入住方式：</span>日租房
 							</Col>
-							<Col span="5">
+							<Col span="10">
 					            <span class="extra">入住时长：</span>2晚
 							</Col>
 						</Row>
@@ -82,7 +90,7 @@
 							<Col span="5">
 								<span class="extra">付费方式：</span>现金
 							</Col>
-							<Col span="5">
+							<Col span="10">
 								<span class="extra">付费金额：</span>￥100
 							</Col>
 						</Row>

@@ -1,5 +1,12 @@
 <template>
 <div>
+    <Alert show-icon>
+        <Icon type="ios-lightbulb-outline" slot="icon"></Icon>
+        <template slot="desc">
+            小提示：会员生日福利所选择的福利活动不受活动执行时间限制；
+        </template>
+    </Alert>
+    <div class="mb"></div>
     <Transfer
         :titles="['已分配活动', '可分配活动']"
         :data="data3"

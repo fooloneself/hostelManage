@@ -18,6 +18,9 @@
 		}
 	}
 }
+span.extra{
+	color: #9ea7b4;
+}
 </style>
 
 <template>
@@ -27,8 +30,6 @@
 		<Row>
 			<Col span="4">
 			    <Form label-position="top" class="order-info">
-					<H3 class="mb">豪华大床房 - 201</H3>
-					<FormItem label="房间单价："><span>￥168.00</span></FormItem>
 					<FormItem label="订单金额："><span>￥168.00</span></FormItem>
 					<FormItem label="优惠信息：">
 						<p>普通会员生日</p>
@@ -42,55 +43,54 @@
 			</Col>
 			<Col span="10" offset="1">
 				<Form label-position="top">
-					<FormItem label="入住人信息：">
+					<FormItem label="入住人：">
 						<Row :gutter="8">
-							<Col span="12">手机号：13800138000</Col>
-							<Col span="12">姓名：D.Seeyou</Col>
-							<Col span="12">手机号：13800138000</Col>
-							<Col span="12">姓名：D.Seeyou</Col>
-						</Row>			
+							<Col span="10">
+								<span class="extra">客人来源：</span>美团
+							</Col>
+							<Col span="10">
+								<span class="extra">佣金费用：</span>￥10.00
+							</Col>
+						</Row>
+						<Row :gutter="8">
+							<Col span="10"><span class="extra">手机号：</span>13800138000</Col>
+							<Col span="10"><span class="extra">姓名：</span>D.Seeyou</Col>
+						</Row>		
 			        </FormItem>
-					<FormItem label="入住情况：">
+					<FormItem label="入住：">
 						<Row :gutter="8">
-							<Col span="6">
-								订单来源：美团
+							<Col span="5">
+								201&nbsp;(豪华大床房)
 							</Col>
-							<Col span="6">
-								入住方式：日租
+							<Col span="5">
+								<span class="extra">原房价：</span>￥168.00
 							</Col>
-							<Col span="12">
-								订单时间：2017/09/10~2017/09/11
+							<Col span="10">
+								<span class="extra">入住房价：</span>￥168.00
+							</Col>
+						</Row>
+						<Row :gutter="8">
+							<Col span="5">
+								2017/11/11入住
+							</Col>
+							<Col span="5">
+								<span class="extra">入住方式：</span>日租房
+							</Col>
+							<Col span="10">
+					            <span class="extra">入住时长：</span>2晚
 							</Col>
 						</Row>
 			        </FormItem>
-					<FormItem label="费用情况：">
-						<Row :gutter="8">
-							<Col span="6">
-								付费项：收取房费
+			        <FormItem label="费用：">
+						<Row :gutter="8" v-for="i in 3">
+							<Col span="5">
+								<span class="extra">付费项：</span>收取房费
 							</Col>
-							<Col span="6">
-								付费方式：现金
+							<Col span="5">
+								<span class="extra">付费方式：</span>现金
 							</Col>
-							<Col span="12">
-								金额：￥100
-							</Col>
-							<Col span="6">
-								付费项：收取房费
-							</Col>
-							<Col span="6">
-								付费方式：现金
-							</Col>
-							<Col span="12">
-								金额：￥100
-							</Col>
-							<Col span="6">
-								付费项：收取房费
-							</Col>
-							<Col span="6">
-								付费方式：现金
-							</Col>
-							<Col span="12">
-								金额：￥100
+							<Col span="10">
+								<span class="extra">付费金额：</span>￥100.00
 							</Col>
 						</Row>
 						<Row :gutter="8">
@@ -112,17 +112,17 @@
 						            </Select>
 								</Col>
 								<Col span="10">
-									<Input placeholder="￥"></Input>
+									<Input placeholder="付费金额"></Input>
 								</Col>
 							</Row>
 							<Row :gutter="8" class="mt" v-for="i in money">
 								<Col span="5">
 									<Select placeholder="付费项">
 						                <Option value="1">收取房费</Option>
-						                <Option value="2">收取订金</Option>
+						                <Option value="2">收取定金</Option>
 						                <Option value="3">收取押金</Option>
 						                <Option value="4">退还房费</Option>
-						                <Option value="5">退还订金</Option>
+						                <Option value="5">退还定金</Option>
 						                <Option value="6">退还押金</Option>
 						            </Select>
 								</Col>
@@ -134,7 +134,7 @@
 						            </Select>
 								</Col>
 								<Col span="10">
-									<Input placeholder="￥"></Input>
+									<Input placeholder="付费金额"></Input>
 								</Col>
 								<Col span="4" class="tr">
 									<Button type="text" @click="deleteMoney">
@@ -143,7 +143,7 @@
 								</Col>
 							</Row>
 							<Row class="mt">
-								<Col span="24">
+								<Col span="20">
 									<Button type="dashed" long @click="addMoney">
 										<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加一行
 									</Button>

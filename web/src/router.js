@@ -5,14 +5,14 @@ const store = {
 		{
 			path: 'orderIn',
 	        meta: {
-	            title: '今日新办'
+	            title: '今日到店'
 	        },
         	component: (resolve) => require(['./views/store/OrderIn.vue'], resolve)
 		},
 		{
 			path: 'orderOut',
 	        meta: {
-	            title: '即将离店'
+	            title: '今日离店'
 	        },
         	component: (resolve) => require(['./views/store/OrderOut.vue'], resolve)
 		},

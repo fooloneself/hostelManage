@@ -55,26 +55,7 @@
                     },
                     {
                         title: '客人来源',
-                        width: 180
-                    },
-                    {
-                        title: '入住/退房时间',
-                        width: 180
-                    },
-                    {
-                        title: '支付方式',
-                        width: 100
-                    },
-                    {
-                        title: '房间类型'
-                    },
-                    {
-                        title: '房号',
-                        width: 100
-                    },
-                    {
-                        title: '费用共计',
-                        width: 100
+                        width: 120
                     },
                     {
                         title: '入住人',
@@ -82,7 +63,22 @@
                     },
                     {
                         title: '手机号',
-                        width: 110
+                        width: 100
+                    },
+                    {
+                        title: '入住/退房时间',
+                        width: 180
+                    },
+                    {
+                        title: '入住房间'
+                    },
+                    {
+                        title: '应收金额',
+                        width: 100
+                    },
+                    {
+                        title: '待收金额',
+                        width: 100
                     },
                     {
                         title: '操作',

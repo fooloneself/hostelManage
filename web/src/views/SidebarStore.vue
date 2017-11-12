@@ -8,7 +8,7 @@
                         <i class="fa fa-calendar-plus-o fa-fw" aria-hidden="true"></i>今日到店
                     </MenuItem>
                     <MenuItem name="/admin/orderOut">
-                        <i class="fa fa-calendar-minus-o fa-fw" aria-hidden="true"></i>即将离店
+                        <i class="fa fa-calendar-minus-o fa-fw" aria-hidden="true"></i>今日离店
                     </MenuItem>
                     <MenuItem name="/admin/orderAll">
                         <i class="fa fa-calendar-o fa-fw" aria-hidden="true"></i>全部订单
@@ -17,7 +17,7 @@
                         <i class="fa fa-calendar-times-o fa-fw" aria-hidden="true"></i>异常订单
                     </MenuItem>
                 </MenuGroup>
-                <MenuGroup name="ota" title="OTA渠道管理">
+                <MenuGroup name="ota" title="渠道直连">
                     <MenuItem name="/admin/otaXiecheng">
                         <i class="fa fa-link fa-fw" aria-hidden="true"></i>携程网
                     </MenuItem>
