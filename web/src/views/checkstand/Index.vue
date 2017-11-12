@@ -21,31 +21,25 @@
 	cursor: pointer;
 	height: 100px;
 	.room{
-		position: relative;
 		height: 84px;
 		background: #FFF;
 		border-radius: 5px;
 		border: 1px solid #dddee1;
+		text-align: center;
 		&:hover{
 			background: #dddee1;
 		}
-		.number{
-			width: 100%;
-			font-size: 28px;
-			position: absolute;
-			bottom: 8px;
-			font-weight: bolder;
-			text-align: center;
-		}
 		.type{
 			width: 100%;
-			text-align: center;
-			line-height: 0;
-			text-align: center;
+			height: 32px;
+			line-height: 42px;
 			font-size: 14px;
-			font-weight: normal;
-			position: absolute;
-			top: 24px;
+		}
+		.number{
+			width: 100%;
+			height: 52px;
+			font-size: 28px;
+			font-weight: bolder;
 		}
 		&.room-in{
 			background: #49D0B5;
@@ -56,6 +50,11 @@
 			background: #5688D2;
 			color: #FFFFFF;
 			border: none;
+		}
+		&.room-order-multi{
+			background: #FFFFFF;
+			color: #5688D2;
+			border: 1px solid #5688D2;
 		}
 		&.room-clock{
 			background: #FD9A59;
@@ -73,6 +72,9 @@
 			border: none;
 		}
 	}
+}
+.current-status{
+	border-bottom: 2px solid #16A085;
 }
 </style>
 <template>
@@ -96,7 +98,7 @@
 		<Row>
 			<Col span="12">
 				<ButtonGroup size="small">
-					<Button @click="selectStatus(-1)" type="text">全部状态</Button>
+					<Button @click="selectStatus(-1)" class="current-status" type="text">全部状态</Button>
 					<Button @click="selectStatus(0)" type="text"><Icon type="record" style="color:#666666"></Icon><span class="icon-ml">空房</span></Button>
 					<Button @click="selectStatus(4)" type="text"><Icon type="record" style="color:#49D0B5"></Icon><span class="icon-ml">入住</span></Button>
 					<Button @click="selectStatus(3)" type="text"><Icon type="record" style="color:#5688D2"></Icon><span class="icon-ml">预订</span></Button>
@@ -106,13 +108,19 @@
 			</Col>
 			<Col span="12" class="tr">
 				<ButtonGroup size="small">
-					<Button @click="selectType(0)" type="text">全部房型</Button>
+					<Button @click="selectType(0)" class="current-status" type="text">全部房型</Button>
 					<Button v-for="type in types" @click="selectType(type.id)" type="text">{{type.name}}</Button>
 				</ButtonGroup>
 			</Col>
 		</Row>
 		<div class="mb"></div>
 		<Row :gutter="16">
+			<Col span="2" class="room-pick">
+				<div class="room room-order-multi">
+					<div class="type">批量预定</div>
+					<div class="number"><i class="fa fa-bed" aria-hidden="true"></i></div>
+				</div>
+			</Col>
 			<Col v-for="room in rooms" span="2" class="room-pick">
 				<div class="room" :class="getClass(room.status)" @click="roomClick(room.id,room.status)">
 					<div class="type">{{room.typeName}}</div>
@@ -131,7 +139,7 @@ export default{
 	data (){
 		return {
 			modalShow: false,
-			spinShow: false,
+			spinShow: true,
 			weekday: ['二','三','四','五','六','日','一','二','三','四'],
 			rooms: [],
 			types: [],
