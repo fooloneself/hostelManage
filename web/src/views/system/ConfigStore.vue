@@ -32,10 +32,13 @@
     <Tabs value="info">
         <TabPane label="基本信息" name="info">
             <Row>
-                <Col span="12">
+                <Col span="10">
                     <Form v-model="storeBase" label-position="right" :label-width="80">
                         <FormItem label="门店名称：">
                             <Input v-model="storeBase.name"></Input>
+                        </FormItem>
+                        <FormItem label="退房时间：">
+                            <TimePicker v-model="storeSetting.checkOutTime" :value="storeSetting.checkOutTime" type="time" placeholder="选择时间"></TimePicker>
                         </FormItem>
                         <FormItem label="联系人：">
                             <Input v-model="storeBase.contactName"></Input>
@@ -58,16 +61,13 @@
         </TabPane>
         <TabPane label="开关设置" name="setting">
             <Row>
-                <Col span="12">
+                <Col span="10">
                     <Form v-model="storeSetting" label-position="right" :label-width="120">
                         <FormItem label="开启自动退房：">
                             <RadioGroup v-model="storeSetting.orderAutoClose">
                                 <Radio label="1">是</Radio>
                                 <Radio label="0">否</Radio>
                             </RadioGroup>
-                        </FormItem>
-                        <FormItem label="每日退房时间：">
-                            <TimePicker v-model="storeSetting.checkOutTime" :value="storeSetting.checkOutTime" type="time" placeholder="选择时间"></TimePicker>
                         </FormItem>
                         <FormItem label="开启预订：">
                             <RadioGroup v-model="storeSetting.reserveSwitch">

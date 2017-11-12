@@ -43,7 +43,7 @@
 				<Form label-position="top">
 					<FormItem label="入住人：">
 						<Row :gutter="8">
-							<Col span="5">
+							<Col span="4">
 								<Select placeholder="客人来源">
 					                <Option value="1">美团</Option>
 					                <Option value="2">携程</Option>
@@ -52,13 +52,8 @@
 					                <Option value="5">线下</Option>
 					            </Select>
 							</Col>
-							<Col span="5">
-								<Input placeholder="佣金费用"></Input>
-							</Col>
-						</Row>
-						<Row :gutter="8" class="mt">
-							<Col span="10"><Input placeholder="手机号"></Input></Col>
-							<Col span="10"><Input placeholder="姓名"></Input></Col>
+							<Col span="8"><Input placeholder="手机号"></Input></Col>
+							<Col span="8"><Input placeholder="姓名"></Input></Col>
 						</Row>
 						<Row :gutter="8" class="mt" v-for="i in person">
 							<Col span="10"><Input placeholder="手机号"></Input></Col>
