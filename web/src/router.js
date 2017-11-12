@@ -17,6 +17,13 @@ const store = {
         	component: (resolve) => require(['./views/store/OrderOut.vue'], resolve)
 		},
 		{
+			path: 'orderMulti',
+	        meta: {
+	            title: '批量预订'
+	        },
+        	component: (resolve) => require(['./views/store/OrderMulti.vue'], resolve)
+		},
+		{
 			path: 'orderAll',
 	        meta: {
 	            title: '全部订单'

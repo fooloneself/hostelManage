@@ -10,6 +10,9 @@
                     <MenuItem name="/admin/orderOut">
                         <i class="fa fa-calendar-minus-o fa-fw" aria-hidden="true"></i>今日离店
                     </MenuItem>
+                    <MenuItem name="/admin/orderMulti">
+                        <i class="fa fa-calendar-check-o fa-fw" aria-hidden="true"></i>批量预订
+                    </MenuItem>
                     <MenuItem name="/admin/orderAll">
                         <i class="fa fa-calendar-o fa-fw" aria-hidden="true"></i>全部订单
                     </MenuItem>
