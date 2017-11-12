@@ -37,9 +37,6 @@
                         <FormItem label="门店名称：">
                             <Input v-model="storeBase.name"></Input>
                         </FormItem>
-                        <FormItem label="退房时间：">
-                            <TimePicker v-model="storeSetting.checkOutTime" :value="storeSetting.checkOutTime" type="time" placeholder="选择时间"></TimePicker>
-                        </FormItem>
                         <FormItem label="联系人：">
                             <Input v-model="storeBase.contactName"></Input>
                         </FormItem>
@@ -59,30 +56,27 @@
                 </Col>
             </Row>
         </TabPane>
-        <TabPane label="开关设置" name="setting">
+        <TabPane label="参数设置" name="setting">
             <Row>
                 <Col span="10">
                     <Form v-model="storeSetting" label-position="right" :label-width="120">
-                        <FormItem label="开启自动退房：">
-                            <RadioGroup v-model="storeSetting.orderAutoClose">
-                                <Radio label="1">是</Radio>
-                                <Radio label="0">否</Radio>
-                            </RadioGroup>
+                        <FormItem label="退房时间：">
+                            <TimePicker v-model="storeSetting.checkOutTime" :value="storeSetting.checkOutTime" type="time" placeholder="选择时间"></TimePicker>
                         </FormItem>
-                        <FormItem label="开启预订：">
-                            <RadioGroup v-model="storeSetting.reserveSwitch">
-                                <Radio label="1">是</Radio>
-                                <Radio label="0">否</Radio>
-                            </RadioGroup>
+                        <FormItem label="自动退房：">
+                            <Switch v-model="storeSetting.orderAutoClose" :true-value="1" :false-value="0">
+                                <span slot="open">是</span>
+                                <span slot="close">否</span>
+                            </Switch>
                         </FormItem>
                         <FormItem label="预订房保留时间：">
-                            <TimePicker v-model="storeSetting.reserveRetentionTime" :value="storeSetting.reserveRetentionTime" type="time" placeholder="选择时间"></TimePicker>
+                            <InputNumber :max="12" :min="1" :step="0.5"></InputNumber>&nbsp;&nbsp;小时
                         </FormItem>
-                        <FormItem label="开启钟点房：">
-                            <RadioGroup v-model="storeSetting.hourRoomSwitch">
-                                <Radio label="1">是</Radio>
-                                <Radio label="0">否</Radio>
-                            </RadioGroup>
+                        <FormItem label="预订房自动注销：">
+                            <Switch v-model="storeSetting.reserveSwitch" :true-value="1" :false-value="0">
+                                <span slot="open">是</span>
+                                <span slot="close">否</span>
+                            </Switch>
                         </FormItem>
                         <FormItem label="钟点房开放时间：">
                             <TimePicker v-model="storeSetting.hourRoomRange" :value="storeSetting.hourRoomRange" type="timerange" placeholder="选择时间"></TimePicker>
@@ -133,9 +127,9 @@
             return {
                 storeBase:{},
                 storeSetting:{
-                    orderAutoClose: 0,
-                    reserveSwitch: 0,
-                    hourRoomSwitch: 0
+                    orderAutoClose: 1,
+                    reserveSwitch: 1,
+                    hourRoomSwitch: 1
                 },
                 imgNum:25,
                 visible:false

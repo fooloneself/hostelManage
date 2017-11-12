@@ -9,10 +9,10 @@
 				<Input v-model="formItem.code"></Input>
 	        </FormItem>
 	        <FormItem label="门店可选：">
-				<RadioGroup v-model="formItem.mchCan">
-	                <Radio label="1">是</Radio>
-	                <Radio label="0">否</Radio>
-	            </RadioGroup>
+                <Switch v-model="formItem.mchCan" :true-value="1" :false-value="0">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </Switch>
 	        </FormItem>
 			<FormItem label="角色说明：">
 	            <Input v-model="formItem.mark" type="textarea" :rows="10"></Input>

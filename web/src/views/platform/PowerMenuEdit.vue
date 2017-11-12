@@ -14,10 +14,10 @@
 				<Input></Input>
 	        </FormItem>
 			<FormItem label="是否收费：">
-				<RadioGroup v-model="formItem.radio">
-	                <Radio label="0">否</Radio>
-	                <Radio label="1">是</Radio>
-	            </RadioGroup>
+	            <Switch v-model="formItem.radio" :true-value="1" :false-value="0">
+	                <span slot="open">是</span>
+	                <span slot="close">否</span>
+	            </Switch>
 	        </FormItem>
 			<FormItem label="菜单价格：">
 				<Input></Input>

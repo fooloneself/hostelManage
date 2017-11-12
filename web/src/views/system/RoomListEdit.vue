@@ -43,10 +43,10 @@
                             <Input v-model="formItem.number"></Input>
                         </FormItem>
                         <FormItem label="是否锁房：">
-                            <RadioGroup v-model="formItem.lock">
-                                <Radio label="1">是</Radio>
-                                <Radio label="0">否</Radio>
-                            </RadioGroup>
+                            <Switch v-model="formItem.lock" :true-value="1" :false-value="0">
+                                <span slot="open">是</span>
+                                <span slot="close">否</span>
+                            </Switch>
                         </FormItem>
                         <FormItem label="房间配套：">
                             <CheckboxGroup v-model="formItem.servers">

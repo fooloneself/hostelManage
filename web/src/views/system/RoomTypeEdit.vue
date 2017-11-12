@@ -9,12 +9,12 @@
                 <Input v-model="formItem.defaultPrice"></Input>
             </FormItem>
             <FormItem label="允许钟点房：">
-                <RadioGroup v-model="formItem.allowHourRoom">
-                    <Radio label="1">是</Radio>
-                    <Radio label="0">否</Radio>
-                </RadioGroup>
+                <Switch v-model="formItem.allowHourRoom" :true-value="1" :false-value="0">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </Switch>
             </FormItem>
-            <FormItem label="钟点房价格：">
+            <FormItem label="钟点房价格：" v-show="formItem.allowHourRoom">
                 <Input v-model="formItem.hourRoomPrice"></Input>
             </FormItem>
             <FormItem label="房型说明：">
