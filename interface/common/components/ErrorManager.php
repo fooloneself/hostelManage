@@ -38,6 +38,8 @@ class ErrorManager extends Component{
     const ERROR_ROOM_HAS_RESERVE             =100030;//房间已预定
     const ERROR_ROOM_HAS_OCCUPANCY             =100031;//房间已入住
     const ERROR_CANCEL_NO_RIGHT             =100032;//房间已入住
+    const ERROR_GUEST_SAVE_WRONG            =100033;//客户信息保存失败
+    const ERROR_ORDER_CREATE_FAIL            =100034;//订单保存失败
     //错误信息 common\components\Error的实例
     private $_error;
 

@@ -2,7 +2,6 @@
 namespace modules\merchant\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
-use common\models\Guest;
 use service\order\Room;
 
 class OrderController extends Controller{
