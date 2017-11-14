@@ -4,7 +4,7 @@
     line-height: 60px;
     border-bottom: 1px solid #dddee1;
     background: #FFF;
-    min-width: 1208px;
+    min-width: 1328px;
     position: relative;
     z-index: 999;
     .logo{
@@ -46,21 +46,23 @@
                             <MenuItem name="/admin/basicTips">平台管理</MenuItem>
                         </Menu>
                     </Col>
-                    <Col span="4" class="tr">
-                        <Badge dot>
-                            <router-link to=""><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></router-link>
-                        </Badge>
-                        <Dropdown @on-click="turnUrl" style="margin-left: 8px;">
-                            <a href="javascript:void(0)">
-                                Admin Dun
-                                <Icon type="arrow-down-b"></Icon>
-                            </a>
-                            <DropdownMenu slot="list" class="tl">
-                                <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
-                                <DropdownItem name="/admin/personPassword">修改密码</DropdownItem>
-                                <DropdownItem divided name="/login">退出登录</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                    <Col span="4">
+                        <div class="fr">
+                            <Badge dot>
+                                <router-link to=""><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></router-link>
+                            </Badge>
+                            <Dropdown @on-click="turnUrl" class="icon-ml">
+                                <a href="javascript:void(0)">
+                                    Admin Dun
+                                    <Icon type="arrow-down-b"></Icon>
+                                </a>
+                                <DropdownMenu slot="list" class="tl">
+                                    <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
+                                    <DropdownItem name="/admin/personPassword">修改密码</DropdownItem>
+                                    <DropdownItem divided name="/login">退出登录</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
                     </Col>
                 </Row>
             </div>

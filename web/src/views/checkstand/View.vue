@@ -75,7 +75,7 @@ span.extra{
 								2017/11/11入住
 							</Col>
 							<Col span="5">
-								<span class="extra">入住方式：</span>日租房
+								<span class="extra">入住方式：</span>全日房
 							</Col>
 							<Col span="10">
 					            <span class="extra">入住时长：</span>2晚
