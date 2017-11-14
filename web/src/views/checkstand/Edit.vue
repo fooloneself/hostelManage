@@ -87,7 +87,7 @@
 							</Col>
 							<Col span="5">
 								<Select placeholder="入住方式" v-model="orderType" @on-change="timeChooseShow">
-					                <Option value="1">日租房</Option>
+					                <Option value="1">全日房</Option>
 					                <Option value="2">钟点房</Option>
 					            </Select>
 							</Col>
@@ -166,6 +166,7 @@
 						</Row>
 			        </FormItem>
 					<FormItem>
+						<!-- 只有在当日才能办理入住 -->
 			            <Button type="primary" @click="goBack">确认入住</Button>
 			            <Button type="warning" @click="goBack" class="icon-ml">确认预订</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
