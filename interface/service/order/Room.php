@@ -15,7 +15,6 @@ class Room{
 
     public function __construct(\common\models\Room $room)
     {
-
         $this->room=$room;
         $this->roomType=RoomType::findOne(['id'=>$this->room->type,'mch_id'=>$this->room->mch_id]);
     }

@@ -1,7 +1,6 @@
 <?php
 namespace service\room;
 use common\components\Server;
-use common\models\OccupancyRecord;
 use common\models\Order;
 use common\models\OrderOccupancyRoom;
 use common\models\OrderReserveRoom;
@@ -124,9 +123,11 @@ class Room extends Server{
      * @return bool
      */
     protected function hasOccupancy($roomId){
-        $res=OrderOccupancyRoom::find()
-            ->where(['room_id'=>$roomId])
-            ->andWhere('actual_in_time<=:time and (actual_out_time =0 or actual_out_time>=:time)',[':time'=>$this->time])
+        $res=OrderRoom::find()->alias('oo')
+            ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
+            ->where(['oo.room_id'=>$roomId])
+            ->andWhere('oo.status=:occupancy and o.status<>:cancelOrder ',[':occupancy'=>OrderRoom::STATUS_OCCUPANCY,':cancelOrder'=>Order::STATUS_CANCEL])
+            ->andWhere('oo.occupancy_start>=:time',[':time'=>$this->time])
             ->asArray()->one();
         return !empty($res);
     }
@@ -137,14 +138,12 @@ class Room extends Server{
      * @return bool
      */
     protected function hasReserve($roomId){
-        $res=OrderReserveRoom::find()
-            ->alias('or')
-            ->leftJoin(Order::tableName().' o','or.order_id=o.id')
-            ->where(['or.room_id'=>$roomId,'o.mch_id'=>$this->mchId])
-            ->andWhere('o.status<>:status',[':status'=>Order::STATUS_CANCEL])
-            ->andWhere('or.plan_in_time<=:time and or.plan_out_time>=:time',[':time'=>$this->time])
-            ->asArray()
-            ->one();
+        $res=OrderRoom::find()->alias('oo')
+            ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
+            ->where(['oo.room_id'=>$roomId])
+            ->andWhere('oo.status=:reverse and o.status<>:cancelOrder ',[':reverse'=>OrderRoom::STATUS_REVERSE,':cancelOrder'=>Order::STATUS_CANCEL])
+            ->andWhere(':time between oo.reverse_start and oo.reverse_end',[':time'=>$this->time])
+            ->asArray()->one();
         return !empty($res);
     }
 }

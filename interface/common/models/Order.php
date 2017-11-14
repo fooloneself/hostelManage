@@ -22,6 +22,10 @@ use Yii;
  */
 class Order extends \common\components\ActiveRecord
 {
+    const STATUS_CANCEL     =0;//撤销
+    const STATUS_REVERSE    =1;//预定
+    const STATUS_OCCUPANCY  =2;//入住
+    const STATUS_CHECK_OUT  =3;//退房
     /**
      * @inheritdoc
      */
