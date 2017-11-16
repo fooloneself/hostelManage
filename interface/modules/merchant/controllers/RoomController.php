@@ -194,7 +194,7 @@ class RoomController extends Controller{
     }
 
     /**
-     * 房间列表
+     * 房间编辑页信息
      * @return mixed
      */
     public function actionEditPageInfo(){
@@ -275,5 +275,23 @@ class RoomController extends Controller{
         }else{
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_UPDATE_FAIL,'图片修改失败')->response();
         }
+    }
+
+    /**
+     * 下单页面信息
+     * @return mixed
+     */
+    public function actionPlacePage(){
+        $id=\Yii::$app->requestHelper->post('id',0,'int');
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $room=Room::find()->alias('r')
+            ->select('r.*,rt.name as type_name,rt.allow_hour_room,rt.default_price')
+            ->leftJoin(RoomType::tableName().' rt','r.type=rt.id')
+            ->where(['r.premises_id'=>$merchant->getPremise()->id,'r.mch_id'=>$merchant->getId(),'r.id'=>$id])
+            ->asArray()->one();
+        return \Yii::$app->responseHelper->success([
+            'room'=>$room,
+            'date'=>date('Y/m/d',time())
+        ])->response();
     }
 }

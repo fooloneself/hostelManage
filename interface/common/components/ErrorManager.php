@@ -42,6 +42,12 @@ class ErrorManager extends Component{
     const ERROR_ORDER_CREATE_FAIL            =100034;//订单保存失败
     const ERROR_ROOM_CANNOT_REVERSE            =100035;//房间不能预定
     const ERROR_ROOM_CLOCK_DENY             =100036;//房间不允许钟点房
+    const ERROR_ORDER_NOT_EXISTS             =100037;//订单不存在
+    const ERROR_ORDER_HAS_CANCEL             =100038;//订单已取消
+    const ERROR_ORDER_HAS_CHECK_OUT             =100039;//订单已结算
+    const ERROR_ORDER_ROOM_UN_PLACE             =100040;//未定此房间
+    const ERROR_ORDER_ROOM_CHANGE_FAIL             =100041;//订单房间状态修改失败
+    const ERROR_ORDER_ROOM_PLACE_FAIL             =100042;//房间预订失败
     //错误信息 common\components\Error的实例
     private $_error;
 

@@ -74,7 +74,9 @@ const interfaces={
     'platformRoleChangeStatus':'platform/role/change-status',
     'platformRoleDel':'platform/role/delete',
     'platformRoleDetail':'platform/role/detail',
-    'platformRoleEdit':'platform/role/edit'
+    'platformRoleEdit':'platform/role/edit',
+    'merchantRoom':'merchant/room/place-page',
+    'merchantOccupancy':'merchant/order/occupancy'
 };
 const server={
     'host': 'http://www.hotel.com',

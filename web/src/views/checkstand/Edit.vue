@@ -40,11 +40,11 @@
 			    </Form>
 			</Col>
 			<Col span="10" offset="1">
-				<Form label-position="top">
+				<Form v-model="orderInfo" label-position="top">
 					<FormItem label="入住人：">
 						<Row :gutter="8">
 							<Col span="4">
-								<Select placeholder="客人来源">
+								<Select v-model="orderInfo.channel" placeholder="客人来源">
 					                <Option value="1">美团</Option>
 					                <Option value="2">携程</Option>
 					                <Option value="3">艺龙</Option>
@@ -52,21 +52,21 @@
 					                <Option value="5">线下</Option>
 					            </Select>
 							</Col>
-							<Col span="8"><Input placeholder="手机号"></Input></Col>
-							<Col span="8"><Input placeholder="姓名"></Input></Col>
+							<Col span="8"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
+							<Col span="8"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
 						</Row>
-						<Row :gutter="8" class="mt" v-for="i in person">
-							<Col span="10"><Input placeholder="手机号"></Input></Col>
-							<Col span="10"><Input placeholder="姓名"></Input></Col>
+						<Row :gutter="8" class="mt" v-for="(lodger,i,l) in orderInfo.lodgers">
+							<Col span="10"><Input v-model="lodger.mobile" placeholder="手机号"></Input></Col>
+							<Col span="10"><Input v-model="lodger.name" placeholder="姓名"></Input></Col>
 							<Col span="4">
-								<Button type="text" @click="deletePerson">
+								<Button type="text" @click="deleteLodger(i)">
 									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
 								</Button>
 							</Col>
 						</Row>
 						<Row class="mt">
 							<Col span="20">
-								<Button type="dashed" long @click="addPerson">
+								<Button type="dashed" long @click="addLodger">
 									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加入住人
 								</Button>
 							</Col>
@@ -75,34 +75,34 @@
 					<FormItem label="入住：">
 						<Row :gutter="8">
 							<Col span="6">
-								201&nbsp;(豪华大床房)
+								{{room.number}}&nbsp;({{room.type_name}})
 							</Col>
 							<Col span="10">
-								<Input placeholder="原房价：￥168.00"></Input>
+								<Input v-model="orderInfo.price" :placeholder="placeholder"></Input>
 							</Col>
 						</Row>
 						<Row :gutter="8" class="mt">
 							<Col span="6">
-								2017/11/11入住
+								{{date}}入住
 							</Col>
 							<Col span="5">
-								<Select placeholder="入住方式" v-model="orderType" @on-change="timeChooseShow">
-					                <Option value="1">全日房</Option>
+								<Select placeholder="入住方式" v-model="orderInfo.type" @on-change="timeChooseShow">
+					                <Option value="1" v-if="room.allow_hour_room">全日房</Option>
 					                <Option value="2">钟点房</Option>
 					            </Select>
 							</Col>
-							<Col span="5" v-show="timepick">
-					             <InputNumber :max="360" :min="1" :step="1"></InputNumber><span class="icon-ml">晚</span>
+							<Col span="5" v-show="orderInfo.type==1">
+					             <InputNumber v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber><span class="icon-ml">晚</span>
 							</Col>
-							<Col span="5" v-show="!timepick">
-					             <TimePicker type="time" placement="bottom-end" placeholder="时间选择"></TimePicker>
+							<Col span="5" v-show="orderInfo.type==2">
+					             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="时间选择"></TimePicker>
 							</Col>
 						</Row>
 			        </FormItem>
 					<FormItem label="消费：">
-						<Row :gutter="8">
+						<Row :gutter="8" class="mt" v-for="(pay,i,p) in orderInfo.pay">
 							<Col span="5">
-								<Select placeholder="付费项">
+								<Select v-model="pay.expenseItem" placeholder="消费项">
 					                <Option value="1">收取房费</Option>
 					                <Option value="2">收取订金</Option>
 					                <Option value="3">收取押金</Option>
@@ -112,47 +112,24 @@
 					            </Select>
 							</Col>
 							<Col span="5">
-								<Select placeholder="付费方式">
-					                <Option value="1">现金</Option>
-					                <Option value="2">支付宝</Option>
-					                <Option value="3">微信</Option>
-					                <Option value="3">银联</Option>
-					            </Select>
-							</Col>
-							<Col span="10">
-								<Input placeholder="付费金额"></Input>
-							</Col>
-						</Row>
-						<Row :gutter="8" class="mt" v-for="i in money">
-							<Col span="5">
-								<Select placeholder="消费项">
-					                <Option value="1">收取房费</Option>
-					                <Option value="2">收取订金</Option>
-					                <Option value="3">收取押金</Option>
-					                <Option value="4">退还房费</Option>
-					                <Option value="5">退还订金</Option>
-					                <Option value="6">退还押金</Option>
-					            </Select>
-							</Col>
-							<Col span="5">
-								<Select placeholder="消费方式">
+								<Select v-model="pay.channel" placeholder="消费方式">
 					                <Option value="1">现金</Option>
 					                <Option value="2">支付宝</Option>
 					                <Option value="3">微信</Option>
 					            </Select>
 							</Col>
 							<Col span="10">
-								<Input placeholder="付费金额"></Input>
+								<Input v-model="pay.amount" placeholder="付费金额"></Input>
 							</Col>
 							<Col span="4">
-								<Button type="text" @click="deleteMoney">
+								<Button type="text" @click="deletePay(i)">
 									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
 								</Button>
 							</Col>
 						</Row>
 						<Row class="mt">
 							<Col span="20">
-								<Button type="dashed" long @click="addMoney">
+								<Button type="dashed" long @click="addPay">
 									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加消费
 								</Button>
 							</Col>
@@ -161,14 +138,14 @@
 					<FormItem label="备注：">
 						<Row>
 							<Col span="20">
-				            	<Input type="textarea" :rows="5"></Input>
+				            	<Input v-model="orderInfo.mark" type="textarea" :rows="5"></Input>
 							</Col>
 						</Row>
 			        </FormItem>
 					<FormItem>
 						<!-- 只有在当日才能办理入住 -->
-			            <Button type="primary" @click="goBack">确认入住</Button>
-			            <Button type="warning" @click="goBack" class="icon-ml">确认预订</Button>
+			            <Button type="primary" @click="occupancy">确认入住</Button>
+			            <Button type="warning" @click="reverse" class="icon-ml">确认预订</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 			        </FormItem>
 			    </Form>
@@ -182,31 +159,90 @@
 export default{
 	data () {
 		return {
-			person:0,
-			timepick:true,
-			orderType:'1',
-			money:0
+			room:{},
+			date:'',
+			placeholder:'',
+			orderInfo: {
+			    type: 1,
+			    guest:{mobile: '',name: ''},
+			    lodgers: [],
+			    pay: [{amount: '',channel: '',expenseItem:''}]
+			},
+			timepick: false
 		}
+	},
+	mounted(){
+	    var that=this;
+	    this.host.post('merchantRoom',{id: this.$route.params.id}).then(function(res){
+	        if(res.isSuccess()){
+	            that.room=res.data().room;
+	            that.date=res.data().date;
+	            that.placeholder='原价：'+that.room.default_price;
+	        }else{
+	            this.$Notice.info({
+	                title: '错误提示',
+	                desc: res.error()
+	            })
+	        }
+	    })
 	},
 	methods:{
 		goBack(){
 			history.go(-1);
 		},
-		addPerson(){
-			this.person++;
+		addLodger(){
+            this.orderInfo.lodgers.push({mobile: '',name: ''})
 		},
-		addMoney(){
-			this.money++;
+		deleteLodger(index){
+			this.orderInfo.lodgers.splice(index,1);
 		},
-		deletePerson(){
-			this.person--;
-		},
-		deleteMoney(){
-			this.money--;
+		addPay(){
+            this.orderInfo.pay.push({amount: '',channel: '',expenseItem:''});
+        },
+		deletePay(index){
+            this.orderInfo.pay.splice(index,1);
 		},
 		timeChooseShow(){
-			if(this.orderType==1) this.timepick=true;
+			if(this.orderInfo.type==1) this.timepick=true;
 			else this.timepick=false;
+		},
+		occupancy (){
+		    var number;
+		    if(this.orderInfo.type==1){
+                number=this.orderInfo.dayNum;
+		    }else if(this.orderInfo.type==2){
+                number=Math.floor(Date.parse(new Date(this.orderInfo.hour))/1000)%86400;
+		    }else{
+		        this.$Notice.info({
+		            title: '错误提示',
+		            desc: '请选择类型'
+		        })
+		        return ;
+		    }
+		    var param={
+		        lodgers: this.orderInfo.lodgers,
+		        guest: this.orderInfo.guest,
+		        roomId: this.$route.params.id,
+		        price: this.orderInfo.price,
+		        mark: this.orderInfo.mark,
+		        pay: this.orderInfo.pay,
+		        type: this.orderInfo.type,
+		        number:number,
+		        channel: this.orderInfo.channel
+		    };
+		    this.host.post('merchantOccupancy',param).then(function(res){
+		        if($res.isSuccess()){
+		            this.$router.push('/admin/checkstand');
+		        }else{
+		            this.$Notice.info({
+		                title: '错误提示',
+		                desc: res.error()
+		            })
+		        }
+		    })
+		},
+		reverse (){
+
 		}
 	}
 }

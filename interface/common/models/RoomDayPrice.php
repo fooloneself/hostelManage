@@ -68,7 +68,7 @@ class RoomDayPrice extends \common\components\ActiveRecord
         $start=intval(date('Y-m-d',$startTime));
         $end=intval(date('Y-m-d',$endTime));
         return self::find()
-            ->select('week,price')
+            ->select('date,week,price')
             ->where(['mch_id'=>$mchId,'type_id'=>$typeId])
             ->andWhere(['between','date',$start,$end])
             ->andWhere('date >=:start and date <:end',[':start'=>$start,':end'=>$end])

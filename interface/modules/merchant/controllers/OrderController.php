@@ -2,6 +2,7 @@
 namespace modules\merchant\controllers;
 use common\components\Controller;
 use common\components\ErrorManager;
+use service\order\OrderManger;
 use service\order\Room;
 
 class OrderController extends Controller{
@@ -11,12 +12,36 @@ class OrderController extends Controller{
      * @return mixed
      */
     public function actionOccupancy(){
+        $lodgers=\Yii::$app->requestHelper->post('lodgers',[],'array');
+        $guest=\Yii::$app->requestHelper->post('guest',[],'array');
         $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
-        $IDNumber=\Yii::$app->requestHelper->post('ID','','number');
-        $startTime=\Yii::$app->requestHelper->post('startTime',0,'int');
-        $endTime=\Yii::$app->requestHelper->post('endTime',0,'int');
-        if($roomId<1 ||empty($IDNumber) || empty($startTime) || empty($endTime)){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
+        $price=\Yii::$app->requestHelper->post('price',0,'float');
+        $mark=\Yii::$app->requestHelper->post('mark','','string');
+        $pay=\Yii::$app->requestHelper->post('pay',[],'array');
+        $type=\Yii::$app->requestHelper->post('type',1,'int');
+        $number=\Yii::$app->requestHelper->post('number',0,'int');
+        $channel=\Yii::$app->requestHelper->post('channel');
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $startTime=$_SERVER['REQUEST_TIME'];
+        if($type==1){
+            $endTime=strtotime(date('Y-m-d',$startTime+86400*$number).' '.$merchant->getSetting()->check_out_time);
+        }else{
+            $endTime=$startTime+$number;
+        }
+        $manager=new OrderManger($merchant);
+        $transaction=\Yii::$app->db->beginTransaction();
+        $lodgers[]=$guest;
+        $manager->pay($pay)
+            ->room([['roomId'=>$roomId,'price'=>$price,'type'=>$type,'start'=>$startTime,'end'=>$endTime]])
+            ->mark($mark,$channel)
+            ->lodger($lodgers)
+            ->guest($guest['mobile'],$guest['name']);
+        if(!$manager->occupancy()){
+            $transaction->rollBack();
+            return \Yii::$app->responseHelper->error($manager->getError())->response();
+        }else{
+            $transaction->commit();
+            return \Yii::$app->responseHelper->success()->response();
         }
     }
 
@@ -24,35 +49,8 @@ class OrderController extends Controller{
      * 预定
      */
     public function actionReserve(){
-        $persons=\Yii::$app->requestHelper->post('person',[],'array');
-        $orderChannel=\Yii::$app->requestHelper->post('orderChannel','','string');
-        $startTime=\Yii::$app->requestHelper->post('startTime',0,'int');
-        $endTime=\Yii::$app->requestHelper->post('endTime',0,'int');
-        $costInfo=\Yii::$app->requestHelper->post('costInfo',[],'array');
-        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
-        $shouldPay=\Yii::$app->requestHelper->post('shouldPay',0,'float');
-        if(empty($persons) || $roomId<1 || empty($startTime) || empty($endTime) || $startTime>$endTime || empty($costInfo || empty($shouldPay))){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
-        }
-        $mchId=\Yii::$app->user->getAdmin()->getMchId();
-        $room=Room::byId($mchId,$roomId);
-        if(!$room->exists()){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ROOM_NOT_EXISTS)->response();
-        }else if($room->hasReserve($startTime,$endTime)){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ROOM_HAS_RESERVE)->response();
-        }else if($room->hasOccupancy($startTime,$endTime)){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ROOM_HAS_OCCUPANCY)->response();
-        }
-    }
-
-    protected function handleCost(array $costs){
 
     }
-
-    protected function recordPersons($persons,$mchId){
-
-    }
-
     /**
      * 入住-预定
      */

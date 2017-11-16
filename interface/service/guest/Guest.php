@@ -16,7 +16,7 @@ class Guest extends Server{
      * Guest constructor.
      * @param Guest $guest
      */
-    public function __construct(Guest $guest)
+    public function __construct(\common\models\Guest $guest)
     {
         $this->guest=$guest;
     }

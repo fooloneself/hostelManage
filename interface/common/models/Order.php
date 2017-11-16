@@ -11,7 +11,6 @@ use Yii;
  * @property integer $mch_id
  * @property integer $guest_id
  * @property integer $place_time
- * @property integer $type
  * @property integer $status
  * @property string $amount_payable
  * @property string $amount_paid
@@ -22,10 +21,10 @@ use Yii;
  */
 class Order extends \common\components\ActiveRecord
 {
-    const STATUS_CANCEL     =0;//撤销
-    const STATUS_REVERSE    =1;//预定
-    const STATUS_OCCUPANCY  =2;//入住
-    const STATUS_CHECK_OUT  =3;//退房
+    const STATUS_CANCEL    =0;//撤销
+    const STATUS_REVERSE   =1;//预定
+    const STATUS_OCCUPANCY =2;//入住
+    const STATUS_CHECK_OUT =3;//退房
     /**
      * @inheritdoc
      */
@@ -41,7 +40,7 @@ class Order extends \common\components\ActiveRecord
     {
         return [
             [['mch_id', 'guest_id', 'place_time', 'order_no'], 'required'],
-            [['mch_id', 'guest_id', 'place_time', 'type', 'status'], 'integer'],
+            [['mch_id', 'guest_id', 'place_time', 'status'], 'integer'],
             [['amount_payable', 'amount_paid', 'amount_deffer'], 'number'],
             [['order_no'], 'string', 'max' => 20],
             [['channel'], 'string', 'max' => 3],
@@ -59,7 +58,6 @@ class Order extends \common\components\ActiveRecord
             'mch_id' => 'Mch ID',
             'guest_id' => 'Guest ID',
             'place_time' => 'Place Time',
-            'type' => 'Type',
             'status' => 'Status',
             'amount_payable' => 'Amount Payable',
             'amount_paid' => 'Amount Paid',
