@@ -226,20 +226,20 @@ class Room extends Server {
      * @return float|int|mixed 总费用
      */
     protected function generateDayCostBill(){
-        $days=($this->endTime-$this->startTime)/86400;
-        $totalCost=0;
+        $days=ceil(($this->endTime-$this->startTime)/86400);
         $timestamp=$this->startTime;
         if($this->price>0){
             for($i=0;$i<$days;$i++){
-                $timestamp+=$i*86400;
+                $timestamp+=86400;
                 $this->addCostRecord($timestamp,$this->price);
             }
             $totalCost=$days*$this->price;
         }else{
+            $totalCost=0;
             $dayPrices=$this->getPricesOfDay();
             $weekPrices=$this->getPricesOfWeek();
             for($i=0;$i<$days;$i++){
-                $timestamp+=$i*86400;
+                $timestamp+=86400;
                 $date=intval(date('Ymd',$timestamp));
                 if(isset($dayPrices[$date])){
                     $cost=$dayPrices[$date];
@@ -311,6 +311,15 @@ class Room extends Server {
             'day'=>$day,
             'amount'=>$amount
         ];
+    }
+
+    /**
+     * 清除消费记录
+     * @return $this
+     */
+    protected function cleanCostRecord(){
+        $this->costBill=[];
+        return $this;
     }
 
     /**
@@ -402,10 +411,12 @@ class Room extends Server {
     protected function insertBillToDb($orderId){
         $model=new OrderCostDetail();
         foreach ($this->costBill as $record){
+            $model->setOldAttributes(null);
+            $record['order_id']=$orderId;
+            $record['room_id']=$this->room->id;
+            $model->setIsNewRecord(true);
             $model->setAttributes($record);
-            $model->order_id=$orderId;
-            $model->room_id=$this->room->id;
-            if(!$model->insert()){
+            if(!$model->insert(false,['order_id','room_id','date','year','month','day','amount'])){
                 $this->setError(ErrorManager::ERROR_INSERT_FAIL);
                 return false;
             }
@@ -430,23 +441,18 @@ class Room extends Server {
             'order_id'=>$orderId,
             'room_id'=>$this->getRoomId(),
             'mch_id'=>$this->merchant->getId(),
-            'premises_id'=>$this->merchant->getPremise()->getId(),
+            'premises_id'=>$this->merchant->getPremise()->id,
             'check_in_time'=>$_SERVER['REQUEST_TIME'],
             'room_number'=>$this->room->number
         ];
+        $field=['order_id','room_id','mch_id','premises_id','check_in_time','room_number','mobile','person_name'];
         foreach ($lodgers as $lodger){
-            $model->setAttributes($attr);
-            $model->mobile=$lodger['mobile'];
-            $model->person_name=$lodger['name'];
             $model->setIsNewRecord(true);
-            if(!$model->insert()){
-                return false;
-            }
-        }
-        if($orderRoom->status!=OrderRoom::STATUS_OCCUPANCY){
-            $orderRoom->status=OrderRoom::STATUS_OCCUPANCY;
-            if(!$orderRoom->update()){
-                $this->setError(ErrorManager::ERROR_ORDER_ROOM_CHANGE_FAIL);
+            $model->setOldAttributes(null);
+            $attr['mobile']=$lodger['mobile'];
+            $attr['person_name']=$lodger['name'];
+            $model->setAttributes($attr);
+            if(!$model->insert(false,$field)){
                 return false;
             }
         }

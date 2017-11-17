@@ -12,6 +12,22 @@ class OrderController extends Controller{
      * @return mixed
      */
     public function actionOccupancy(){
+        return $this->place('occupancy');
+    }
+
+    /**
+     * 预定
+     */
+    public function actionReverse(){
+        return $this->place('reverse');
+    }
+
+    /**
+     * 下单
+     * @param $operate
+     * @return mixed
+     */
+    protected function place($operate){
         $lodgers=\Yii::$app->requestHelper->post('lodgers',[],'array');
         $guest=\Yii::$app->requestHelper->post('guest',[],'array');
         $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
@@ -36,20 +52,13 @@ class OrderController extends Controller{
             ->mark($mark,$channel)
             ->lodger($lodgers)
             ->guest($guest['mobile'],$guest['name']);
-        if(!$manager->occupancy()){
+        if(!$manager->$operate()){
             $transaction->rollBack();
             return \Yii::$app->responseHelper->error($manager->getError())->response();
         }else{
             $transaction->commit();
             return \Yii::$app->responseHelper->success()->response();
         }
-    }
-
-    /**
-     * 预定
-     */
-    public function actionReserve(){
-
     }
     /**
      * 入住-预定

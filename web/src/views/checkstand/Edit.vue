@@ -166,7 +166,8 @@ export default{
 			    type: 1,
 			    guest:{mobile: '',name: ''},
 			    lodgers: [],
-			    pay: [{amount: '',channel: '',expenseItem:''}]
+			    pay: [{amount: '',channel: '',expenseItem:''}],
+			    dayNum: 1
 			},
 			timepick: false
 		}
@@ -207,42 +208,45 @@ export default{
 			else this.timepick=false;
 		},
 		occupancy (){
-		    var number;
-		    if(this.orderInfo.type==1){
-                number=this.orderInfo.dayNum;
-		    }else if(this.orderInfo.type==2){
-                number=Math.floor(Date.parse(new Date(this.orderInfo.hour))/1000)%86400;
-		    }else{
-		        this.$Notice.info({
-		            title: '错误提示',
-		            desc: '请选择类型'
-		        })
-		        return ;
-		    }
-		    var param={
-		        lodgers: this.orderInfo.lodgers,
-		        guest: this.orderInfo.guest,
-		        roomId: this.$route.params.id,
-		        price: this.orderInfo.price,
-		        mark: this.orderInfo.mark,
-		        pay: this.orderInfo.pay,
-		        type: this.orderInfo.type,
-		        number:number,
-		        channel: this.orderInfo.channel
-		    };
-		    this.host.post('merchantOccupancy',param).then(function(res){
-		        if($res.isSuccess()){
-		            this.$router.push('/admin/checkstand');
-		        }else{
-		            this.$Notice.info({
-		                title: '错误提示',
-		                desc: res.error()
-		            })
-		        }
-		    })
+		    this.operate('merchantOccupancy');
 		},
 		reverse (){
-
+            this.operate('merchantReverse');
+		},
+		operate(action){
+		    var number;
+            if(this.orderInfo.type==1){
+                number=this.orderInfo.dayNum;
+            }else if(this.orderInfo.type==2){
+                number=Math.floor(Date.parse(new Date(this.orderInfo.hour))/1000)%86400;
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: '请选择类型'
+                })
+                return ;
+            }
+            var param={
+                lodgers: this.orderInfo.lodgers,
+                guest: this.orderInfo.guest,
+                roomId: this.$route.params.id,
+                price: this.orderInfo.price,
+                mark: this.orderInfo.mark,
+                pay: this.orderInfo.pay,
+                type: this.orderInfo.type,
+                number:number,
+                channel: this.orderInfo.channel
+            };
+            this.host.post(action,param).then(function(res){
+                if(res.isSuccess()){
+                    this.$router.push('/admin/checkstand');
+                }else{
+                    this.$Notice.info({
+                        title: '错误提示',
+                        desc: res.error()
+                    })
+                }
+            })
 		}
 	}
 }

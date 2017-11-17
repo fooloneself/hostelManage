@@ -104,8 +104,17 @@ class OrderManger extends Server{
      */
     protected function addCost($cost){
         $this->payableAmount+=$cost;
+        return $this;
     }
 
+    /**
+     * 清除消费总额
+     * @return $this
+     */
+    protected function cleanCost(){
+        $this->payableAmount=0;
+        return $this;
+    }
     /**
      * 获取订单ID
      * @return int
@@ -121,6 +130,7 @@ class OrderManger extends Server{
      */
     public function pay(array $list){
         $this->pay=$list;
+        $this->paidAmount=0;
         foreach ($list as $item){
             $this->paidAmount+=$item['amount'];
         }
@@ -154,6 +164,7 @@ class OrderManger extends Server{
      * @return bool
      */
     protected function initOrder($status){
+        $this->cleanCost();
         $rooms=[];
         $cost=0;
         foreach ($this->room as $r){
@@ -262,19 +273,18 @@ class OrderManger extends Server{
      */
     protected function insertPayToDb(){
         if(empty($this->pay))return true;
-        $this->order->amount_paid+=$this->paidAmount;
-        $this->order->amount_deffer=$this->order->amount_payable-$this->order->amount_paid;
-        if(!$this->order->update()){
-            return false;
-        }
         $model=new OrderPayDetail();
+        $field=['order_id','amount','expense_item','channel'];
         foreach ($this->pay as $pay){
-            $model->order_id=$this->order->id;
-            $model->amount=$pay['amount'];
-            $model->expense_item=$pay['expenseItem'];
-            $model->channel=$pay['channel'];
             $model->setIsNewRecord(true);
-            if(!$model->insert()){
+            $model->setOldAttributes(null);
+            $model->setAttributes([
+                'order_id'=>$this->order->id,
+                'amount'=>$pay['amount'],
+                'expense_item'=>$pay['expenseItem'],
+                'channel'=>$pay['channel']
+            ]);
+            if(!$model->insert(false,$field)){
                 return false;
             }
         }
