@@ -22,4 +22,16 @@ class SiteController extends Controller{
             ->asArray()->all();
         return \Yii::$app->responseHelper->success($list)->response();
     }
+
+    /**
+     * 退出登录
+     * @return mixed
+     */
+    public function actionLoginOut(){
+        $admin=\Yii::$app->user->getAdmin();
+        if($admin->isExists()){
+            $admin->loginOut();
+        }
+        return \Yii::$app->responseHelper->success()->response();
+    }
 }

@@ -99,26 +99,19 @@
 						<Row :gutter="8" class="mt" v-for="(pay,i,p) in orderInfo.pay">
 							<Col span="5">
 								<Select v-model="pay.expenseItem" placeholder="消费项">
-					                <Option value="1">收取房费</Option>
-					                <Option value="2">收取订金</Option>
-					                <Option value="3">收取押金</Option>
-					                <Option value="4">退还房费</Option>
-					                <Option value="5">退还订金</Option>
-					                <Option value="6">退还押金</Option>
+					                <Option v-for="(expanseItem,ei) in expanseItems" :value="expanseItem.key">{{expanseItem.value}}</Option>
 					            </Select>
 							</Col>
 							<Col span="5">
 								<Select v-model="pay.channel" placeholder="消费方式">
-					                <Option value="1">现金</Option>
-					                <Option value="2">支付宝</Option>
-					                <Option value="3">微信</Option>
+					                <Option v-for="(paymentChannel,pc) in paymentChannels" :value="paymentChannel.key">{{paymentChannel.value}}</Option>
 					            </Select>
 							</Col>
 							<Col span="10">
 								<Input v-model="pay.amount" placeholder="付费金额"></Input>
 							</Col>
 							<Col span="4">
-								<Button type="text" @click="deletePay(i)">
+								<Button v-if="i!=0" type="text" @click="deletePay(i)">
 									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
 								</Button>
 							</Col>
@@ -166,6 +159,8 @@ export default{
 			    dayNum: 1
 			},
 			channels:[],
+			paymentChannels:[],
+			expanseItems:[],
 			timepick: false
 		}
 	},
@@ -186,6 +181,26 @@ export default{
 	    this.host.post('channelAll').then(function(res){
             if(res.isSuccess()){
                 that.channels=res.data();
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: res.error()
+                })
+            }
+        })
+        this.host.post('merchantPaymentChannel').then(function(res){
+            if(res.isSuccess()){
+                that.paymentChannels=res.data();
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: res.error()
+                })
+            }
+        })
+        this.host.post('merchantExpanseItem').then(function(res){
+            if(res.isSuccess()){
+                that.expanseItems=res.data();
             }else{
                 this.$Notice.info({
                     title: '错误提示',

@@ -17,4 +17,28 @@ class DictionaryController extends Controller{
             ->asArray()->all();
         return \Yii::$app->responseHelper->success($abnormal)->response();
     }
+
+    /**
+     * 支付渠道
+     * @return mixed
+     */
+    public function actionPaymentChannel(){
+        $abnormal=DictionaryItem::find()
+            ->select('key,value')
+            ->where(['code'=>Dictionary::DICTIONARY_PAYMENT_CHANNEL])
+            ->asArray()->all();
+        return \Yii::$app->responseHelper->success($abnormal)->response();
+    }
+
+    /**
+     * 消费款项
+     * @return mixed
+     */
+    public function actionExpanseItem(){
+        $abnormal=DictionaryItem::find()
+            ->select('key,value')
+            ->where(['code'=>Dictionary::DICTIONARY_EXPANSE_ITEM])
+            ->asArray()->all();
+        return \Yii::$app->responseHelper->success($abnormal)->response();
+    }
 }

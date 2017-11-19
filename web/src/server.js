@@ -1,5 +1,6 @@
 const interfaces={
     'login': 'admin/login',
+    'loginOut':'site/login-out',
     'sex':'site/sex',
     'register': 'admin/register',
     'resetMchPwd': 'merchant/admin/reset-password',
@@ -82,7 +83,9 @@ const interfaces={
     'merchantAllRoomType':'merchant/room-type/all-type',
     'merchantAllRoom':'merchant/room/all-room',
     'merchantOrderList':'merchant/order/list',
-    'merchantAllOrderAbnormal':'merchant/dictionary/all-order-abnormal'
+    'merchantAllOrderAbnormal':'merchant/dictionary/all-order-abnormal',
+    'merchantPaymentChannel':'merchant/dictionary/payment-channel',
+    'merchantExpanseItem':'merchant/dictionary/expanse-item'
 };
 const server={
     'host': 'http://www.hotel.com',
