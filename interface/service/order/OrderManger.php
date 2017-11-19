@@ -232,9 +232,7 @@ class OrderManger extends Server{
         $this->order=Order::findOne(['order_no'=>$orderNo,'mch_id'=>$this->merchant->getId()]);
         if(empty($this->order)){
             $this->setError(ErrorManager::ERROR_ORDER_NOT_EXISTS);
-        }else if($this->order->status==Order::STATUS_CANCEL){
-            $this->setError(ErrorManager::ERROR_ORDER_HAS_CANCEL);
-        }else if($this->order->status==Order::STATUS_CHECK_OUT){
+        }else if($this->order->is_settlement==Order::SETTLE_YES){
             $this->setError(ErrorManager::ERROR_ORDER_HAS_CHECK_OUT);
         }
         return $this;

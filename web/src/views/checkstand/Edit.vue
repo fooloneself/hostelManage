@@ -45,11 +45,7 @@
 						<Row :gutter="8">
 							<Col span="4">
 								<Select v-model="orderInfo.channel" placeholder="客人来源">
-					                <Option value="1">美团</Option>
-					                <Option value="2">携程</Option>
-					                <Option value="3">艺龙</Option>
-					                <Option value="4">同城</Option>
-					                <Option value="5">线下</Option>
+					                <Option v-for="(channel,c) in channels" :value="channel.id">{{channel.name}}</Option>
 					            </Select>
 							</Col>
 							<Col span="8"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
@@ -169,6 +165,7 @@ export default{
 			    pay: [{amount: '',channel: '',expenseItem:''}],
 			    dayNum: 1
 			},
+			channels:[],
 			timepick: false
 		}
 	},
@@ -186,6 +183,16 @@ export default{
 	            })
 	        }
 	    })
+	    this.host.post('channelAll').then(function(res){
+            if(res.isSuccess()){
+                that.channels=res.data();
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: res.error()
+                })
+            }
+        })
 	},
 	methods:{
 		goBack(){

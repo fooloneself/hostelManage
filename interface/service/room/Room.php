@@ -126,7 +126,7 @@ class Room extends Server{
         $res=OrderRoom::find()->alias('oo')
             ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
             ->where(['oo.room_id'=>$roomId])
-            ->andWhere('oo.status=:occupancy and o.status<>:cancelOrder ',[':occupancy'=>OrderRoom::STATUS_OCCUPANCY,':cancelOrder'=>Order::STATUS_CANCEL])
+            ->andWhere('oo.status=:occupancy and o.status=:normalOrder ',[':occupancy'=>OrderRoom::STATUS_OCCUPANCY,':normalOrder'=>Order::STATUS_NORMAL])
             ->andWhere(':time between oo.start_time and oo.end_time',[':time'=>$this->time])
             ->asArray()->one();
         return !empty($res);
@@ -141,7 +141,7 @@ class Room extends Server{
         $res=OrderRoom::find()->alias('oo')
             ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
             ->where(['oo.room_id'=>$roomId])
-            ->andWhere('oo.status=:reverse and o.status<>:cancelOrder ',[':reverse'=>OrderRoom::STATUS_REVERSE,':cancelOrder'=>Order::STATUS_CANCEL])
+            ->andWhere('oo.status=:reverse and o.status=:normalOrder ',[':reverse'=>OrderRoom::STATUS_REVERSE,':normalOrder'=>Order::STATUS_NORMAL])
             ->andWhere(':time between oo.start_time and oo.end_time',[':time'=>$this->time])
             ->asArray()->one();
         return !empty($res);

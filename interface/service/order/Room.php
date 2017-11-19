@@ -97,8 +97,8 @@ class Room extends Server {
         $order=OrderRoom::find()->alias('oo')
             ->leftJoin(Order::tableName().' o','o.id=oo.order_id')
             ->where(['o.mch_id'=>$this->room->mch_id,'oo.room_id'=>$this->room->id])
-            ->andWhere('o.status<>:orderStatus and oo.status<>:orderRoomStatus',[
-                ':orderStatus'=>Order::STATUS_CANCEL,
+            ->andWhere('o.status=:orderStatus and oo.status<>:orderRoomStatus',[
+                ':orderStatus'=>Order::STATUS_NORMAL,
                 ':orderRoomStatus'=>OrderRoom::STATUS_CANCEL
             ])
             ->andWhere('(oo.start_time>:startTime and oo.start_time<:endTime) or (oo.end_time>:startTime and oo.end_time<:endTime)',[
