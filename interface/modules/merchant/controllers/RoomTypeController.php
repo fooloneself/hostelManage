@@ -101,4 +101,17 @@ class RoomTypeController extends Controller{
             return \Yii::$app->responseHelper->success()->response();
         }
     }
+
+    /**
+     * 获取所有房间类型
+     * @return mixed
+     */
+    public function actionAllType(){
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $types=RoomType::find()
+            ->select('id,name')
+            ->where(['mch_id'=>$mchId])
+            ->asArray()->all();
+        return \Yii::$app->responseHelper->success($types)->response();
+    }
 }

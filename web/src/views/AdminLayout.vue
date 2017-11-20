@@ -53,13 +53,13 @@
                             </Badge>
                             <Dropdown @on-click="turnUrl" class="icon-ml">
                                 <a href="javascript:void(0)">
-                                    Admin Dun
+                                    {{userName}}
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list" class="tl">
                                     <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
-                                    <DropdownItem name="/admin/personPassword">修改密码</DropdownItem>
-                                    <DropdownItem divided name="/login">退出登录</DropdownItem>
+                                    <DropdownItem name="/admin/managerPassword/0">修改密码</DropdownItem>
+                                    <DropdownItem name="/login" divided @click="logout">退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
@@ -77,9 +77,27 @@
 
 <script>
     export default {
+        data(){
+            return {
+                userName: this.host.getUserName()
+            };
+        },
         methods:{
             turnUrl:function(name){
                 this.$router.push(name);
+            },
+            logout (){
+                this.host.post('loginOut').then(function(res){
+                    if(res.isSuccess()){
+
+                        this.$router.push('/login');
+                    }else{
+                        this.$Notice.info({
+                            title: '错误提示',
+                            desc: res.error()
+                        })
+                    }
+                })
             }
         }
     }

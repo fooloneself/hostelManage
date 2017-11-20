@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回上一级</Button>
+    <Button type="ghost" @click="goUp"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回上一级</Button>
     <Button type="primary" @click="toAdd">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
@@ -82,8 +82,8 @@
             turnUrl:function(url){
                 this.$router.push(url)
             },
-            goBack:function(){
-                history.go(-1);
+            goUp:function(){
+                this.$router.push('/admin/basicDict');
             },
             toAdd:function(){
                 this.turnUrl('/admin/basicDictInfoEdit/'+this.$route.params.code+'/0');

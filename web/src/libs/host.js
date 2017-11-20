@@ -83,6 +83,9 @@ Host.prototype={
     },
     getUserName:function () {
         return localStorage.getItem('userName');
+    },
+    logout:function () {
+        localStorage.clear();
     }
 }
 export default function (config) {

@@ -85,4 +85,16 @@ class ChannelController extends Controller{
         $channel=Channel::find()->where(['id'=>$channelId,'mch_id'=>$mchId])->asArray()->one();
         return \Yii::$app->responseHelper->success($channel)->response();
     }
+
+    /**
+     * 所有渠道
+     * @return mixed
+     */
+    public function actionAll(){
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $channel=Channel::find()
+            ->select('id,name')
+            ->where(['mch_id'=>$mchId])->asArray()->all();
+        return \Yii::$app->responseHelper->success($channel)->response();
+    }
 }

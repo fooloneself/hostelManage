@@ -266,4 +266,14 @@ class Admin extends Server{
         $this->admin->setAttribute('password',Helper::encryptPwd($pwd));
         return $this->admin->save(false,['password']);
     }
+
+    /**
+     * 退出
+     * @return $this
+     */
+    public function loginOut(){
+        $this->admin->setAttribute('token','');
+        $this->admin->save(false,['token']);
+        return $this;
+    }
 }

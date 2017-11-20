@@ -45,11 +45,7 @@
 						<Row :gutter="8">
 							<Col span="4">
 								<Select v-model="orderInfo.channel" placeholder="客人来源">
-					                <Option value="1">美团</Option>
-					                <Option value="2">携程</Option>
-					                <Option value="3">艺龙</Option>
-					                <Option value="4">同城</Option>
-					                <Option value="5">线下</Option>
+					                <Option v-for="(channel,c) in channels" :value="channel.id">{{channel.name}}</Option>
 					            </Select>
 							</Col>
 							<Col span="8"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
@@ -103,26 +99,19 @@
 						<Row :gutter="8" class="mt" v-for="(pay,i,p) in orderInfo.pay">
 							<Col span="5">
 								<Select v-model="pay.expenseItem" placeholder="消费项">
-					                <Option value="1">收取房费</Option>
-					                <Option value="2">收取订金</Option>
-					                <Option value="3">收取押金</Option>
-					                <Option value="4">退还房费</Option>
-					                <Option value="5">退还订金</Option>
-					                <Option value="6">退还押金</Option>
+					                <Option v-for="(expanseItem,ei) in expanseItems" :value="expanseItem.key">{{expanseItem.value}}</Option>
 					            </Select>
 							</Col>
 							<Col span="5">
 								<Select v-model="pay.channel" placeholder="消费方式">
-					                <Option value="1">现金</Option>
-					                <Option value="2">支付宝</Option>
-					                <Option value="3">微信</Option>
+					                <Option v-for="(paymentChannel,pc) in paymentChannels" :value="paymentChannel.key">{{paymentChannel.value}}</Option>
 					            </Select>
 							</Col>
 							<Col span="10">
 								<Input v-model="pay.amount" placeholder="付费金额"></Input>
 							</Col>
 							<Col span="4">
-								<Button type="text" @click="deletePay(i)">
+								<Button v-if="i!=0" type="text" @click="deletePay(i)">
 									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
 								</Button>
 							</Col>
@@ -166,8 +155,12 @@ export default{
 			    type: 1,
 			    guest:{mobile: '',name: ''},
 			    lodgers: [],
-			    pay: [{amount: '',channel: '',expenseItem:''}]
+			    pay: [{amount: '',channel: '',expenseItem:''}],
+			    dayNum: 1
 			},
+			channels:[],
+			paymentChannels:[],
+			expanseItems:[],
 			timepick: false
 		}
 	},
@@ -185,6 +178,36 @@ export default{
 	            })
 	        }
 	    })
+	    this.host.post('channelAll').then(function(res){
+            if(res.isSuccess()){
+                that.channels=res.data();
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: res.error()
+                })
+            }
+        })
+        this.host.post('merchantPaymentChannel').then(function(res){
+            if(res.isSuccess()){
+                that.paymentChannels=res.data();
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: res.error()
+                })
+            }
+        })
+        this.host.post('merchantExpanseItem').then(function(res){
+            if(res.isSuccess()){
+                that.expanseItems=res.data();
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: res.error()
+                })
+            }
+        })
 	},
 	methods:{
 		goBack(){
@@ -207,42 +230,45 @@ export default{
 			else this.timepick=false;
 		},
 		occupancy (){
-		    var number;
-		    if(this.orderInfo.type==1){
-                number=this.orderInfo.dayNum;
-		    }else if(this.orderInfo.type==2){
-                number=Math.floor(Date.parse(new Date(this.orderInfo.hour))/1000)%86400;
-		    }else{
-		        this.$Notice.info({
-		            title: '错误提示',
-		            desc: '请选择类型'
-		        })
-		        return ;
-		    }
-		    var param={
-		        lodgers: this.orderInfo.lodgers,
-		        guest: this.orderInfo.guest,
-		        roomId: this.$route.params.id,
-		        price: this.orderInfo.price,
-		        mark: this.orderInfo.mark,
-		        pay: this.orderInfo.pay,
-		        type: this.orderInfo.type,
-		        number:number,
-		        channel: this.orderInfo.channel
-		    };
-		    this.host.post('merchantOccupancy',param).then(function(res){
-		        if($res.isSuccess()){
-		            this.$router.push('/admin/checkstand');
-		        }else{
-		            this.$Notice.info({
-		                title: '错误提示',
-		                desc: res.error()
-		            })
-		        }
-		    })
+		    this.operate('merchantOccupancy');
 		},
 		reverse (){
-
+            this.operate('merchantReverse');
+		},
+		operate(action){
+		    var number;
+            if(this.orderInfo.type==1){
+                number=this.orderInfo.dayNum;
+            }else if(this.orderInfo.type==2){
+                number=Math.floor(Date.parse(new Date(this.orderInfo.hour))/1000)%86400;
+            }else{
+                this.$Notice.info({
+                    title: '错误提示',
+                    desc: '请选择类型'
+                })
+                return ;
+            }
+            var param={
+                lodgers: this.orderInfo.lodgers,
+                guest: this.orderInfo.guest,
+                roomId: this.$route.params.id,
+                price: this.orderInfo.price,
+                mark: this.orderInfo.mark,
+                pay: this.orderInfo.pay,
+                type: this.orderInfo.type,
+                number:number,
+                channel: this.orderInfo.channel
+            };
+            this.host.post(action,param).then(function(res){
+                if(res.isSuccess()){
+                    this.$router.push('/admin/checkstand');
+                }else{
+                    this.$Notice.info({
+                        title: '错误提示',
+                        desc: res.error()
+                    })
+                }
+            })
 		}
 	}
 }

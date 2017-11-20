@@ -1,5 +1,6 @@
 const interfaces={
     'login': 'admin/login',
+    'loginOut':'site/login-out',
     'sex':'site/sex',
     'register': 'admin/register',
     'resetMchPwd': 'merchant/admin/reset-password',
@@ -35,6 +36,7 @@ const interfaces={
     'channelView':'merchant/channel/view',
     'channelRecord':'merchant/channel/record',
     'channelDel':'merchant/channel/delete',
+    'channelAll':'merchant/channel/all',
     'mchNoticeList':'merchant/notice/list',
     'mchNoticeRead':'merchant/notice/read',
     'platformNoticeList':'platform/notice/list',
@@ -76,7 +78,14 @@ const interfaces={
     'platformRoleDetail':'platform/role/detail',
     'platformRoleEdit':'platform/role/edit',
     'merchantRoom':'merchant/room/place-page',
-    'merchantOccupancy':'merchant/order/occupancy'
+    'merchantOccupancy':'merchant/order/occupancy',
+    'merchantReverse':'merchant/order/reverse',
+    'merchantAllRoomType':'merchant/room-type/all-type',
+    'merchantAllRoom':'merchant/room/all-room',
+    'merchantOrderList':'merchant/order/list',
+    'merchantAllOrderAbnormal':'merchant/dictionary/all-order-abnormal',
+    'merchantPaymentChannel':'merchant/dictionary/payment-channel',
+    'merchantExpanseItem':'merchant/dictionary/expanse-item'
 };
 const server={
     'host': 'http://www.hotel.com',

@@ -294,4 +294,20 @@ class RoomController extends Controller{
             'date'=>date('Y/m/d',time())
         ])->response();
     }
+
+    /**
+     * 获取所有房间
+     * @return mixed
+     */
+    public function actionAllRoom(){
+        $mch=\Yii::$app->user->getAdmin()->getMerchant();
+        $mchId=$mch->getId();
+        $premisesId=$mch->getPremise()->id;
+        $rooms=Room::find()
+            ->select('id,number')
+            ->where(['mch_id'=>$mchId,'premises_id'=>$premisesId])
+            ->orderBy('number asc')
+            ->asArray()->all();
+        return \Yii::$app->responseHelper->success($rooms)->response();
+    }
 }
