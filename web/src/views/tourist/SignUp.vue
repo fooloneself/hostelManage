@@ -1,7 +1,7 @@
 <style scoped>
 .login_form{
 	padding: 0 40px;
-	background: #FFF;
+	border: 1px solid #dddee1;
     padding: 40px;
     border-radius: 5px;
     position: absolute;

@@ -1,15 +1,15 @@
 <style scoped>
 .layout-nav{
-    height: 60px;
-    line-height: 60px;
-    border-bottom: 1px solid #dddee1;
-    background: #FFF;
-    min-width: 1328px;
+    height: 61px;
+    line-height: 61px;
+    background: #2C3E50;
+    min-width: 1280px;
     position: relative;
     z-index: 999;
     .logo{
-        height: 60px;
-        line-height: 60px;
+        margin-left: 24px;
+        height: 61px;
+        line-height: 61px;
         img{
             height: 26px;
             margin-top: 17px;
@@ -17,10 +17,10 @@
     }
     a{
         font-size: 14px;
-        color: #16A085;
+        color: #FFF;
     }
     .menu{
-        background: #FFF;
+        font-size: 16px;
     }
 }
 </style>
@@ -33,12 +33,12 @@
                     <Col span="4">
                         <div class="logo">
                             <router-link to="/admin">
-                                <img src="/src/images/logo.png" alt="">
+                                <img src="/src/images/logo-white.png" alt="">
                             </router-link>
                         </div>
                     </Col>
                     <Col span="16">
-                        <Menu mode="horizontal" active-name="/admin/checkstand" @on-select="turnUrl" class="menu">
+                        <Menu mode="horizontal" active-name="/admin/checkstand" @on-select="turnUrl" class="menu" theme="dark">
                             <MenuItem name="/admin/checkstand">客房登记</MenuItem>
                             <MenuItem name="/admin/orderIn">渠道订单</MenuItem>
                             <MenuItem name="/admin/memberList">营销管理</MenuItem>
@@ -46,7 +46,7 @@
                             <MenuItem name="/admin/basicTips">平台管理</MenuItem>
                         </Menu>
                     </Col>
-                    <Col span="4">
+                    <Col span="4" style="padding-right: 24px;">
                         <div class="fr">
                             <Badge dot>
                                 <router-link to=""><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></router-link>
@@ -67,9 +67,11 @@
                 </Row>
             </div>
         </div>
-        <transition name="slideUp">
-            <router-view></router-view>
-        </transition>
+        <div class="layout-body">
+            <transition name="slideUp">
+                <router-view></router-view>
+            </transition>
+        </div>
     </div>
 </template>
 

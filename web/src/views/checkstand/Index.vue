@@ -9,9 +9,9 @@
 }
 .date-pick{
 	background: url('/src/images/bj.png');
-	padding-top: 10px;
-	padding-bottom: 10px;
-    min-width: 1208px;
+	padding-top: 16px;
+	padding-bottom: 16px;
+    min-width: 1280px;
     font-weight: bolder;
     .current{
     	color: #000;
@@ -81,7 +81,7 @@
 <div class="pick-area">
 	<Spin size="large" fix v-if="spinShow"></Spin>
 	<Row class="date-pick">
-		<div class="container-body mlr">
+		<div class="container-body">
 			<Col span="2" class="tc">
 				<Icon type="calendar" size="34"></Icon>
 			</Col>
@@ -94,7 +94,7 @@
 		</div>
 	</Row>
 	<div class="mb"></div>
-	<div class="container-body mlr">
+	<div class="container-body" style="padding: 0 24px;">
 		<Row>
 			<Col span="12">
 				<ButtonGroup size="small">
