@@ -132,10 +132,20 @@
 						</Row>
 			        </FormItem>
 					<FormItem>
-						<!-- 只有在当日才能办理入住 -->
+						<!-- 新添订单：只有在当日才能办理入住 -->
 			            <Button type="primary" @click="occupancy">确认入住</Button>
 			            <Button type="warning" @click="reverse" class="icon-ml">确认预订</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
+			        </FormItem>
+					<FormItem>
+						<!-- 修改订单 -->
+			            <Button type="primary">确认修改</Button>
+                        <Button type="ghost" class="icon-ml">取消</Button>
+			        </FormItem>
+					<FormItem>
+						<!-- 办理入住 -->
+			            <Button type="primary" @click="occupancy">确认入住</Button>
+                        <Button type="ghost" class="icon-ml">取消</Button>
 			        </FormItem>
 			    </Form>
 			</Col>
