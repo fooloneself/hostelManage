@@ -1,22 +1,4 @@
 <style scoped>
-.pick-area{
-	position: absolute;
-	top: 60px;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	background: #FFF;
-}
-.date-pick{
-	background: url('/src/images/bj.png');
-	padding-top: 16px;
-	padding-bottom: 16px;
-    min-width: 1280px;
-    font-weight: bolder;
-    .current{
-    	color: #000;
-    }
-}
 .room-pick{
 	cursor: pointer;
 	height: 100px;
@@ -26,14 +8,11 @@
 		border-radius: 5px;
 		border: 1px solid #dddee1;
 		text-align: center;
-		&:hover{
-			background: #dddee1;
-		}
 		.type{
 			width: 100%;
 			height: 32px;
 			line-height: 42px;
-			font-size: 14px;
+			font-size: 12px;
 		}
 		.number{
 			width: 100%;
@@ -41,25 +20,53 @@
 			font-size: 28px;
 			font-weight: bolder;
 		}
+		&:hover{
+			background: #dddee1;
+		}
 		&.room-in{
 			background: #49D0B5;
 			color: #FFFFFF;
 			border: none;
+			.type,.number{
+				height: 28px;
+				line-height: 28px;
+			}
+			.name{
+				width: 100%;
+				height: 28px;
+				line-height: 28px;
+				font-size: 12px;
+			}
 		}
 		&.room-order{
 			background: #5688D2;
 			color: #FFFFFF;
 			border: none;
-		}
-		&.room-order-multi{
-			background: #FFFFFF;
-			color: #5688D2;
-			border: 1px solid #5688D2;
+			.type,.number{
+				height: 28px;
+				line-height: 28px;
+			}
+			.name{
+				width: 100%;
+				height: 28px;
+				line-height: 28px;
+				font-size: 12px;
+			}
 		}
 		&.room-clock{
 			background: #FD9A59;
 			color: #FFFFFF;
 			border: none;
+			.type,.number{
+				height: 28px;
+				line-height: 28px;
+			}
+			.name{
+				width: 100%;
+				height: 28px;
+				line-height: 28px;
+				font-size: 12px;
+			}
 		}
 		&.room-dirty{
 			background: #CCCCCC;
@@ -73,62 +80,53 @@
 		}
 	}
 }
-.current-status{
-	border-bottom: 2px solid #16A085;
-}
 </style>
 <template>
 <div class="pick-area">
 	<Spin size="large" fix v-if="spinShow"></Spin>
-	<Row class="date-pick">
-		<div class="container-body">
-			<Col span="2" class="tc">
-				<Icon type="calendar" size="34"></Icon>
-			</Col>
-			<Col span="2" class="current tc">
-				09-05 星期一<br/>剩余15间
-			</Col>
-			<Col v-for="week in weekday" span="2" class="tc">
-				09-05 星期{{week}}<br/>剩余15间
-			</Col>
-		</div>
+	<Row>
+		<Col span="12">
+			<Select placeholder="房屋状态" style="width: 120px;margin-right: 8px;" @on-change="selectStatus">
+                <Option value="-1">全部</Option>
+                <Option value="0">空房</Option>
+                <Option value="4">入住</Option>
+                <Option value="">钟点</Option>
+                <Option value="3">预订</Option>
+                <Option value="1">脏房</Option>
+                <Option value="2">锁房</Option>
+            </Select>
+            <Select placeholder="房屋类型" style="width: 120px;margin-right: 8px;" @on-change="selectType">
+                <Option value="0">全部</Option>
+                <Option v-for="type in types" :value="type.id">{{type.name}}</Option>
+            </Select>
+            <Select placeholder="客户名称" style="width: 120px;">
+                <Option value="">全部</Option>
+                <Option value="张三">张三</Option>
+                <Option value="李四">李四</Option>
+                <Option value="王五">王五</Option>
+                <Option value="刘六">刘六</Option>
+            </Select>
+		</Col>
+		<Col span="12">
+			<ButtonGroup size="small" class="fr">
+				<Button @click="selectStatus(0)" type="text"><Icon type="record" style="color:#666666"></Icon><span class="icon-ml">空房</span></Button>
+				<Button @click="selectStatus(4)" type="text"><Icon type="record" style="color:#49D0B5"></Icon><span class="icon-ml">入住</span></Button>
+				<Button type="text"><Icon type="record" style="color:#FD9A59"></Icon><span class="icon-ml">钟点</span></Button>
+				<Button @click="selectStatus(3)" type="text"><Icon type="record" style="color:#5688D2"></Icon><span class="icon-ml">预订</span></Button>
+				<Button @click="selectStatus(1)" type="text"><Icon type="record" style="color:#CCCCCC"></Icon><span class="icon-ml">脏房</span></Button>
+				<Button @click="selectStatus(2)" type="text"><Icon type="record" style="color:#EEEEEE"></Icon><span class="icon-ml">锁房</span></Button>
+			</ButtonGroup>
+		</Col>
 	</Row>
 	<div class="mb"></div>
-	<div class="container-body" style="padding: 0 24px;">
-		<Row>
-			<Col span="12">
-				<ButtonGroup size="small">
-					<Button @click="selectStatus(-1)" class="current-status" type="text">全部状态</Button>
-					<Button @click="selectStatus(0)" type="text"><Icon type="record" style="color:#666666"></Icon><span class="icon-ml">空房</span></Button>
-					<Button @click="selectStatus(4)" type="text"><Icon type="record" style="color:#49D0B5"></Icon><span class="icon-ml">入住</span></Button>
-					<Button @click="selectStatus(3)" type="text"><Icon type="record" style="color:#5688D2"></Icon><span class="icon-ml">预订</span></Button>
-					<Button @click="selectStatus(1)" type="text"><Icon type="record" style="color:#CCCCCC"></Icon><span class="icon-ml">脏房</span></Button>
-					<Button @click="selectStatus(2)" type="text"><Icon type="record" style="color:#EEEEEE"></Icon><span class="icon-ml">锁房</span></Button>
-				</ButtonGroup>
-			</Col>
-			<Col span="12" class="tr">
-				<ButtonGroup size="small">
-					<Button @click="selectType(0)" class="current-status" type="text">全部房型</Button>
-					<Button v-for="type in types" @click="selectType(type.id)" type="text">{{type.name}}</Button>
-				</ButtonGroup>
-			</Col>
-		</Row>
-		<div class="mb"></div>
-		<Row :gutter="16">
-			<Col span="2" class="room-pick">
-				<div class="room room-order-multi">
-					<div class="type">批量预定</div>
-					<div class="number"><i class="fa fa-bed" aria-hidden="true"></i></div>
-				</div>
-			</Col>
-			<Col v-for="room in rooms" span="2" class="room-pick">
-				<div class="room" :class="getClass(room.status)" @click="roomClick(room.id,room.status)">
-					<div class="type">{{room.typeName}}</div>
-					<div class="number">{{room.number}}</div>
-				</div>
-			</Col>
-		</Row>
-	</div>
+	<Row :gutter="16">
+		<Col v-for="room in rooms" span="2" class="room-pick">
+			<div class="room" :class="getClass(room.status)" @click="roomClick(room.id,room.status)">
+				<div class="type">{{room.typeName}}</div>
+				<div class="number">{{room.number}}</div>
+			</div>
+		</Col>
+	</Row>
 	<Modal v-model="modalShow" title="提示">
 		<p>请确认是否将该房间从脏房置为空房？</p>
 	</Modal>

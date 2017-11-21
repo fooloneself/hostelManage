@@ -1,80 +1,183 @@
 <style scoped>
-.layout-nav{
-    height: 61px;
-    line-height: 61px;
-    background: #2C3E50;
+.layout{
     min-width: 1280px;
-    position: relative;
-    z-index: 999;
-    .logo{
-        margin-left: 24px;
-        height: 61px;
-        line-height: 61px;
+    .layout-logo{
+        position: absolute;
+        bottom: 0;
+        width: 220px;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+        background: #2C3E50;
         img{
-            height: 26px;
-            margin-top: 17px;
+            height: 20px;
+            margin-top: 15px;
         }
     }
-    a{
-        font-size: 14px;
-        color: #FFF;
+    .layout-left{
+        width: 220px;
+        position: absolute;
+        left: 0px;
+        top: 0;
+        bottom: 50px;
+        overflow: hidden;
+        background: #2C3E50;
+        .layout-user{
+            height: 100px;
+            color: #FFF;
+            padding-left: 24px;
+            .layout-user-name{
+                font-size: 14px;
+                line-height: 60px;
+                letter-spacing: 0.1em;
+            }
+            .layout-user-control{
+                a{
+                    font-size: 12px;
+                    color: #FFF;
+                    margin-right: 8px;
+                }
+            }
+        }
     }
-    .menu{
-        font-size: 16px;
+    .layout-right{
+        position: absolute;
+        left: 220px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #FFF;
+        padding: 24px;
+        min-width: 1060px;
     }
 }
 </style>
-
 <template>
-    <div>
-        <div class="layout-nav">
-            <div class="container-body">
-                <Row>
-                    <Col span="4">
-                        <div class="logo">
-                            <router-link to="/admin">
-                                <img src="/src/images/logo-white.png" alt="">
-                            </router-link>
-                        </div>
-                    </Col>
-                    <Col span="16">
-                        <Menu mode="horizontal" active-name="/admin/checkstand" @on-select="turnUrl" class="menu" theme="dark">
-                            <MenuItem name="/admin/checkstand">客房登记</MenuItem>
-                            <MenuItem name="/admin/orderIn">渠道订单</MenuItem>
-                            <MenuItem name="/admin/memberList">营销管理</MenuItem>
-                            <MenuItem name="/admin/configStore">系统配置</MenuItem>
-                            <MenuItem name="/admin/basicTips">平台管理</MenuItem>
-                        </Menu>
-                    </Col>
-                    <Col span="4" style="padding-right: 24px;">
-                        <div class="fr">
-                            <Badge dot>
-                                <router-link to=""><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></router-link>
-                            </Badge>
-                            <Dropdown @on-click="turnUrl" class="icon-ml">
-                                <a href="javascript:void(0)">
-                                    {{userName}}
-                                    <Icon type="arrow-down-b"></Icon>
-                                </a>
-                                <DropdownMenu slot="list" class="tl">
-                                    <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
-                                    <DropdownItem name="/admin/managerPassword/0">修改密码</DropdownItem>
-                                    <DropdownItem name="/login" divided @click="logout">退出登录</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </div>
-                    </Col>
+    <div class="layout">
+        <div class="layout-logo">
+            <router-link to="/admin">
+                <img src="/src/images/logo-white.png" alt="">
+            </router-link>
+        </div>
+        <div class="layout-left">
+            <div class="layout-user">
+                <div class="layout-user-name">Admin Dun</div>
+                <Row class="layout-user-control">
+                    <Col span="4"><router-link to=""><i class="fa fa-user fa-lg" aria-hidden="true"></i></router-link></Col>
+                    <Col span="4"><router-link to=""><i class="fa fa-lock fa-lg" aria-hidden="true"></i></router-link></Col>
+                    <Col span="4"><router-link to=""><i class="fa fa-bell fa-lg" aria-hidden="true"></i></router-link></Col>
+                    <Col span="4"><router-link to=""><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></router-link></Col>
                 </Row>
             </div>
+            <Menu theme="dark" style="width: auto" active-name="/admin/checkstand" @on-select="turnUrl" accordion>
+                <MenuItem name="/admin/checkstand"><span class="layout-text">客房登记</span></MenuItem>
+                <Submenu name="power">
+                    <template slot="title">鉴权中心</template>
+                    <MenuItem name="/admin/powerMenu">
+                        <i class="fa fa-map fa-fw" aria-hidden="true"></i>菜单配置
+                    </MenuItem>
+                    <MenuItem name="/admin/powerRole">
+                        <i class="fa fa-key fa-fw" aria-hidden="true"></i>角色配置
+                    </MenuItem>
+                    <MenuItem name="/admin/powerAccount">
+                        <i class="fa fa-id-card fa-fw" aria-hidden="true"></i>账号管理
+                    </MenuItem>
+                </Submenu>
+                <Submenu name="basic">
+                    <template slot="title">基础中心</template>
+                    <MenuItem name="/admin/basicDict">
+                        <i class="fa fa-tag fa-fw" aria-hidden="true"></i>数据字典
+                    </MenuItem>
+                    <MenuItem name="/admin/basicLinkage">
+                        <i class="fa fa-tags fa-fw" aria-hidden="true"></i>联动菜单
+                    </MenuItem>
+                    <MenuItem name="/admin/basicNotice">
+                        <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>通知公告
+                    </MenuItem>
+                    <MenuItem name="/admin/basicTips">
+                        <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
+                    </MenuItem>
+                </Submenu>
+                <Submenu name="manager">
+                    <template slot="title">个人中心</template>
+                    <MenuItem name="/admin/managerInfo">
+                        <i class="fa fa-user fa-fw" aria-hidden="true"></i>个人资料
+                    </MenuItem>
+                    <MenuItem name="/admin/managerPassword/0">
+                        <i class="fa fa-lock fa-fw" aria-hidden="true"></i>修改密码
+                    </MenuItem>
+                </Submenu>
+                <Submenu name="order">
+                    <template slot="title">订单管理</template>
+                    <MenuItem name="/admin/orderIn">
+                        <i class="fa fa-calendar-plus-o fa-fw" aria-hidden="true"></i>今日到店
+                    </MenuItem>
+                    <MenuItem name="/admin/orderOut">
+                        <i class="fa fa-calendar-minus-o fa-fw" aria-hidden="true"></i>今日离店
+                    </MenuItem>
+                    <MenuItem name="/admin/orderAll">
+                        <i class="fa fa-calendar-o fa-fw" aria-hidden="true"></i>全部订单
+                    </MenuItem>
+                    <MenuItem name="/admin/orderError">
+                        <i class="fa fa-calendar-times-o fa-fw" aria-hidden="true"></i>异常订单
+                    </MenuItem>
+                </Submenu>
+                <Submenu name="store">
+                    <template slot="title">门店管理</template>
+                    <MenuItem name="/admin/configStore">
+                        <i class="fa fa-cog fa-fw" aria-hidden="true"></i>基础配置
+                    </MenuItem>
+                    <MenuItem name="/admin/roomType">
+                        <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>房间类型
+                    </MenuItem>
+                    <MenuItem name="/admin/roomList">
+                        <i class="fa fa-cube fa-fw" aria-hidden="true"></i>房间列表
+                    </MenuItem>
+                    <MenuItem name="/admin/configAccount">
+                        <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>账号配置
+                    </MenuItem>
+                    <MenuItem name="/admin/configChannel">
+                        <i class="fa fa-handshake-o fa-fw" aria-hidden="true"></i>自定义渠道
+                    </MenuItem>
+                </Submenu>
+                <Submenu name="member">
+                    <template slot="title">会员管理</template>
+                    <MenuItem name="/admin/memberRank"><i class="fa fa-users fa-fw" aria-hidden="true"></i>会员等级</MenuItem>
+                    <MenuItem name="/admin/memberList"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>会员列表</MenuItem>
+                    <MenuItem name="/admin/memberBlack"><i class="fa fa-warning fa-fw" aria-hidden="true"></i>黑名单</MenuItem>
+                </Submenu>
+                <Submenu name="promotion">
+                    <template slot="title">活动管理</template>
+                    <MenuItem name="/admin/discount"><i class="fa fa-rmb fa-fw" aria-hidden="true"></i>折扣</MenuItem>
+                    <MenuItem name="/admin/cutdown"><i class="fa fa-money fa-fw" aria-hidden="true"></i>满减</MenuItem>
+                    <MenuItem name="/admin/bargain"><i class="fa fa-bolt fa-fw" aria-hidden="true"></i>特价房</MenuItem>
+                    <MenuItem name="/admin/coupon"><i class="fa fa-ticket fa-fw" aria-hidden="true"></i>优惠券</MenuItem>
+                    <MenuItem name="/admin/gift"><i class="fa fa-gift fa-fw" aria-hidden="true"></i>抽奖</MenuItem>
+                </Submenu>
+                <Submenu name="person">
+                    <template slot="title">用户中心</template>
+                    <MenuItem name="/admin/personInfo">
+                        <i class="fa fa-user fa-fw" aria-hidden="true"></i>个人资料
+                    </MenuItem>
+                    <MenuItem name="/admin/personPassword/0">
+                        <i class="fa fa-lock fa-fw" aria-hidden="true"></i>修改密码
+                    </MenuItem>
+                    <MenuItem name="/admin/personNotice">
+                        <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>通知公告
+                    </MenuItem>
+                    <MenuItem name="/admin/personTips">
+                        <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
+                    </MenuItem>
+                </Submenu>
+            </Menu>
         </div>
-        <div class="layout-body">
-            <transition name="slideUp">
+        <div class="layout-right">
+            <transition name="slideRight">
                 <router-view></router-view>
             </transition>
         </div>
     </div>
 </template>
-
 <script>
     export default {
         data(){

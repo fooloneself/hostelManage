@@ -12,15 +12,12 @@
 	<Col span="12">
 		<Form v-model="formItem" label-position="right" :label-width="80">
 			<FormItem label="会员等级：">
-				<Select>
-		            <Option value="0">普通会员</Option>
-		            <Option value="1">黄金会员</Option>
-		            <Option value="2">铂金会员</Option>
-		            <Option value="3">钻石会员</Option>
+				<Select v-model="formItem.rank">
+		            <Option v-for="(rank,r) in ranks" :value="rank.id">{{rank.name}}</Option>
 		        </Select>
 	        </FormItem>
 			<FormItem label="余额：">
-				<Input placeholder=""><span slot="prepend">￥</span></Input>
+				<Input v-model="formItem.balance" placeholder=""><span slot="prepend">￥</span></Input>
 	        </FormItem>
 			<FormItem label="姓名：">
 				<Input v-model="formItem.name"></Input>
@@ -31,13 +28,13 @@
 			<FormItem label="证件号：">
 				<Input v-model="formItem.number">
 					<Select v-model="formItem.numberType" :value="formItem.numberType" slot="prepend" style="width: 80px">
-			            <Option v-for="type in numberType" :value="type.key">{{type.value}}</Option>
+			            <Option v-for="(type,t) in numberType" :value="type.key">{{type.value}}</Option>
 			        </Select>
 		        </Input>
 	        </FormItem>
 			<FormItem label="性别：">
 				<RadioGroup v-model="formItem.sex">
-	                <Radio v-for="item in sex" :label="item.key">{{item.value}}</Radio>
+	                <Radio v-for="(item,s) in sex" :label="item.key">{{item.value}}</Radio>
 	            </RadioGroup>
 	        </FormItem>
 			<FormItem label="生日：">
@@ -72,10 +69,12 @@ export default{
 				sex: 0,
 				birthday: '',
 				wxAccount: '',
-				mark: ''
+				mark: '',
+				rank:''
 			},
 			sex:[],
-			numberType:[]
+			numberType:[],
+			ranks:[]
 		}
 	},
 	mounted (){
@@ -92,9 +91,20 @@ export default{
                     that.formItem.number=member.number;
                     that.formItem.sex=member.sex;
                     that.formItem.birthday=member.birthday;
-                    that.formItem.wxAccount=member.wxAccount;
+                    that.formItem.balance=member.balance;
                     that.formItem.mark=member.mark;
+                    that.formItem.rank=member.rank;
                 }
+            }else{
+                that.$Notice.info({
+                    title: '提示',
+                    desc: res.error()
+                })
+            }
+        })
+        this.host.post('merchantMemberAllRank').then(function(res){
+            if(res.isSuccess()){
+                that.ranks=res.data();
             }else{
                 that.$Notice.info({
                     title: '提示',
@@ -117,8 +127,9 @@ export default{
                 number: this.formItem.number,
                 sex: this.formItem.sex,
                 birthday: birthday,
-                wxAccount: this.formItem.wxAccount,
-                mark: this.formItem.mark
+                mark: this.formItem.mark,
+                rank: this.formItem.rank,
+                balance: this.formItem.balance
             };
             this.host.post('merchantMemberEdit',params).then(function(res){
                 if(res.isSuccess()){
