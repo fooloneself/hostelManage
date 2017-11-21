@@ -44,7 +44,7 @@ const market={
         	component: (resolve) => require(['./views/market/MemberRank.vue'], resolve)
 		},
 		{
-			path: 'memberRankEdit',
+			path: 'memberRankEdit/:id',
 	        meta: {
 	            title: '会员等级 - 编辑'
 	        },

@@ -70,10 +70,10 @@
                             </Switch>
                         </FormItem>
                         <FormItem label="预订房保留时间：">
-                            <InputNumber :max="12" :min="1" :step="0.5"></InputNumber>&nbsp;&nbsp;小时
+                            <InputNumber v-model="storeSetting.reserveRetentionTime" :max="12" :min="1" :step="0.5"></InputNumber>&nbsp;&nbsp;小时
                         </FormItem>
                         <FormItem label="预订房自动注销：">
-                            <Switch v-model="storeSetting.reserveSwitch" :true-value="1" :false-value="0">
+                            <Switch v-model="storeSetting.reserveAutoCloseSwitch" :true-value="1" :false-value="0">
                                 <span slot="open">是</span>
                                 <span slot="close">否</span>
                             </Switch>
@@ -82,7 +82,7 @@
                             <TimePicker v-model="storeSetting.hourRoomRange" :value="storeSetting.hourRoomRange" type="timerange" placeholder="选择时间"></TimePicker>
                         </FormItem>
                         <FormItem label="钟点房时长：">
-                            <InputNumber :max="12" :min="1" :step="0.5"></InputNumber>&nbsp;&nbsp;小时
+                            <InputNumber v-model="storeSetting.clockMaxHour" :max="12" :min="1" :step="0.5"></InputNumber>&nbsp;&nbsp;小时
                         </FormItem>
                         <FormItem>
                             <Button @click="setSwitch" type="primary">保存</Button>
@@ -128,8 +128,9 @@
                 storeBase:{},
                 storeSetting:{
                     orderAutoClose: 1,
-                    reserveSwitch: 1,
-                    hourRoomSwitch: 1
+                    reserveAutoCloseSwitch: 1,
+                    hourRoomSwitch: 1,
+                    clockMaxHour:0
                 },
                 imgNum:25,
                 visible:false
@@ -144,12 +145,6 @@
                             that.storeBase=res.data().base;
                         }
                         if(res.data().setting){
-                            if(res.data().setting.reserveRetentionTime>0){
-                                var date=new Date(parseInt(res.data().setting.reserveRetentionTime)*1000);
-                                res.data().setting.reserveRetentionTime=that.getHourOfDate(date);
-                            }else{
-                                res.data().setting.reserveRetentionTime='';
-                            }
                             that.storeSetting=res.data().setting;
                         }
                     }
@@ -200,12 +195,13 @@
             setSwitch (){
                 var param={
                     orderAutoClose: parseInt(this.storeSetting.orderAutoClose),
-                    reserveSwitch: parseInt(this.storeSetting.reserveSwitch),
+                    reserveAutoCloseSwitch: parseInt(this.storeSetting.reserveAutoCloseSwitch),
                     hourRoomSwitch: parseInt(this.storeSetting.hourRoomSwitch),
                     checkOutTime:this.getHourOfDate(this.storeSetting.checkOutTime),
-                    reserveRetentionTime: this.getTime(this.storeSetting.reserveRetentionTime),
+                    reserveRetentionTime: this.storeSetting.reserveRetentionTime,
                     hourRoomStartTime:this.getHourOfDate(this.storeSetting.hourRoomRange[0]),
-                    hourRoomEndTime:this.getHourOfDate(this.storeSetting.hourRoomRange[1])
+                    hourRoomEndTime:this.getHourOfDate(this.storeSetting.hourRoomRange[1]),
+                    clockMaxHour:parseInt(this.storeSetting.clockMaxHour)
                 }
                 this.host.post('storeSet',param).then(function(res){
                     if(res.isSuccess()){

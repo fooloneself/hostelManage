@@ -9,12 +9,13 @@ use Yii;
  *
  * @property integer $mch_id
  * @property integer $auto_close_switch
- * @property integer $reserve_switch
+ * @property integer $reserve_auto_close_switch
  * @property integer $hour_room_switch
  * @property integer $reserve_retention_time
  * @property string $check_out_time
  * @property string $hour_room_start_time
  * @property string $hour_room_end_time
+ * @property integer $clock_max_hour
  */
 class MerchantSet extends \common\components\ActiveRecord
 {
@@ -33,7 +34,7 @@ class MerchantSet extends \common\components\ActiveRecord
     {
         return [
             [['mch_id'], 'required'],
-            [['mch_id', 'auto_close_switch', 'reserve_switch', 'hour_room_switch', 'reserve_retention_time'], 'integer'],
+            [['mch_id', 'auto_close_switch', 'reserve_auto_close_switch', 'hour_room_switch', 'reserve_retention_time', 'clock_max_hour'], 'integer'],
             [['check_out_time'], 'string', 'max' => 10],
             [['hour_room_start_time', 'hour_room_end_time'], 'string', 'max' => 20],
         ];
@@ -47,12 +48,13 @@ class MerchantSet extends \common\components\ActiveRecord
         return [
             'mch_id' => 'Mch ID',
             'auto_close_switch' => 'Auto Close Switch',
-            'reserve_switch' => 'Reserve Switch',
+            'reserve_auto_close_switch' => 'Reserve Auto Close Switch',
             'hour_room_switch' => 'Hour Room Switch',
             'reserve_retention_time' => 'Reserve Retention Time',
             'check_out_time' => 'Check Out Time',
             'hour_room_start_time' => 'Hour Room Start Time',
             'hour_room_end_time' => 'Hour Room End Time',
+            'clock_max_hour' => 'Clock Max Hour',
         ];
     }
 }

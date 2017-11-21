@@ -5,20 +5,18 @@
             <Button @click="turnUrl('/admin/memberListEdit/0')" type="primary">新增</Button>
         </Col>
         <Col span="18" class="tr">
-            <Form inline>
+            <Form v-model="filter" inline>
                 <FormItem>
-                    <Select placeholder="会员等级" class="tl" style="width: 100px;">
-                        <Option value="1">普通</Option>
-                        <Option value="2">黄金</Option>
-                        <Option value="3">铂金</Option>
-                        <Option value="4">钻石</Option>
+                    <Select v-model="filter.rank" placeholder="会员等级" class="tl" style="width: 100px;">
+                        <Option value="0">全部</Option>
+                        <Option v-for="rank in ranks" :value="rank.id">{{rank.name}}</Option>
                     </Select>
                 </FormItem>
                 <FormItem>
-                    <Input placeholder="姓名/电话"></Input>
+                    <Input v-model="filter.search" placeholder="姓名/电话"></Input>
                 </FormItem>
                 <FormItem>
-                    <Button type="primary">查询</Button>
+                    <Button @click="query" type="primary">查询</Button>
                 </FormItem>
             </Form>
         </Col>
@@ -58,7 +56,8 @@
                     },
                     {
                         title: '余额',
-                        width: 120
+                        width: 120,
+                        key: 'balance'
                     },
                     {
                         title: '消费金额',
@@ -97,12 +96,6 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
-                                    }
-                                }, '查看'),
-                                h('Button', {
-                                    props: {
-                                        type: 'text',
-                                        size: 'small'
                                     },
                                 }, '移入黑名单'),
                                 h('Button', {
@@ -112,10 +105,14 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            var res=confirm('确定要删除吗？');
-                                            if(res){
-                                                this.delete(params.row.id);
-                                            }
+                                            var that=this;
+                                            this.$Modal.confirm({
+                                                title:'提示',
+                                                content:'确定要删除此会员？',
+                                                onOk(){
+                                                    that.delete(params.row.id)
+                                                }
+                                            })
                                         }
                                     }
                                 }, '删除')
@@ -124,19 +121,24 @@
                     }
                 ],
                 data: [],
-                totalCount: 0
+                totalCount: 0,
+                ranks:[],
+                filter:{
+                    rank:0,
+                    search:''
+                }
             }
         },
         mounted (){
             var that=this;
-            this.host.post('merchantMemberList').then(function(res){
+            this.query();
+            this.host.post('merchantMemberAllRank').then(function(res){
                 if(res.isSuccess()){
-                    that.data=res.data().list;
-                    that.totalCount=res.data().totalCount;
+                    that.ranks=res.data();
                 }else{
                     that.$Notice.info({
-                        title:'提示',
-                        desc:res.error()
+                        title: '提示',
+                        desc: res.error()
                     })
                 }
             })
@@ -146,13 +148,28 @@
                 this.$router.push(url)
             },
             delete (id){
+                var that=this;
                 this.host.post('merchantMemberDelete',{id: id}).then(function(res){
                     if(res.isSuccess()){
-                        this.$router.go(0);
+                        that.query();
                     }else{
                         this.$Notice.info({
                             title: '提示',
                             desc: res.error()
+                        })
+                    }
+                })
+            },
+            query (){
+                var that=this;
+                this.host.post('merchantMemberList',this.filter).then(function(res){
+                    if(res.isSuccess()){
+                        that.data=res.data().list;
+                        that.totalCount=res.data().totalCount;
+                    }else{
+                        that.$Notice.info({
+                            title:'提示',
+                            desc:res.error()
                         })
                     }
                 })

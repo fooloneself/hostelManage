@@ -85,7 +85,12 @@ const interfaces={
     'merchantOrderList':'merchant/order/list',
     'merchantAllOrderAbnormal':'merchant/dictionary/all-order-abnormal',
     'merchantPaymentChannel':'merchant/dictionary/payment-channel',
-    'merchantExpanseItem':'merchant/dictionary/expanse-item'
+    'merchantExpanseItem':'merchant/dictionary/expanse-item',
+    'merchantMemberRanks':'merchant/member/ranks',
+    'merchantMemberRank':'merchant/member/rank',
+    'merchantMemberRankDel':'merchant/member/del-rank',
+    'merchantMemberRankEdit':'merchant/member/rank-divide',
+    'merchantMemberAllRank':'merchant/member/all-rank'
 };
 const server={
     'host': 'http://www.hotel.com',

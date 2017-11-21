@@ -75,11 +75,12 @@ class MerchantController extends Controller {
             if($setting){
                 $res['setting']=[
                     'orderAutoClose'=>intval($setting->auto_close_switch),
-                    'reserveSwitch'=>intval($setting->reserve_switch),
+                    'reserveAutoCloseSwitch'=>intval($setting->reserve_auto_close_switch),
                     'hourRoomSwitch'=>intval($setting->hour_room_switch),
                     'checkOutTime'=>$setting->check_out_time,
                     'hourRoomRange'=>[$setting->hour_room_start_time,$setting->hour_room_end_time],
                     'reserveRetentionTime'=>intval($setting->reserve_retention_time),
+                    'clockMaxHour'=>intval($setting->clock_max_hour)
                 ];
             }
         }else{
@@ -96,7 +97,7 @@ class MerchantController extends Controller {
         //订单自动关闭开关
         $orderAutoClose=\Yii::$app->requestHelper->post('orderAutoClose',0,'int');
         //预定房间开关
-        $reserveSwitch=\Yii::$app->requestHelper->post('reserveSwitch',0,'int');
+        $reserveAutoCloseSwitch=\Yii::$app->requestHelper->post('reserveAutoCloseSwitch',0,'int');
         //钟点房开关
         $hourRoomSwitch=\Yii::$app->requestHelper->post('hourRoomSwitch',0,'int');
         //每日退房时间
@@ -107,31 +108,29 @@ class MerchantController extends Controller {
         $hourRoomStartTime=\Yii::$app->requestHelper->post('hourRoomStartTime','','string');
         //钟点房每日结束时间点
         $hourRoomEndTime=\Yii::$app->requestHelper->post('hourRoomEndTime','','string');
+        //钟点房最大时长
+        $clockMaxHour=\Yii::$app->requestHelper->post('clockMaxHour',0,'int');
         if($orderAutoClose==1 && empty($checkOutTime)){
-            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
-        }else if($reserveSwitch==1 && $reserveRetentionTime<1){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }else if($hourRoomSwitch==1 && (empty($hourRoomStartTime) || empty($hourRoomEndTime)) && $hourRoomStartTime>$hourRoomEndTime){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
-        $checkOutTime=$orderAutoClose===1?$checkOutTime:'';
-        $reserveRetentionTime=$reserveSwitch===1?$reserveRetentionTime:0;
         if(!$hourRoomSwitch){
             $hourRoomEndTime=$hourRoomEndTime='';
         }
-        $checkOutTime=$orderAutoClose===1?$checkOutTime:'';
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
         $model=MerchantSet::findOne(['mch_id'=>$mchId]);
         if(!$model)$model=new MerchantSet();
         $model->setAttributes([
             'mch_id'=>\Yii::$app->user->getAdmin()->getMchId(),
             'auto_close_switch'=>$orderAutoClose,
-            'reserve_switch'=>$reserveSwitch,
+            'reserve_auto_close_switch'=>$reserveAutoCloseSwitch,
             'hour_room_switch'=>$hourRoomSwitch,
             'reserve_retention_time'=>$reserveRetentionTime,
             'check_out_time'=>$checkOutTime,
             'hour_room_start_time'=>$hourRoomStartTime,
-            'hour_room_end_time'=>$hourRoomEndTime
+            'hour_room_end_time'=>$hourRoomEndTime,
+            'clock_max_hour'=>$clockMaxHour
         ]);
         if($model->save()){
             return \Yii::$app->responseHelper->success()->response();

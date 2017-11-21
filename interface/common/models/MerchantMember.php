@@ -16,6 +16,7 @@ use Yii;
  * @property integer $sex
  * @property integer $number_type
  * @property string $consumption_amount
+ * @property string $balance
  * @property string $name
  * @property string $mobile
  * @property string $number
@@ -39,7 +40,7 @@ class MerchantMember extends \common\components\ActiveRecord
     {
         return [
             [['mch_id', 'create_time', 'birthday', 'rank', 'integral', 'sex', 'number_type'], 'integer'],
-            [['consumption_amount'], 'number'],
+            [['consumption_amount', 'balance'], 'number'],
             [['mark'], 'string'],
             [['name', 'number'], 'string', 'max' => 100],
             [['mobile'], 'string', 'max' => 50],
@@ -63,6 +64,7 @@ class MerchantMember extends \common\components\ActiveRecord
             'sex' => 'Sex',
             'number_type' => 'Number Type',
             'consumption_amount' => 'Consumption Amount',
+            'balance' => 'Balance',
             'name' => 'Name',
             'mobile' => 'Mobile',
             'number' => 'Number',
