@@ -67,6 +67,9 @@
 					<FormItem>
 						<DatePicker v-model="filter.searchDate" type="date" placeholder="请选择查询日期"></DatePicker>
 					</FormItem>
+					<FormItem>
+                        <Button type="primary" @click="queryAll">全部</Button>
+                    </FormItem>
 			    </Form>
 				<Table :columns="columns" :data="dayPrices" stripe></Table>
 			    <div class="mb"></div>
@@ -319,6 +322,9 @@
                     price:null,
                     mark:null
                 }
+	        },
+	        queryAll(){
+	            this.filter.searchDate='';
 	        }
 	    },
         watch:{
