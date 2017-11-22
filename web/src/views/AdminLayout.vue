@@ -11,8 +11,8 @@
             color: #FFF;
         }
         img{
-            height: 26px;
-            margin-top: 17px;
+            height: 24px;
+            margin-top: 18px;
         }
     }
     .layout-left{
@@ -70,9 +70,9 @@
         </div>
         <div class="layout-left">
             <Menu theme="light" style="width: auto" active-name="/admin/checkstand" @on-select="turnUrl" accordion>
-                <MenuItem name="/admin/checkstand"><span class="layout-text">客房登记</span></MenuItem>
+                <MenuItem name="/admin/checkstand"><i class="fa fa-check-square-o fa-fw" aria-hidden="true"></i>客房登记</MenuItem>
                 <Submenu name="power">
-                    <template slot="title">鉴权中心</template>
+                    <template slot="title"><i class="fa fa-compass fa-fw" aria-hidden="true"></i>鉴权中心</template>
                     <MenuItem name="/admin/powerMenu">
                         <i class="fa fa-map fa-fw" aria-hidden="true"></i>菜单配置
                     </MenuItem>
@@ -84,7 +84,7 @@
                     </MenuItem>
                 </Submenu>
                 <Submenu name="basic">
-                    <template slot="title">基础中心</template>
+                    <template slot="title"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>基础中心</template>
                     <MenuItem name="/admin/basicDict">
                         <i class="fa fa-tag fa-fw" aria-hidden="true"></i>数据字典
                     </MenuItem>
@@ -99,16 +99,16 @@
                     </MenuItem>
                 </Submenu>
                 <Submenu name="manager">
-                    <template slot="title">个人中心</template>
+                    <template slot="title"><i class="fa fa-user-o fa-fw" aria-hidden="true"></i>个人中心</template>
                     <MenuItem name="/admin/managerInfo">
-                        <i class="fa fa-user fa-fw" aria-hidden="true"></i>个人资料
+                        <i class="fa fa-info fa-fw" aria-hidden="true"></i>个人资料
                     </MenuItem>
                     <MenuItem name="/admin/managerPassword/0">
                         <i class="fa fa-lock fa-fw" aria-hidden="true"></i>修改密码
                     </MenuItem>
                 </Submenu>
                 <Submenu name="order">
-                    <template slot="title">订单管理</template>
+                    <template slot="title"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i>订单管理</template>
                     <MenuItem name="/admin/orderIn">
                         <i class="fa fa-calendar-plus-o fa-fw" aria-hidden="true"></i>今日到店
                     </MenuItem>
@@ -123,7 +123,7 @@
                     </MenuItem>
                 </Submenu>
                 <Submenu name="store">
-                    <template slot="title">门店管理</template>
+                    <template slot="title"><i class="fa fa-building-o fa-fw" aria-hidden="true"></i>门店管理</template>
                     <MenuItem name="/admin/configStore">
                         <i class="fa fa-cog fa-fw" aria-hidden="true"></i>基础配置
                     </MenuItem>
@@ -141,13 +141,13 @@
                     </MenuItem>
                 </Submenu>
                 <Submenu name="member">
-                    <template slot="title">会员管理</template>
+                    <template slot="title"><i class="fa fa-address-book-o fa-fw" aria-hidden="true"></i>会员管理</template>
                     <MenuItem name="/admin/memberRank"><i class="fa fa-users fa-fw" aria-hidden="true"></i>会员等级</MenuItem>
                     <MenuItem name="/admin/memberList"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>会员列表</MenuItem>
                     <MenuItem name="/admin/memberBlack"><i class="fa fa-warning fa-fw" aria-hidden="true"></i>黑名单</MenuItem>
                 </Submenu>
                 <Submenu name="promotion">
-                    <template slot="title">活动管理</template>
+                    <template slot="title"><i class="fa fa-fire fa-fw" aria-hidden="true"></i>活动管理</template>
                     <MenuItem name="/admin/discount"><i class="fa fa-rmb fa-fw" aria-hidden="true"></i>折扣</MenuItem>
                     <MenuItem name="/admin/cutdown"><i class="fa fa-money fa-fw" aria-hidden="true"></i>满减</MenuItem>
                     <MenuItem name="/admin/bargain"><i class="fa fa-bolt fa-fw" aria-hidden="true"></i>特价房</MenuItem>
@@ -155,9 +155,9 @@
                     <MenuItem name="/admin/gift"><i class="fa fa-gift fa-fw" aria-hidden="true"></i>抽奖</MenuItem>
                 </Submenu>
                 <Submenu name="person">
-                    <template slot="title">用户中心</template>
+                    <template slot="title"><i class="fa fa-user-o fa-fw" aria-hidden="true"></i>用户中心</template>
                     <MenuItem name="/admin/personInfo">
-                        <i class="fa fa-user fa-fw" aria-hidden="true"></i>个人资料
+                        <i class="fa fa-info fa-fw" aria-hidden="true"></i>个人资料
                     </MenuItem>
                     <MenuItem name="/admin/personPassword/0">
                         <i class="fa fa-lock fa-fw" aria-hidden="true"></i>修改密码
