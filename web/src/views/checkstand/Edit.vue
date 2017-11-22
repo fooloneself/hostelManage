@@ -95,7 +95,7 @@
 						</Row>
 						<Row class="mt">
 							<Col span="20">
-								<Switch v-model="change_price" size="small" :true-value="1" :false-value="0">
+								<Switch v-model="change_price" size="small" :true-value="true" :false-value="false">
 	                            </Switch>
 								<span class="icon-ml">修改订单金额：</span>
 								<Input v-model="orderInfo.price" :placeholder="placeholder" style="width: 160px;" :disabled="change_price"></Input>
