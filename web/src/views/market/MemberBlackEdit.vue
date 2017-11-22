@@ -25,7 +25,7 @@
 			<FormItem label="手机号：">
 				<Input></Input>
 	        </FormItem>
-			<FormItem label="等级说明：">
+			<FormItem label="说明：">
 	            <Input type="textarea" :rows="5"></Input>
 	        </FormItem>
 			<FormItem>

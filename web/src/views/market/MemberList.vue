@@ -42,6 +42,7 @@
                     },
                     {
                         title: '人员姓名',
+                        width: 300,
                         key: 'name'
                     },
                     {
@@ -71,7 +72,7 @@
                     },
                     {
                         title: '注册时间',
-                        width: 120,
+                        width: 200,
                         key: 'register_date'
                     },
                     {

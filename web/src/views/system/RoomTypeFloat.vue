@@ -1,13 +1,13 @@
 <style scoped>
 .title{
-    height: 37px;
-    line-height: 37px;
+    height: 53px;
+    line-height: 53px;
     font-weight: bolder;
 }
 </style>
 
 <template>
-<div>
+<div style="margin-top: -24px;">
 	<Tabs value="week">
         <span class="title" slot="extra">房屋类型：豪华大床房</span>
         <TabPane label="周价格浮动" name="week">
