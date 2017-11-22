@@ -19,6 +19,7 @@
                     },
                     {
                         title: '登录账号',
+                        width: 200,
                         key: 'userName'
                     },
                     {
@@ -38,7 +39,7 @@
                     },
                     {
                         title: '数据状态',
-                        width: 100,
+                        width: 180,
                         key: 'statusLabel'
                     },
                     {

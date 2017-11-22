@@ -22,7 +22,7 @@
     <Col span="24">
         <Button type="ghost" @click="goBack"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回列表</Button>
     </Col>
-    <Col span="22" offset="1">
+    <Col span="24">
         <div class="mb"></div>
         <h3>{{title}}</h3>
         <h4><i class="fa fa-calendar icon-mr" aria-hidden="true"></i>{{time}}</h4>
