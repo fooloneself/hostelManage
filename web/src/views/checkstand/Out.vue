@@ -26,7 +26,6 @@ span.extra{
 <template>
 <div class="layout-body">
 	<div class="container-body">
-		<div class="mb"></div>
 		<Row>
 			<Col span="4">
 			    <Form label-position="top" class="order-info">

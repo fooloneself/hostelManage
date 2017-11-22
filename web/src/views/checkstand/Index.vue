@@ -10,15 +10,22 @@
 		text-align: center;
 		.type{
 			width: 100%;
-			height: 32px;
-			line-height: 42px;
+			height: 28px;
+			line-height: 28px;
 			font-size: 12px;
 		}
 		.number{
 			width: 100%;
-			height: 52px;
+			height: 28px;
+			line-height: 28px;
 			font-size: 28px;
 			font-weight: bolder;
+		}
+		.name{
+			width: 100%;
+			height: 28px;
+			line-height: 28px;
+			font-size: 12px;
 		}
 		&:hover{
 			background: #dddee1;
@@ -27,46 +34,16 @@
 			background: #49D0B5;
 			color: #FFFFFF;
 			border: none;
-			.type,.number{
-				height: 28px;
-				line-height: 28px;
-			}
-			.name{
-				width: 100%;
-				height: 28px;
-				line-height: 28px;
-				font-size: 12px;
-			}
 		}
 		&.room-order{
 			background: #5688D2;
 			color: #FFFFFF;
 			border: none;
-			.type,.number{
-				height: 28px;
-				line-height: 28px;
-			}
-			.name{
-				width: 100%;
-				height: 28px;
-				line-height: 28px;
-				font-size: 12px;
-			}
 		}
 		&.room-clock{
 			background: #FD9A59;
 			color: #FFFFFF;
 			border: none;
-			.type,.number{
-				height: 28px;
-				line-height: 28px;
-			}
-			.name{
-				width: 100%;
-				height: 28px;
-				line-height: 28px;
-				font-size: 12px;
-			}
 		}
 		&.room-dirty{
 			background: #CCCCCC;

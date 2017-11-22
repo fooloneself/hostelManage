@@ -1,7 +1,6 @@
 <style scoped>
 .order-info{
 	border-right: 1px solid #dddee1;
-	padding-left: 24px;
 	.ivu-form-item{
 		margin-bottom: 16px;
 	}
@@ -27,7 +26,6 @@ span.extra{
 <template>
 <div class="layout-body">
 	<div class="container-body">
-		<div class="mb"></div>
 		<Row>
 			<Col span="4">
 			    <Form label-position="top" class="order-info">

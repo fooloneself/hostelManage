@@ -1,49 +1,42 @@
 <style scoped>
 .layout{
     min-width: 1280px;
-    .layout-logo{
-        position: absolute;
-        bottom: 0;
-        width: 220px;
-        text-align: center;
-        height: 50px;
-        line-height: 50px;
+    .layout-header{
+        padding: 0 24px;
+        height: 60px;
+        line-height: 60px;
         background: #2C3E50;
+        font-size: 14px;
+        a{
+            color: #FFF;
+        }
         img{
-            height: 20px;
-            margin-top: 15px;
+            height: 26px;
+            margin-top: 17px;
         }
     }
     .layout-left{
         width: 220px;
         position: absolute;
         left: 0px;
-        top: 0;
-        bottom: 50px;
+        top: 60px;
+        bottom: 0px;
         overflow: hidden;
-        background: #2C3E50;
-        .layout-user{
-            height: 100px;
-            color: #FFF;
-            padding-left: 24px;
-            .layout-user-name{
-                font-size: 14px;
-                line-height: 60px;
-                letter-spacing: 0.1em;
-            }
-            .layout-user-control{
-                a{
-                    font-size: 12px;
-                    color: #FFF;
-                    margin-right: 8px;
-                }
-            }
+        &:after{
+            content: "";
+            display: block;
+            width: 1px;
+            background: #dddee1;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
         }
     }
     .layout-right{
         position: absolute;
         left: 220px;
-        top: 0;
+        top: 60px;
         right: 0;
         bottom: 0;
         background: #FFF;
@@ -54,22 +47,29 @@
 </style>
 <template>
     <div class="layout">
-        <div class="layout-logo">
+        <div class="layout-header">
             <router-link to="/admin">
                 <img src="/src/images/logo-white.png" alt="">
             </router-link>
+            <div class="fr">
+                <Badge dot>
+                    <router-link to=""><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></router-link>
+                </Badge>
+                <Dropdown @on-click="turnUrl" class="icon-ml">
+                    <a href="javascript:void(0)">
+                        {{userName}}
+                        <Icon type="arrow-down-b" class="icon-ml"></Icon>
+                    </a>
+                    <DropdownMenu slot="list" class="tl">
+                        <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
+                        <DropdownItem name="/admin/managerPassword/0">修改密码</DropdownItem>
+                        <DropdownItem name="/login" divided @click="logout">退出登录</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+            </div>
         </div>
         <div class="layout-left">
-            <div class="layout-user">
-                <div class="layout-user-name">Admin Dun</div>
-                <Row class="layout-user-control">
-                    <Col span="4"><router-link to=""><i class="fa fa-user fa-lg" aria-hidden="true"></i></router-link></Col>
-                    <Col span="4"><router-link to=""><i class="fa fa-lock fa-lg" aria-hidden="true"></i></router-link></Col>
-                    <Col span="4"><router-link to=""><i class="fa fa-bell fa-lg" aria-hidden="true"></i></router-link></Col>
-                    <Col span="4"><router-link to=""><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></router-link></Col>
-                </Row>
-            </div>
-            <Menu theme="dark" style="width: auto" active-name="/admin/checkstand" @on-select="turnUrl" accordion>
+            <Menu theme="light" style="width: auto" active-name="/admin/checkstand" @on-select="turnUrl" accordion>
                 <MenuItem name="/admin/checkstand"><span class="layout-text">客房登记</span></MenuItem>
                 <Submenu name="power">
                     <template slot="title">鉴权中心</template>
