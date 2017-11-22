@@ -10,12 +10,10 @@ use Yii;
  * @property integer $id
  * @property integer $type_id
  * @property integer $mch_id
- * @property integer $year
- * @property integer $date
- * @property integer $month
- * @property integer $day
- * @property integer $week
+ * @property integer $start_date
+ * @property integer $end_date
  * @property string $price
+ * @property string $mark
  */
 class RoomDayPrice extends \common\components\ActiveRecord
 {
@@ -33,8 +31,9 @@ class RoomDayPrice extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['type_id', 'mch_id', 'year', 'date', 'month', 'day', 'week'], 'integer'],
+            [['type_id', 'mch_id', 'start_date', 'end_date'], 'integer'],
             [['price'], 'number'],
+            [['mark'], 'string', 'max' => 800],
         ];
     }
 
@@ -47,31 +46,10 @@ class RoomDayPrice extends \common\components\ActiveRecord
             'id' => 'ID',
             'type_id' => 'Type ID',
             'mch_id' => 'Mch ID',
-            'year' => 'Year',
-            'date' => 'Date',
-            'month' => 'Month',
-            'day' => 'Day',
-            'week' => 'Week',
+            'start_date' => 'Start Date',
+            'end_date' => 'End Date',
             'price' => 'Price',
+            'mark' => 'Mark',
         ];
-    }
-
-    /**
-     * 获取单日价格列表
-     * @param $mchId
-     * @param $typeId
-     * @param $startTime
-     * @param $endTime
-     * @return array
-     */
-    public static function getDayPriceList($mchId,$typeId,$startTime,$endTime){
-        $start=intval(date('Y-m-d',$startTime));
-        $end=intval(date('Y-m-d',$endTime));
-        return self::find()
-            ->select('date,week,price')
-            ->where(['mch_id'=>$mchId,'type_id'=>$typeId])
-            ->andWhere(['between','date',$start,$end])
-            ->andWhere('date >=:start and date <:end',[':start'=>$start,':end'=>$end])
-            ->asArray()->all();
     }
 }
