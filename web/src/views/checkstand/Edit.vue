@@ -97,8 +97,8 @@
 							<Col span="20">
 								<Switch v-model="change_price" size="small" :true-value="true" :false-value="false">
 	                            </Switch>
-								<span class="icon-ml">修改订单金额：</span>
-								<Input v-model="orderInfo.price" :placeholder="placeholder" style="width: 160px;" :disabled="change_price"></Input>
+								<span class="icon-ml">修改房间总价：</span>
+								<Input v-model="orderInfo.price" :placeholder="placeholder" style="width: 160px;" :disabled="!change_price"></Input>
 							</Col>
 						</Row>
 			        </FormItem>
@@ -167,7 +167,7 @@ export default{
 		return {
 			room:{},
 			date:'',
-			change_price: 0,
+			change_price: false,
 			placeholder:'',
 			orderInfo: {
 			    type: 1,
