@@ -25,7 +25,7 @@
         <Col span="24">
             <Table :columns="columns" :data="data" stripe></Table>
             <div class="mb"></div>
-            <Page :total="totalCount" show-total></Page>
+            <Page :total="totalCount" :current-page="filter.page" :page-size="filter.pageSize" @on-change="pageTo" show-total></Page>
         </Col>
     </Row>
 </div>
@@ -38,7 +38,7 @@
                     {
                         title: '序号',
                         width: 60,
-                        key: 'id'
+                        type: 'index'
                     },
                     {
                         title: '人员姓名',
@@ -98,6 +98,18 @@
                                         type: 'text',
                                         size: 'small'
                                     },
+                                    on: {
+                                        click: ()=>{
+                                            var that=this;
+                                            this.$Modal.confirm({
+                                                title:'提示',
+                                                content:'确定要放入黑名单？',
+                                                onOk(){
+                                                    that.putToBlack(params.row.id)
+                                                }
+                                            })
+                                        }
+                                    }
                                 }, '移入黑名单'),
                                 h('Button', {
                                     props: {
@@ -126,7 +138,9 @@
                 ranks:[],
                 filter:{
                     rank:0,
-                    search:''
+                    search:'',
+                    page:1,
+                    pageSize:10
                 }
             }
         },
@@ -161,12 +175,29 @@
                     }
                 })
             },
+            pageTo(page){
+                this.filter.page=page;
+                this.query();
+            },
             query (){
                 var that=this;
                 this.host.post('merchantMemberList',this.filter).then(function(res){
                     if(res.isSuccess()){
                         that.data=res.data().list;
                         that.totalCount=res.data().totalCount;
+                    }else{
+                        that.$Notice.info({
+                            title:'提示',
+                            desc:res.error()
+                        })
+                    }
+                })
+            },
+            putToBlack(id){
+                var that=this;
+                this.host.post('merchantMemberDelete',{id:id}).then(function(res){
+                    if(res.isSuccess()){
+                        that.query();
                     }else{
                         that.$Notice.info({
                             title:'提示',

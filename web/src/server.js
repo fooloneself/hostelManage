@@ -61,6 +61,11 @@ const interfaces={
     'merchantMemberEdit':'merchant/member/record',
     'merchantMemberDelete':'merchant/member/delete',
     'merchantMemberEditInfo':'merchant/member/edit-page-info',
+    'merchantMemberBlack':'merchant/member/black',
+    'merchantMemberBlackSet':'merchant/member/put-to-black',
+    'merchantMemberBlackList':'merchant/member/black-list',
+    'merchantMemberBlackRemove':'merchant/member/remove-from-black',
+    'merchantMemberBlackAdd':'merchant/member/add-black',
     'checkstandRoom':'merchant/checkstand/room',
     'checkstandRoomFilter':'merchant/checkstand/room-filter',
     'platformFeedbackList':'platform/feedback/list',
@@ -94,7 +99,8 @@ const interfaces={
     'merchantMemberRank':'merchant/member/rank',
     'merchantMemberRankDel':'merchant/member/del-rank',
     'merchantMemberRankEdit':'merchant/member/rank-divide',
-    'merchantMemberAllRank':'merchant/member/all-rank'
+    'merchantMemberAllRank':'merchant/member/all-rank',
+    'merchantNumberTypes':'merchant/dictionary/number-types'
 };
 const server={
     'host': 'http://www.hotel.com',

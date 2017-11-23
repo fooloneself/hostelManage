@@ -48,6 +48,9 @@ class ErrorManager extends Component{
     const ERROR_ORDER_ROOM_UN_PLACE             =100040;//未定此房间
     const ERROR_ORDER_ROOM_CHANGE_FAIL             =100041;//订单房间状态修改失败
     const ERROR_ORDER_ROOM_PLACE_FAIL             =100042;//房间预订失败
+    const ERROR_SET_BLACK_FAIL              =100043;
+    const ERROR_DEL_MEMBER_FAIL              =100044;
+    const ERROR_REMOVE_BLACK_FAIL              =100045;
     //错误信息 common\components\Error的实例
     private $_error;
 

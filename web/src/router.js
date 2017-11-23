@@ -71,7 +71,7 @@ const admin = [
     	component: (resolve) => require(['./views/market/MemberBlack.vue'], resolve)
 	},
 	{
-		path: 'memberBlackEdit',
+		path: 'memberBlackEdit/:id',
         meta: {
             title: '黑名单 - 添加'
         },

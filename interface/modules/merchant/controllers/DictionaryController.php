@@ -41,4 +41,13 @@ class DictionaryController extends Controller{
             ->asArray()->all();
         return \Yii::$app->responseHelper->success($abnormal)->response();
     }
+
+    /**
+     * 证件号类型
+     * @return mixed
+     */
+    public function actionNumberTypes(){
+        $numberType=DictionaryItem::find()->where(['code'=>Dictionary::DICTIONARY_NUMBER_TYPE])->asArray()->all();
+        return \Yii::$app->responseHelper->success($numberType)->response();
+    }
 }

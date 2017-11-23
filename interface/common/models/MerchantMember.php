@@ -15,6 +15,8 @@ use Yii;
  * @property integer $integral
  * @property integer $sex
  * @property integer $number_type
+ * @property integer $is_member
+ * @property integer $is_in_black
  * @property string $consumption_amount
  * @property string $balance
  * @property string $name
@@ -25,6 +27,10 @@ use Yii;
  */
 class MerchantMember extends \common\components\ActiveRecord
 {
+    const IN_BLACK_YES      =1;
+    const IN_BLACK_NO       =0;
+    const IS_MEMBER_YES     =1;
+    const IS_MEMBER_NO      =0;
     /**
      * @inheritdoc
      */
@@ -39,7 +45,7 @@ class MerchantMember extends \common\components\ActiveRecord
     public function rules()
     {
         return [
-            [['mch_id', 'create_time', 'birthday', 'rank', 'integral', 'sex', 'number_type'], 'integer'],
+            [['mch_id', 'create_time', 'birthday', 'rank', 'integral', 'sex', 'number_type', 'is_member', 'is_in_black'], 'integer'],
             [['consumption_amount', 'balance'], 'number'],
             [['mark'], 'string'],
             [['name', 'number'], 'string', 'max' => 100],
@@ -63,6 +69,8 @@ class MerchantMember extends \common\components\ActiveRecord
             'integral' => 'Integral',
             'sex' => 'Sex',
             'number_type' => 'Number Type',
+            'is_member' => 'Is Member',
+            'is_in_black' => 'Is In Black',
             'consumption_amount' => 'Consumption Amount',
             'balance' => 'Balance',
             'name' => 'Name',
