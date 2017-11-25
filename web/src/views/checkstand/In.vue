@@ -84,8 +84,8 @@
                 <Option value="刘六">刘六</Option>
             </Select>
 		</Col>
-		<Col span="12">
-			<ButtonGroup size="small" class="fr">
+		<Col span="12" class="tr">
+			<ButtonGroup size="small">
 				<Button type="text"><Icon type="record" style="color:#16A085"></Icon><span class="icon-ml">入住</span></Button>
 				<Button type="text"><Icon type="record" style="color:#2980B9"></Icon><span class="icon-ml">钟点</span></Button>
 				<Button type="text"><Icon type="record" style="color:#E67E22"></Icon><span class="icon-ml">预订</span></Button>

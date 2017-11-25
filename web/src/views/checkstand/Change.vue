@@ -1,6 +1,8 @@
 <style scoped>
 .order-info{
-	border-right: 1px solid #dddee1;
+	background: #ECF0F1;
+	border-radius: 5px;
+	padding: 24px;
 	.ivu-form-item{
 		margin-bottom: 16px;
 	}
@@ -30,57 +32,60 @@ span.extra{
 			<Col span="4">
 			    <Form label-position="top" class="order-info">
 					<FormItem label="订单金额："><span>￥168.00</span></FormItem>
-					<FormItem label="优惠信息：">
-						<p>普通会员生日</p>
+					<FormItem label="优惠活动：">
 						<p>九折优惠</p>
-						<p>满100减10</p>
 					</FormItem>
 					<FormItem label="应收金额："><span class="strong">￥141.20</span></FormItem>
 					<FormItem label="已收金额："><span class="strong">￥200.00</span></FormItem>
 					<FormItem label="待收金额："><span class="strong">￥-58.80</span></FormItem>
 			    </Form>
 			</Col>
-			<Col span="10" offset="1">
+			<Col span="14" style="margin-left: 24px;">
 				<Form label-position="top">
-					<FormItem label="入住人：">
+					<FormItem label="入住情况">
 						<Row :gutter="8">
-							<Col span="10">
+							<Col span="5"><span class="extra">房型：</span>豪华大床房</Col>
+							<Col span="5"><span class="extra">房号：</span>201</Col>
+							<Col span="10"><span class="extra">入住时间：</span>2017/11/25 (￥100.00)</Col>
+						</Row>
+						<Row :gutter="8">
+							<Col span="5">
 								<span class="extra">客人来源：</span>美团
 							</Col>
-							<Col span="10">
-								<span class="extra">佣金费用：</span>￥10.00
+							<Col span="5">
+								<span class="extra">入住方式：</span>全日房
+							</Col>
+							<Col span="5">
+					            <span class="extra">入住时长：</span>2晚
 							</Col>
 						</Row>
 						<Row :gutter="8">
 							<Col span="10"><span class="extra">手机号：</span>13800138000</Col>
 							<Col span="10"><span class="extra">姓名：</span>D.Seeyou</Col>
-						</Row>		
+						</Row>
 			        </FormItem>
-					<FormItem label="入住：">
+					<FormItem label="消费情况">
 						<Row :gutter="8">
-							<Col span="5">
-								201&nbsp;(豪华大床房)
-							</Col>
-							<Col span="5">
-								<span class="extra">原房价：</span>￥168.00
+							<Col span="10">
+					            <span class="extra">房间总价：</span>￥168.00
 							</Col>
 							<Col span="10">
-								<span class="extra">入住房价：</span>￥168.00
+					            <span class="extra">优惠活动：</span>优惠活动二
 							</Col>
 						</Row>
-						<Row :gutter="8">
+						<Row :gutter="8" v-for="i in 3">
 							<Col span="5">
-								2017/11/11入住
+								<span class="extra">收费项：</span>收取房费
 							</Col>
 							<Col span="5">
-								<span class="extra">入住方式：</span>全日房
+								<span class="extra">付费方式：</span>现金
 							</Col>
 							<Col span="10">
-					            <span class="extra">入住时长：</span>2晚
+								<span class="extra">付费金额：</span>￥100.00
 							</Col>
 						</Row>
 			        </FormItem>
-					<FormItem label="换房：">
+					<FormItem label="换房操作">
 						<Row :gutter="8">
 							<Col span="5">
 								<Select placeholder="房间类型">
@@ -96,26 +101,20 @@ span.extra{
 					                <Option value="shenzhen">203</Option>
 					            </Select>
 							</Col>
-							<Col span="10">
-								<Input placeholder="原房价：￥168.00"></Input>
+							<Col span="5">
+								<Input placeholder="房间总价：￥168.00"></Input>
+							</Col>
+							<Col span="5">
+								<Select placeholder="优惠活动">
+					                <Option value="-1">请选择活动</Option>
+					                <Option value="0">优惠活动二</Option>
+					                <Option value="1">优惠活动三</Option>
+					            </Select>
 							</Col>
 						</Row>
-			        </FormItem>
-					<FormItem label="费用：">
-						<Row :gutter="8" v-for="i in 3">
+						<Row :gutter="8" class="mt">
 							<Col span="5">
-								<span class="extra">付费项：</span>收取房费
-							</Col>
-							<Col span="5">
-								<span class="extra">付费方式：</span>现金
-							</Col>
-							<Col span="10">
-								<span class="extra">付费金额：</span>￥100.00
-							</Col>
-						</Row>
-						<Row :gutter="8">
-							<Col span="5">
-								<Select placeholder="付费项">
+								<Select placeholder="收费项">
 					                <Option value="1">收取房费</Option>
 					                <Option value="2">收取订金</Option>
 					                <Option value="3">收取押金</Option>
@@ -137,7 +136,7 @@ span.extra{
 						</Row>
 						<Row :gutter="8" class="mt" v-for="i in money">
 							<Col span="5">
-								<Select placeholder="付费项">
+								<Select placeholder="收费项">
 					                <Option value="1">收取房费</Option>
 					                <Option value="2">收取定金</Option>
 					                <Option value="3">收取押金</Option>
@@ -165,12 +164,12 @@ span.extra{
 						<Row class="mt">
 							<Col span="20">
 								<Button type="dashed" long @click="addMoney">
-									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加一行
+									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加收费项
 								</Button>
 							</Col>
 						</Row>
 			        </FormItem>
-					<FormItem label="备注：">
+					<FormItem label="备注信息">
 						<Row>
 							<Col span="20">
 				            	<Input type="textarea" :rows="5"></Input>

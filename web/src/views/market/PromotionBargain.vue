@@ -28,10 +28,6 @@
                         width: 200
                     },
                     {
-                        title: '活动可叠加',
-                        width: 120
-                    },
-                    {
                         title: '操作',
                         key: 'action',
                         width: 210,

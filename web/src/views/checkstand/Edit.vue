@@ -20,6 +20,9 @@
 		}
 	}
 }
+span.extra{
+	color: #9ea7b4;
+}
 </style>
 
 <template>
@@ -28,10 +31,8 @@
 		<Col span="4">
 		    <Form label-position="top" class="order-info">
 				<FormItem label="订单金额："><span>￥168.00</span></FormItem>
-				<FormItem label="优惠信息：">
-					<p>普通会员生日</p>
+				<FormItem label="优惠活动：">
 					<p>九折优惠</p>
-					<p>满100减10</p>
 				</FormItem>
 				<FormItem label="应收金额："><span class="strong">￥141.20</span></FormItem>
 				<FormItem label="已收金额："><span class="strong">￥200.00</span></FormItem>
@@ -40,15 +41,40 @@
 		</Col>
 		<Col span="14">
 			<Form v-model="orderInfo" label-position="top" style="margin-left: 24px;">
-				<FormItem label="入住人：">
+				<FormItem label="入住情况">
 					<Row :gutter="8">
-						<Col span="4">
+						<Col span="5">
+							<span class="extra">房型：</span>{{room.type_name}}
+						</Col>
+						<Col span="5">
+							<span class="extra">房号：</span>{{room.number}}
+						</Col>
+						<Col span="10">
+							<span class="extra">入住时间：</span>{{date}} (￥{{room.default_price}})
+						</Col>
+					</Row>
+					<Row :gutter="8">
+						<Col span="5">
 							<Select v-model="orderInfo.channel" placeholder="客人来源">
 				                <Option v-for="(channel,c) in channels" :value="channel.id">{{channel.name}}</Option>
 				            </Select>
 						</Col>
-						<Col span="8"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
-						<Col span="8"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
+						<Col span="5">
+							<Select placeholder="入住方式" v-model="orderInfo.type" @on-change="timeChooseShow">
+				                <Option :value="1" v-if="room.allow_hour_room">全日房</Option>
+				                <Option :value="2">钟点房</Option>
+				            </Select>
+						</Col>
+						<Col span="5" v-show="orderInfo.type==1">
+				             <InputNumber v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber><span class="icon-ml">晚</span>
+						</Col>
+						<Col span="4" v-show="orderInfo.type==2">
+				             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="时间选择"></TimePicker>
+						</Col>
+					</Row>
+					<Row :gutter="8" class="mt">
+						<Col span="10"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
+						<Col span="10"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
 					</Row>
 					<Row :gutter="8" class="mt" v-for="(lodger,i,l) in orderInfo.lodgers">
 						<Col span="10"><Input v-model="lodger.mobile" placeholder="手机号"></Input></Col>
@@ -65,53 +91,29 @@
 								<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加入住人
 							</Button>
 						</Col>
-					</Row>				
+					</Row>
 		        </FormItem>
-				<FormItem label="入住：">
+				<FormItem label="消费情况">
 					<Row :gutter="8">
-						<Col span="4">
-							{{date}}
+						<Col span="10">
+							<Input v-model="orderInfo.price" :placeholder="placeholder"></Input>
 						</Col>
-						<Col span="3">
-							{{room.type_name}}
-						</Col>
-						<Col span="2">
-							{{room.number}}
-						</Col>
-						<Col span="3">
-							￥{{room.default_price}}
-						</Col>
-						<Col span="4">
-							<Select placeholder="入住方式" v-model="orderInfo.type" @on-change="timeChooseShow">
-				                <Option value="1" v-if="room.allow_hour_room">全日房</Option>
-				                <Option value="2">钟点房</Option>
+						<Col span="10">
+							<Select placeholder="优惠活动">
+				                <Option value="-1">请选择活动</Option>
+				                <Option value="0">优惠活动二</Option>
+				                <Option value="1">优惠活动三</Option>
 				            </Select>
 						</Col>
-						<Col span="5" v-show="orderInfo.type==1">
-				             <InputNumber v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber><span class="icon-ml">晚</span>
-						</Col>
-						<Col span="4" v-show="orderInfo.type==2">
-				             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="时间选择"></TimePicker>
-						</Col>
 					</Row>
-					<Row class="mt">
-						<Col span="20">
-							<Switch v-model="change_price" size="small" :true-value="true" :false-value="false">
-                            </Switch>
-							<span class="icon-ml">修改房间总价：</span>
-							<Input v-model="orderInfo.price" :placeholder="placeholder" style="width: 160px;" :disabled="!change_price"></Input>
-						</Col>
-					</Row>
-		        </FormItem>
-				<FormItem label="消费：">
-					<Row :gutter="8" v-for="(pay,i,p) in orderInfo.pay">
+					<Row :gutter="8" v-for="(pay,i,p) in orderInfo.pay" class="mt">
 						<Col span="5">
-							<Select v-model="pay.expenseItem" placeholder="消费项">
+							<Select v-model="pay.expenseItem" placeholder="收费项">
 				                <Option v-for="(expanseItem,ei) in expanseItems" :value="expanseItem.key">{{expanseItem.value}}</Option>
 				            </Select>
 						</Col>
 						<Col span="5">
-							<Select v-model="pay.channel" placeholder="消费方式">
+							<Select v-model="pay.channel" placeholder="付费方式">
 				                <Option v-for="(paymentChannel,pc) in paymentChannels" :value="paymentChannel.key">{{paymentChannel.value}}</Option>
 				            </Select>
 						</Col>
@@ -127,12 +129,12 @@
 					<Row class="mt">
 						<Col span="20">
 							<Button type="dashed" long @click="addPay">
-								<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加消费
+								<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加收费项
 							</Button>
 						</Col>
 					</Row>
 		        </FormItem>
-				<FormItem label="备注：">
+				<FormItem label="备注信息">
 					<Row>
 						<Col span="20">
 			            	<Input v-model="orderInfo.mark" type="textarea" :rows="5"></Input>
@@ -161,7 +163,6 @@ export default{
 		return {
 			room:{},
 			date:'',
-			change_price: false,
 			placeholder:'',
 			orderInfo: {
 			    type: 1,
@@ -182,7 +183,7 @@ export default{
 	        if(res.isSuccess()){
 	            that.room=res.data().room;
 	            that.date=res.data().date;
-	            that.placeholder='原价：'+that.room.default_price;
+	            that.placeholder='房间总价：'+that.room.default_price;
 	        }else{
 	            this.$Notice.info({
 	                title: '错误提示',

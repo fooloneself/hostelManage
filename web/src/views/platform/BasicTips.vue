@@ -17,24 +17,24 @@
 
 <template>
 <div>
-    <Form inline class="fr">
-        <FormItem>
-            <Select placeholder="回复状态" v-model="filter.status" style="width: 100px;">
-                <Option value="-1">全部</Option>
-                <Option value="0">未回复</Option>
-                <Option value="1">已回复</Option>
-            </Select>
-        </FormItem>
-        <FormItem>
-            <Button type="primary" @click="search">查询</Button>
-        </FormItem>
-    </Form>
-    <div class="cls"></div>
-    <Collapse v-model="value" accordion>
-    <template>
-        <Panel v-for="item in list">
-            {{item.name}} - {{item.date}}
-            <div slot="content">{{item.content}}
+    <Row>
+        <Col span="24">
+            <Form inline class="fr">
+                <FormItem>
+                    <Select placeholder="回复状态" v-model="filter.status" style="width: 100px;">
+                        <Option value="-1">全部</Option>
+                        <Option value="0">未回复</Option>
+                        <Option value="1">已回复</Option>
+                    </Select>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="search">查询</Button>
+                </FormItem>
+            </Form>
+        </Col>
+    </Row>
+    <template v-for="item in list">
+        <Card>{{item.name}} - {{item.date}}：{{item.content}}
             <div class="commit" v-show="item.hasAnswer">
                 {{item.answer}}
                 <a href="javascript:;" v-show="item.canCancel" @click="cancelAnswer(item)">
@@ -46,11 +46,9 @@
                 <Input v-model="item.answer" type="textarea" :rows="3" placeholder="请输入回复内容..."></Input>
                 <Button type="primary" @click="answer(item)" class="mt">回复</Button>
             </div>
-            </div>
-        </Panel>
+        </Card>
+        <div class="mb"></div>
     </template>
-    </Collapse>
-    <div class="mb"></div>
     <Page :total="totalCount" show-total :current="filter.page" :page-size="filter.pageSize" @on-change="pageTo"></Page>
 </div>
 </template>
@@ -58,7 +56,6 @@
     export default {
         data () {
             return {
-                value: '0',
                 totalCount: 0,
                 list :[],
                 filter: {

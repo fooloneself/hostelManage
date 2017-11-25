@@ -14,12 +14,12 @@
 			        <Checkbox label="商品"></Checkbox>
 			    </CheckboxGroup>
 	        </FormItem>
-	        <FormItem label="活动可叠加：">
+	        <!-- <FormItem label="活动可叠加：">
 		        <Switch>
 			        <span slot="open">是</span>
 			        <span slot="close">否</span>
 			    </Switch>
-	        </FormItem>
+	        </FormItem> -->
 			<FormItem label="适用会员等级：">
 				<Select v-model="model" multiple>
 			        <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>

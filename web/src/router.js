@@ -18,7 +18,7 @@ const admin = [
         meta: {
             title: '预订订单'
         },
-    	component: (resolve) => require(['./views/store/OrderAll.vue'], resolve)
+    	component: (resolve) => require(['./views/store/OrderFuture.vue'], resolve)
 	},
     {
         path: 'orderAll',
