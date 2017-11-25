@@ -21,7 +21,6 @@
         left: 0px;
         top: 60px;
         bottom: 0px;
-        overflow: hidden;
         &:after{
             content: "";
             display: block;
@@ -42,6 +41,7 @@
         background: #FFF;
         padding: 24px;
         min-width: 1060px;
+        overflow-y: auto;
     }
 }
 </style>
@@ -70,7 +70,7 @@
         </div>
         <div class="layout-left">
             <Menu theme="light" style="width: auto" active-name="/admin/checkstand" @on-select="turnUrl" accordion>
-                <MenuItem name="/admin/checkstand"><i class="fa fa-check-square-o fa-fw" aria-hidden="true"></i>客房登记</MenuItem>
+                <MenuItem name="/admin"><i class="fa fa-check-square-o fa-fw" aria-hidden="true"></i>客房登记</MenuItem>
                 <Submenu name="power">
                     <template slot="title"><i class="fa fa-compass fa-fw" aria-hidden="true"></i>鉴权中心</template>
                     <MenuItem name="/admin/powerMenu">
@@ -114,6 +114,9 @@
                     </MenuItem>
                     <MenuItem name="/admin/orderOut">
                         <i class="fa fa-calendar-minus-o fa-fw" aria-hidden="true"></i>今日离店
+                    </MenuItem>
+                    <MenuItem name="/admin/orderFuture">
+                        <i class="fa fa-calendar-check-o fa-fw" aria-hidden="true"></i>预订订单
                     </MenuItem>
                     <MenuItem name="/admin/orderAll">
                         <i class="fa fa-calendar-o fa-fw" aria-hidden="true"></i>全部订单

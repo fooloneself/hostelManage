@@ -14,12 +14,19 @@ const admin = [
     	component: (resolve) => require(['./views/store/OrderOut.vue'], resolve)
 	},
 	{
-		path: 'orderAll',
+		path: 'orderFuture',
         meta: {
-            title: '全部订单'
+            title: '预订订单'
         },
     	component: (resolve) => require(['./views/store/OrderAll.vue'], resolve)
 	},
+    {
+        path: 'orderAll',
+        meta: {
+            title: '全部订单'
+        },
+        component: (resolve) => require(['./views/store/OrderAll.vue'], resolve)
+    },
 	{
 		path: 'orderError',
         meta: {
@@ -27,7 +34,7 @@ const admin = [
         },
     	component: (resolve) => require(['./views/store/OrderError.vue'], resolve)
 	},
-	// 
+	// 营销管理
 	{
 		path: 'memberRank',
         meta: {
@@ -126,7 +133,7 @@ const admin = [
         },
     	component: (resolve) => require(['./views/market/PromotionPlanEdit.vue'], resolve)
 	},
-	// 
+	// 门店管理
 	{
 		path: 'configStore',
         meta: {
@@ -232,7 +239,7 @@ const admin = [
         },
     	component: (resolve) => require(['./views/system/PersonTips.vue'], resolve)
 	},
-	// 
+	// 系统管理
 	{
 		path: 'managerInfo',
         meta: {
@@ -394,48 +401,54 @@ const admin = [
         },
     	component: (resolve) => require(['./views/platform/BasicTips.vue'], resolve)			
 	},
-	// 
+	// 房屋登记
     {
         path: '',
-        meta: {
-            title: '客房登记'
-        },
-        component: (resolve) => require(['./views/checkstand/Index.vue'], resolve)
-    },
-	{
-    	path: 'checkstand',
-	    meta: {
-	        title: '客房登记'
-	    },
-		component: (resolve) => require(['./views/checkstand/Index.vue'], resolve)
-    },
-    {
-    	path: 'checkstandEdit/:id',
-	    meta: {
-	        title: '客房登记 - 订单编辑'
-	    },
-		component: (resolve) => require(['./views/checkstand/Edit.vue'], resolve)
-    },
-    {
-    	path: 'checkstandView/:id',
-	    meta: {
-	        title: '客房登记 - 订单编辑'
-	    },
-		component: (resolve) => require(['./views/checkstand/View.vue'], resolve)
-    },
-    {
-    	path: 'checkstandChange',
-	    meta: {
-	        title: '客房登记 - 换房'
-	    },
-		component: (resolve) => require(['./views/checkstand/Change.vue'], resolve)
-    },
-    {
-    	path: 'checkstandOut',
-	    meta: {
-	        title: '客房登记 - 退房'
-	    },
-		component: (resolve) => require(['./views/checkstand/Out.vue'], resolve)
+        component: (resolve) => require(['./views/checkstand/Index.vue'], resolve),
+        children:[
+            {
+                path: '',
+                meta: {
+                    title: '客房登记 - 入住'
+                },
+                component: (resolve) => require(['./views/checkstand/In.vue'], resolve)
+            },
+            {
+                path: 'checkstandEdit/:id',
+                meta: {
+                    title: '客房登记 - 订单编辑'
+                },
+                component: (resolve) => require(['./views/checkstand/Edit.vue'], resolve)
+            },
+            {
+                path: 'checkstandView/:id',
+                meta: {
+                    title: '客房登记 - 订单编辑'
+                },
+                component: (resolve) => require(['./views/checkstand/View.vue'], resolve)
+            },
+            {
+                path: 'checkstandChange',
+                meta: {
+                    title: '客房登记 - 换房'
+                },
+                component: (resolve) => require(['./views/checkstand/Change.vue'], resolve)
+            },
+            {
+                path: 'checkstandOut',
+                meta: {
+                    title: '客房登记 - 退房'
+                },
+                component: (resolve) => require(['./views/checkstand/Out.vue'], resolve)
+            },
+            {
+                path: 'checkstandOrder',
+                meta: {
+                    title: '客房登记 - 预订'
+                },
+                component: (resolve) => require(['./views/checkstand/Order.vue'], resolve)
+            }
+        ]
     }
 ];
 const tourist = [

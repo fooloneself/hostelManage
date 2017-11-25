@@ -62,7 +62,7 @@
                 totalCount: 0,
                 list :[],
                 filter: {
-                    status: -1,
+                    status: '-1',
                     page: 1,
                     pageSize: 10
                 }
