@@ -40,6 +40,7 @@
 			.ordered{
 				background: #E67E22;
 				line-height: 20px;
+				cursor: pointer;
 			}
 			.locked{
 				background: #BDC3C7;
@@ -73,7 +74,7 @@
 		</Col>
 		<Col span="12" class="tr">
 			<Badge :count="ordering_number">
-				<Button type="warning">
+				<Button type="warning" @click="funcDoOrder">
 					确认下单
 					<Icon type="chevron-right" class="icon-ml"></Icon>
 				</Button>
@@ -119,8 +120,14 @@ export default{
 		}
 	},
 	methods:{
-		turnUrl:function(name){
-	        this.$router.push(name);
+		funcDoOrder(){
+			if(this.ordering_number>0)
+	        	this.$router.push('/admin/checkstandOrderEdit');
+	        else
+				this.$Notice.info({
+                    title:'提示',
+                    desc:'您还未选择任何房间，请选择房间后再操作。'
+                });
 	    },
 	    enter(index){
     		this.column = index;
@@ -138,7 +145,9 @@ export default{
     			this.ordering_number--;
     		}
     	},
-    	funcOrdered(i,j){}
+    	funcOrdered(i,j){
+    		this.$router.push('/admin/checkstandOrderView');
+    	}
 	}
 }
 </script>

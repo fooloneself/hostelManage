@@ -1,6 +1,6 @@
 <template>
 <div>
-	<Menu mode="horizontal" @on-select="turnUrl" active-name="/admin" style="margin-top: -24px;height: 49px;line-height: 49px;">
+	<Menu mode="horizontal" @on-select="turnUrl" active-name="/admin" style="margin-top: -24px;height: 49px;line-height: 49px;z-index: 1">
         <MenuItem name="/admin">入住</MenuItem>
         <MenuItem name="/admin/checkstandOrder">预订</MenuItem>
     </Menu>

@@ -416,28 +416,28 @@ const admin = [
             {
                 path: 'checkstandEdit/:id',
                 meta: {
-                    title: '客房登记 - 订单编辑'
+                    title: '客房登记 - 入住 - 订单编辑'
                 },
                 component: (resolve) => require(['./views/checkstand/Edit.vue'], resolve)
             },
             {
                 path: 'checkstandView/:id',
                 meta: {
-                    title: '客房登记 - 订单编辑'
+                    title: '客房登记 - 入住 - 订单编辑'
                 },
                 component: (resolve) => require(['./views/checkstand/View.vue'], resolve)
             },
             {
                 path: 'checkstandChange',
                 meta: {
-                    title: '客房登记 - 换房'
+                    title: '客房登记 - 入住 - 换房'
                 },
                 component: (resolve) => require(['./views/checkstand/Change.vue'], resolve)
             },
             {
                 path: 'checkstandOut',
                 meta: {
-                    title: '客房登记 - 退房'
+                    title: '客房登记 - 入住 - 退房'
                 },
                 component: (resolve) => require(['./views/checkstand/Out.vue'], resolve)
             },
@@ -447,6 +447,20 @@ const admin = [
                     title: '客房登记 - 预订'
                 },
                 component: (resolve) => require(['./views/checkstand/Order.vue'], resolve)
+            },
+            {
+                path: 'checkstandOrderEdit',
+                meta: {
+                    title: '客房登记 - 预订 - 编辑'
+                },
+                component: (resolve) => require(['./views/checkstand/OrderEdit.vue'], resolve)
+            },
+            {
+                path: 'checkstandOrderView',
+                meta: {
+                    title: '客房登记 - 预订 - 编辑'
+                },
+                component: (resolve) => require(['./views/checkstand/OrderView.vue'], resolve)
             }
         ]
     }
