@@ -47,6 +47,7 @@
 			}
 			.ordering{
 				background: #F39C12;
+				cursor: pointer;
 			}
 		}
 	}

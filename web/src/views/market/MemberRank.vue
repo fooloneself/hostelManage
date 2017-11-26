@@ -19,18 +19,13 @@
                     },
                     {
                         title: '等级名称',
-                        width: 120,
+                        width: 200,
                         key: 'name'
                     },
                     {
                         title: '消费金额满',
                         width: 150,
                         key: 'min_consumption_amount'
-                    },
-                    {
-                        title: '积分满',
-                        width: 150,
-                        key: 'min_integral'
                     },
                     {
                         title: '等级说明',

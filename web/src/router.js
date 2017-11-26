@@ -204,6 +204,13 @@ const admin = [
         },
     	component: (resolve) => require(['./views/system/RoomListEdit.vue'], resolve)
 	},
+    {
+        path: 'roomListMulti/:id',
+        meta: {
+            title: '房间列表 - 批量新增'
+        },
+        component: (resolve) => require(['./views/system/RoomListMulti.vue'], resolve)
+    },
 	{
 		path: 'personInfo',
         meta: {

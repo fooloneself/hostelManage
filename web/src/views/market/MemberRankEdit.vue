@@ -8,9 +8,9 @@
 			<FormItem label="消费金额满：">
 		        <Input v-model="rank.minConsumptionAmount"><span slot="prepend">￥</span></Input>
 	        </FormItem>
-			<FormItem label="积分满：">
+			<!-- <FormItem label="积分满：">
 				<Input v-model="rank.minIntegral"></Input>
-	        </FormItem>
+	        </FormItem> -->
 			<FormItem label="等级说明：">
 	            <Input v-model="rank.mark" type="textarea" :rows="5"></Input>
 	        </FormItem>
@@ -31,7 +31,7 @@ export default{
                 id:this.$route.params.id,
                 name: '',
                 minConsumptionAmount:'',
-                minIntegral: '',
+                minIntegral: 0,
                 mark:''
             }
         };
