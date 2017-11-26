@@ -32,7 +32,7 @@
     <div class="cls"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>
-    <Page :total="100" show-total></Page>
+    <Page :total="totalCount" :current-page="filter.page" :page-size="filter.pageSize" @on-change="pageTo" show-total></Page>
 </div>
 </template>
 <script>
@@ -172,6 +172,10 @@
             turnUrl:function(url,query){
                 this.$router.push(url)
             },
+            search(){
+                this.filter.page=1;
+                this.query();
+            },
             query(){
                 var that=this;
                 this.host.post('merchantOrderList',this.filter).then(function(res){
@@ -185,6 +189,10 @@
                         })
                     }
                 })
+            },
+            pageTo(page){
+                this.filter.page=page;
+                this.query();
             }
         }
     }

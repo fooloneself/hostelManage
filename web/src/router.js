@@ -92,7 +92,7 @@ const admin = [
     	component: (resolve) => require(['./views/market/PromotionDiscount.vue'], resolve)
 	},
 	{
-		path: 'discountEdit',
+		path: 'discountEdit/:activeId',
         meta: {
             title: '折扣 - 编辑'
         },
@@ -127,7 +127,7 @@ const admin = [
     	component: (resolve) => require(['./views/market/PromotionBargainEdit.vue'], resolve)
 	},
 	{
-		path: 'planEdit',
+		path: 'planEdit/:activeId',
         meta: {
             title: '活动执行计划'
         },

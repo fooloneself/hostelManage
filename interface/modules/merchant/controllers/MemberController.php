@@ -252,6 +252,19 @@ class MemberController extends Controller{
     }
 
     /**
+     *
+     * @return mixed
+     */
+    public function actionRanksForActivity(){
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $data=MerchantMemberRankDivide::find()
+            ->select('id,name')
+            ->where(['mch_id'=>$mchId])
+            ->asArray()->all();
+        array_unshift($data,['id'=>'0','name'=>'非会员']);
+        return \Yii::$app->responseHelper->success($data)->response();
+    }
+    /**
      * 等级详情
      * @return mixed
      */

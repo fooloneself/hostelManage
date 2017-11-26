@@ -97,7 +97,16 @@ const interfaces={
     'merchantMemberRankDel':'merchant/member/del-rank',
     'merchantMemberRankEdit':'merchant/member/rank-divide',
     'merchantMemberAllRank':'merchant/member/all-rank',
-    'merchantNumberTypes':'merchant/dictionary/number-types'
+    'merchantNumberTypes':'merchant/dictionary/number-types',
+    'merchantDiscountList':'merchant/activity/discount-list',
+    'merchantDiscountActiveEdit':'merchant/activity/edit-discount',
+    'merchantActivityInfo':'merchant/activity/info',
+    'merchantActivityDel':'merchant/activity/del',
+    'merchantRoomByTree':'merchant/activity/rooms-by-tree',
+    'merchantMemberRankFoActivity':'merchant/member/ranks-for-activity',
+    'merchantActivityPlans':'merchant/activity/plans',
+    'merchantActivityAddPlan':'merchant/activity/add-plan',
+    'merchantActivityDelPlan':'merchant/activity/del-plan'
 };
 const server={
     'host': 'http://www.hotel.com',

@@ -6,6 +6,7 @@ use common\models\Channel;
 use common\models\Dictionary;
 use common\models\DictionaryItem;
 use common\models\Guest;
+use common\models\MerchantMember;
 use common\models\Order;
 use common\models\OrderRoom;
 use service\order\OrderManger;
@@ -91,10 +92,10 @@ class OrderController extends Controller{
         $abnormal=\Yii::$app->requestHelper->post('abnormal',0,'int');
         $isNormal=\Yii::$app->requestHelper->post('isNormal',1,'int');
         $query=Order::find()->alias('o')
-            ->select('o.id,c.name as channel_name,g.person_name,g.mobile,oo.start_time,oo.end_time,o.amount_payable,amount_deffer,oo.status,r.number,di.value as abnormal')
+            ->select('o.id,c.name as channel_name,mm.name as person_name,mm.mobile,oo.start_time,oo.end_time,o.amount_payable,amount_deffer,oo.status,r.number,di.value as abnormal')
             ->leftJoin(OrderRoom::tableName().' oo','o.id=oo.order_id')
             ->leftJoin(\common\models\Room::tableName().' r','oo.room_id=r.id')
-            ->leftJoin(Guest::tableName().'g','g.id=o.guest_id')
+            ->leftJoin(MerchantMember::tableName().' mm','mm.id=o.guest_id')
             ->leftJoin(Channel::tableName().' c','c.id=o.channel')
             ->leftJoin(DictionaryItem::tableName().' di','di.key=o.abnormal_type and di.code=:code',[':code'=>Dictionary::DICTIONARY_ORDER_ABNORMAL])
             ->where(['o.mch_id'=>$mchId]);
@@ -105,7 +106,7 @@ class OrderController extends Controller{
             $query->andWhere(['oo.room_id'=>$roomId]);
         }
         if(!empty($search)){
-            $query->andWhere('g.mobile=:search or g.person_name=:search',[':search'=>$search]);
+            $query->andWhere('mm.mobile=:search or mm.person_name=:search',[':search'=>$search]);
         }
         if($channel>0){
             $query->andWhere(['o.channel'=>$channel]);
