@@ -52,10 +52,7 @@
                 <img src="/src/images/logo-white.png" alt="">
             </router-link>
             <div class="fr">
-                <Badge dot>
-                    <router-link to=""><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></router-link>
-                </Badge>
-                <Dropdown @on-click="turnUrl" class="icon-ml">
+                <Dropdown @on-click="turnUrl" class="icon-mr">
                     <a href="javascript:void(0)">
                         {{userName}}
                         <Icon type="arrow-down-b" class="icon-ml"></Icon>
@@ -63,9 +60,12 @@
                     <DropdownMenu slot="list" class="tl">
                         <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
                         <DropdownItem name="/admin/managerPassword/0">修改密码</DropdownItem>
-                        <DropdownItem name="/login" divided @click="logout">退出登录</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
+                <Badge dot style="margin-top: -2px;">
+                    <router-link to=""><i class="fa fa-bell-o fa-lg fa-fw" aria-hidden="true"></i></router-link>
+                </Badge>
+                <router-link to="/login" class="icon-ml"><i class="fa fa-sign-out fa-lg fa-fw" aria-hidden="true"></i></router-link>
             </div>
         </div>
         <div class="layout-left">
@@ -131,7 +131,7 @@
                         <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>账号配置
                     </MenuItem>
                     <MenuItem name="/admin/configChannel">
-                        <i class="fa fa-handshake-o fa-fw" aria-hidden="true"></i>自定义渠道
+                        <i class="fa fa-handshake-o fa-fw" aria-hidden="true"></i>渠道配置
                     </MenuItem>
                 </Submenu>
                 <Submenu name="member">
@@ -161,6 +161,21 @@
                     </MenuItem>
                     <MenuItem name="/admin/personTips">
                         <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
+                    </MenuItem>
+                </Submenu>
+                <Submenu name="service">
+                    <template slot="title"><i class="fa fa-dollar fa-fw" aria-hidden="true"></i>增值服务</template>
+                    <MenuItem name="/admin/message">
+                        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>短信服务
+                    </MenuItem>
+                    <MenuItem name="/admin/rentComputer">
+                        <i class="fa fa-laptop fa-fw" aria-hidden="true"></i>租用电脑
+                    </MenuItem>
+                    <MenuItem name="/admin/goodsRecommend">
+                        <i class="fa fa-shopping-bag fa-fw" aria-hidden="true"></i>商品推荐
+                    </MenuItem>
+                    <MenuItem name="/admin/webReconmend">
+                        <i class="fa fa-tv fa-fw" aria-hidden="true"></i>推广门户
                     </MenuItem>
                 </Submenu>
             </Menu>

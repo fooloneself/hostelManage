@@ -2,7 +2,8 @@
 <div>
     <Row>
         <Col span="6">
-            <Button type="primary" @click="turnUrl('/admin/roomListEdit/0')">新增</Button>
+            <Button type="primary" @click="turnUrl('/admin/roomListEdit/0')" class="icon-mr">单个新增</Button>
+            <Button type="primary" @click="turnUrl('/admin/roomListMulti/0')">批量新增</Button>
         </Col>
         <Col span="18">
             <Form inline class="fr">

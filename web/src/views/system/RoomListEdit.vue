@@ -134,6 +134,9 @@
             handleView() {
                 this.visible = true;
             },
+            goBack (){
+                this.$router.go(-1);
+            },
             handleRemove() {},
             baseSubmit (){
                 this.host.post('roomRecord',this.formItem).then(function(res){
