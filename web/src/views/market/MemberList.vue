@@ -195,7 +195,7 @@
             },
             putToBlack(id){
                 var that=this;
-                this.host.post('merchantMemberDelete',{id:id}).then(function(res){
+                this.host.post('merchantMemberBlackSet',{id:id}).then(function(res){
                     if(res.isSuccess()){
                         that.query();
                     }else{
