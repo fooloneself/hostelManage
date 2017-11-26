@@ -47,7 +47,8 @@ $config= [
     ],
     'modules'=>[
         'platform'=>'modules\platform\Module',
-        'merchant'=>'modules\merchant\Module'
+        'merchant'=>'modules\merchant\Module',
+        'common'=>'modules\common\Module'
     ],
     'params'=>[
         'expire_time'=>172800, //2天

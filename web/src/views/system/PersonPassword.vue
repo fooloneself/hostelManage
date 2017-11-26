@@ -43,7 +43,7 @@ export default{
 	methods:{
 	    submit: function(){
 	        var that=this;
-	        this.host.post('resetMchPwd',this.formItem).then(function(res){
+	        this.host.post('resetAdminPwd',this.formItem).then(function(res){
 	            if(res.isSuccess()){
 	                this.$Notice.info({
                         title: '提示',

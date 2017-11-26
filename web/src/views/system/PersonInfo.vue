@@ -44,7 +44,8 @@ export default{
 	    this.host.post('sex').then(function(res){
             that.sex=res.data();
         })
-        this.host.post('merchantAdminInfo').then(function(res){
+        console.log("success")
+        this.host.post('commonAdminInfo').then(function(res){
             if(res.data())that.formItem=res.data();
         })
 	},
@@ -57,7 +58,7 @@ export default{
                     sex:this.formItem.sex,
                     birthday: birthday
                 };
-            this.host.post('merchantAdminInfoModify',param).then(function(res){
+            this.host.post('commonAdminInfoModify',param).then(function(res){
                 if(res.isSuccess()){
                     this.$Notice.info({
                         title: '提示',
