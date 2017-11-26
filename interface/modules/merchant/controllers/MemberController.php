@@ -316,11 +316,6 @@ class MemberController extends Controller{
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
         $member->is_in_black=MerchantMember::IN_BLACK_YES;
-        $member->consumption_amount=0;
-        $member->integral=0;
-        $member->rank=0;
-        $member->is_member=MerchantMember::IS_MEMBER_NO;
-        $member->is_in_black=MerchantMember::IN_BLACK_YES;
         if($member->update()){
             return \Yii::$app->responseHelper->success()->response();
         }else{
@@ -358,11 +353,6 @@ class MemberController extends Controller{
                 'number'=>$number,
                 'mark'=>$mark,
                 'create_time'=>time(),
-                'consumption_amount'=>0,
-                'integral'=>0,
-                'rank'=>0,
-                'balance'=>0,
-                'is_member'=>MerchantMember::IS_MEMBER_NO,
                 'is_in_black'=>MerchantMember::IN_BLACK_YES
             ]);
             if(!$member->insert(false)){
@@ -377,11 +367,6 @@ class MemberController extends Controller{
                 'number_type'=>$numberType,
                 'number'=>$number,
                 'mark'=>$mark,
-                'consumption_amount'=>0,
-                'integral'=>0,
-                'rank'=>0,
-                'balance'=>0,
-                'is_member'=>MerchantMember::IS_MEMBER_NO,
                 'is_in_black'=>MerchantMember::IN_BLACK_YES
             ]);
             if($member->update(false)){
