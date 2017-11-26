@@ -40,8 +40,8 @@ span.extra{
 					<FormItem label="待收金额："><span class="strong">￥-58.80</span></FormItem>
 			    </Form>
 			</Col>
-			<Col span="14" style="margin-left: 24px;">
-				<Form label-position="top">
+			<Col span="14">
+				<Form label-position="top" style="margin-left: 24px;">
 					<FormItem label="入住情况">
 						<Row :gutter="8">
 							<Col span="5"><span class="extra">房型：</span>豪华大床房</Col>
@@ -60,8 +60,8 @@ span.extra{
 							</Col>
 						</Row>
 						<Row :gutter="8">
-							<Col span="10"><span class="extra">手机号：</span>13800138000</Col>
 							<Col span="10"><span class="extra">姓名：</span>D.Seeyou</Col>
+							<Col span="10"><span class="extra">手机号：</span>13800138000</Col>
 						</Row>
 			        </FormItem>
 			        <FormItem label="消费情况">

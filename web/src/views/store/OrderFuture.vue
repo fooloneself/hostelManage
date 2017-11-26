@@ -90,12 +90,22 @@
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('/admin/checkstandOrderView')
+                                        }
                                     }
                                 }, '查看'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('/admin/checkstandOrderEdit')
+                                        }
                                     }
                                 }, '修改订单'),
                                 h('Button', {

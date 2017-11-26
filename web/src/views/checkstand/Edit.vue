@@ -73,12 +73,12 @@ span.extra{
 						</Col>
 					</Row>
 					<Row :gutter="8" class="mt">
-						<Col span="10"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
 						<Col span="10"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
+						<Col span="10"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
 					</Row>
 					<Row :gutter="8" class="mt" v-for="(lodger,i,l) in orderInfo.lodgers">
-						<Col span="10"><Input v-model="lodger.mobile" placeholder="手机号"></Input></Col>
 						<Col span="10"><Input v-model="lodger.name" placeholder="姓名"></Input></Col>
+						<Col span="10"><Input v-model="lodger.mobile" placeholder="手机号"></Input></Col>
 						<Col span="4">
 							<Button type="text" @click="deleteLodger(i)">
 								<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
