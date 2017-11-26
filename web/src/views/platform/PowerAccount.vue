@@ -93,7 +93,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/admin/managerPassword/'+params.row.id);
+                                            this.turnUrl('/admin/personPassword/'+params.row.id);
                                         }
                                     }
                                 }, '重置密码'),

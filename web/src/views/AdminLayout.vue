@@ -98,15 +98,6 @@
                         <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
                     </MenuItem>
                 </Submenu>
-                <Submenu name="manager">
-                    <template slot="title"><i class="fa fa-user-o fa-fw" aria-hidden="true"></i>个人中心</template>
-                    <MenuItem name="/admin/managerInfo">
-                        <i class="fa fa-info fa-fw" aria-hidden="true"></i>个人资料
-                    </MenuItem>
-                    <MenuItem name="/admin/managerPassword/0">
-                        <i class="fa fa-lock fa-fw" aria-hidden="true"></i>修改密码
-                    </MenuItem>
-                </Submenu>
                 <Submenu name="order">
                     <template slot="title"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i>订单管理</template>
                     <MenuItem name="/admin/orderIn">
