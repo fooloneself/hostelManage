@@ -1,7 +1,7 @@
 <template>
 <div>
-    <Button type="ghost" @click="goUp"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回上一级</Button>
-    <Button type="primary" @click="toAdd">新增</Button>
+    <Button type="ghost" @click="goUp"><i class="fa fa-chevron-left icon-mr" aria-hidden="true"></i>返回列表</Button>
+    <Button type="primary" @click="toAdd" class="icon-ml">新增</Button>
     <div class="mb"></div>
     <Table :columns="columns" :data="data" stripe></Table>
     <div class="mb"></div>

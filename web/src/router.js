@@ -63,13 +63,20 @@ const admin = [
         },
     	component: (resolve) => require(['./views/market/MemberList.vue'], resolve)
 	},
-	{
-		path: 'memberListEdit/:id',
+    {
+        path: 'memberListEdit/:id',
         meta: {
             title: '会员列表 - 编辑'
         },
-    	component: (resolve) => require(['./views/market/MemberListEdit.vue'], resolve)
-	},
+        component: (resolve) => require(['./views/market/MemberListEdit.vue'], resolve)
+    },
+    {
+        path: 'memberListBalance/:id',
+        meta: {
+            title: '会员列表 - 编辑'
+        },
+        component: (resolve) => require(['./views/market/MemberListBalance.vue'], resolve)
+    },
 	{
 		path: 'memberBlack',
         meta: {
@@ -456,14 +463,14 @@ const admin = [
                 component: (resolve) => require(['./views/checkstand/Order.vue'], resolve)
             },
             {
-                path: 'checkstandOrderEdit',
+                path: 'checkstandOrderEdit/:id',
                 meta: {
                     title: '客房登记 - 预订 - 编辑'
                 },
                 component: (resolve) => require(['./views/checkstand/OrderEdit.vue'], resolve)
             },
             {
-                path: 'checkstandOrderView',
+                path: 'checkstandOrderView/:id',
                 meta: {
                     title: '客房登记 - 预订 - 编辑'
                 },
