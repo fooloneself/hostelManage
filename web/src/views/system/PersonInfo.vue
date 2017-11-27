@@ -44,7 +44,6 @@ export default{
 	    this.host.post('sex').then(function(res){
             that.sex=res.data();
         })
-        console.log("success")
         this.host.post('commonAdminInfo').then(function(res){
             if(res.data())that.formItem=res.data();
         })

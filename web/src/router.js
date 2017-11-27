@@ -106,7 +106,7 @@ const admin = [
     	component: (resolve) => require(['./views/market/PromotionCutdown.vue'], resolve)
 	},
 	{
-		path: 'cutdownEdit',
+		path: 'cutdownEdit/:activeId',
         meta: {
             title: '满减 - 编辑'
         },
@@ -120,7 +120,7 @@ const admin = [
     	component: (resolve) => require(['./views/market/PromotionBargain.vue'], resolve)
 	},
 	{
-		path: 'bargainEdit',
+		path: 'bargainEdit/:activeId',
         meta: {
             title: '特价房 - 编辑'
         },

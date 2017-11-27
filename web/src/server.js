@@ -3,12 +3,9 @@ const interfaces={
     'loginOut':'site/login-out',
     'sex':'site/sex',
     'register': 'admin/register',
-    'resetMchPwd': 'merchant/admin/reset-password',
-    'merchantAdminInfo': 'merchant/admin/info',
-    'merchantAdminInfoModify': 'merchant/admin/info-modify',
-    'resetPlatformPwd':'platform/admin/reset-password',
-    'platformAdminInfo':'platform/admin/info',
-    'platformAdminInfoModify':'platform/admin/info-modify',
+    'resetAdminPwd': 'common/admin/reset-password',
+    'commonAdminInfo': 'common/admin/info',
+    'commonAdminInfoModify': 'common/admin/info-modify',
     'tips': 'merchant/merchant/feedback',
     'roomList':'merchant/room/list',
     'roomRecord':'merchant/room/record',
@@ -109,7 +106,11 @@ const interfaces={
     'merchantMemberRankFoActivity':'merchant/member/ranks-for-activity',
     'merchantActivityPlans':'merchant/activity/plans',
     'merchantActivityAddPlan':'merchant/activity/add-plan',
-    'merchantActivityDelPlan':'merchant/activity/del-plan'
+    'merchantActivityDelPlan':'merchant/activity/del-plan',
+    'merchantActivityFullCutList':'merchant/activity/full-cut-list',
+    'merchantActivitySpecialPriceList':'merchant/activity/special-offer-list',
+    'merchantActivityFullCutEdit':'merchant/activity/edit-full-cut',
+    'merchantActivitySpecialPriceEdit':'merchant/activity/edit-special-price'
 };
 const server={
     'host': 'http://www.hotel.com',
