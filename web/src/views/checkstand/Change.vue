@@ -32,7 +32,7 @@ span.extra{
 		<Row>
 			<Col span="4">
 			    <Form label-position="top" class="order-info">
-					<FormItem label="订单金额："><span>￥168.00</span></FormItem>
+					<FormItem label="订单总价："><span>￥168.00</span></FormItem>
 					<FormItem label="优惠活动：">
 						<p>九折优惠</p>
 					</FormItem>
@@ -71,7 +71,9 @@ span.extra{
 					            </Select>
 							</Col>
 							<Col span="5">
-								<Input placeholder="房间总价：￥168.00"></Input>
+								<Input placeholder="168.00">
+									<span slot="prepend">订单总价：</span>
+								</Input>
 							</Col>
 							<Col span="5">
 								<Select placeholder="优惠活动">

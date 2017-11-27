@@ -50,15 +50,15 @@ span.extra{
 				            </Select>
 						</Col>
 						<Col span="7"><Input placeholder="预订人姓名"></Input></Col>
-						<Col span="7"><Input placeholder="手机号"></Input></Col>
-						<Col span="4">
-							<Button type="info" long @click="checkMember">
-								<i class="fa fa-search icon-mr" aria-hidden="true"></i>
-								验证会员信息
-							</Button>
+						<Col span="7">
+							<Input placeholder="手机号">
+								<Button slot="append" @click="checkMember">查询会员信息</Button>
+							</Input>
 						</Col>
 					</Row>
-					<Table v-if="showMember" class="mt" :columns="member.columns" :data="member.data" stripe></Table>
+					<Row>
+						<Col span="20"><Table v-if="showMember" class="mt" :columns="member.columns" :data="member.data" stripe></Table></Col>
+					</Row>
 		        </FormItem>
 				<FormItem label="预订房信息">
 					<Row :gutter="8" class="mt" v-for="i in room">
@@ -82,11 +82,11 @@ span.extra{
 						</Col>
 						<Col span="4">
 							<Button v-if="i==room" type="text" @click="addRoom">
-								<i class="fa fa-plus icon-mr" aria-hidden="true"></i>
+								<i class="fa fa-plus fa-fw icon-mr" aria-hidden="true"></i>
 								添加房间
 							</Button>
 							<Button v-else type="text" @click="deleteRoom">
-								<i class="fa fa-trash icon-mr" aria-hidden="true"></i>
+								<i class="fa fa-trash fa-fw icon-mr" aria-hidden="true"></i>
 								删除房间
 							</Button>
 						</Col>
@@ -128,7 +128,7 @@ span.extra{
 						</Col>
 						<Col span="4">
 							<Button type="text" @click="deleteMoney">
-								<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除收费
+								<i class="fa fa-trash fa-fw icon-mr" aria-hidden="true"></i>删除收费
 							</Button>
 						</Col>
 					</Row>
@@ -156,7 +156,7 @@ span.extra{
 						</Col>
 						<Col span="4">
 							<Button type="text" @click="addMoney">
-								<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加收费
+								<i class="fa fa-plus fa-fw icon-mr" aria-hidden="true"></i>添加收费
 							</Button>
 						</Col>
 					</Row>
@@ -184,7 +184,7 @@ export default{
 	data () {
 		return {
 			money: 0,
-	        room: 4,
+	        room: 2,
 			showMember:false,
 			member: {
 				columns: [

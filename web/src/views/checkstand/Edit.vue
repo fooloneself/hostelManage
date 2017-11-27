@@ -31,13 +31,13 @@ span.extra{
 	<Row>
 		<Col span="4">
 		    <Form label-position="top" class="order-info">
-				<FormItem label="订单金额："><span>￥168.00</span></FormItem>
+				<FormItem label="订单总价："><span>￥{{placeholder}}</span></FormItem>
 				<FormItem label="优惠活动：">
 					<p>九折优惠</p>
 				</FormItem>
-				<FormItem label="应收金额："><span class="strong">￥141.20</span></FormItem>
+				<FormItem label="应收金额："><span class="strong">￥{{placeholder*0.9}}</span></FormItem>
 				<FormItem label="已收金额："><span class="strong">￥200.00</span></FormItem>
-				<FormItem label="待收金额："><span class="strong">￥-58.80</span></FormItem>
+				<FormItem label="待收金额："><span class="strong">￥{{placeholder*0.9-200}}</span></FormItem>
 		    </Form>
 		</Col>
 		<Col span="20">
@@ -50,26 +50,26 @@ span.extra{
 				            </Select>
 						</Col>
 						<Col span="8"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
-						<Col span="8"><Input v-model="orderInfo.guest.mobile" placeholder="手机号"></Input></Col>
+						<Col span="8">
+						<Input v-model="orderInfo.guest.mobile" placeholder="手机号">
+							<Button slot="append" @click="checkMember">查询会员信息</Button>
+						</Input>
+						</Col>
 					</Row>
 					<Row :gutter="8">
 						<Col span="20">
-							<Table class="mt" :columns="member.columns" :data="member.data" stripe></Table>
+							<Table v-if="showMember" class="mt" :columns="member.columns" :data="member.data" stripe></Table>
 						</Col>
 					</Row>
 					<Row :gutter="8" class="mt" v-for="(lodger,i,l) in orderInfo.lodgers">
 						<Col span="10"><Input v-model="lodger.name" placeholder="姓名"></Input></Col>
 						<Col span="10"><Input v-model="lodger.mobile" placeholder="手机号"></Input></Col>
 						<Col span="4">
-							<Button type="text" @click="deleteLodger(i)">
-								<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
+							<Button v-if="i==orderInfo.lodgers.length-1" type="text" @click="addLodger">
+								<i class="fa fa-plus fa-fw icon-mr" aria-hidden="true"></i>添加入住人
 							</Button>
-						</Col>
-					</Row>
-					<Row :gutter="8" class="mt">
-						<Col span="20">
-							<Button type="dashed" long @click="addLodger">
-								<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加其他入住人
+							<Button v-else type="text" @click="deleteLodger(i)">
+								<i class="fa fa-trash fa-fw icon-mr" aria-hidden="true"></i>删除入住人
 							</Button>
 						</Col>
 					</Row>
@@ -86,7 +86,7 @@ span.extra{
 				            </Select>
 						</Col>
 						<Col span="4" v-show="orderInfo.type==1">
-				             <InputNumber v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>
+				             <InputNumber class="icon-mr" v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>天
 						</Col>
 						<Col span="4" v-show="orderInfo.type==2">
 				             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="入住时间选择"></TimePicker>
@@ -96,7 +96,9 @@ span.extra{
 				<FormItem label="收费信息">
 					<Row :gutter="8">
 						<Col span="10">
-							<Input v-model="orderInfo.price" :placeholder="placeholder"></Input>
+							<Input v-model="placeholder" :placeholder="placeholder">
+								<span slot="prepend">订单总价：</span>
+							</Input>
 						</Col>
 						<Col span="10">
 							<Select placeholder="优惠活动">
@@ -122,7 +124,7 @@ span.extra{
 						</Col>
 						<Col span="4">
 							<Button type="text" @click="deletePay(i)">
-								<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除收费
+								<i class="fa fa-trash fa-fw icon-mr" aria-hidden="true"></i>删除收费
 							</Button>
 						</Col>
 					</Row>
@@ -150,7 +152,7 @@ span.extra{
 							</Col>
 							<Col span="4">
 								<Button type="text" @click="addPay">
-									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加收费
+									<i class="fa fa-plus icon-mr fa-fw" aria-hidden="true"></i>添加收费
 								</Button>
 							</Col>
 						</Row>
@@ -167,9 +169,6 @@ span.extra{
 		            <Button type="primary" @click="occupancy">确认入住</Button>
 					<!-- 修改订单 -->
 		            <Button type="primary">确认修改</Button>
-					<!-- 办理入住 -->
-		            <Button type="primary" @click="occupancy">确认入住</Button>
-		            <!-- <Button type="warning" @click="reverse" class="icon-ml">确认预订</Button> -->
                     <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 		        </FormItem>
 		    </Form>
@@ -182,6 +181,7 @@ span.extra{
 export default{
 	data () {
 		return {
+			showMember: false,
 			member: {
 				columns: [
 	                {
@@ -201,7 +201,7 @@ export default{
 	                    key: 'price'
 	                }
 	            ],
-	            data: []
+	            data: [{name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'}]
 	        },
 	        room: {
 				columns: [
@@ -229,7 +229,7 @@ export default{
 			orderInfo: {
 			    type: 1,
 			    guest:{mobile: '',name: ''},
-			    lodgers: [],
+			    lodgers: [{mobile: '',name: ''}],
 			    pay: [],
 			    dayNum: 1
 			},
@@ -244,9 +244,8 @@ export default{
 	    this.host.post('merchantRoom',{id: this.$route.params.id}).then(function(res){
 	        if(res.isSuccess()){
 	            res.data().room.date=res.data().date;
-	            res.data().room.default_price='￥'+res.data().room.default_price;
 	            that.room.data.push(res.data().room);
-	            that.placeholder='房间总价：'+res.data().room.default_price;
+	            that.placeholder=res.data().room.default_price;
 	        }else{
 	            this.$Notice.info({
 	                title: '错误提示',
@@ -300,6 +299,9 @@ export default{
         },
 		deletePay(index){
             this.orderInfo.pay.splice(index,1);
+		},
+		checkMember(){
+			this.showMember = true;
 		},
 		timeChooseShow(){
 			if(this.orderInfo.type==1) this.timepick=true;
