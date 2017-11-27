@@ -63,35 +63,38 @@
 	<Spin size="large" fix v-if="spinShow"></Spin>
 	<Row>
 		<Col span="12">
-			<Select placeholder="房屋状态" style="width: 120px;margin-right: 8px;" @on-change="selectStatus">
-                <Option value="-1">全部</Option>
-                <Option value="0">空房</Option>
-                <Option value="4">入住</Option>
-                <Option value="">钟点</Option>
-                <Option value="3">预订</Option>
-                <Option value="1">脏房</Option>
-                <Option value="2">锁房</Option>
-            </Select>
-            <Select placeholder="房屋类型" style="width: 120px;margin-right: 8px;" @on-change="selectType">
-                <Option value="0">全部</Option>
-                <Option v-for="type in types" :value="type.id">{{type.name}}</Option>
-            </Select>
-            <Select placeholder="客户名称" style="width: 120px;">
-                <Option value="">全部</Option>
-                <Option value="张三">张三</Option>
-                <Option value="李四">李四</Option>
-                <Option value="王五">王五</Option>
-                <Option value="刘六">刘六</Option>
-            </Select>
-		</Col>
-		<Col span="12" class="tr">
 			<ButtonGroup size="small">
-				<Button type="text"><Icon type="record" style="color:#16A085"></Icon><span class="icon-ml">入住</span></Button>
+				<Button type="text"><Icon type="record" style="color:#16A085"></Icon><span class="icon-ml">全天</span></Button>
 				<Button type="text"><Icon type="record" style="color:#2980B9"></Icon><span class="icon-ml">钟点</span></Button>
 				<Button type="text"><Icon type="record" style="color:#E67E22"></Icon><span class="icon-ml">预订</span></Button>
 				<Button type="text"><Icon type="record" style="color:#7F8C8D"></Icon><span class="icon-ml">脏房</span></Button>
 				<Button type="text"><Icon type="record" style="color:#BDC3C7"></Icon><span class="icon-ml">锁房</span></Button>
 			</ButtonGroup>
+		</Col>
+		<Col span="12">
+			<div class="fr">
+				<Select placeholder="房屋状态" class="search-input" @on-change="selectStatus">
+	                <Option value="-1">全部</Option>
+	                <Option value="0">空房</Option>
+	                <Option value="4">全天</Option>
+	                <Option value="">钟点</Option>
+	                <Option value="3">预订</Option>
+	                <Option value="1">脏房</Option>
+	                <Option value="2">锁房</Option>
+	            </Select>
+	            <Select placeholder="房屋类型" class="search-input" @on-change="selectType">
+	                <Option value="0">全部</Option>
+	                <Option v-for="type in types" :value="type.id">{{type.name}}</Option>
+	            </Select>
+	            <Select placeholder="客户名称" class="search-input">
+	                <Option value="">全部</Option>
+	                <Option value="张三">张三</Option>
+	                <Option value="李四">李四</Option>
+	                <Option value="王五">王五</Option>
+	                <Option value="刘六">刘六</Option>
+	            </Select>
+	            <Button type="primary">查询</Button>
+            </div>
 		</Col>
 	</Row>
 	<div class="mb"></div>

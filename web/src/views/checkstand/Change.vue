@@ -1,8 +1,9 @@
 <style scoped>
 .order-info{
-	background: #ECF0F1;
-	border-radius: 5px;
+	background: #f8f8f9;
+	border: 1px solid #dddee1;
 	padding: 24px;
+	border-radius: 5px;
 	.ivu-form-item{
 		margin-bottom: 16px;
 	}
@@ -40,50 +41,18 @@ span.extra{
 					<FormItem label="待收金额："><span class="strong">￥-58.80</span></FormItem>
 			    </Form>
 			</Col>
-			<Col span="14">
+			<Col span="20">
 				<Form label-position="top" style="margin-left: 24px;">
-					<FormItem label="入住情况">
-						<Row :gutter="8">
-							<Col span="5"><span class="extra">房型：</span>豪华大床房</Col>
-							<Col span="5"><span class="extra">房号：</span>201</Col>
-							<Col span="10"><span class="extra">入住时间：</span>2017/11/25 (￥100.00)</Col>
-						</Row>
+					<FormItem label="原房信息">
 						<Row :gutter="8">
 							<Col span="5">
-								<span class="extra">客人来源：</span>美团
-							</Col>
-							<Col span="5">
-								<span class="extra">入住方式：</span>全日房
+								<span class="extra">入住方式：</span>全天房
 							</Col>
 							<Col span="5">
 					            <span class="extra">入住时长：</span>2晚
 							</Col>
 						</Row>
-						<Row :gutter="8">
-							<Col span="10"><span class="extra">姓名：</span>D.Seeyou</Col>
-							<Col span="10"><span class="extra">手机号：</span>13800138000</Col>
-						</Row>
-			        </FormItem>
-					<FormItem label="消费情况">
-						<Row :gutter="8">
-							<Col span="10">
-					            <span class="extra">房间总价：</span>￥168.00
-							</Col>
-							<Col span="10">
-					            <span class="extra">优惠活动：</span>优惠活动二
-							</Col>
-						</Row>
-						<Row :gutter="8" v-for="i in 3">
-							<Col span="5">
-								<span class="extra">收费项：</span>收取房费
-							</Col>
-							<Col span="5">
-								<span class="extra">付费方式：</span>现金
-							</Col>
-							<Col span="10">
-								<span class="extra">付费金额：</span>￥100.00
-							</Col>
-						</Row>
+						<Table :columns="room.columns" :data="room.data" stripe></Table>
 			        </FormItem>
 					<FormItem label="换房操作">
 						<Row :gutter="8">
@@ -112,28 +81,6 @@ span.extra{
 					            </Select>
 							</Col>
 						</Row>
-						<Row :gutter="8" class="mt">
-							<Col span="5">
-								<Select placeholder="收费项">
-					                <Option value="1">收取房费</Option>
-					                <Option value="2">收取订金</Option>
-					                <Option value="3">收取押金</Option>
-					                <Option value="4">退还房费</Option>
-					                <Option value="5">退还订金</Option>
-					                <Option value="6">退还押金</Option>
-					            </Select>
-							</Col>
-							<Col span="5">
-								<Select placeholder="付费方式">
-					                <Option value="beijing">现金</Option>
-					                <Option value="shanghai">支付宝</Option>
-					                <Option value="shenzhen">微信</Option>
-					            </Select>
-							</Col>
-							<Col span="10">
-								<Input placeholder="付费金额"></Input>
-							</Col>
-						</Row>
 						<Row :gutter="8" class="mt" v-for="i in money">
 							<Col span="5">
 								<Select placeholder="收费项">
@@ -157,21 +104,42 @@ span.extra{
 							</Col>
 							<Col span="4">
 								<Button type="text" @click="deleteMoney">
-									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除
+									<i class="fa fa-trash icon-mr" aria-hidden="true"></i>删除收费
 								</Button>
 							</Col>
 						</Row>
-						<Row class="mt">
-							<Col span="20">
-								<Button type="dashed" long @click="addMoney">
-									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加收费项
+						<Row :gutter="8" class="mt">
+							<Col span="5">
+								<Select placeholder="收费项">
+					                <Option value="1">收取房费</Option>
+					                <Option value="2">收取订金</Option>
+					                <Option value="3">收取押金</Option>
+					                <Option value="4">退还房费</Option>
+					                <Option value="5">退还订金</Option>
+					                <Option value="6">退还押金</Option>
+					            </Select>
+							</Col>
+							<Col span="5">
+								<Select placeholder="付费方式">
+					                <Option value="beijing">余额</Option>
+					                <Option value="beijing">现金</Option>
+					                <Option value="shanghai">支付宝</Option>
+					                <Option value="shenzhen">微信</Option>
+					            </Select>
+							</Col>
+							<Col span="10">
+								<Input placeholder="付费金额"></Input>
+							</Col>
+							<Col span="4">
+								<Button type="text" @click="addMoney">
+									<i class="fa fa-plus icon-mr" aria-hidden="true"></i>添加收费
 								</Button>
 							</Col>
 						</Row>
 			        </FormItem>
 					<FormItem label="备注信息">
 						<Row>
-							<Col span="20">
+							<Col span="24">
 				            	<Input type="textarea" :rows="5"></Input>
 							</Col>
 						</Row>
@@ -179,6 +147,17 @@ span.extra{
 					<FormItem>
 			            <Button type="primary" @click="goBack">确认换房</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
+			        </FormItem>
+					<FormItem label="入住人信息">
+						<Row :gutter="8">
+							<Col span="5">
+								<span class="extra">客人来源：</span>美团
+							</Col>
+						</Row>
+						<Table :columns="member.columns" :data="member.data" stripe></Table>
+			        </FormItem>
+					<FormItem label="收费情况">
+						<Table :columns="cost.columns" :data="cost.data" stripe></Table>
 			        </FormItem>
 			    </Form>
 			</Col>
@@ -191,7 +170,80 @@ span.extra{
 export default{
 	data () {
 		return {
-			money:0
+			money:0,
+			member: {
+				columns: [
+	                {
+	                    title: '人员类型',
+	                    key: 'type'
+	                },
+	                {
+	                    title: '会员姓名',
+	                    key: 'name'
+	                },
+	                {
+	                    title: '手机号',
+	                    key: 'phone'
+	                },
+	                {
+	                    title: '会员等级',
+	                    key: 'rank'
+	                },
+	                {
+	                    title: '余额',
+	                    key: 'price'
+	                }
+	            ],
+	            data: [
+	            	{type:'预订人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
+	            	{type:'入住人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
+	            	{type:'入住人',name:'李波媳妇',phone:'13800138000',rank:'非会员',price:'￥0.00'},
+	            ]
+	        },
+	        room: {
+				columns: [
+	                {
+	                    title: '预订时间',
+	                    key: 'date'
+	                },
+	                {
+	                    title: '房型',
+	                    key: 'type'
+	                },
+	                {
+	                    title: '房号',
+	                    key: 'number'
+	                },
+	                {
+	                    title: '单价',
+	                    key: 'price'
+	                }
+	            ],
+	            data: [
+	            	{type:'豪华大床房',number:'201',price:'￥100.00',date:'2017/11/25'}
+	            ]
+	        },
+			cost: {
+				columns: [
+	                {
+	                    title: '收费项',
+	                    key: 'classic'
+	                },
+	                {
+	                    title: '付费方式',
+	                    key: 'type'
+	                },
+	                {
+	                    title: '付费金额',
+	                    key: 'price'
+	                }
+	            ],
+	            data: [
+	            	{classic:'房费',type:'余额',price:'￥100.00'},
+	            	{classic:'房费',type:'余额',price:'￥100.00'},
+	            	{classic:'房费',type:'余额',price:'￥100.00'}
+	            ]
+	        }
 		}
 	},
 	methods:{

@@ -43,7 +43,21 @@ span.extra{
 			</Col>
 			<Col span="20">
 				<Form label-position="top" style="margin-left: 24px;">
-					<FormItem label="退房操作">
+					<FormItem label="续住操作">
+						<Row :gutter="8">
+							<Col span="5">
+								<Select placeholder="入住方式" v-model="orderInfo.type">
+					                <Option :value="1">全天房</Option>
+					                <Option :value="2">钟点房</Option>
+					            </Select>
+							</Col>
+							<Col span="5" v-show="orderInfo.type==1">
+					             <InputNumber v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>
+							</Col>
+							<Col span="5" v-show="orderInfo.type==2">
+					             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="入住时间选择"></TimePicker>
+							</Col>
+						</Row>
 						<Row :gutter="8" class="mt" v-for="i in money">
 							<Col span="5">
 								<Select placeholder="收费项">
@@ -101,7 +115,7 @@ span.extra{
 						</Row>
 			        </FormItem>
 					<FormItem>
-			            <Button type="primary" @click="goBack">确认退房</Button>
+			            <Button type="primary" @click="goBack">确认续住</Button>
                         <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 			        </FormItem>
 					<FormItem label="入住人信息">
@@ -138,6 +152,9 @@ span.extra{
 export default{
 	data () {
 		return {
+			orderInfo: {
+				type:1
+			},
 			money:0,
 			member: {
 				columns: [

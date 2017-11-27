@@ -456,6 +456,13 @@ const admin = [
                 component: (resolve) => require(['./views/checkstand/Out.vue'], resolve)
             },
             {
+                path: 'checkstandContinue',
+                meta: {
+                    title: '客房登记 - 入住 - 续住'
+                },
+                component: (resolve) => require(['./views/checkstand/Continue.vue'], resolve)
+            },
+            {
                 path: 'checkstandOrder',
                 meta: {
                     title: '客房登记 - 预订'
