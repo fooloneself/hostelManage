@@ -9,21 +9,21 @@
 	    </Alert>
 		<div class="mb"></div>
 	</Col>
-	<Col span="12">
+	<Col span="10">
 		<Form v-model="formItem" label-position="right" :label-width="80">
-			<FormItem label="会员等级：">
-				<Select v-model="formItem.rank">
-		            <Option v-for="(rank,r) in ranks" :value="rank.id">{{rank.name}}</Option>
-		        </Select>
-	        </FormItem>
-			<FormItem label="余额：">
-				<Input v-model="formItem.balance" placeholder=""><span slot="prepend">￥</span></Input>
-	        </FormItem>
 			<FormItem label="姓名：">
 				<Input v-model="formItem.name"></Input>
 	        </FormItem>
 			<FormItem label="手机号：">
 				<Input v-model="formItem.mobile"></Input>
+	        </FormItem>
+			<FormItem label="会员等级：">
+				<Select v-model="formItem.rank">
+		            <Option v-for="(rank,r) in ranks" :value="rank.id">{{rank.name}}</Option>
+		        </Select>
+	        </FormItem>
+			<FormItem label="充值金额：">
+				<Input v-model="formItem.balance" placeholder=""><span slot="prepend">￥</span></Input>
 	        </FormItem>
 			<FormItem label="证件号：">
 				<Input v-model="formItem.number">

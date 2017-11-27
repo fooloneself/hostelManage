@@ -58,28 +58,31 @@
 	<Spin size="large" fix v-if="spinShow"></Spin>
 	<Row>
 		<Col span="12">
-			<Select placeholder="房屋类型" style="width: 120px;margin-right: 8px;">
-			    <Option value="0">全部</Option>
-			    <Option value="1">房屋类型一</Option>
-			    <Option value="2">房屋类型二</Option>
-			    <Option value="3">房屋类型三</Option>
-			</Select>
-			<DatePicker type="date" placeholder="选择日期" style="width: 120px;margin-right: 8px;"></DatePicker>
-			<Select placeholder="客户名称" style="width: 120px;">
-			    <Option value="">全部</Option>
-			    <Option value="张三">张三</Option>
-			    <Option value="李四">李四</Option>
-			    <Option value="王五">王五</Option>
-			    <Option value="刘六">刘六</Option>
-			</Select>
-		</Col>
-		<Col span="12" class="tr">
 			<Badge :count="ordering_number">
 				<Button type="warning" @click="funcDoOrder">
-					确认下单
+					预订下单
 					<Icon type="chevron-right" class="icon-ml"></Icon>
 				</Button>
 			</Badge>
+		</Col>
+		<Col span="12">
+			<div class="fr">
+				<Select placeholder="房屋类型" class="search-input">
+				    <Option value="0">全部</Option>
+				    <Option value="1">房屋类型一</Option>
+				    <Option value="2">房屋类型二</Option>
+				    <Option value="3">房屋类型三</Option>
+				</Select>
+				<DatePicker type="date" placeholder="选择日期" class="search-input"></DatePicker>
+				<Select placeholder="客户名称" class="search-input">
+				    <Option value="">全部</Option>
+				    <Option value="张三">张三</Option>
+				    <Option value="李四">李四</Option>
+				    <Option value="王五">王五</Option>
+				    <Option value="刘六">刘六</Option>
+				</Select>
+	            <Button type="primary">查询</Button>
+            </div>
 		</Col>
 	</Row>
 	<div class="mb"></div>
@@ -95,7 +98,7 @@
 				<td>豪华大床房</td>
 				<td width="50">{{i}}</td>
 				<template v-for="j in 16">
-					<td v-if="i*j==50" @mouseenter="enter(j)"  @mouseleave="leave" @click="funcOrdered(i,j)">
+					<td v-if="i*j==50" @mouseenter="enter(j)"  @mouseleave="leave" @click="funcOrdered(j)">
 						<div class="ordered">预订<br/>邓世勇</div>
 					</td>
 					<td v-else-if="i*j==100" @mouseenter="enter(j)"  @mouseleave="leave">
@@ -123,7 +126,7 @@ export default{
 	methods:{
 		funcDoOrder(){
 			if(this.ordering_number>0)
-	        	this.$router.push('/admin/checkstandOrderEdit');
+	        	this.$router.push('/admin/checkstandOrderEdit/0');
 	        else
 				this.$Notice.info({
                     title:'提示',
@@ -146,8 +149,8 @@ export default{
     			this.ordering_number--;
     		}
     	},
-    	funcOrdered(i,j){
-    		this.$router.push('/admin/checkstandOrderView');
+    	funcOrdered(id){
+    		this.$router.push('/admin/checkstandOrderView/'+id);
     	}
 	}
 }

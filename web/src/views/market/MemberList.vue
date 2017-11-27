@@ -42,17 +42,17 @@
                     },
                     {
                         title: '人员姓名',
-                        width: 300,
+                        width: 220,
                         key: 'name'
                     },
                     {
                         title: '手机号',
-                        width: 120,
+                        width: 130,
                         key: 'mobile'
                     },
                     {
                         title: '会员等级',
-                        width: 120,
+                        width: 160,
                         key: 'rank'
                     },
                     {
@@ -79,9 +79,20 @@
                         title: '操作',
                         key: 'action',
                         fixed: 'right',
-                        width: 200,
+                        width: 230,
                         render: (h, params) => {
                             return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.turnUrl('/admin/memberListBalance/'+params.row.id)
+                                        }
+                                    }
+                                }, '充值'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
