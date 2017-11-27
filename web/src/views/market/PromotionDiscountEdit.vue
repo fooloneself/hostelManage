@@ -30,7 +30,7 @@
 	        </FormItem>
 			<FormItem>
 	            <Button @click="submit" type="primary">保存</Button>
-	            <Button type="primary" @click="turnUrl('/admin/planEdit')" class="icon-ml">保存并添加执行计划</Button>
+	            <Button type="primary" @click="addToPlan" class="icon-ml">保存并添加执行计划</Button>
                 <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 	        </FormItem>
 	    </Form>
@@ -119,7 +119,19 @@ export default{
 	                this.activity.rooms.push(tree[key].id);
 	            }
 	        }
-	        console.log(this.activity.rooms);
+	    },
+	    addToPlan(){
+            this.activity.id=this.$route.params.activeId;
+	        this.host.post('merchantDiscountActiveEdit',this.activity).then(function(res){
+	            if(res.isSuccess()){
+	                this.$router.push('/admin/planEdit/'+res.data().id);
+	            }else{
+	                this.$Notice.info({
+	                    title:'错误提示',
+	                    desc: res.error()
+	                })
+	            }
+	        })
 	    }
 	}
 }

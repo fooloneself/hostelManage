@@ -100,12 +100,12 @@ class ActivityController extends Controller{
         $pageSize=\Yii::$app->requestHelper->post('pageSize',10,'int');
         $query=MerchantActivity::find()->alias('ma')
             ->select('ma.*,group_concat(mac.condition_identity) as rank_id,group_concat(mmrd.name) as rank_name,mac1.condition_identity as consumption_full')
-            ->leftJoin(MerchantActivityCondition::tableName().' mac','ma.id=mac.active_id and mac.type=:type',[
-                ':type'=>MerchantActivityCondition::TYPE_MEMBER_RANK
+            ->leftJoin(MerchantActivityCondition::tableName().' mac','ma.id=mac.active_id and mac.type=:rankType',[
+                ':rankType'=>MerchantActivityCondition::TYPE_MEMBER_RANK
             ])
             ->leftJoin(MerchantMemberRankDivide::tableName().' mmrd','mac.condition_identity=mmrd.id')
-            ->leftJoin(MerchantActivityCondition::tableName().' mac1','ma.id=mac1.active_id and mac1.type=:type',[
-                ':type'=>MerchantActivityCondition::TYPE_CONSUMPTION_FULL
+            ->leftJoin(MerchantActivityCondition::tableName().' mac1','ma.id=mac1.active_id and mac1.type=:consumptionType',[
+                ':consumptionType'=>MerchantActivityCondition::TYPE_CONSUMPTION_FULL
             ])
             ->where(['ma.mch_id'=>$mchId,'ma.type'=>MerchantActivity::TYPE_FULL_CUT,'ma.status'=>MerchantActivity::STATUS_USABLE])
             ->groupBy('ma.id');
@@ -122,8 +122,7 @@ class ActivityController extends Controller{
             $res[]=[
                 'id'=>$item['id'],
                 'name'=>$item['name'],
-                'consumptionFull'=>$item['consumption_full'],
-                'discount'=>$item['discount'],
+                'rule'=>'满'.$item['consumption_full'].'减'.$item['discount'],
                 'memberRank'=>$memberRank
             ];
         }
@@ -253,6 +252,7 @@ class ActivityController extends Controller{
             $model->discount=$discount;
             $model->name=$name;
             $model->mark=$mark;
+            $model->create_time=$_SERVER['REQUEST_TIME'];
             if(!$model->update()){
                 $transaction->rollBack();
                 return \Yii::$app->responseHelper->error(ErrorManager::ERROR_UPDATE_FAIL)->response();
@@ -261,7 +261,7 @@ class ActivityController extends Controller{
         }
         if($this->addConditions($id,$condition)){
             $transaction->commit();
-            return \Yii::$app->responseHelper->success()->response();
+            return \Yii::$app->responseHelper->success(['id'=>$id])->response();
         }else{
             $transaction->rollBack();
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_OPERATE_FAIL)->response();
@@ -360,6 +360,14 @@ class ActivityController extends Controller{
         $start=\Yii::$app->requestHelper->post('start',[],'int');
         $end=\Yii::$app->requestHelper->post('end',[],'int');
         if(empty($active) || empty($start) || empty($end) || $start>$end){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $span=MerchantActiveDate::find()->where('active_id = :activeId and active_date between :start and :end',[
+            ':activeId'=>$id,
+            ':start'=>intval(date('Ymd',$start)),
+            ':end'=>intval(date('Ymd',$end))
+        ])->one();
+        if($span){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
         $transaction=\Yii::$app->db->beginTransaction();
