@@ -1,72 +1,97 @@
 <style scoped>
-.login_form{
-	padding: 0 40px;
-	border: 1px solid #dddee1;
-    padding: 40px;
-    border-radius: 5px;
+.form-container{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #2C3E50;
+}
+.form{
+	width: 680px;
     position: absolute;
     z-index: auto;
     left: 50%;
     top: 50%;
-    margin-top: -224px;
-    margin-left: -190px;
-	p{
-		font-size: 16px;
-		margin-bottom: 20px;
-	}
-	.input{
-		border: none;
-		border-radius: 0;
-		border-bottom: 1px solid #dddee1;
-		background: transparent;
-		padding: 0 0 0 10px;
-		height: 40px;
-		width: 300px;
-		line-height: 40px;
-		font-size: 14px;
-		margin-bottom: 20px;
-		&.input_code{
-			float: left;
-			width: 200px;
+    margin-top: -154px;
+    margin-left: -340px;
+	color: #ffffff;
+	.form-logo{
+		float: right;
+		text-align: center;
+		padding-right: 40px;
+		img{
+			width: 100px;
+			margin-bottom: 24px;
+		}
+		p{
+			font-size: 25px;
+			font-weight: 500;
+			letter-spacing: 0.1em;
 		}
 	}
-	.code{
-		float: left;
-		width: 100px;
-		height: 40px;
-		line-height: 40px;
-		text-align: center;
-		font-style: italic;
-		font-weight: bolder;
-		font-size: 14px;
-		border-bottom: 1px solid #dddee1;
-	}
-	.btn_login{
-		width: 100%;
-		height: 40px;
-		border-radius: 30px;
-		margin-top: 20px;
-		font-size: 14px;
-	}
-	a{
-		color: #16a085;
+	.form-table{
+		padding-left: 40px;
+		border-left: 1px solid #34495E;
+		p{
+			font-size: 16px;
+			margin-bottom: 20px;
+		}
+		.input{
+			border: none;
+			color: #ffffff;
+			border-radius: 0;
+			border-bottom: 1px solid #34495E;
+			background: transparent;
+			padding: 0 0 0 10px;
+			height: 40px;
+			line-height: 40px;
+			font-size: 14px;
+			margin-bottom: 20px;
+			width: 100%;
+		}
+		.code{
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			font-style: italic;
+			font-weight: bolder;
+			font-size: 14px;
+			border-bottom: 1px solid #34495E;
+		}
+		a{
+			color: #16a085;
+		}
 	}
 }
 </style>
 
 <template>
-<div class="login_form">
-	<p>注册 / Sign Up</p>
-	<form style="width: 300px;">
-		<input v-model="userName" type="text" class="input" placeholder="请输入用户名">
-		<input v-model="password" type="password" class="input" placeholder="请输入密码">
-		<input v-model="code" type="text" class="input input_code" placeholder="请输入验证码">
-		<span class="code">ASDAFG</span>
-		<Button type="primary" long shape="circle" style="margin-top: 10px">注册</Button>
-		<div class="mb"></div>
-		<router-link to="login">已有帐号？点击登录</router-link>
-		<div class="cls"></div>
-	</form>
+<div class="form-container">
+	<div class="form">
+		<Row type="flex" align="middle">
+			<Col span="11">
+				<div class="form-logo">
+					<img src="/src/images/logo.png" alt="">
+					<p>优客满客房管理系统</p>
+				</div>
+			</Col>
+			<Col span="13">
+				<form class="form-table">
+					<p>注册 / Sign Up </p>
+					<input v-model="userName" type="text" class="input" placeholder="请输入用户名">
+					<input v-model="password" type="password" class="input" placeholder="请输入密码">
+					<input v-model="password" type="password" class="input" placeholder="请再次输入密码">
+					<Button type="primary" @click='submit' long shape="circle" class="mt">注册</Button>
+					<div class="mb"></div>
+					<Row>
+						<Col span="12"><router-link to="login">已有帐号？点击登录</router-link></Col>
+						<Col span="12" class="tr"><router-link to="/">返回首页</router-link></Col>
+					</Row>
+				</form>
+			</Col>
+		</Row>
+	</div>
 </div>
 </template>
 

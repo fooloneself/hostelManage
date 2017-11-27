@@ -2,7 +2,7 @@
 .layout-nav{
     height: 60px;
     line-height: 60px;
-    background: #2C3E50;
+    background: rgba(44,62,80,0.5);
     min-width: 1280px;
     position: relative;
     z-index: 999;
@@ -28,22 +28,16 @@
 
 <template>
     <div>
-        <div class="body_bg"></div>
         <div class="layout-nav">
             <div class="container-body">
                 <Row>
                     <Col span="4">
                         <div class="logo">
                             <router-link to="/">
-                                <img src="../images/logo-white.png" alt="">
+                                <img src="/src/images/logo-white.png" alt="">
                             </router-link>
                         </div>
                     </Col>
-                    <!-- <Col span="16">
-                        <Menu mode="horizontal" active-name="index" @on-select="turnUrl" class="menu">
-                            <MenuItem name="index">首页</MenuItem>
-                        </Menu>
-                    </Col> -->
                     <Col span="4" offset="16" class="tr" style="padding-right: 24px;">
                         <router-link to="register" style="margin-right: 16px;">注册</router-link>
                         <router-link to="login">登录</router-link>

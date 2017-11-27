@@ -493,27 +493,27 @@ const tourist = [
             title: ''
         },
         component: (resolve) => require(['./views/tourist/Index.vue'], resolve)
-    },
-    {
-    	path: 'login',
-        meta: {
-            title: '登录'
-        },
-        component: (resolve) => require(['./views/tourist/SignIn.vue'], resolve)
-    },
-    {
-    	path: 'register',
-        meta: {
-            title: '登录'
-        },
-        component: (resolve) => require(['./views/tourist/SignUp.vue'], resolve)
-    },
+    }
 ];
 const routers = [
     {
     	path: '/',
     	component: (resolve) => require(['./views/TouristLayout.vue'], resolve),
     	children:tourist
+    },
+    {
+        path: '/login',
+        meta: {
+            title: '登录'
+        },
+        component: (resolve) => require(['./views/tourist/SignIn.vue'], resolve)
+    },
+    {
+        path: '/register',
+        meta: {
+            title: '登录'
+        },
+        component: (resolve) => require(['./views/tourist/SignUp.vue'], resolve)
     },
     {
         path: '/admin',

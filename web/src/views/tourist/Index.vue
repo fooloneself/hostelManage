@@ -1,14 +1,35 @@
 <style scoped>
-.test{
-	font-size: 60px;
-	margin-top: 300px;
-	text-align: center;
+.carousel{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #ffffff;
+    z-index: 10;
+    overflow: hidden;
+    .carousel-list{
+    	background: url('/src/images/bg.jpg') 50% 0% no-repeat;
+    	height: 1000px;
+    }
 }
 </style>
 
 <template>
-<div>
-	<div class="test">你可能看到了一个假首页</div>
+	<Carousel class="carousel" v-model="value" autoplay autoplay-speed="3000" loop>
+        <CarouselItem>
+            <div class="carousel-list"></div>
+        </CarouselItem>
+        <CarouselItem>
+            <div class="carousel-list"></div>
+        </CarouselItem>
+        <CarouselItem>
+            <div class="carousel-list"></div>
+        </CarouselItem>
+        <CarouselItem>
+            <div class="carousel-list"></div>
+        </CarouselItem>
+    </Carousel>
 </div>
 </template>
 
@@ -16,6 +37,7 @@
 export default{
     data () {
         return {
+        	value:0
         }
     }
 }
