@@ -59,13 +59,13 @@
                     </a>
                     <DropdownMenu slot="list" class="tl">
                         <DropdownItem name="/admin/personInfo">个人资料</DropdownItem>
-                        <DropdownItem name="/admin/managerPassword/0">修改密码</DropdownItem>
+                        <DropdownItem name="/admin/personPassword/0">修改密码</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
                 <Badge dot style="margin-top: -2px;">
                     <router-link to=""><i class="fa fa-bell-o fa-lg fa-fw" aria-hidden="true"></i></router-link>
                 </Badge>
-                <router-link to="/login" class="icon-ml"><i class="fa fa-sign-out fa-lg fa-fw" aria-hidden="true"></i></router-link>
+                <a @click="turnUrl('/login')" class="icon-ml"><i class="fa fa-sign-out fa-lg fa-fw" aria-hidden="true"></i></a>
             </div>
         </div>
         <div class="layout-left">
