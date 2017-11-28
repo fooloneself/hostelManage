@@ -28,6 +28,9 @@ class Module extends \common\components\Module{
         }else if($this->checkPrivilege($admin->getPrivilege(),$action)===false){
             \Yii::$app->responseHelper->error(ErrorManager::ERROR_NOT_PRIVILEGE)->response();
             return false;
+        }else if($this->needCheckBindMch($action) && !$admin->hasBindMerchant()){
+            \Yii::$app->responseHelper->error(ErrorManager::ERROR_NOT_SET_MERCHANT)->response();
+            return false;
         }else{
             return parent::beforeAction($action);
         }

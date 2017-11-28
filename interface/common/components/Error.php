@@ -32,6 +32,7 @@ class Error{
         ErrorManager::ERROR_EXISTS=>'已存在',
         ErrorManager::ERROR_OPERATE_FAIL=>'操作失败',
         ErrorManager::ERROR_CANCEL_NO_RIGHT=>'无权取消',
+        ErrorManager::ERROR_NOT_SET_MERCHANT=>'请先设置商户信息',
     ];
     //错误码
     public $status;

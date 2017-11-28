@@ -3,6 +3,8 @@ function ResponseHandler(data,host) {
     this.__data=data=data.body;
     if(host.needLogin(this.errorCode())){
         host.getApp().$router.push(host.getLoginPath());
+    }else if(!host.hasBindMch(this.errorCode())){
+        host.getApp().$router.push(host.getPathForSetMch());
     }
     this.__host=host;
 }
@@ -61,6 +63,9 @@ Host.prototype={
     getLoginPath:function () {
         return typeof this.__config.loginPath =='undefined' ? '/login':this.__config.loginPath;
     },
+    getPathForSetMch:function () {
+        return this.__config.setMerchantPath;
+    },
     needLogin:function (code) {
         if(typeof this.__config.logoutCode =='object'){
             for(var key in this.__config.logoutCode){
@@ -68,6 +73,14 @@ Host.prototype={
             }
         }
         return false;
+    },
+    hasBindMch:function(code){
+        if(typeof this.__config.notBindMchCode =='object'){
+            for(var key in this.__config.notBindMchCode){
+                if(this.__config.notBindMchCode[key]==code)return false;
+            }
+        }
+        return true;
     },
     setSession:function (uid,userName,token) {
         localStorage.setItem('uid',uid);

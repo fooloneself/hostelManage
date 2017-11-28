@@ -142,4 +142,13 @@ class Module extends \yii\base\Module{
         }
         return $privileges;
     }
+
+    /**
+     * 是否校验已设置商户信息
+     * @param $action
+     * @return bool
+     */
+    protected function needCheckBindMch($action){
+        return $action->controller->id!='merchant';
+    }
 }

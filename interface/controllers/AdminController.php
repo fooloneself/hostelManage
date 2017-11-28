@@ -13,10 +13,10 @@ class AdminController extends Controller{
      * @return mixed
      */
     public function actionRegister(){
-        $userName=\Yii::$app->requestHelper->post('username');
+        $userName=\Yii::$app->requestHelper->post('userName');
         $password=\Yii::$app->requestHelper->post('password');
-        $code=\Yii::$app->requestHelper->post('code');
-        if(empty($userName) || empty($password) || empty($code))
+        $confirmPassword=\Yii::$app->requestHelper->post('confirmPassword');
+        if(empty($userName) || empty($password) || empty($confirmPassword) || $confirmPassword!=$password)
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_UN_FIND)->response();
         $admin=new Admin();
         $admin->user_name=$userName;
@@ -28,8 +28,7 @@ class AdminController extends Controller{
         if(($admin=$register->exe())===false){
             return \Yii::$app->responseHelper->error($register->getError())->response();
         }
-        $admin->resetToken();
-        return \Yii::$app->responseHelper->success($admin->getToken())->response();
+        return \Yii::$app->responseHelper->success()->response();
     }
 
     /**

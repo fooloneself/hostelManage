@@ -115,6 +115,8 @@ const interfaces={
 const server={
     'host': 'http://www.hotel.com',
     'logoutCode': [100010,100011],
+    'notBindMchCode':[100046],
+    'setMerchantPath':'/admin/configStore',
     'loginPath': '/login',
     'interface': interfaces
 };

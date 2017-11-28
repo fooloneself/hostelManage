@@ -51,6 +51,7 @@ class ErrorManager extends Component{
     const ERROR_SET_BLACK_FAIL              =100043;
     const ERROR_DEL_MEMBER_FAIL              =100044;
     const ERROR_REMOVE_BLACK_FAIL              =100045;
+    const ERROR_NOT_SET_MERCHANT                =100046;//未设置商户信息
     //错误信息 common\components\Error的实例
     private $_error;
 

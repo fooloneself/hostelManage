@@ -77,11 +77,11 @@
 				</div>
 			</Col>
 			<Col span="13">
-				<form class="form-table">
+				<form v-model="form" class="form-table">
 					<p>注册 / Sign Up </p>
-					<input v-model="userName" type="text" class="input" placeholder="请输入用户名">
-					<input v-model="password" type="password" class="input" placeholder="请输入密码">
-					<input v-model="password" type="password" class="input" placeholder="请再次输入密码">
+					<input v-model="form.userName" type="text" class="input" placeholder="请输入用户名">
+					<input v-model="form.password" type="password" class="input" placeholder="请输入密码">
+					<input v-model="form.confirmPassword" type="password" class="input" placeholder="请再次输入密码">
 					<Button size="large" type="primary" @click='submit' long shape="circle" class="mt">注册</Button>
 					<div class="mb"></div>
 					<Row>
@@ -99,9 +99,34 @@
 export default{
     data () {
         return {
-        	userName: '',
-			password: '',
-			code: ''
+            form:{
+                userName: '',
+                password: '',
+                confirmPassword:''
+            }
+        }
+    },
+    methods:{
+        submit(){
+            console.log(this.form);
+            var that=this;
+            if(this.form.password!=this.form.confirmPassword){
+                this.$Notice.info({
+                    title:'错误提示',
+                    desc: '两次密码输入不一致'
+                });
+                return;
+            }
+            this.host.post('register',this.form).then(function(res){
+                if(res.isSuccess()){
+                    this.$router.push('/login')
+                }else{
+                    this.$Notice.info({
+                        title:'错误提示',
+                        desc: res.error()
+                    })
+                }
+            })
         }
     }
 }
