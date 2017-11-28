@@ -76,9 +76,6 @@ span.extra{
 		        </FormItem>
 				<FormItem label="入住房信息">
 					<Row :gutter="8">
-						<Col span="20"><Table size="small" :columns="room.columns" :data="room.data" stripe></Table></Col>
-					</Row>
-					<Row :gutter="8" class="mt">
 						<Col span="4">
 							<Select placeholder="入住方式" v-model="orderInfo.type" @on-change="timeChooseShow">
 				                <Option :value="1">全天房</Option>
@@ -91,6 +88,9 @@ span.extra{
 						<Col span="4" v-show="orderInfo.type==2">
 				             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="入住时间选择"></TimePicker>
 						</Col>
+					</Row>
+					<Row :gutter="8" class="mt">
+						<Col span="20"><Table size="small" :columns="room.columns" :data="room.data" stripe></Table></Col>
 					</Row>
 		        </FormItem>
 				<FormItem label="收费信息">
@@ -206,7 +206,7 @@ export default{
 	        room: {
 				columns: [
 	                {
-	                    title: '预订时间',
+	                    title: '入住时间',
 	                    key: 'date'
 	                },
 	                {

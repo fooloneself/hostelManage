@@ -135,7 +135,7 @@ export default{
 	        room: {
 				columns: [
 	                {
-	                    title: '预订时间',
+	                    title: '入住时间',
 	                    key: 'date'
 	                },
 	                {
