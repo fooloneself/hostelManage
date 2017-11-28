@@ -457,4 +457,15 @@ class MemberController extends Controller{
         ];
         return \Yii::$app->responseHelper->success($res)->response();
     }
+
+    /**
+     * 搜索会员
+     * @return mixed
+     */
+    function actionSearch(){
+        $mobile=\Yii::$app->requestHelper->post('mobile','','string');
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $member=MerchantMember::find()->where(['mch_id'=>$mchId,'mobile'=>$mobile])->asArray()->one();
+        return \Yii::$app->responseHelper->success($member)->response();
+    }
 }
