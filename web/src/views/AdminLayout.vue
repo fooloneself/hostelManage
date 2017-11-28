@@ -132,7 +132,7 @@
                     <MenuItem name="/admin/goodsRecommend">
                         <i class="fa fa-shopping-bag fa-fw" aria-hidden="true"></i>商品推荐
                     </MenuItem>
-                    <MenuItem name="/admin/webReconmend">
+                    <MenuItem name="/admin/webRecommend">
                         <i class="fa fa-tv fa-fw" aria-hidden="true"></i>推广门户
                     </MenuItem>
                 </Submenu>

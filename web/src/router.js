@@ -417,6 +417,13 @@ const admin = [
 	},
     // 增值服务
     {
+        path: 'message',
+        meta: {
+            title: '短信服务'
+        },
+        component: (resolve) => require(['./views/service/Message.vue'], resolve)
+    },
+    {
         path: 'rentComputer',
         meta: {
             title: '租用电脑'
@@ -429,6 +436,13 @@ const admin = [
             title: '商品推荐'
         },
         component: (resolve) => require(['./views/service/GoodsRecommend.vue'], resolve)
+    },
+    {
+        path: 'webRecommend',
+        meta: {
+            title: '推广门户'
+        },
+        component: (resolve) => require(['./views/service/WebRecommend.vue'], resolve)
     },
 	// 房屋登记
     {
