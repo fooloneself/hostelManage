@@ -43,7 +43,7 @@
                     },
                     {
                         title: '入住人',
-                        width: 100,
+                        width: 120,
                         key: 'personName'
                     },
                     {

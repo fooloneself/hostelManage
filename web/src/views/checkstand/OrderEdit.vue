@@ -57,7 +57,9 @@ span.extra{
 						</Col>
 					</Row>
 					<Row>
-						<Col span="20"><Table v-if="showMember" class="mt" :columns="member.columns" :data="member.data" stripe></Table></Col>
+						<Col span="20">
+							<Table v-if="showMember" size="small" class="mt" :columns="member.columns" :data="member.data" stripe></Table>
+						</Col>
 					</Row>
 		        </FormItem>
 				<FormItem label="预订房信息">

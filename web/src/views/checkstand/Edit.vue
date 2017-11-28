@@ -58,7 +58,7 @@ span.extra{
 					</Row>
 					<Row :gutter="8">
 						<Col span="20">
-							<Table v-if="showMember" class="mt" :columns="member.columns" :data="member.data" stripe></Table>
+							<Table v-if="showMember" size="small" class="mt" :columns="member.columns" :data="member.data" stripe></Table>
 						</Col>
 					</Row>
 					<Row :gutter="8" class="mt" v-for="(lodger,i,l) in orderInfo.lodgers">
@@ -76,7 +76,7 @@ span.extra{
 		        </FormItem>
 				<FormItem label="入住房信息">
 					<Row :gutter="8">
-						<Col span="20"><Table :columns="room.columns" :data="room.data" stripe></Table></Col>
+						<Col span="20"><Table size="small" :columns="room.columns" :data="room.data" stripe></Table></Col>
 					</Row>
 					<Row :gutter="8" class="mt">
 						<Col span="4">

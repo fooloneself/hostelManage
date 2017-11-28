@@ -52,7 +52,7 @@ span.extra{
 					            <span class="extra">入住时长：</span>2晚
 							</Col>
 						</Row>
-						<Table :columns="room.columns" :data="room.data" stripe></Table>
+						<Table size="small" :columns="room.columns" :data="room.data" stripe></Table>
 			        </FormItem>
 					<FormItem label="换房操作">
 						<Row :gutter="8">
@@ -156,10 +156,10 @@ span.extra{
 								<span class="extra">客人来源：</span>美团
 							</Col>
 						</Row>
-						<Table :columns="member.columns" :data="member.data" stripe></Table>
+						<Table size="small" :columns="member.columns" :data="member.data" stripe></Table>
 			        </FormItem>
 					<FormItem label="收费情况">
-						<Table :columns="cost.columns" :data="cost.data" stripe></Table>
+						<Table size="small" :columns="cost.columns" :data="cost.data" stripe></Table>
 			        </FormItem>
 			    </Form>
 			</Col>

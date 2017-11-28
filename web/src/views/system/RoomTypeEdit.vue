@@ -77,7 +77,10 @@ export default{
                     });
 	            }
 	        })
-	    }
+	    },
+        goBack:function(){
+            history.go(-1);
+        }
 	}
 }
 </script>

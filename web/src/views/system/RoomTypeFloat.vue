@@ -37,7 +37,7 @@
 				        </FormItem>
 						<FormItem>
 					        <Button @click="submitWeekPrice" type="primary">保存</Button>
-                            <Button type="ghost" class="icon-ml">返回</Button>
+                            <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 					    </FormItem>
 				    </Form>
 	        	</Col>
@@ -57,8 +57,8 @@
 						<Input v-model="dayPrice.mark" type="textarea" :rows="14"></Input>
 			        </FormItem>
 					<FormItem>
-				        <Button @click="addDayPrice" type="primary">添加</Button>
-                        <Button type="ghost" class="icon-ml">返回</Button>
+				        <Button @click="addDayPrice" type="primary">保存</Button>
+                        <Button type="ghost" @click="goBack" class="icon-ml">返回</Button>
 				    </FormItem>
 			    </Form>
         	</Col>
@@ -102,12 +102,12 @@
                     },
                     {
                         title: '日期范围',
-                        width: 140,
+                        width: 240,
                         key:'during'
                     },
                     {
                         title: '价格',
-                        width: 60,
+                        width: 100,
                         key:'price'
                     },
                     {
@@ -325,7 +325,10 @@
 	        },
 	        queryAll(){
 	            this.filter.searchDate='';
-	        }
+	        },
+            goBack:function(){
+                history.go(-1);
+            }
 	    },
         watch:{
             'filter.searchDate'(){
