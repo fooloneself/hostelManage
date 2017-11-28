@@ -71,33 +71,6 @@
         <div class="layout-left">
             <Menu theme="light" style="width: auto" active-name="/admin/checkstand" @on-select="turnUrl" accordion>
                 <MenuItem name="/admin"><i class="fa fa-check-square-o fa-fw" aria-hidden="true"></i>客房登记</MenuItem>
-                <Submenu name="power">
-                    <template slot="title"><i class="fa fa-compass fa-fw" aria-hidden="true"></i>鉴权中心</template>
-                    <MenuItem name="/admin/powerMenu">
-                        <i class="fa fa-map fa-fw" aria-hidden="true"></i>菜单配置
-                    </MenuItem>
-                    <MenuItem name="/admin/powerRole">
-                        <i class="fa fa-key fa-fw" aria-hidden="true"></i>角色配置
-                    </MenuItem>
-                    <MenuItem name="/admin/powerAccount">
-                        <i class="fa fa-id-card fa-fw" aria-hidden="true"></i>账号管理
-                    </MenuItem>
-                </Submenu>
-                <Submenu name="basic">
-                    <template slot="title"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>基础中心</template>
-                    <MenuItem name="/admin/basicDict">
-                        <i class="fa fa-tag fa-fw" aria-hidden="true"></i>数据字典
-                    </MenuItem>
-                    <MenuItem name="/admin/basicLinkage">
-                        <i class="fa fa-tags fa-fw" aria-hidden="true"></i>联动菜单
-                    </MenuItem>
-                    <MenuItem name="/admin/basicNotice">
-                        <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>通知公告
-                    </MenuItem>
-                    <MenuItem name="/admin/basicTips">
-                        <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
-                    </MenuItem>
-                </Submenu>
                 <Submenu name="order">
                     <template slot="title"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i>订单管理</template>
                     <MenuItem name="/admin/orderIn">
@@ -128,7 +101,7 @@
                         <i class="fa fa-cube fa-fw" aria-hidden="true"></i>房间列表
                     </MenuItem>
                     <MenuItem name="/admin/configAccount">
-                        <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>账号配置
+                        <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>分配账号
                     </MenuItem>
                     <MenuItem name="/admin/configChannel">
                         <i class="fa fa-handshake-o fa-fw" aria-hidden="true"></i>渠道配置
@@ -148,8 +121,23 @@
                     <!-- <MenuItem name="/admin/coupon"><i class="fa fa-ticket fa-fw" aria-hidden="true"></i>优惠券</MenuItem>
                     <MenuItem name="/admin/gift"><i class="fa fa-gift fa-fw" aria-hidden="true"></i>抽奖</MenuItem> -->
                 </Submenu>
+                <Submenu name="service">
+                    <template slot="title"><i class="fa fa-dollar fa-fw" aria-hidden="true"></i>增值服务</template>
+                    <MenuItem name="/admin/message">
+                        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>短信服务
+                    </MenuItem>
+                    <MenuItem name="/admin/rentComputer">
+                        <i class="fa fa-laptop fa-fw" aria-hidden="true"></i>租借电脑
+                    </MenuItem>
+                    <MenuItem name="/admin/goodsRecommend">
+                        <i class="fa fa-shopping-bag fa-fw" aria-hidden="true"></i>商品推荐
+                    </MenuItem>
+                    <MenuItem name="/admin/webReconmend">
+                        <i class="fa fa-tv fa-fw" aria-hidden="true"></i>推广门户
+                    </MenuItem>
+                </Submenu>
                 <Submenu name="person">
-                    <template slot="title"><i class="fa fa-user-o fa-fw" aria-hidden="true"></i>用户中心</template>
+                    <template slot="title"><i class="fa fa-user-o fa-fw" aria-hidden="true"></i>个人中心</template>
                     <MenuItem name="/admin/personInfo">
                         <i class="fa fa-info fa-fw" aria-hidden="true"></i>个人资料
                     </MenuItem>
@@ -163,19 +151,31 @@
                         <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
                     </MenuItem>
                 </Submenu>
-                <Submenu name="service">
-                    <template slot="title"><i class="fa fa-dollar fa-fw" aria-hidden="true"></i>增值服务</template>
-                    <MenuItem name="/admin/message">
-                        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>短信服务
+                <Submenu name="power">
+                    <template slot="title"><i class="fa fa-compass fa-fw" aria-hidden="true"></i>鉴权中心</template>
+                    <MenuItem name="/admin/powerMenu">
+                        <i class="fa fa-map fa-fw" aria-hidden="true"></i>菜单配置
                     </MenuItem>
-                    <MenuItem name="/admin/rentComputer">
-                        <i class="fa fa-laptop fa-fw" aria-hidden="true"></i>租用电脑
+                    <MenuItem name="/admin/powerRole">
+                        <i class="fa fa-key fa-fw" aria-hidden="true"></i>角色配置
                     </MenuItem>
-                    <MenuItem name="/admin/goodsRecommend">
-                        <i class="fa fa-shopping-bag fa-fw" aria-hidden="true"></i>商品推荐
+                    <MenuItem name="/admin/powerAccount">
+                        <i class="fa fa-id-card fa-fw" aria-hidden="true"></i>账号管理
                     </MenuItem>
-                    <MenuItem name="/admin/webReconmend">
-                        <i class="fa fa-tv fa-fw" aria-hidden="true"></i>推广门户
+                </Submenu>
+                <Submenu name="basic">
+                    <template slot="title"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>基础中心</template>
+                    <MenuItem name="/admin/basicDict">
+                        <i class="fa fa-tag fa-fw" aria-hidden="true"></i>数据字典
+                    </MenuItem>
+                    <MenuItem name="/admin/basicLinkage">
+                        <i class="fa fa-tags fa-fw" aria-hidden="true"></i>联动菜单
+                    </MenuItem>
+                    <MenuItem name="/admin/basicNotice">
+                        <i class="fa fa-bullhorn fa-fw" aria-hidden="true"></i>通知公告
+                    </MenuItem>
+                    <MenuItem name="/admin/basicTips">
+                        <i class="fa fa-send fa-fw" aria-hidden="true"></i>意见反馈
                     </MenuItem>
                 </Submenu>
             </Menu>

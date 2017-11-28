@@ -60,7 +60,7 @@
 		<Col span="12">
 			<Badge :count="ordering_number">
 				<Button type="warning" @click="funcDoOrder">
-					预订下单
+					预订登记结算
 					<Icon type="chevron-right" class="icon-ml"></Icon>
 				</Button>
 			</Badge>

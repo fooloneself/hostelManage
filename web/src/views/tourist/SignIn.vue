@@ -85,7 +85,7 @@
 						<Col span="16"><input v-model="code" type="text" class="input input_code" placeholder="请输入验证码"></Col>
 						<Col span="8"><div class="code">ASDAFG</div></Col>
 					</Row>
-					<Button type="primary" @click='submit' long shape="circle" class="mt">登录</Button>
+					<Button size="large" type="primary" @click='submit' long shape="circle" class="mt">登录</Button>
 					<div class="mb"></div>
 					<Row>
 						<Col span="12"><router-link to="register">没有帐号？免费注册</router-link></Col>

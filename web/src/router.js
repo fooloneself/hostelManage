@@ -415,6 +415,21 @@ const admin = [
         },
     	component: (resolve) => require(['./views/platform/BasicTips.vue'], resolve)			
 	},
+    // 增值服务
+    {
+        path: 'rentComputer',
+        meta: {
+            title: '租用电脑'
+        },
+        component: (resolve) => require(['./views/service/RentComputer.vue'], resolve)
+    },
+    {
+        path: 'goodsRecommend',
+        meta: {
+            title: '商品推荐'
+        },
+        component: (resolve) => require(['./views/service/GoodsRecommend.vue'], resolve)
+    },
 	// 房屋登记
     {
         path: '',

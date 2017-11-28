@@ -82,7 +82,7 @@
 					<input v-model="userName" type="text" class="input" placeholder="请输入用户名">
 					<input v-model="password" type="password" class="input" placeholder="请输入密码">
 					<input v-model="password" type="password" class="input" placeholder="请再次输入密码">
-					<Button type="primary" @click='submit' long shape="circle" class="mt">注册</Button>
+					<Button size="large" type="primary" @click='submit' long shape="circle" class="mt">注册</Button>
 					<div class="mb"></div>
 					<Row>
 						<Col span="12"><router-link to="login">已有帐号？点击登录</router-link></Col>
