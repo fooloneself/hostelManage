@@ -255,20 +255,6 @@ const admin = [
 	},
 	// 系统管理
 	{
-		path: 'managerInfo',
-        meta: {
-            title: '个人资料'
-        },
-    	component: (resolve) => require(['./views/platform/ManagerInfo.vue'], resolve)
-	},
-	{
-		path: 'managerPassword/:adminId',
-        meta: {
-            title: '修改密码'
-        },
-    	component: (resolve) => require(['./views/platform/ManagerPassword.vue'], resolve)
-	},
-	{
 		path: 'powerMenu',
         meta: {
             title: '系统菜单'
