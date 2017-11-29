@@ -1,10 +1,12 @@
 <?php
 namespace service\room;
 use common\components\Server;
+use common\models\MerchantMember;
 use common\models\Order;
 use common\models\OrderOccupancyRoom;
 use common\models\OrderReserveRoom;
 use common\models\OrderRoom;
+use common\models\RoomDayPrice;
 use common\models\RoomType;
 
 class Room extends Server{
@@ -14,17 +16,8 @@ class Room extends Server{
     const STATUS_LOCK       =2;//锁房
     const STATUS_RESERVE    =3;//预定
     const STATUS_OCCUPANCY  =4;//入住
-    public static $allStatus=[
-        self::STATUS_EMPTY=>'空房',
-        self::STATUS_DIRTY=>'脏房',
-        self::STATUS_LOCK=>'锁房',
-        self::STATUS_RESERVE=>'预定',
-        self::STATUS_OCCUPANCY=>'入住'
-    ];
-    public $time;
-    public $type=0;
-    public $status=-1;
-
+    const STATUS_CLOCK       =5;//钟点房
+    const STATUS_ALL_DAY    =6;//整天房
     protected $premisesId;
     protected $mchId;
 
@@ -34,116 +27,69 @@ class Room extends Server{
         $this->premisesId=$premisesId;
     }
 
-    /**
-     * 获取数据
-     * @return array
-     */
-    public function get(){
-        $rooms=$this->getBaseInfoOfRooms();
-        if(empty($rooms)){
-            return [];
-        }else{
-            return $this->handleRooms($rooms);
-        }
-    }
-
-    /**
-     * 获取所有房间
-     * @return array
-     */
-    protected function getBaseInfoOfRooms(){
-        $query= \common\models\Room::find()->alias('r')
-            ->select('r.id,r.status,r.number,rt.name as type_name')
-            ->leftJoin(RoomType::tableName().' rt','r.type=rt.id')
-            ->where(['r.mch_id'=>$this->mchId,'r.premises_id'=>$this->premisesId])
-            ->orderBy('r.number asc');
-        if($this->type>0){
-            $query->andWhere(['r.type'=>$this->type]);
-        }
-        return $query->asArray()->all();
-    }
-
-    /**
-     * 处理房间列表字段
-     * @param array $rooms
-     * @return array
-     */
-    protected function handleRooms(array $rooms){
+    public function get($status=-1,$type=0,$guestId=0){
+        $rooms=$this->flushFromDb($guestId,$type);
         $res=[];
         foreach ($rooms as $room){
-            $room['status']=$this->getStatusOfRoom($room);
-            if($this->status>=0){
-                if($room['status']==$this->status){
-                    $res[]=$this->handleRoom($room);
-                }
-            }else{
-                $res[]=$this->handleRoom($room);
+            $roomStatus=$this->getRoomStatus($room);
+            if($status>-1 && $roomStatus!=$status){
+                continue;
             }
+            $res[]=[
+                'roomNumber'=>$room['number'],
+                'typeName'=>$room['type_name'],
+                'orderId'=>intval($room['order_id']),
+                'roomStatus'=>$roomStatus,
+                'guestName'=>strval($room['guest_name']),
+                'roomId'=>intval($room['id'])
+            ];
         }
         return $res;
     }
 
-    /**
-     * 处理房间字段
-     * @param array $room
-     * @return array
-     */
-    protected function handleRoom(array $room){
-        return [
-            'id'=>intval($room['id']),
-            'status'=>intval($room['status']),
-            'number'=>$room['number'],
-            'typeName'=>$room['type_name']
-        ];
+    protected function flushFromDb($guestId,$type){
+        $query=\common\models\Room::find()->alias('r')
+            ->select('r.id,r.number,r.`status`,rt.`name` as type_name,room.order_room_status,room.guest_name,room.order_id,rt.allow_hour_room')
+            ->leftJoin(RoomType::tableName().' rt','r.`type`=rt.`id`')
+            ->leftJoin('('.$this->getOrderRoom($guestId).') room','r.`id`=room.room_id')
+            ->where(['r.mch_id'=>$this->mchId]);
+        if($type>0){
+            $query->andWhere(['r.type'=>$type]);
+        }else{
+            $query->andWhere('r.type>0');
+        }
+        if($guestId>0){
+            $query->andWhere(['room.guest_id'=>$guestId]);
+        }
+        return $query->orderBy('r.number asc')->asArray()->all();
     }
 
-    /**
-     * 获取房间状态
-     * @param $room
-     * @return int
-     */
-    protected function getStatusOfRoom($room){
-        $status=intval($room['status']);
-        if($status==0){
-            if($this->hasOccupancy($room['id'])){
-                return self::STATUS_OCCUPANCY;
-            }else if($this->hasReserve($room['id'])){
+    protected function getOrderRoom($guestId){
+        $query= OrderRoom::find()->alias('oo')
+            ->select('oo.`room_id`,oo.`status` AS order_room_status,mm.name AS guest_name,oo.order_id,o.guest_id')
+            ->leftJoin(Order::tableName().' o','oo.`order_id`=o.`id`')
+            ->leftJoin(MerchantMember::tableName().' mm','o.`guest_id`=mm.`id`')
+            ->where(['o.mch_id'=>$this->mchId,'o.status'=>Order::STATUS_NORMAL])
+            ->andWhere(':time between oo.start_time and oo.end_time',[':time'=>$_SERVER['REQUEST_TIME']]);
+        if($guestId>0){
+            $query->andWhere(['o.guest_id'=>$guestId]);
+        }
+        return $query->createCommand()->getRawSql();
+    }
+
+    protected function getRoomStatus(array $room){
+        if($room['status']==\common\models\Room::STATUS_DIRTY){
+            return self::STATUS_DIRTY;
+        }else if($room['status']==\common\models\Room::STATUS_UN_OPEN){
+            return self::STATUS_LOCK;
+        }else{
+            if($room['order_room_status']==OrderRoom::STATUS_REVERSE){
                 return self::STATUS_RESERVE;
+            }else if($room['order_room_status']==OrderRoom::STATUS_OCCUPANCY){
+                return self::STATUS_OCCUPANCY;
             }else{
                 return self::STATUS_EMPTY;
             }
-        }else{
-            return $status;
         }
-    }
-
-    /**
-     * 判断是否入住
-     * @param $roomId
-     * @return bool
-     */
-    protected function hasOccupancy($roomId){
-        $res=OrderRoom::find()->alias('oo')
-            ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
-            ->where(['oo.room_id'=>$roomId])
-            ->andWhere('oo.status=:occupancy and o.status=:normalOrder ',[':occupancy'=>OrderRoom::STATUS_OCCUPANCY,':normalOrder'=>Order::STATUS_NORMAL])
-            ->andWhere(':time between oo.start_time and oo.end_time',[':time'=>$this->time])
-            ->asArray()->one();
-        return !empty($res);
-    }
-
-    /**
-     * 是否预定
-     * @param $roomId
-     * @return bool
-     */
-    protected function hasReserve($roomId){
-        $res=OrderRoom::find()->alias('oo')
-            ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
-            ->where(['oo.room_id'=>$roomId])
-            ->andWhere('oo.status=:reverse and o.status=:normalOrder ',[':reverse'=>OrderRoom::STATUS_REVERSE,':normalOrder'=>Order::STATUS_NORMAL])
-            ->andWhere(':time between oo.start_time and oo.end_time',[':time'=>$this->time])
-            ->asArray()->one();
-        return !empty($res);
     }
 }

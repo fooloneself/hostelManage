@@ -110,7 +110,8 @@ const interfaces={
     'merchantActivityFullCutList':'merchant/activity/full-cut-list',
     'merchantActivitySpecialPriceList':'merchant/activity/special-offer-list',
     'merchantActivityFullCutEdit':'merchant/activity/edit-full-cut',
-    'merchantActivitySpecialPriceEdit':'merchant/activity/edit-special-price'
+    'merchantActivitySpecialPriceEdit':'merchant/activity/edit-special-price',
+    'merchantOrderGuest':'merchant/checkstand/order-guest'
 };
 const server={
     'host': 'http://www.hotel.com',

@@ -73,7 +73,7 @@
 		</Col>
 		<Col span="12">
 			<div class="fr">
-				<Select placeholder="房屋状态" class="search-input" @on-change="selectStatus">
+				<Select v-model="filter.status" placeholder="房屋状态" class="search-input">
 	                <Option value="-1">全部</Option>
 	                <Option value="0">空房</Option>
 	                <Option value="4">全天</Option>
@@ -82,27 +82,25 @@
 	                <Option value="1">脏房</Option>
 	                <Option value="2">锁房</Option>
 	            </Select>
-	            <Select placeholder="房屋类型" class="search-input" @on-change="selectType">
+	            <Select v-model="filter.type" placeholder="房屋类型" class="search-input">
 	                <Option value="0">全部</Option>
 	                <Option v-for="type in types" :value="type.id">{{type.name}}</Option>
 	            </Select>
-	            <Select placeholder="客户名称" class="search-input">
-	                <Option value="">全部</Option>
-	                <Option value="张三">张三</Option>
-	                <Option value="李四">李四</Option>
-	                <Option value="王五">王五</Option>
-	                <Option value="刘六">刘六</Option>
+	            <Select v-model="filter.guestId" placeholder="客户名称" class="search-input">
+	                <Option value="0">全部</Option>
+	                <Option v-for="(guest,g) in guests" :value="guest.id">{{guest.name}}</Option>
 	            </Select>
-	            <Button type="primary">查询</Button>
+	            <Button @click="refresh" type="primary">查询</Button>
             </div>
 		</Col>
 	</Row>
 	<div class="mb"></div>
 	<Row :gutter="16">
 		<Col v-for="room in rooms" span="2" class="room-pick">
-			<div class="room" :class="getClass(room.status)" @click="roomClick(room.id,room.status)">
+			<div class="room" :class="getClass(room.roomStatus)" @click="roomClick(room)">
 				<div class="type">{{room.typeName}}</div>
-				<div class="number">{{room.number}}</div>
+				<div class="number">{{room.roomNumber}}</div>
+				<div class="name">{{room.guestName}}</div>
 			</div>
 		</Col>
 	</Row>
@@ -120,10 +118,11 @@ export default{
 			weekday: ['二','三','四','五','六','日','一','二','三','四'],
 			rooms: [],
 			types: [],
+			guests:[],
 			filter:{
-			    time: 0,
 			    status: -1,
-			    type: 0
+			    type: 0,
+			    guestId:0
 			}
 		}
 	},
@@ -139,6 +138,16 @@ export default{
                 })
             }
 	    })
+	    this.host.post('merchantOrderGuest').then(function(res){
+            if(res.isSuccess()){
+                that.guests=res.data();
+            }else{
+                that.$Notice.info({
+                    title: '提示',
+                    desc: res.error()
+                })
+            }
+        })
 	    this.refresh();
 	},
 	methods:{
@@ -160,24 +169,16 @@ export default{
                 }
             })
         },
-        selectType (type){
-            this.filter.type=type;
-            this.refresh();
-        },
-        selectStatus(status){
-            this.filter.status=status;
-            this.refresh();
-        },
-        roomClick (roomId,status){
-            switch(status){
+        roomClick (room){
+            switch(room.roomStatus){
                 case 0:
-                    this.$router.push('/admin/checkstandEdit/'+roomId);
+                    this.$router.push('/admin/checkstandEdit/'+room.roomId+'/'+room.orderId);
                     break;
                 case 1:
                     this.modalShow=true;
                     break;
                 default:
-                    this.$router.push('/admin/checkstandView/'+roomId);
+                    this.$router.push('/admin/checkstandView/'+room.roomId+'/'+room.orderId);
             }
         },
         getClass (status){
@@ -186,7 +187,7 @@ export default{
                     return 'room-dirty';
                     break;
                 case 2:
-                    return 'room-clock';
+                    return 'room-lock';
                     break;
                 case 3:
                     return 'room-order';
