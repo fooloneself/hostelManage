@@ -12,8 +12,8 @@ use Yii;
  * @property integer $number
  * @property integer $create_time
  * @property integer $mch_id
+ * @property integer $order_id
  * @property integer $bed_num
- * @property integer $floor
  * @property integer $status
  * @property integer $type
  * @property string $blair_said
@@ -23,9 +23,10 @@ use Yii;
  */
 class Room extends \common\components\ActiveRecord
 {
-    const STATUS_CAN_ORDER  =0;//可定
-    const STATUS_DIRTY       =1;//脏房
-    const STATUS_UN_OPEN    =2;//锁定，不对外开放
+    const STATUS_CAN_ORDER =0;//可定
+    const STATUS_DIRTY      =1;//脏房
+    const STATUS_UN_OPEN   =2;//锁定，不对外开放
+    const STATUS_OCCUPANCY =3;//入住
     /**
      * @inheritdoc
      */
@@ -41,7 +42,7 @@ class Room extends \common\components\ActiveRecord
     {
         return [
             [['premises_id', 'number', 'mch_id'], 'required'],
-            [['premises_id', 'number', 'create_time', 'mch_id', 'bed_num', 'status', 'type'], 'integer'],
+            [['premises_id', 'number', 'create_time', 'mch_id', 'order_id', 'bed_num', 'status', 'type'], 'integer'],
             [['introduce'], 'string'],
             [['blair_said', 'cover'], 'string', 'max' => 100],
             [['pic'], 'string', 'max' => 400],
@@ -59,6 +60,7 @@ class Room extends \common\components\ActiveRecord
             'number' => 'Number',
             'create_time' => 'Create Time',
             'mch_id' => 'Mch ID',
+            'order_id' => 'Order ID',
             'bed_num' => 'Bed Num',
             'status' => 'Status',
             'type' => 'Type',

@@ -76,8 +76,8 @@
 				<Select v-model="filter.status" placeholder="房屋状态" class="search-input">
 	                <Option value="-1">全部</Option>
 	                <Option value="0">空房</Option>
-	                <Option value="4">全天</Option>
-	                <Option value="">钟点</Option>
+	                <Option value="5">全天</Option>
+	                <Option value="4">钟点</Option>
 	                <Option value="3">预订</Option>
 	                <Option value="1">脏房</Option>
 	                <Option value="2">锁房</Option>
@@ -175,11 +175,46 @@ export default{
                     this.$router.push('/admin/checkstandEdit/'+room.roomId+'/'+room.orderId);
                     break;
                 case 1:
-                    this.modalShow=true;
+                    this.setEmpty(room);
+                    break;
+                case 2:
+                    this.unLockRoom(room);
                     break;
                 default:
                     this.$router.push('/admin/checkstandView/'+room.roomId+'/'+room.orderId);
             }
+        },
+        setEmpty(room){
+            var that=this;
+            this.$Modal.confirm({
+                title: '提示',
+                content: '是否切换为空房？',
+                onOk (){
+                    that.setRoomStatus(room,0);
+                }
+            })
+        },
+        unLockRoom(room){
+            var that=this;
+            this.$Modal.confirm({
+                title: '提示',
+                content: '是否解锁房间？',
+                onOk (){
+                    that.setRoomStatus(room,0);
+                }
+            })
+        },
+        setRoomStatus(room,status){
+            this.host.post('',{roomId:room.roomId,status:status}).then(function(res){
+                if(res.isSuccess()){
+                    room.roomStatus=status
+                }else{
+                    this.$Notice.info({
+                        title:'错误提示',
+                        desc: res.error()
+                    })
+                }
+            })
         },
         getClass (status){
             switch(status){
@@ -193,6 +228,9 @@ export default{
                     return 'room-order';
                     break;
                 case 4:
+                    return 'room-clock';
+                    break;
+                case 5:
                     return 'room-in';
                     break;
                 case 0:

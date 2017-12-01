@@ -15,9 +15,8 @@ class Room extends Server{
     const STATUS_DIRTY      =1;//脏房
     const STATUS_LOCK       =2;//锁房
     const STATUS_RESERVE    =3;//预定
-    const STATUS_OCCUPANCY  =4;//入住
-    const STATUS_CLOCK       =5;//钟点房
-    const STATUS_ALL_DAY    =6;//整天房
+    const STATUS_CLOCK       =4;//钟点房
+    const STATUS_ALL_DAY    =5;//整天房
     protected $premisesId;
     protected $mchId;
 
@@ -49,8 +48,9 @@ class Room extends Server{
 
     protected function flushFromDb($guestId,$type){
         $query=\common\models\Room::find()->alias('r')
-            ->select('r.id,r.number,r.`status`,rt.`name` as type_name,room.order_room_status,room.guest_name,room.order_id,rt.allow_hour_room')
+            ->select('r.id,r.number,r.`status`,rt.`name` as type_name,room.order_room_status,room.guest_name,room.order_id,rt.allow_hour_room,oom.type as occupancy_type')
             ->leftJoin(RoomType::tableName().' rt','r.`type`=rt.`id`')
+            ->leftJoin(OrderRoom::tableName().' oom','oom.order_id=r.order_id and oom.room_id=r.id')
             ->leftJoin('('.$this->getOrderRoom($guestId).') room','r.`id`=room.room_id')
             ->where(['r.mch_id'=>$this->mchId]);
         if($type>0){
@@ -69,7 +69,7 @@ class Room extends Server{
             ->select('oo.`room_id`,oo.`status` AS order_room_status,mm.name AS guest_name,oo.order_id,o.guest_id')
             ->leftJoin(Order::tableName().' o','oo.`order_id`=o.`id`')
             ->leftJoin(MerchantMember::tableName().' mm','o.`guest_id`=mm.`id`')
-            ->where(['o.mch_id'=>$this->mchId,'o.status'=>Order::STATUS_NORMAL])
+            ->where(['o.mch_id'=>$this->mchId,'o.status'=>Order::STATUS_NORMAL,'oo.status'=>OrderRoom::STATUS_REVERSE])
             ->andWhere(':time between oo.start_time and oo.end_time',[':time'=>$_SERVER['REQUEST_TIME']]);
         if($guestId>0){
             $query->andWhere(['o.guest_id'=>$guestId]);
@@ -82,11 +82,15 @@ class Room extends Server{
             return self::STATUS_DIRTY;
         }else if($room['status']==\common\models\Room::STATUS_UN_OPEN){
             return self::STATUS_LOCK;
+        }else if($room['status']==\common\models\Room::STATUS_OCCUPANCY){
+            if($room['occupancy_type']==OrderRoom::TYPE_CLOCK){
+                return self::STATUS_CLOCK;
+            }else{
+                return self::STATUS_ALL_DAY;
+            }
         }else{
             if($room['order_room_status']==OrderRoom::STATUS_REVERSE){
                 return self::STATUS_RESERVE;
-            }else if($room['order_room_status']==OrderRoom::STATUS_OCCUPANCY){
-                return self::STATUS_OCCUPANCY;
             }else{
                 return self::STATUS_EMPTY;
             }

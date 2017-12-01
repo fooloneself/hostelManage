@@ -85,10 +85,14 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            var res=confirm('确定要删除吗？');
-                                            if(res){
-                                                this.delete(params.row.id);
-                                            }
+                                            var that=this;
+                                            this.$Modal.confirm({
+                                                title: '提示',
+                                                content: '确定要删除吗',
+                                                onOk (){
+                                                    that.deleteRoom(params);
+                                                }
+                                            })
                                         }
                                     }
                                 }, '删除'),
@@ -99,16 +103,14 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            var res=confirm('确定要锁房？');
-                                            if(res){
-                                                this.host.post('roomLock',{id: params.row.id}).then(function(res){
-                                                    if(res.isSuccess()){
-                                                        params.row.isLock='是';
-                                                    }else{
-                                                        alert(res.error());
-                                                    }
-                                                })
-                                            }
+                                            var that=this;
+                                            this.$Modal.confirm({
+                                                title: '提示',
+                                                content: '确定要锁房吗',
+                                                onOk (){
+                                                    that.lockRoom(params);
+                                                }
+                                            })
                                         }
                                     }
                                 }, '锁房')
@@ -154,6 +156,30 @@
                         this.$Notice.info({
                             title: '提示',
                             desc: res.error()
+                        });
+                    }
+                })
+            },
+            deleteRoom(params){
+                this.host.post('roomLock',{id: params.row.id}).then(function(res){
+                    if(res.isSuccess()){
+                        params.row.isLock='是';
+                    }else{
+                       this.$Notice.info({
+                           title: '提示',
+                           desc: res.error()
+                       });
+                    }
+                })
+            },
+            lockRoom(params){
+                this.host.post('roomLock',{id: params.row.id}).then(function(res){
+                    if(res.isSuccess()){
+                        params.row.isLock='是';
+                    }else{
+                        this.$Notice.info({
+                           title: '提示',
+                           desc: res.error()
                         });
                     }
                 })

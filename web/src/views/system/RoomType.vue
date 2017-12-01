@@ -59,10 +59,14 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            var res=confirm('确定要删除吗');
-                                            if(res){
-                                                this.deleteType(params.row.id);
-                                            }
+                                            var that=this;
+                                            this.$Modal.confirm({
+                                                title: '提示',
+                                                content: '确定要删除吗',
+                                                onOk (){
+                                                    that.deleteType(params.row.id);
+                                                }
+                                            })
                                         }
                                     }
                                 }, '删除'),
