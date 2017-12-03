@@ -36,13 +36,15 @@ class Room extends Server{
             }
             if($roomStatus==self::STATUS_ALL_DAY || $roomStatus==self::STATUS_CLOCK){
                 $guestName=strval($room['occupancy_name']);
+                $orderId=intval($room['occupancy_order_id']);
             }else{
                 $guestName=strval($room['guest_name']);
+                $orderId=intval($room['order_id']);
             }
             $res[]=[
                 'roomNumber'=>$room['number'],
                 'typeName'=>$room['type_name'],
-                'orderId'=>intval($room['order_id']),
+                'orderId'=>$orderId,
                 'roomStatus'=>$roomStatus,
                 'guestName'=>$guestName,
                 'roomId'=>intval($room['id'])
@@ -54,7 +56,7 @@ class Room extends Server{
     protected function flushFromDb($guestId,$type){
         $query=\common\models\Room::find()->alias('r')
             ->select('r.id,r.number,r.`status`,rt.`name` as type_name,room.order_room_status,room.guest_name,
-            room.order_id,oom.type as occupancy_type,mm.name as occupancy_name')
+            room.order_id,oom.type as occupancy_type,mm.name as occupancy_name,r.order_id as occupancy_order_id')
             ->leftJoin(RoomType::tableName().' rt','r.`type`=rt.`id`')
             ->leftJoin(OrderRoom::tableName().' oom','oom.order_id=r.order_id and oom.room_id=r.id')
             ->leftJoin(Order::tableName().' o','o.id=oom.order_id')

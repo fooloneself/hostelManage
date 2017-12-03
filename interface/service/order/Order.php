@@ -8,7 +8,7 @@ class Order extends Server{
 
     private $_order;
     protected $merchant;
-
+    protected $rooms=[];
     public function __construct(Merchant $merchant,\common\models\Order $order)
     {
         $this->_order=$order;
@@ -65,14 +65,6 @@ class Order extends Server{
         return 'A'.str_pad(base_convert($merchantId,10,16),STR_PAD_LEFT,6).date('ymdHmi').rand(100,999);
     }
 
-    public function add(){
-
-    }
-
-    public function update(){
-
-    }
-
     /**
      * 获取订单ID
      * @return int
@@ -87,5 +79,13 @@ class Order extends Server{
      */
     public function getOrderNo(){
         return $this->_order->getAttribute('order_no');
+    }
+
+    public function reverse($rooms){
+
+    }
+
+    public function occupancy($rooms){
+
     }
 }

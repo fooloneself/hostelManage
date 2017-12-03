@@ -1,46 +1,99 @@
 <?php
 namespace service\order;
 use common\components\Server;
-use common\models\Room;
-use common\models\RoomWeekPrice;
+use common\models\OrderCostDetail;
 
 class RoomBill extends Server{
     protected $room;
     protected $bill;
+    protected $totalAmount=0;
     public function __construct(Room $room)
     {
         $this->room=$room;
     }
 
     /**
-     * 生成费用记录-钟点房
-     * @return float    总费用
+     * 设置清单列表
+     * @param array $bills
+     * @return $this
      */
-    public function generateHourCostBill(){
-        $cost=$this->calculateHourCost();
-        $this->addCostRecord($this->startTime,$cost);
-        return $cost;
+    public function setBill(array $bills){
+        $this->bill=$bills;
+        return $this;
     }
 
     /**
-     * 生成消费记录-天
-     * @return float|int|mixed 总费用
+     * 生成账单数据模型
+     * @param $roomId
+     * @param $timestamp
+     * @param $amount
+     * @return OrderCostDetail
      */
-    public function generateDayCostBill(){
-        $days=ceil(($this->endTime-$this->startTime)/86400);
-        $timestamp=$this->startTime;
-        if($this->price>0){
+    protected static function newBillModel($roomId,$timestamp,$amount){
+        $date=date('Y-m-d',$timestamp);
+        list($year,$month,$day)=explode('-',$date);
+        $date=str_replace('-','',$date);
+        $model=new OrderCostDetail();
+        $model->date=intval($date);
+        $model->year=intval($year);
+        $model->month=intval($month);
+        $model->day=intval($day);
+        $model->amount=floatval($amount);
+        $model->room_id=$roomId;
+        return $model;
+    }
+
+    /**
+     * 生成消费清单--钟点
+     * @param Room $room
+     * @param $start
+     * @param $end
+     * @param int $totalAmount
+     * @return static
+     */
+    public static function generateHoursBill(Room $room,$start,$end,$totalAmount=-1){
+        $totalAmount=$totalAmount<0 ? $room->getHourPrice()*ceil(($end-$start)/3600) : $totalAmount;
+        return self::newRoomBill($room,$totalAmount,[self::newBillModel($room->getId(),$start,$totalAmount)]);
+    }
+
+    /**
+     * 实例化单房间的消费清单
+     * @param Room $room
+     * @param $totalAmount
+     * @param $bills
+     * @return static
+     */
+    protected function newRoomBill(Room $room,$totalAmount,$bills){
+        $roomBill=new static($room);
+        $roomBill->setBill($bills);
+        $roomBill->setTotalAmount($totalAmount);
+        return $roomBill;
+    }
+
+    /**
+     * 生成消费清单--整天
+     * @param Room $room
+     * @param $start
+     * @param $end
+     * @param int $totalAmount
+     * @return RoomBill
+     */
+    public static function generateDaysBill(Room $room,$start,$end,$totalAmount=-1){
+        $days=ceil(($end-$start)/86400);
+        $timestamp=$start;
+        $bills=[];
+        $roomId=$room->getId();
+        if($totalAmount>=0){
+            $price=$totalAmount/$days;
             for($i=0;$i<$days;$i++){
+                $bills[]=self::newBillModel($roomId,$timestamp,$price);
                 $timestamp+=86400;
-                $this->addCostRecord($timestamp,$this->price);
             }
-            $totalCost=$days*$this->price;
         }else{
-            $totalCost=0;
-            $dayPrices=$this->getPricesOfDay();
-            $weekPrices=$this->getPricesOfWeek();
+            $totalAmount=0;
+            $dayPrices=$room->getPricesOfDay($start,$end);
+            $weekPrices=$room->getPricesOfWeek();
             for($i=0;$i<$days;$i++){
-                $timestamp+=86400;
                 $date=intval(date('Ymd',$timestamp));
                 if(isset($dayPrices[$date])){
                     $cost=$dayPrices[$date];
@@ -49,69 +102,49 @@ class RoomBill extends Server{
                     if($weekPrices[$week]>=0){
                         $cost=$weekPrices[$week];
                     }else{
-                        $cost=floatval($this->roomType->getAttribute('default_price'));
+                        $cost=$room->getDefaultPrice();
                     }
                 }else{
-                    $cost=floatval($this->roomType->getAttribute('default_price'));
+                    $cost=$room->getDefaultPrice();
                 }
-                $this->addCostRecord($timestamp,$cost);
-                $totalCost+=$cost;
+                $bills[]=self::newBillModel($roomId,$timestamp,$cost);
+                $totalAmount+=$cost;
+                $timestamp+=86400;
             }
         }
-        return $totalCost;
+        return self::newRoomBill($room,$totalAmount,$bills);
     }
 
     /**
-     * 获取单日价格
-     * @return array
-     */
-    protected function getPricesOfDay(){
-        $dayPriceList=RoomDayPrice::getDayPriceList($this->room->mch_id,$this->room->type,$this->startTime,$this->endTime);
-        $prices=[];
-        foreach ($dayPriceList as $dayPrice){
-            $prices[$dayPrice['date']]=floatval($dayPrice['price']);
-        }
-        return $prices;
-    }
-
-    /**
-     * 获取周价格
-     * @return array
-     */
-    protected function getPricesOfWeek(){
-        $prices=RoomWeekPrice::find()
-            ->where(['type_id'=>$this->room->type,'mch_id'=>$this->room->mch_id])
-            ->asArray()->one();
-        if(empty($prices)){
-            return [];
-        }else{
-            return [
-                floatval($prices['monday']),
-                floatval($prices['tuesday']),
-                floatval($prices['wensday']),
-                floatval($prices['thursday']),
-                floatval($prices['friday']),
-                floatval($prices['saturday']),
-                floatval($prices['sunday'])
-            ];
-        }
-    }
-
-    /**
-     * 添加消费记录
-     * @param $timestamp
+     * 设置总金额
      * @param $amount
+     * @return $this
      */
-    protected function addCostRecord($timestamp,$amount){
-        $date=date('Y-m-d',$timestamp);
-        list($year,$month,$day)=explode('-',$date);
-        $date=intval(str_replace('-','',$date));
-        $this->bill[]=[
-            'date'=>$date,
-            'year'=>$year,
-            'month'=>$month,
-            'day'=>$day,
-            'amount'=>$amount
-        ];
+    public function setTotalAmount($amount){
+        $this->totalAmount=$amount;
+        return $this;
+    }
+
+    /**
+     * 获取总金额
+     * @return int
+     */
+    public function getTotalAmount(){
+        return $this->totalAmount;
+    }
+
+    /**
+     * 插入
+     * @param Order $order
+     * @return bool
+     */
+    public function insert(Order $order){
+        foreach ($this->bill as $bill){
+            $bill->order_id=$order->getId();
+            if(!$bill->insert(false)){
+                return false;
+            }
+        }
+        return true;
     }
 }
