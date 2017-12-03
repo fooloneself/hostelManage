@@ -443,7 +443,7 @@ const admin = [
                 component: (resolve) => require(['./views/checkstand/In.vue'], resolve)
             },
             {
-                path: 'checkstandEdit/:id',
+                path: 'checkstandEdit/:id/:orderId',
                 meta: {
                     title: '客房登记 - 入住 - 订单编辑'
                 },
