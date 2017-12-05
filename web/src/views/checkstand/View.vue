@@ -167,9 +167,9 @@ export default{
 	                }
 	            ],
 	            data: [
-	            	{classic:'房费',type:'余额',price:'￥100.00'},
-	            	{classic:'房费',type:'余额',price:'￥100.00'},
-	            	{classic:'房费',type:'余额',price:'￥100.00'}
+	            	{classic:'房费',type:'现金',price:'￥100.00'},
+	            	{classic:'房费',type:'现金',price:'￥100.00'},
+	            	{classic:'房费',type:'现金',price:'￥100.00'}
 	            ]
 	        }
 		}

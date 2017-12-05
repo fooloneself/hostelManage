@@ -195,10 +195,28 @@ export default{
 	                    title: '会员等级',
 	                    key: 'rank'
 	                },
-	                {
-	                    title: '余额',
-	                    key: 'price'
-	                }
+                    {
+                        title: '操作',
+                        key: 'action',
+                        fixed: 'right',
+                        width: 100,
+                        render: (h, params) => {
+                            var operate=params.row.status==1?'停用':'启用';
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.$router.push('/admin/memberListEdit/0')
+                                        }
+                                    }
+                                }, '加入会员')
+                            ]);
+                        }
+                    }
 	            ],
 	            data: [{name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'}]
 	        },
