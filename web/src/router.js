@@ -70,13 +70,6 @@ const admin = [
         },
         component: (resolve) => require(['./views/market/MemberListEdit.vue'], resolve)
     },
-    {
-        path: 'memberListBalance/:id',
-        meta: {
-            title: '会员列表 - 编辑'
-        },
-        component: (resolve) => require(['./views/market/MemberListBalance.vue'], resolve)
-    },
 	{
 		path: 'memberBlack',
         meta: {
@@ -526,7 +519,7 @@ const routers = [
     {
         path: '/register',
         meta: {
-            title: '登录'
+            title: '注册'
         },
         component: (resolve) => require(['./views/tourist/SignUp.vue'], resolve)
     },
