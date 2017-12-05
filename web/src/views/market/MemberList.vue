@@ -42,32 +42,27 @@
                     },
                     {
                         title: '人员姓名',
-                        width: 220,
+                        width: 200,
                         key: 'name'
                     },
                     {
                         title: '手机号',
-                        width: 130,
+                        width: 160,
                         key: 'mobile'
                     },
                     {
                         title: '会员等级',
-                        width: 160,
+                        width: 200,
                         key: 'rank'
                     },
                     {
-                        title: '余额',
-                        width: 120,
-                        key: 'balance'
-                    },
-                    {
                         title: '消费金额',
-                        width: 120,
+                        width: 150,
                         key: 'consumption_amount'
                     },
                     {
                         title: '积分',
-                        width: 80,
+                        width: 160,
                         key: 'integral'
                     },
                     {
@@ -79,20 +74,9 @@
                         title: '操作',
                         key: 'action',
                         fixed: 'right',
-                        width: 230,
+                        width: 200,
                         render: (h, params) => {
                             return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'text',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: ()=>{
-                                            this.turnUrl('/admin/memberListBalance/'+params.row.id)
-                                        }
-                                    }
-                                }, '充值'),
                                 h('Button', {
                                     props: {
                                         type: 'text',

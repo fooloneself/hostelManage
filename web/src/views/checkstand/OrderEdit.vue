@@ -52,7 +52,9 @@ span.extra{
 						<Col span="7"><Input placeholder="预订人姓名"></Input></Col>
 						<Col span="7">
 							<Input placeholder="手机号">
-								<Button slot="append" @click="checkMember">查询会员信息</Button>
+								<Button slot="append" @click="checkMember">
+									<i class="fa fa-search icon-mr" aria-hidden="true"></i>会员查询
+								</Button>
 							</Input>
 						</Col>
 					</Row>
@@ -147,7 +149,6 @@ span.extra{
 						</Col>
 						<Col span="5">
 							<Select placeholder="付费方式">
-				                <Option value="beijing">余额</Option>
 				                <Option value="beijing">现金</Option>
 				                <Option value="shanghai">支付宝</Option>
 				                <Option value="shenzhen">微信</Option>
@@ -201,13 +202,9 @@ export default{
 	                {
 	                    title: '会员等级',
 	                    key: 'rank'
-	                },
-	                {
-	                    title: '余额',
-	                    key: 'price'
 	                }
 	            ],
-	            data: [{name:'李波美',phone:'13800138000',rank:'非会员',price:'￥0.00'}]
+	            data: [{name:'李波美',phone:'13800138000',rank:'非会员'}]
 	        }
 		}
 	},

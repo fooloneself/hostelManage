@@ -52,7 +52,9 @@ span.extra{
 						<Col span="8"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
 						<Col span="8">
 						<Input v-model="orderInfo.guest.mobile" placeholder="手机号">
-							<Button slot="append" @click="checkMember">查询会员信息</Button>
+							<Button slot="append" @click="checkMember">
+								<i class="fa fa-search icon-mr" aria-hidden="true"></i>会员查询
+							</Button>
 						</Input>
 						</Col>
 					</Row>
@@ -97,7 +99,7 @@ span.extra{
 					<Row :gutter="8">
 						<Col span="10">
 							<Input v-model="placeholder" :placeholder="placeholder">
-								<span slot="prepend">订单总价：</span>
+								<span slot="prepend">订单总价</span>
 							</Input>
 						</Col>
 						<Col span="10">
@@ -141,7 +143,6 @@ span.extra{
 							</Col>
 							<Col span="5">
 								<Select placeholder="付费方式">
-					                <Option value="beijing">余额</Option>
 					                <Option value="beijing">现金</Option>
 					                <Option value="shanghai">支付宝</Option>
 					                <Option value="shenzhen">微信</Option>
