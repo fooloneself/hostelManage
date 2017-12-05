@@ -74,20 +74,20 @@
 		<Col span="12">
 			<div class="fr">
 				<Select v-model="filter.status" placeholder="房屋状态" class="search-input">
-	                <Option value="-1">全部</Option>
-	                <Option value="0">空房</Option>
-	                <Option value="5">全天</Option>
-	                <Option value="4">钟点</Option>
-	                <Option value="3">预订</Option>
-	                <Option value="1">脏房</Option>
-	                <Option value="2">锁房</Option>
+	                <Option :value="-1">全部</Option>
+	                <Option :value="0">空房</Option>
+	                <Option :value="5">全天</Option>
+	                <Option :value="4">钟点</Option>
+	                <Option :value="3">预订</Option>
+	                <Option :value="1">脏房</Option>
+	                <Option :value="2">锁房</Option>
 	            </Select>
 	            <Select v-model="filter.type" placeholder="房屋类型" class="search-input">
-	                <Option value="0">全部</Option>
+	                <Option :value="0">全部</Option>
 	                <Option v-for="type in types" :value="type.id">{{type.name}}</Option>
 	            </Select>
 	            <Select v-model="filter.guestId" placeholder="客户名称" class="search-input">
-	                <Option value="0">全部</Option>
+	                <Option :value="0">全部</Option>
 	                <Option v-for="(guest,g) in guests" :value="guest.id">{{guest.name}}</Option>
 	            </Select>
 	            <Button @click="refresh" type="primary">查询</Button>

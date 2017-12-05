@@ -60,7 +60,7 @@
             <Row>
                 <Col span="10">
                     <Form v-model="storeSetting" label-position="right" :label-width="120">
-                        <FormItem label="退房时间：">
+                        <FormItem label="每日退房时间：">
                             <TimePicker v-model="storeSetting.checkOutTime" :value="storeSetting.checkOutTime" type="time" placeholder="选择时间"></TimePicker>
                         </FormItem>
                         <FormItem label="自动退房：">
