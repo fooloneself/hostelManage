@@ -52,7 +52,7 @@ span.extra{
 					            </Select>
 							</Col>
 							<Col span="5" v-show="orderInfo.type==1">
-					             <InputNumber v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>
+					             <InputNumber class="icon-mr" v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>天
 							</Col>
 							<Col span="5" v-show="orderInfo.type==2">
 					             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="入住时间选择"></TimePicker>

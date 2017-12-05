@@ -52,9 +52,7 @@ span.extra{
 						<Col span="7"><Input placeholder="预订人姓名"></Input></Col>
 						<Col span="7">
 							<Input placeholder="手机号">
-								<Button slot="append" @click="checkMember">
-									<i class="fa fa-search icon-mr" aria-hidden="true"></i>会员查询
-								</Button>
+								<Button slot="append" @click="checkMember">检索会员</Button>
 							</Input>
 						</Col>
 					</Row>
@@ -99,7 +97,9 @@ span.extra{
 				<FormItem label="收费信息">
 					<Row :gutter="8">
 						<Col span="10">
-							<Input placeholder="订单总价：￥100.00"></Input>
+							<Input placeholder="￥100.00">
+								<span slot="prepend">订单总价</span>
+							</Input>
 						</Col>
 						<Col span="10">
 							<Select placeholder="请选择优惠活动">

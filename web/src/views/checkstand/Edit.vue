@@ -52,9 +52,7 @@ span.extra{
 						<Col span="8"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
 						<Col span="8">
 						<Input v-model="orderInfo.guest.mobile" placeholder="手机号">
-							<Button slot="append" @click="checkMember">
-								<i class="fa fa-search icon-mr" aria-hidden="true"></i>会员查询
-							</Button>
+							<Button slot="append" @click="checkMember">检索会员</Button>
 						</Input>
 						</Col>
 					</Row>

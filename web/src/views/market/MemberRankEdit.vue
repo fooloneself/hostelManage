@@ -6,7 +6,7 @@
 				<Input v-model="rank.name"></Input>
 	        </FormItem>
 			<FormItem label="消费金额满：">
-		        <Input v-model="rank.minConsumptionAmount"><span slot="prepend">￥</span></Input>
+		        <Input v-model="rank.minConsumptionAmount"></Input>
 	        </FormItem>
 			<!-- <FormItem label="积分满：">
 				<Input v-model="rank.minIntegral"></Input>
