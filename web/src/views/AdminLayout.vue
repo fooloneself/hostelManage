@@ -11,8 +11,8 @@
             color: #FFF;
         }
         img{
-            height: 24px;
-            margin-top: 18px;
+            height: 30px;
+            margin-top: 15px;
         }
     }
     .layout-left{
@@ -49,7 +49,7 @@
     <div class="layout">
         <div class="layout-header">
             <router-link to="/admin">
-                <img src="/src/images/logo-white.png" alt="">
+                <img src="/src/images/logo.png" alt="">
             </router-link>
             <div class="fr">
                 <Dropdown @on-click="turnUrl" class="icon-mr">
