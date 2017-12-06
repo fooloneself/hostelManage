@@ -16,8 +16,8 @@ class OrderRoom extends Server{
 
     /**
      * 通过房间实例化
-     * @param \common\models\Room $room
-     * @return null|static
+     * @param Room $room
+     * @return static
      */
     public static function newOne(Room $room){
         return new static($room);
@@ -58,7 +58,7 @@ class OrderRoom extends Server{
     /**
      * 生成消费清单
      * @param $totalAmount
-     * @return RoomBill|static
+     * @return RoomBill
      */
     public function generateBill($totalAmount){
         if($this->type==\common\models\OrderRoom::TYPE_DAY){

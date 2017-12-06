@@ -12,7 +12,7 @@ class Merchant extends Server{
     protected $modules;
     protected $moduleLabels;
     protected $premise;
-
+    protected $merchantSet;
     public function __construct(\common\models\Merchant $merchant)
     {
         $this->merchant=$merchant;
@@ -167,7 +167,7 @@ class Merchant extends Server{
 
     /**
      * 获取经营场所
-     * @return static
+     * @return \common\models\Premises
      */
     public function getPremise(){
         if($this->premise===null){
@@ -179,9 +179,26 @@ class Merchant extends Server{
 
     /**
      * 获取商户设置
-     * @return static
+     * @return \common\models\MerchantSet
      */
     public function getSetting(){
-        return MerchantSet::findOne(['mch_id'=>$this->getId()]);
+        if($this->merchantSet===null){
+            $this->merchantSet=MerchantSet::findOne(['mch_id'=>$this->getId()]);
+            if(empty($this->merchantSet)){
+                $this->merchantSet=new MerchantSet();
+                $this->merchantSet->setAttributes([
+                    'mch_id'=>$this->getId(),
+                    'auto_close_switch'=>0,
+                    'reserve_auto_close_switch'=>0,
+                    'hour_room_switch'=>0,
+                    'reserve_retention_time'=>0,
+                    'check_out_time'=>'12:00:00',
+                    'hour_room_start_time'=>'',
+                    'hour_room_end_time'=>'',
+                    'clock_max_hour'=>0
+                ]);
+            }
+        }
+        return $this->merchantSet;
     }
 }

@@ -14,9 +14,9 @@ class Guest extends Server{
     /**
      * 构造函数
      * Guest constructor.
-     * @param Guest $guest
+     * @param \common\models\MerchantMember $guest
      */
-    public function __construct(\common\models\Guest $guest)
+    public function __construct(\common\models\MerchantMember $guest)
     {
         $this->guest=$guest;
     }
@@ -34,7 +34,7 @@ class Guest extends Server{
      * @return mixed
      */
     public function getName(){
-        return $this->guest->getAttribute('person_name');
+        return $this->guest->getAttribute('name');
     }
 
     /**
@@ -53,16 +53,19 @@ class Guest extends Server{
      * @return null|static
      */
     public static function by(Merchant $merchant,$mobile,$name){
-        $guest=\common\models\Guest::findOne(['mch_id'=>$merchant->getId(),'mobile'=>$mobile,'person_name'=>$name]);
+        $guest=\common\models\MerchantMember::findOne(['mch_id'=>$merchant->getId(),'mobile'=>$mobile]);
         if(empty($guest)){
-            $guest=new \common\models\Guest();
+            $guest=new \common\models\MerchantMember();
             $guest->mch_id=$merchant->getId();
             $guest->create_time=$_SERVER['REQUEST_TIME'];
             $guest->mobile=$mobile;
-            $guest->person_name=$name;
+            $guest->name=$name;
             if(!$guest->insert()){
                 return null;
             }
+        }else if($name!=$guest->name){
+            $guest->name=$name;
+            $guest->update();
         }
         return new static($guest);
     }

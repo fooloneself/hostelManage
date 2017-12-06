@@ -19,6 +19,12 @@ use Yii;
  */
 class MerchantSet extends \common\components\ActiveRecord
 {
+    const AUTO_CLOSE_NO =0;
+    const AUTO_CLOSE_YES=1;
+    const REVERSE_AUTO_CLOSE_NO=0;
+    const REVERSE_AUTO_CLOSE_YES=1;
+    const HOUR_ROOM_NO =0;
+    const HOUR_ROOM_YES =1;
     /**
      * @inheritdoc
      */
