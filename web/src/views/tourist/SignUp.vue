@@ -1,4 +1,25 @@
 <style scoped>
+.layout-nav{
+    height: 60px;
+    line-height: 60px;
+    background: rgba(44,62,80,0.5);
+    min-width: 1280px;
+    position: relative;
+    z-index: 999;
+    .logo{
+        margin-left: 24px;
+        height: 60px;
+        line-height: 60px;
+        img{
+            height: 30px;
+            margin-top: 15px;
+        }
+    }
+    a{
+        font-size: 14px;
+        color: #FFF;
+    }
+}
 .form-container{
 	position: absolute;
 	top: 0;
@@ -8,34 +29,19 @@
 	background: #2C3E50;
 }
 .form{
-	width: 680px;
+	width: 360px;
     position: absolute;
     z-index: auto;
     left: 50%;
     top: 50%;
     margin-top: -154px;
-    margin-left: -340px;
+    margin-left: -180px;
 	color: #ffffff;
-	.form-logo{
-		float: right;
-		text-align: center;
-		padding-right: 40px;
-		img{
-			width: 100px;
-			margin-bottom: 24px;
-		}
-		p{
-			font-size: 25px;
-			font-weight: 500;
-			letter-spacing: 0.1em;
-		}
-	}
 	.form-table{
-		padding-left: 40px;
-		border-left: 1px solid #34495E;
 		p{
 			font-size: 16px;
 			margin-bottom: 20px;
+			letter-spacing: 0.1em;
 		}
 		.input{
 			border: none;
@@ -68,15 +74,22 @@
 
 <template>
 <div class="form-container">
+	<div class="layout-nav">
+        <div class="container-body">
+            <Row>
+                <Col span="4">
+                    <div class="logo">
+                        <router-link to="/">
+                            <img src="/src/images/logo.png" alt="">
+                        </router-link>
+                    </div>
+                </Col>
+            </Row>
+        </div>
+    </div>
 	<div class="form">
-		<Row type="flex" align="middle">
-			<Col span="11">
-				<div class="form-logo">
-					<img src="/src/images/logo.png" alt="">
-					<p>优客满客房管理系统</p>
-				</div>
-			</Col>
-			<Col span="13">
+		<Row>
+			<Col span="24">
 				<form v-model="form" class="form-table">
 					<p>注册 / Sign Up </p>
 					<input v-model="form.userName" type="text" class="input" placeholder="请输入用户名">

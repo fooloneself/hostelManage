@@ -120,16 +120,12 @@ export default{
 	                {
 	                    title: '会员等级',
 	                    key: 'rank'
-	                },
-	                {
-	                    title: '余额',
-	                    key: 'price'
 	                }
 	            ],
 	            data: [
-	            	{type:'预订人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
-	            	{type:'入住人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
-	            	{type:'入住人',name:'李波媳妇',phone:'13800138000',rank:'非会员',price:'￥0.00'},
+	            	{type:'预订人',name:'李波',phone:'13800138000',rank:'非会员'},
+	            	{type:'入住人',name:'李波',phone:'13800138000',rank:'非会员'},
+	            	{type:'入住人',name:'李波媳妇',phone:'13800138000',rank:'非会员'},
 	            ]
 	        },
 	        room: {
@@ -171,9 +167,9 @@ export default{
 	                }
 	            ],
 	            data: [
-	            	{classic:'房费',type:'余额',price:'￥100.00'},
-	            	{classic:'房费',type:'余额',price:'￥100.00'},
-	            	{classic:'房费',type:'余额',price:'￥100.00'}
+	            	{classic:'房费',type:'现金',price:'￥100.00'},
+	            	{classic:'房费',type:'现金',price:'￥100.00'},
+	            	{classic:'房费',type:'现金',price:'￥100.00'}
 	            ]
 	        }
 		}

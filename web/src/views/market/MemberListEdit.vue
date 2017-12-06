@@ -11,20 +11,20 @@
 	</Col>
 	<Col span="10">
 		<Form v-model="formItem" label-position="right" :label-width="80">
+			<FormItem label="会员等级：">
+				<Select v-model="formItem.rank">
+		            <Option v-for="(rank,r) in ranks" :value="rank.id">{{rank.name}}</Option>
+		        </Select>
+	        </FormItem>
 			<FormItem label="姓名：">
 				<Input v-model="formItem.name"></Input>
 	        </FormItem>
 			<FormItem label="手机号：">
 				<Input v-model="formItem.mobile"></Input>
 	        </FormItem>
-			<FormItem label="会员等级：">
-				<Select v-model="formItem.rank">
-		            <Option v-for="(rank,r) in ranks" :value="rank.id">{{rank.name}}</Option>
-		        </Select>
-	        </FormItem>
-			<FormItem label="充值金额：">
+			<!-- <FormItem label="充值金额：">
 				<Input v-model="formItem.balance" placeholder=""><span slot="prepend">￥</span></Input>
-	        </FormItem>
+	        </FormItem> -->
 			<FormItem label="证件号：">
 				<Input v-model="formItem.number">
 					<Select v-model="formItem.numberType" :value="formItem.numberType" slot="prepend" style="width: 80px">
@@ -70,7 +70,8 @@ export default{
 				birthday: '',
 				wxAccount: '',
 				mark: '',
-				rank:''
+				rank:'',
+				balance:0
 			},
 			sex:[],
 			numberType:[],

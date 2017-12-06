@@ -11,8 +11,8 @@
         height: 60px;
         line-height: 60px;
         img{
-            height: 26px;
-            margin-top: 17px;
+            height: 30px;
+            margin-top: 15px;
         }
     }
     a{
@@ -34,7 +34,7 @@
                     <Col span="4">
                         <div class="logo">
                             <router-link to="/">
-                                <img src="/src/images/logo-white.png" alt="">
+                                <img src="/src/images/logo.png" alt="">
                             </router-link>
                         </div>
                     </Col>

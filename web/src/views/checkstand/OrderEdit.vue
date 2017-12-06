@@ -52,7 +52,7 @@ span.extra{
 						<Col span="7"><Input placeholder="预订人姓名"></Input></Col>
 						<Col span="7">
 							<Input placeholder="手机号">
-								<Button slot="append" @click="checkMember">查询会员信息</Button>
+								<Button slot="append" @click="checkMember">检索会员</Button>
 							</Input>
 						</Col>
 					</Row>
@@ -97,7 +97,9 @@ span.extra{
 				<FormItem label="收费信息">
 					<Row :gutter="8">
 						<Col span="10">
-							<Input placeholder="订单总价：￥100.00"></Input>
+							<Input placeholder="￥100.00">
+								<span slot="prepend">订单总价</span>
+							</Input>
 						</Col>
 						<Col span="10">
 							<Select placeholder="请选择优惠活动">
@@ -147,7 +149,6 @@ span.extra{
 						</Col>
 						<Col span="5">
 							<Select placeholder="付费方式">
-				                <Option value="beijing">余额</Option>
 				                <Option value="beijing">现金</Option>
 				                <Option value="shanghai">支付宝</Option>
 				                <Option value="shenzhen">微信</Option>
@@ -202,12 +203,30 @@ export default{
 	                    title: '会员等级',
 	                    key: 'rank'
 	                },
-	                {
-	                    title: '余额',
-	                    key: 'price'
-	                }
+                    {
+                        title: '操作',
+                        key: 'action',
+                        fixed: 'right',
+                        width: 100,
+                        render: (h, params) => {
+                            var operate=params.row.status==1?'停用':'启用';
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: ()=>{
+                                            this.$router.push('/admin/memberListEdit/0')
+                                        }
+                                    }
+                                }, '加入会员')
+                            ]);
+                        }
+                    }
 	            ],
-	            data: [{name:'李波美',phone:'13800138000',rank:'非会员',price:'￥0.00'}]
+	            data: [{name:'李波美',phone:'13800138000',rank:'非会员'}]
 	        }
 		}
 	},

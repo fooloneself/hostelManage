@@ -84,7 +84,6 @@ span.extra{
 							</Col>
 							<Col span="5">
 								<Select placeholder="付费方式">
-					                <Option value="beijing">余额</Option>
 					                <Option value="beijing">现金</Option>
 					                <Option value="shanghai">支付宝</Option>
 					                <Option value="shenzhen">微信</Option>
@@ -156,16 +155,12 @@ export default{
 	                {
 	                    title: '会员等级',
 	                    key: 'rank'
-	                },
-	                {
-	                    title: '余额',
-	                    key: 'price'
 	                }
 	            ],
 	            data: [
-	            	{type:'预订人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
-	            	{type:'入住人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
-	            	{type:'入住人',name:'李波媳妇',phone:'13800138000',rank:'非会员',price:'￥0.00'},
+	            	{type:'预订人',name:'李波',phone:'13800138000',rank:'非会员'},
+	            	{type:'入住人',name:'李波',phone:'13800138000',rank:'非会员'},
+	            	{type:'入住人',name:'李波媳妇',phone:'13800138000',rank:'非会员'},
 	            ]
 	        },
 	        room: {

@@ -7,6 +7,8 @@
         </template>
     </Alert>
     <div class="mb"></div>
+    生日福利：会员生日前后<InputNumber class="icon-ml icon-mr"></InputNumber>天可享受
+    <div class="mb"></div>
     <Transfer
         :titles="['已分配活动', '可分配活动']"
         :data="data3"

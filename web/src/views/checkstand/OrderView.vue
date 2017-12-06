@@ -87,13 +87,9 @@ export default{
 	                {
 	                    title: '会员等级',
 	                    key: 'rank'
-	                },
-	                {
-	                    title: '余额',
-	                    key: 'price'
 	                }
 	            ],
-	            data: [{name:'李波美',phone:'13800138000',rank:'非会员',price:'￥0.00'}]
+	            data: [{name:'李波美',phone:'13800138000',rank:'非会员'}]
 	        },
 	        room: {
 				columns: [

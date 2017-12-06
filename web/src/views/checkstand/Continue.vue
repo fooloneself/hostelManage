@@ -52,7 +52,7 @@ span.extra{
 					            </Select>
 							</Col>
 							<Col span="5" v-show="orderInfo.type==1">
-					             <InputNumber v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>
+					             <InputNumber class="icon-mr" v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>天
 							</Col>
 							<Col span="5" v-show="orderInfo.type==2">
 					             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="入住时间选择"></TimePicker>
@@ -98,7 +98,6 @@ span.extra{
 							</Col>
 							<Col span="5">
 								<Select placeholder="付费方式">
-					                <Option value="beijing">余额</Option>
 					                <Option value="beijing">现金</Option>
 					                <Option value="shanghai">支付宝</Option>
 					                <Option value="shenzhen">微信</Option>
@@ -173,16 +172,12 @@ export default{
 	                {
 	                    title: '会员等级',
 	                    key: 'rank'
-	                },
-	                {
-	                    title: '余额',
-	                    key: 'price'
 	                }
 	            ],
 	            data: [
-	            	{type:'预订人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
-	            	{type:'入住人',name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'},
-	            	{type:'入住人',name:'李波媳妇',phone:'13800138000',rank:'非会员',price:'￥0.00'},
+	            	{type:'预订人',name:'李波',phone:'13800138000',rank:'非会员'},
+	            	{type:'入住人',name:'李波',phone:'13800138000',rank:'非会员'},
+	            	{type:'入住人',name:'李波媳妇',phone:'13800138000',rank:'非会员'},
 	            ]
 	        },
 	        room: {
@@ -224,9 +219,9 @@ export default{
 	                }
 	            ],
 	            data: [
-	            	{classic:'房费',type:'余额',price:'￥100.00'},
-	            	{classic:'房费',type:'余额',price:'￥100.00'},
-	            	{classic:'房费',type:'余额',price:'￥100.00'}
+	            	{classic:'房费',type:'现金',price:'￥100.00'},
+	            	{classic:'房费',type:'现金',price:'￥100.00'},
+	            	{classic:'房费',type:'现金',price:'￥100.00'}
 	            ]
 	        }
 		}
