@@ -2,11 +2,15 @@
 namespace service\order;
 use common\components\Server;
 use common\models\OrderCostDetail;
+use common\models\OrderRoom;
 
 class RoomBill extends Server{
     protected $room;
     protected $bill;
     protected $totalAmount=0;
+    protected $startTime;
+    protected $endTime;
+    protected $type;
     public function __construct(Room $room)
     {
         $this->room=$room;
@@ -53,7 +57,7 @@ class RoomBill extends Server{
      */
     public static function generateHoursBill(Room $room,$start,$end,$totalAmount=-1){
         $totalAmount=$totalAmount<0 ? $room->getHourPrice()*ceil(($end-$start)/3600) : $totalAmount;
-        return self::newRoomBill($room,$totalAmount,[self::newBillModel($room->getId(),$start,$totalAmount)]);
+        return self::newRoomBill($room,$totalAmount,[self::newBillModel($room->getId(),$start,$totalAmount)],OrderRoom::TYPE_CLOCK);
     }
 
     /**
@@ -61,9 +65,10 @@ class RoomBill extends Server{
      * @param Room $room
      * @param $totalAmount
      * @param $bills
+     * @param $type
      * @return static
      */
-    protected function newRoomBill(Room $room,$totalAmount,$bills){
+    protected function newRoomBill(Room $room,$totalAmount,$bills,$type){
         $roomBill=new static($room);
         $roomBill->setBill($bills);
         $roomBill->setTotalAmount($totalAmount);
@@ -112,7 +117,7 @@ class RoomBill extends Server{
                 $timestamp+=86400;
             }
         }
-        return self::newRoomBill($room,$totalAmount,$bills);
+        return self::newRoomBill($room,$totalAmount,$bills,OrderRoom::TYPE_DAY);
     }
 
     /**
@@ -146,5 +151,29 @@ class RoomBill extends Server{
             }
         }
         return true;
+    }
+
+    /**
+     * 获取清单开始时间
+     * @return mixed
+     */
+    public function getStartTime(){
+        return $this->startTime;
+    }
+
+    /**
+     * 获取清单结束时间
+     * @return mixed
+     */
+    public function getEndTime(){
+        return $this->endTime;
+    }
+
+    /**
+     * 房间消费类型
+     * @return mixed
+     */
+    public function getType(){
+        return $this->type;
     }
 }

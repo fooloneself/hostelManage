@@ -20,59 +20,82 @@ class OrderController extends Controller{
      * @return mixed
      */
     public function actionOccupancy(){
-        return $this->place('occupancy');
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
+        $activeId=\Yii::$app->requestHelper->post('activeId',0,'int');
+        $pays=\Yii::$app->requestHelper->post('pays',[],'array');
+        $mobile=\Yii::$app->requestHelper->post('mobile','','string');
+        $name=\Yii::$app->requestHelper->post('name','','string');
+        $guest=\Yii::$app->requestHelper->post('guest',[],'array');
+        $channel=\Yii::$app->requestHelper->post('channel',0,'int');
+        $type=\Yii::$app->requestHelper->post('type',1,'int');
+        $number=\Yii::$app->requestHelper->post('number',0,'int');
+        $totalAmount=\Yii::$app->requestHelper->post('totalAmount',-1,'int');
+        $mark=\Yii::$app->requestHelper->post('mark','');
+        $order=\service\order\Order::newOne($merchant);
+        $start=$_SERVER['REQUEST_TIME'];
+        if($type==OrderRoom::TYPE_DAY){
+            $unitQuantity=86400;
+        }else{
+            $unitQuantity=3600;
+        }
+        $end=$start+$unitQuantity*$number;
+        $res=$order->from($channel)
+            ->byGuest($mobile,$name)
+            ->mark($mark)->pay($pays)
+            ->occupancy($roomId,$type,$start,$end,$guest,$totalAmount);
+        if($res){
+            return \Yii::$app->requestHelper->success()->response();
+        }else{
+            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
+        }
     }
 
     /**
      * 预定
      */
     public function actionReverse(){
-        return $this->place('reverse');
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $channel=\Yii::$app->requestHelper->post('channel',0,'int');
+        $mobile=\Yii::$app->requestHelper->post('mobile','','string');
+        $name=\Yii::$app->requestHelper->post('name','','string');
+        $rooms=\Yii::$app->requestHelper->post('rooms',[],'array');
+        $totalAmount=\Yii::$app->requestHelper->post('totalAmount',-1,'int');
+        $activeId=\Yii::$app->requestHelper->post('activeId',0,'int');
+        $pays=\Yii::$app->requestHelper->post('pays',[],'array');
+        $mark=\Yii::$app->requestHelper->post('mark','');
+        $order=\service\order\Order::newOne($merchant);
+        $res=$order->byGuest($mobile,$name)
+            ->from($channel)
+            ->pay($pays)
+            ->mark($mark)
+            ->reverse($rooms,$totalAmount);
+        if($res){
+            return \Yii::$app->requestHelper->success()->response();
+        }else{
+            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
+        }
     }
 
     /**
-     * 下单
-     * @param $operate
+     * 帮里入住
      * @return mixed
      */
-    protected function place($operate){
-        $lodgers=\Yii::$app->requestHelper->post('lodgers',[],'array');
-        $guest=\Yii::$app->requestHelper->post('guest',[],'array');
-        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
-        $price=\Yii::$app->requestHelper->post('price',0,'float');
-        $mark=\Yii::$app->requestHelper->post('mark','','string');
-        $pay=\Yii::$app->requestHelper->post('pay',[],'array');
-        $type=\Yii::$app->requestHelper->post('type',1,'int');
-        $number=\Yii::$app->requestHelper->post('number',0,'int');
-        $channel=\Yii::$app->requestHelper->post('channel');
+    public function actionOccupancyPredetermined(){
         $merchant=\Yii::$app->user->getAdmin()->getMerchant();
-        $startTime=$_SERVER['REQUEST_TIME'];
-        if($type==1){
-            $endTime=strtotime(date('Y-m-d',$startTime+86400*$number).' '.$merchant->getSetting()->check_out_time);
-        }else{
-            $endTime=$startTime+$number;
+        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
+        $orderId=\Yii::$app->requestHelper->post('orderId',0,'int');
+        $guest=\Yii::$app->requestHelper->post('guest',[],'array');
+        $order=\service\order\Order::byId($merchant,$orderId);
+        if(empty($order)){
+            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_NOT_EXISTS)->response();
         }
-        $manager=new OrderManger($merchant);
-        $transaction=\Yii::$app->db->beginTransaction();
-        $lodgers[]=$guest;
-        $manager->pay($pay)
-            ->room([['roomId'=>$roomId,'price'=>$price,'type'=>$type,'start'=>$startTime,'end'=>$endTime]])
-            ->mark($mark,$channel)
-            ->lodger($lodgers)
-            ->guest($guest['mobile'],$guest['name']);
-        if(!$manager->$operate()){
-            $transaction->rollBack();
-            return \Yii::$app->responseHelper->error($manager->getError())->response();
+        $res=$order->occupancyPredetermined($roomId,$guest);
+        if($res){
+            return \Yii::$app->requestHelper->success()->response();
         }else{
-            $transaction->commit();
-            return \Yii::$app->responseHelper->success()->response();
+            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
         }
-    }
-    /**
-     * 入住-预定
-     */
-    public function actionOccupancyByReserve(){
-
     }
 
     /**

@@ -8,12 +8,18 @@ use common\models\OrderRoom;
 use common\models\RoomDayPrice;
 use common\models\RoomType;
 use common\models\RoomWeekPrice;
+use service\guest\Guest;
 use service\merchant\Merchant;
 
 class Room extends Server{
     protected $merchant;
     protected $room;
     protected $roomType;
+
+    protected $startTime;
+    protected $endTime;
+    protected $bill;
+    protected $type;
     public function __construct(Merchant $merchant,\common\models\Room $room,RoomType $roomType=null)
     {
         $this->merchant=$merchant;
@@ -167,6 +173,7 @@ class Room extends Server{
      */
     public function setEmpty(){
         $this->room->status=\common\models\Room::STATUS_CAN_ORDER;
+        $this->room->order_id=0;
         return $this->room->update(false);
     }
 
@@ -176,6 +183,7 @@ class Room extends Server{
      */
     public function lock(){
         $this->room->status=\common\models\Room::STATUS_UN_OPEN;
+        $this->room->order_id=0;
         return $this->room->update(false);
     }
 
@@ -185,9 +193,35 @@ class Room extends Server{
      */
     public function setDirty(){
         $this->room->status=\common\models\Room::STATUS_DIRTY;
+        $this->room->order_id=0;
         return $this->room->update(false);
     }
 
+    /**
+     * 生成消费清单-钟点
+     * @param $start
+     * @param $end
+     * @param $totalAmount
+     * @return RoomBill
+     */
+    public function generateHoursBill($start,$end,$totalAmount){
+        $this->startTime=$start;
+        $this->endTime=$end;
+        return $this->bill=RoomBill::generateHoursBill($this,$start,$end,$totalAmount);
+    }
+
+    /**
+     * 生成消费清单-整日
+     * @param $start
+     * @param $end
+     * @param $totalAmount
+     * @return RoomBill
+     */
+    public function generateDaysBill($start,$end,$totalAmount){
+        $this->startTime=$start;
+        $this->endTime=$end;
+        return $this->bill=RoomBill::generateDaysBill($this,$start,$end,$totalAmount);
+    }
     /**
      * 入住
      * @param \service\order\Order $order
@@ -199,7 +233,22 @@ class Room extends Server{
         $this->room->order_id=$order->getId();
         if(!$this->room->update(false)){
             return false;
+        }else if(!$this->addOccupancyRecord($order,$guests)){
+            return false;
+        }else if(!$order->occupancyRoom($this)){
+            return false;
+        }else{
+            return true;
         }
+    }
+
+    /**
+     * 记录入住信息
+     * @param \service\order\Order $order
+     * @param array $guests
+     * @return bool
+     */
+    protected function addOccupancyRecord(\service\order\Order $order,array $guests){
         $model=new OccupancyRecord();
         foreach ($guests as $guest){
             $model->setIsNewRecord(true);
@@ -221,6 +270,26 @@ class Room extends Server{
         return true;
     }
 
-    public function getOrderRoom(\service\order\Order $order){
+    /**
+     * 获取消费清单
+     * @return RoomBill
+     */
+    public function getBill(){
+        return $this->bill;
+    }
+
+    /**
+     * 退房
+     * @param \service\order\Order $order
+     * @return bool
+     */
+    public function checkOut(\service\order\Order $order){
+        if(!$order->checkOutRoom($this)){
+            return false;
+        }else if(!$this->setDirty()){
+            return false;
+        }else {
+            return true;
+        }
     }
 }

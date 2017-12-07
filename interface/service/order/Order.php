@@ -1,6 +1,7 @@
 <?php
 namespace service\order;
 use common\components\Server;
+use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
 
@@ -9,13 +10,14 @@ class Order extends Server{
 
     private $_order;
     protected $merchant;
-    protected $rooms=[];
     protected $guest;
     protected $paying=[];
-    public function __construct(Merchant $merchant,\common\models\Order $order)
+    protected $isNew;
+    public function __construct(Merchant $merchant,\common\models\Order $order,$isNew=true)
     {
         $this->_order=$order;
         $this->merchant=$merchant;
+        $this->isNew=$isNew;
     }
 
     /**
@@ -29,7 +31,7 @@ class Order extends Server{
         if(empty($order)){
             return null;
         }else{
-            return new static($merchant,$order);
+            return new static($merchant,$order,false);
         }
     }
 
@@ -44,7 +46,7 @@ class Order extends Server{
         if(empty($order)){
             return null;
         }else{
-            return new static($merchant,$order);
+            return new static($merchant,$order,false);
         }
     }
 
@@ -116,10 +118,16 @@ class Order extends Server{
         return $this;
     }
 
+    /**
+     * 支付
+     * @param array $pays
+     * @return $this
+     */
     public function pay(array $pays){
         $this->paying=$pays;
         return $this;
     }
+
     /**
      * 预定
      * @param array $rooms
@@ -138,11 +146,13 @@ class Order extends Server{
                 return false;
             }else if(!$r->canPlaceOrder($room['start'],$room['end'])){
                 return false;
-            }else{
-                $orderRoom=OrderRoom::newOne($r);
             }
-            $bill=$orderRoom->during($room['start'],$room['end'])->generateBill($totalAmount);
-            $orderRooms[]=$orderRoom;
+            if($room['type']==OrderRoom::TYPE_CLOCK){
+                $bill=$r->generateHoursBill($room['start'],$room['end'],$totalAmount);
+            }else{
+                $bill=$r->generateDaysBill($room['start'],$room['end'],$totalAmount);
+            }
+            $orderRooms[]=$r;
             $total+=$bill->getTotalAmount();
         }
         $pay=PayBill::byOrder($this);
@@ -151,7 +161,7 @@ class Order extends Server{
             return false;
         }
         foreach ($orderRooms as $orderRoom){
-            if(!$orderRoom->reverse($this)){
+            if(!$this->reverseRoom($orderRoom)){
                 return false;
             }
         }
@@ -161,34 +171,37 @@ class Order extends Server{
         return true;
     }
 
-    public function occupancy($rooms,$totalAmount=-1){
+    /**
+     * 单房间下单入住
+     * @param $roomId
+     * @param $startTime
+     * @param $endTime
+     * @param array $guests
+     * @param int $totalAmount
+     * @return bool
+     */
+    public function occupancy($roomId,$type,$startTime,$endTime,array $guests,$totalAmount=-1){
         if(empty($this->guest)){
             return false;
         }
-        $orderRooms=[];
-        $total=0;
-        foreach ($rooms as $room){
-            $r=Room::byId($this->merchant,$room['roomId']);
-            if(empty($r)){
-                return false;
-            }else if(!$r->canPlaceOrder($room['start'],$room['end'])){
-                return false;
-            }else{
-                $orderRoom=OrderRoom::newOne($r);
-            }
-            $bill=$orderRoom->during($room['start'],$room['end'])->generateBill($totalAmount);
-            $orderRooms[]=$orderRoom;
-            $total+=$bill->getTotalAmount();
+        $r=Room::byId($this->merchant,$roomId);
+        if(empty($r)){
+            return false;
+        }else if(!$r->canPlaceOrder($startTime,$endTime)){
+            return false;
+        }
+        if($type==OrderRoom::TYPE_CLOCK){
+            $bill=$r->generateHoursBill($startTime,$endTime,$totalAmount);
+        }else{
+            $bill=$r->generateDaysBill($startTime,$endTime,$totalAmount);
         }
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();
-        if(!$this->addOrder($total,$payingAmount,0)){
+        if(!$this->addOrder($bill->getTotalAmount(),$payingAmount,0)){
             return false;
         }
-        foreach ($orderRooms as $orderRoom){
-            if(!$orderRoom->occupancy($this)){
-                return false;
-            }
+        if(!$r->occupancy($this,$guests)){
+            return false;
         }
         if(!$pay->insert()){
             return false;
@@ -196,6 +209,25 @@ class Order extends Server{
         return true;
     }
 
+    /**
+     * 入住预定的房间
+     * @param $roomId
+     * @param array $guest
+     * @return bool
+     */
+    public function occupancyPredetermined($roomId,array $guest){
+        $r=Room::byId($this->merchant,$roomId);
+        if(empty($r)){
+            return false;
+        }
+        if(empty($r)){
+            return false;
+        }else if(!$this->occupancyRoom($r,$guest)){
+            return false;
+        }else{
+            return true;
+        }
+    }
     /**
      * 新增订单
      * @param $totalAmount
@@ -213,5 +245,65 @@ class Order extends Server{
         $this->_order->is_settlement=\common\models\Order::SETTLE_NO;
         $this->_order->amount_deffer=$totalAmount-$paidAmount;
         return $this->_order->insert();
+    }
+
+    /**
+     * 入住房间
+     * @param Room $room
+     * @return bool|false|int
+     */
+    public function occupancyRoom(Room $room){
+        if($this->isNew){
+            $orderRoom=new OrderRoom();
+            $orderRoom->order_id=$this->getId();
+            $orderRoom->room_id=$room->getId();
+            $orderRoom->start_time=$room->getBill()->getStartTime();
+            $orderRoom->end_time=$room->getBill()->getEndTime();
+            $orderRoom->status=OrderRoom::STATUS_OCCUPANCY;
+            $orderRoom->amount=$room->getBill()->getTotalAmount();
+            $orderRoom->type=$room->getBill()->getType();
+            return $orderRoom->insert(false);
+        }else{
+            $orderRoom=OrderRoom::findOne(['order_id'=>$this->getId(),'room_id'=>$room->getId()]);
+            if($orderRoom){
+                $orderRoom->status=OrderRoom::STATUS_OCCUPANCY;
+                $orderRoom->start_time=$_SERVER['REQUEST_TIME'];
+                return $orderRoom->update(false);
+            }else{
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 预定房间
+     * @param Room $room
+     * @return bool
+     */
+    public function reverseRoom(Room $room){
+        $orderRoom=new OrderRoom();
+        $orderRoom->order_id=$this->getId();
+        $orderRoom->room_id=$room->getId();
+        $orderRoom->start_time=$room->getBill()->getStartTime();
+        $orderRoom->end_time=$room->getBill()->getEndTime();
+        $orderRoom->status=OrderRoom::STATUS_REVERSE;
+        $orderRoom->amount=$room->getBill()->getTotalAmount();
+        $orderRoom->type=$room->getBill()->getType();
+        return $orderRoom->insert(false);
+    }
+
+    /**
+     * 退房
+     * @param Room $room
+     * @return bool|false|int
+     */
+    public function checkOutRoom(Room $room){
+        $orderRoom=OrderRoom::findOne(['order_id'=>$this->getId(),'room_id'=>$room->getId()]);
+        if(empty($orderRoom)){
+            return false;
+        }
+        $orderRoom->status=OrderRoom::STATUS_CHECK_OUT;
+        $orderRoom->end_time=$_SERVER['REQUEST_TIME'];
+        return $orderRoom->update(false);
     }
 }
