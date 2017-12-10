@@ -7,6 +7,7 @@ use common\models\DictionaryItem;
 use common\models\MemberRankDivide;
 use common\models\MerchantMember;
 use common\models\MerchantMemberRankDivide;
+use service\guest\Guest;
 use service\Pager;
 
 class MemberController extends Controller{
@@ -463,9 +464,35 @@ class MemberController extends Controller{
      * @return mixed
      */
     function actionSearch(){
+
         $mobile=\Yii::$app->requestHelper->post('mobile','','string');
         $mchId=\Yii::$app->user->getAdmin()->getMchId();
-        $member=MerchantMember::find()->where(['mch_id'=>$mchId,'mobile'=>$mobile])->asArray()->one();
-        return \Yii::$app->responseHelper->success($member)->response();
+        if(empty($mobile)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $member=MerchantMember::find()
+            ->alias('mm')
+            ->select('mm.id,mm.mobile,mm.name,mm.is_member,mrd.name as rank_name')
+            ->leftJoin(MerchantMemberRankDivide::tableName().' mrd','mm.rank=mrd.id')
+            ->where(['mm.mch_id'=>$mchId,'mm.mobile'=>$mobile])
+            ->asArray()->one();
+        $res=[];
+        if($member){
+            if($member['is_member']==1){
+                $isMember=1;
+                $rank=$member['rank_name']?:'普通会员';
+            }else{
+                $rank='非会员';
+                $isMember=0;
+            }
+            $res[]=[
+                'id'=>$member['id'],
+                'mobile'=>$member['mobile'],
+                'name'=>$member['name'],
+                'rank'=>$rank,
+                'isMember'=>$isMember
+            ];
+        }
+        return \Yii::$app->responseHelper->success($res)->response();
     }
 }

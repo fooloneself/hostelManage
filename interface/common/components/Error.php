@@ -33,6 +33,17 @@ class Error{
         ErrorManager::ERROR_OPERATE_FAIL=>'操作失败',
         ErrorManager::ERROR_CANCEL_NO_RIGHT=>'无权取消',
         ErrorManager::ERROR_NOT_SET_MERCHANT=>'请先设置商户信息',
+        ErrorManager::ERROR_NO_GUEST_INFO=>'未找到客户信息',
+        ErrorManager::ERROR_ROOM_HAS_PLACE=>'在时间段中已有入住或预定',
+        ErrorManager::ERROR_ROOM_DENY_CLOCK=>'在时间段中不允许钟点房',
+        ErrorManager::ERROR_OVER_CLOCK_MAX=>'钟点房预定时间超过最大时长',
+        ErrorManager::ERROR_ROOM_CLOCK_OVER_LIMIT=>'预定的钟点房时间超过规定的时间段',
+        ErrorManager::ERROR_ROOM_STATUS_CHANGE_FAIL=>'房间状态更改失败',
+        ErrorManager::ERROR_OCCUPANCY_RECORD_ADD_FAIL=>'房间入住记录添加失败',
+        ErrorManager::ERROR_ROOM_PLACE_ADD_FAIL=>'房间预定信息插入失败',
+        ErrorManager::ERROR_ROOM_PLACE_UPDATE_FAIL=>'房间预定信息修改失败',
+        ErrorManager::ERROR_ORDER_PAY_RECORD_FAIL=>'房订单支付信息录入失败',
+        ErrorManager::ERROR_ROOM_NOT_EXISTS=>'房间不存在',
     ];
     //错误码
     public $status;

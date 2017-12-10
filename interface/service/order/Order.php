@@ -1,6 +1,8 @@
 <?php
 namespace service\order;
+use common\components\ErrorManager;
 use common\components\Server;
+use common\models\MerchantMember;
 use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
@@ -157,7 +159,7 @@ class Order extends Server{
         }
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();
-        if(!$this->addOrder($total,$payingAmount,1)){
+        if(!$this->addOrder($total,$payingAmount,1,$totalAmount>=0)){
             return false;
         }
         foreach ($orderRooms as $orderRoom){
@@ -174,6 +176,7 @@ class Order extends Server{
     /**
      * 单房间下单入住
      * @param $roomId
+     * @param $type
      * @param $startTime
      * @param $endTime
      * @param array $guests
@@ -182,12 +185,15 @@ class Order extends Server{
      */
     public function occupancy($roomId,$type,$startTime,$endTime,array $guests,$totalAmount=-1){
         if(empty($this->guest)){
+            $this->setError(ErrorManager::ERROR_NO_GUEST_INFO);
             return false;
         }
         $r=Room::byId($this->merchant,$roomId);
         if(empty($r)){
+            $this->setError(ErrorManager::ERROR_ROOM_NOT_EXISTS);
             return false;
         }else if(!$r->canPlaceOrder($startTime,$endTime)){
+            $this->setError($r->getError());
             return false;
         }
         if($type==OrderRoom::TYPE_CLOCK){
@@ -197,13 +203,16 @@ class Order extends Server{
         }
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();
-        if(!$this->addOrder($bill->getTotalAmount(),$payingAmount,0)){
+        if(!$this->addOrder($bill->getTotalAmount(),$payingAmount,0,$totalAmount>=0)){
+            $this->setError(ErrorManager::ERROR_ORDER_CREATE_FAIL);
             return false;
         }
         if(!$r->occupancy($this,$guests)){
+            $this->setError($r->getError());
             return false;
         }
         if(!$pay->insert()){
+            $this->setError(ErrorManager::ERROR_ORDER_PAY_RECORD_FAIL);
             return false;
         }
         return true;
@@ -228,14 +237,16 @@ class Order extends Server{
             return true;
         }
     }
+
     /**
      * 新增订单
      * @param $totalAmount
      * @param $paidAmount
      * @param int $isReverse
+     * @param int $isTemporary
      * @return bool
      */
-    protected function addOrder($totalAmount,$paidAmount,$isReverse=0){
+    protected function addOrder($totalAmount,$paidAmount,$isReverse=0,$isTemporary=0){
         $this->_order->amount_payable=$totalAmount;
         $this->_order->is_reverse=$isReverse?\common\models\Order::REVERSE_YES:\common\models\Order::REVERSE_NO;
         $this->_order->amount_paid=$paidAmount;
@@ -244,6 +255,7 @@ class Order extends Server{
         $this->_order->status=\common\models\Order::STATUS_NORMAL;
         $this->_order->is_settlement=\common\models\Order::SETTLE_NO;
         $this->_order->amount_deffer=$totalAmount-$paidAmount;
+        $this->_order->is_temporary=$isTemporary;
         return $this->_order->insert();
     }
 
@@ -262,14 +274,25 @@ class Order extends Server{
             $orderRoom->status=OrderRoom::STATUS_OCCUPANCY;
             $orderRoom->amount=$room->getBill()->getTotalAmount();
             $orderRoom->type=$room->getBill()->getType();
-            return $orderRoom->insert(false);
+            if($orderRoom->insert(false)){
+                return true;
+            }else{
+                $this->setError(ErrorManager::ERROR_ROOM_PLACE_ADD_FAIL);
+                return false;
+            }
         }else{
             $orderRoom=OrderRoom::findOne(['order_id'=>$this->getId(),'room_id'=>$room->getId()]);
             if($orderRoom){
                 $orderRoom->status=OrderRoom::STATUS_OCCUPANCY;
                 $orderRoom->start_time=$_SERVER['REQUEST_TIME'];
-                return $orderRoom->update(false);
+                if($orderRoom->update(false)){
+                    return true;
+                }else{
+                    $this->setError(ErrorManager::ERROR_ROOM_PLACE_UPDATE_FAIL);
+                    return false;
+                }
             }else{
+                $this->setError(ErrorManager::ERROR_ORDER_ROOM_UN_PLACE);
                 return false;
             }
         }
@@ -305,5 +328,17 @@ class Order extends Server{
         $orderRoom->status=OrderRoom::STATUS_CHECK_OUT;
         $orderRoom->end_time=$_SERVER['REQUEST_TIME'];
         return $orderRoom->update(false);
+    }
+
+    /**
+     * 获取下单客户
+     * @return Guest
+     */
+    public function getGuest(){
+        if(empty($this->guest)){
+            $member=MerchantMember::findOne(['mch_id'=>$this->merchant->getId(),'id'=>$this->_order->guest_id]);
+            $this->guest=new Guest($member);
+        }
+        return $this->guest;
     }
 }

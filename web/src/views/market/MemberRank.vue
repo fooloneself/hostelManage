@@ -73,7 +73,7 @@
                                     },
                                     on: {
                                         click: ()=>{
-                                            this.turnUrl('/admin/memberRankBirthday')
+                                            this.turnUrl('/admin/memberRankBirthday/'+params.row.id)
                                         }
                                     }
                                 }, '生日福利')

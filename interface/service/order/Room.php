@@ -1,14 +1,13 @@
 <?php
 namespace service\order;
+use common\components\ErrorManager;
 use common\components\Server;
 use common\models\MerchantSet;
 use common\models\OccupancyRecord;
-use common\models\Order;
 use common\models\OrderRoom;
 use common\models\RoomDayPrice;
 use common\models\RoomType;
 use common\models\RoomWeekPrice;
-use service\guest\Guest;
 use service\merchant\Merchant;
 
 class Room extends Server{
@@ -68,6 +67,10 @@ class Room extends Server{
     public function getNumber(){
         return intval($this->room->number);
     }
+
+    public function getTypeName(){
+        return $this->roomType->name;
+    }
     /**
      * 获取商户
      * @return Merchant
@@ -83,14 +86,28 @@ class Room extends Server{
      * @return array
      */
     public function getPricesOfDay($start,$end){
-        $dayPriceList=RoomDayPrice::getDayPriceList($this->room->mch_id,$this->room->type,$start,$end);
+        $startDate=intval(date('Ymd',$start));
+        $endDate=intval(date('Ymd',$end-86400));
+        $dayPriceList=RoomDayPrice::getDayPriceList($this->room->mch_id,$this->room->type,$startDate,$endDate);
         $prices=[];
         foreach ($dayPriceList as $dayPrice){
-            $prices[$dayPrice['date']]=floatval($dayPrice['price']);
+            $prices=array_merge($prices,self::generateDayPrice($dayPrice['start_date'],$dayPrice['end_date'],$startDate,$endDate,$dayPrice['price']));
         }
         return $prices;
     }
 
+    protected static function generateDayPrice($startDate,$endDate,$limitStart,$limitEnd,$price){
+        $res=[];
+        $start=strtotime($startDate);
+        $end=strtotime($endDate);
+        for($i=$start;$i<=$end;$i+=86400){
+            $date=intval(date('Ymd',$i));
+            if($date>=$limitStart && $date<=$limitEnd){
+                $res[date('Y/m/d',$i)]=$price;
+            }
+        }
+        return $res;
+    }
     /**
      * 获取周价格
      * @return array
@@ -124,24 +141,32 @@ class Room extends Server{
     public function canPlaceOrder($start,$end,$type=OrderRoom::TYPE_DAY){
         $merchantSet=$this->merchant->getSetting();
         if($this->hasPlace($start,$end)){
+            $this->setError(ErrorManager::ERROR_ROOM_HAS_PLACE);
             return false;
         }else if($type==OrderRoom::TYPE_CLOCK ){
             $hours=ceil(($end-$start)/3600);
             $start=date('H:s:i',$start);
             $end=date('H:s:i',$end);
             if($merchantSet->hour_room_switch==MerchantSet::HOUR_ROOM_NO){
+                $this->setError(ErrorManager::ERROR_ROOM_DENY_CLOCK);
                 return false;
             }else if($start>$merchantSet->hour_room_start_time && $start<$merchantSet->hour_room_end_time){
+                $this->setError(ErrorManager::ERROR_ROOM_CLOCK_OVER_LIMIT);
                 return false;
             }else if($end>$merchantSet->hour_room_start_time && $end<$merchantSet->hour_room_end_time){
+                $this->setError(ErrorManager::ERROR_ROOM_CLOCK_OVER_LIMIT);
                 return false;
             }else if($start<=$merchantSet->hour_room_start_time && $end>=$merchantSet->hour_room_end_time){
+                $this->setError(ErrorManager::ERROR_ROOM_CLOCK_OVER_LIMIT);
                 return false;
             }else if($merchantSet->clock_max_hour && $hours>$merchantSet->clock_max_hour){
+                $this->setError(ErrorManager::ERROR_OVER_CLOCK_MAX);
                 return false;
             }else{
                 return true;
             }
+        }else{
+            return true;
         }
     }
 
@@ -153,9 +178,9 @@ class Room extends Server{
      */
     protected function hasPlace($start,$end){
         $order=OrderRoom::find()->alias('oo')
-            ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
+            ->leftJoin(\common\models\Order::tableName().' o','oo.order_id=o.id')
             ->where([
-                'o.status'=>Order::STATUS_NORMAL,
+                'o.status'=>\common\models\Order::STATUS_NORMAL,
                 'oo.room_id'=>$this->room->id
             ])
             ->andWhere('(:start>oo.start_time and :start<oo.end_time) or (:end>oo.start_time and :end <oo.end_time) 
@@ -232,10 +257,13 @@ class Room extends Server{
         $this->room->status=\common\models\Room::STATUS_OCCUPANCY;
         $this->room->order_id=$order->getId();
         if(!$this->room->update(false)){
+            $this->setError(ErrorManager::ERROR_ROOM_STATUS_CHANGE_FAIL);
             return false;
         }else if(!$this->addOccupancyRecord($order,$guests)){
+            $this->setError(ErrorManager::ERROR_OCCUPANCY_RECORD_ADD_FAIL);
             return false;
         }else if(!$order->occupancyRoom($this)){
+            $this->setError($order->getError());
             return false;
         }else{
             return true;
@@ -251,6 +279,7 @@ class Room extends Server{
     protected function addOccupancyRecord(\service\order\Order $order,array $guests){
         $model=new OccupancyRecord();
         foreach ($guests as $guest){
+            if(empty($guest['mobile']))continue;
             $model->setIsNewRecord(true);
             $model->setAttributes(null);
             $attributes=[
@@ -260,7 +289,7 @@ class Room extends Server{
                 'check_in_time'=>$_SERVER['REQUEST_TIME'],
                 'room_number'=>$this->getNumber(),
                 'mobile'=>$guest['mobile'],
-                'person_name'=>$guests['name']
+                'person_name'=>$guest['name']
             ];
             $model->setAttributes($attributes);
             if(!$model->insert(true,array_keys($attributes))){

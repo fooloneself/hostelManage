@@ -21,11 +21,14 @@ class RoomBill extends Server{
      * @param array $bills
      * @return $this
      */
-    public function setBill(array $bills){
+    public function setList(array $bills){
         $this->bill=$bills;
         return $this;
     }
 
+    public function getList(){
+        return $this->bill;
+    }
     /**
      * 生成账单数据模型
      * @param $roomId
@@ -65,12 +68,11 @@ class RoomBill extends Server{
      * @param Room $room
      * @param $totalAmount
      * @param $bills
-     * @param $type
      * @return static
      */
-    protected function newRoomBill(Room $room,$totalAmount,$bills,$type){
+    protected static function newRoomBill(Room $room,$totalAmount,$bills){
         $roomBill=new static($room);
-        $roomBill->setBill($bills);
+        $roomBill->setList($bills);
         $roomBill->setTotalAmount($totalAmount);
         return $roomBill;
     }
@@ -99,7 +101,7 @@ class RoomBill extends Server{
             $dayPrices=$room->getPricesOfDay($start,$end);
             $weekPrices=$room->getPricesOfWeek();
             for($i=0;$i<$days;$i++){
-                $date=intval(date('Ymd',$timestamp));
+                $date=date('Y/m/d',$timestamp);
                 if(isset($dayPrices[$date])){
                     $cost=$dayPrices[$date];
                 }else if(!empty($weekPrices)){

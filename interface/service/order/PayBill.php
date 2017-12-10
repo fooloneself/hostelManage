@@ -85,7 +85,7 @@ class PayBill extends Server{
      * @return bool
      */
     public function insert(){
-        foreach ($this->bill as $bill){
+        foreach ($this->payingBill as $bill){
             $bill->order_id=$this->order->getId();
             if(!$bill->insert()){
                 return false;

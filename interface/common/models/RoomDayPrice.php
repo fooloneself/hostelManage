@@ -52,4 +52,15 @@ class RoomDayPrice extends \common\components\ActiveRecord
             'mark' => 'Mark',
         ];
     }
+
+    public static function getDayPriceList($mchId,$roomType,$startDate,$endDate){
+        return self::find()
+            ->select('start_date,end_date,price')
+            ->where(['mch_id'=>$mchId,'type_id'=>$roomType])
+            ->andWhere(':startDate between start_date and end_date or :endDate between start_date and end_date or (:startDate<=start_date and :endDate>=end_date)',[
+                ':startDate'=>$startDate,
+                ':endDate'=>$endDate
+            ])
+            ->asArray()->all();
+    }
 }

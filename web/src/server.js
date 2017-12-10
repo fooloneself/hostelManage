@@ -92,6 +92,7 @@ const interfaces={
     'merchantAllOrderAbnormal':'merchant/dictionary/all-order-abnormal',
     'merchantPaymentChannel':'merchant/dictionary/payment-channel',
     'merchantExpanseItem':'merchant/dictionary/expanse-item',
+    'merchantMemberSearch':'merchant/member/search',
     'merchantMemberRanks':'merchant/member/ranks',
     'merchantMemberRank':'merchant/member/rank',
     'merchantMemberRankDel':'merchant/member/del-rank',
@@ -111,7 +112,11 @@ const interfaces={
     'merchantActivitySpecialPriceList':'merchant/activity/special-offer-list',
     'merchantActivityFullCutEdit':'merchant/activity/edit-full-cut',
     'merchantActivitySpecialPriceEdit':'merchant/activity/edit-special-price',
-    'merchantOrderGuest':'merchant/checkstand/order-guest'
+    'merchantOrderGuest':'merchant/checkstand/order-guest',
+    'merchantRoomConsumptionBill':'merchant/room/consumption-bill',
+    'merchantOrderActivity':'merchant/order/activity',
+    'merchantMemberBirthdayWelfare':'merchant/activity/birthday-welfare',
+    'merchantMemberBirthdayWelfareSet':'merchant/activity/set-birthday-welfare'
 };
 const server={
     'host': 'http://www.hotel.com',

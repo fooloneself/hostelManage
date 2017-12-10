@@ -31,13 +31,13 @@ span.extra{
 	<Row>
 		<Col span="4">
 		    <Form label-position="top" class="order-info">
-				<FormItem label="订单总价："><span>￥{{placeholder}}</span></FormItem>
+				<FormItem label="订单总价："><span>￥{{defaultTotalAmount}}</span></FormItem>
 				<FormItem label="优惠活动：">
-					<p>九折优惠</p>
+					<p>{{selectedActive}}</p>
 				</FormItem>
-				<FormItem label="应收金额："><span class="strong">￥{{placeholder*0.9}}</span></FormItem>
+				<FormItem label="应收金额："><span class="strong">￥{{defaultTotalAmount*0.9}}</span></FormItem>
 				<FormItem label="已收金额："><span class="strong">￥200.00</span></FormItem>
-				<FormItem label="待收金额："><span class="strong">￥{{placeholder*0.9-200}}</span></FormItem>
+				<FormItem label="待收金额："><span class="strong">￥{{defaultTotalAmount*0.9-200}}</span></FormItem>
 		    </Form>
 		</Col>
 		<Col span="20">
@@ -49,9 +49,9 @@ span.extra{
 				                <Option v-for="(channel,c) in channels" :value="channel.id">{{channel.name}}</Option>
 				            </Select>
 						</Col>
-						<Col span="8"><Input v-model="orderInfo.guest.name" placeholder="姓名"></Input></Col>
+						<Col span="8"><Input v-model="orderInfo.name" placeholder="姓名"></Input></Col>
 						<Col span="8">
-						<Input v-model="orderInfo.guest.mobile" placeholder="手机号">
+						<Input v-model="orderInfo.mobile" placeholder="手机号">
 							<Button slot="append" @click="checkMember">检索会员</Button>
 						</Input>
 						</Col>
@@ -96,19 +96,18 @@ span.extra{
 				<FormItem label="收费信息">
 					<Row :gutter="8">
 						<Col span="10">
-							<Input v-model="placeholder" :placeholder="placeholder">
+							<Input v-model="orderInfo.totalAmount" :placeholder="getTotalAmountPlaceholder()">
 								<span slot="prepend">订单总价</span>
 							</Input>
 						</Col>
 						<Col span="10">
-							<Select placeholder="优惠活动">
-				                <Option value="-1">请选择活动</Option>
-				                <Option value="0">优惠活动二</Option>
-				                <Option value="1">优惠活动三</Option>
+							<Select v-model="orderInfo.activityId" placeholder="优惠活动">
+				                <Option value="0">请选择活动</Option>
+				                <Option v-for="(activity,a) in activities" :value="activity.id">{{activity.name}}</Option>
 				            </Select>
 						</Col>
 					</Row>
-					<Row :gutter="8" v-for="(pay,i,p) in orderInfo.pay" class="mt">
+					<Row :gutter="8" v-for="(pay,p) in orderInfo.pay" class="mt">
 						<Col span="5">
 							<Select v-model="pay.expenseItem" placeholder="收费项">
 				                <Option v-for="(expanseItem,ei) in expanseItems" :value="expanseItem.key">{{expanseItem.value}}</Option>
@@ -123,38 +122,14 @@ span.extra{
 							<Input v-model="pay.amount" placeholder="付费金额"></Input>
 						</Col>
 						<Col span="4">
-							<Button type="text" @click="deletePay(i)">
+							<Button v-show="(orderInfo.pay.length-1)!=p" type="text" @click="deletePay(p)">
 								<i class="fa fa-trash fa-fw icon-mr" aria-hidden="true"></i>删除收费
 							</Button>
+							<Button v-show="(orderInfo.pay.length-1)==p" type="text" @click="addPay">
+                                <i class="fa fa-plus icon-mr fa-fw" aria-hidden="true"></i>添加收费
+                            </Button>
 						</Col>
 					</Row>
-					<Row :gutter="8" class="mt">
-							<Col span="5">
-								<Select placeholder="收费项">
-					                <Option value="1">收取房费</Option>
-					                <Option value="2">收取订金</Option>
-					                <Option value="3">收取押金</Option>
-					                <Option value="4">退还房费</Option>
-					                <Option value="5">退还订金</Option>
-					                <Option value="6">退还押金</Option>
-					            </Select>
-							</Col>
-							<Col span="5">
-								<Select placeholder="付费方式">
-					                <Option value="beijing">现金</Option>
-					                <Option value="shanghai">支付宝</Option>
-					                <Option value="shenzhen">微信</Option>
-					            </Select>
-							</Col>
-							<Col span="10">
-								<Input placeholder="付费金额"></Input>
-							</Col>
-							<Col span="4">
-								<Button type="text" @click="addPay">
-									<i class="fa fa-plus icon-mr fa-fw" aria-hidden="true"></i>添加收费
-								</Button>
-							</Col>
-						</Row>
 		        </FormItem>
 				<FormItem label="备注信息">
 					<Row>
@@ -166,8 +141,6 @@ span.extra{
 				<FormItem>
 					<!-- 新添订单：只有在当日才能办理入住 -->
 		            <Button type="primary" @click="occupancy">确认入住</Button>
-					<!-- 修改订单 -->
-		            <Button type="primary">确认修改</Button>
                     <Button type="ghost" @click="goBack" class="icon-ml">取消</Button>
 		        </FormItem>
 		    </Form>
@@ -189,7 +162,7 @@ export default{
 	                },
 	                {
 	                    title: '手机号',
-	                    key: 'phone'
+	                    key: 'mobile'
 	                },
 	                {
 	                    title: '会员等级',
@@ -201,24 +174,25 @@ export default{
                         fixed: 'right',
                         width: 100,
                         render: (h, params) => {
-                            var operate=params.row.status==1?'停用':'启用';
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'text',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: ()=>{
-                                            this.$router.push('/admin/memberListEdit/0')
-                                        }
-                                    }
-                                }, '加入会员')
-                            ]);
+                            var item=[];
+                            if(!params.row.isMember){
+                                item.push(h('Button', {
+                                     props: {
+                                         type: 'text',
+                                         size: 'small'
+                                     },
+                                     on: {
+                                         click: ()=>{
+                                             this.$router.push('/admin/memberListEdit/0')
+                                         }
+                                     }
+                                }, '加入会员'));
+                            }
+                            return h('div', item);
                         }
                     }
 	            ],
-	            data: [{name:'李波',phone:'13800138000',rank:'非会员',price:'￥0.00'}]
+	            data: []
 	        },
 	        room: {
 				columns: [
@@ -228,7 +202,7 @@ export default{
 	                },
 	                {
 	                    title: '房型',
-	                    key: 'type_name'
+	                    key: 'typeName'
 	                },
 	                {
 	                    title: '房号',
@@ -236,40 +210,35 @@ export default{
 	                },
 	                {
 	                    title: '单价',
-	                    key: 'default_price'
+	                    key: 'amount'
 	                }
 	            ],
 	            data: []
 	        },
 			date:'',
-			placeholder:'',
-			orderInfo: {
-			    type: 1,
-			    guest:{mobile: '',name: ''},
-			    lodgers: [{mobile: '',name: ''}],
-			    pay: [],
-			    dayNum: 1
-			},
 			channels:[],
 			paymentChannels:[],
 			expanseItems:[],
-			timepick: false
+			timepick: false,
+			defaultTotalAmount:0,
+			activities:[],
+			selectedActive:'无',
+			orderInfo: {
+			    channel:null,
+			    mobile:null,
+			    name:null,
+			    lodgers: [{mobile: '',name: ''}],
+                type: 1,
+                dayNum: 1,
+                totalAmount:null,
+                activeId:0,
+                pay: [{expenseItem:null,channel:null,amount:null}],
+                mark:''
+            }
 		}
 	},
 	mounted(){
 	    var that=this;
-	    this.host.post('merchantRoom',{id: this.$route.params.id}).then(function(res){
-	        if(res.isSuccess()){
-	            res.data().room.date=res.data().date;
-	            that.room.data.push(res.data().room);
-	            that.placeholder=res.data().room.default_price;
-	        }else{
-	            this.$Notice.info({
-	                title: '错误提示',
-	                desc: res.error()
-	            })
-	        }
-	    })
 	    this.host.post('channelAll').then(function(res){
             if(res.isSuccess()){
                 that.channels=res.data();
@@ -300,6 +269,7 @@ export default{
                 })
             }
         })
+        this.refreshRoomConsumptionList();
 	},
 	methods:{
 		goBack(){
@@ -318,7 +288,15 @@ export default{
             this.orderInfo.pay.splice(index,1);
 		},
 		checkMember(){
+		    if(!this.orderInfo.mobile){
+		        this.$Notice.info({
+                    title: '错误提示',
+                    desc:'请先输入手机号'
+                })
+                return ;
+		    }
 			this.showMember = true;
+			this.searchMember();
 		},
 		timeChooseShow(){
 			if(this.orderInfo.type==1) this.timepick=true;
@@ -329,6 +307,9 @@ export default{
 		},
 		reverse (){
             this.operate('merchantReverse');
+		},
+		getTotalAmountPlaceholder(){
+		    return this.defaultTotalAmount<=0?'总价格':this.defaultTotalAmount;
 		},
 		operate(action){
 		    var number;
@@ -346,13 +327,16 @@ export default{
             var param={
                 lodgers: this.orderInfo.lodgers,
                 guest: this.orderInfo.guest,
-                roomId: this.$route.params.id,
+                roomId: this.$route.params.roomId,
                 price: this.orderInfo.price,
                 mark: this.orderInfo.mark,
                 pay: this.orderInfo.pay,
                 type: this.orderInfo.type,
                 number:number,
-                channel: this.orderInfo.channel
+                channel: this.orderInfo.channel,
+                name:this.orderInfo.name,
+                mobile:this.orderInfo.mobile,
+                activityId:this.orderInfo.activeId
             };
             this.host.post(action,param).then(function(res){
                 if(res.isSuccess()){
@@ -364,7 +348,51 @@ export default{
                     })
                 }
             })
+		},
+		refreshRoomConsumptionList(){
+		    var that=this;
+		    this.host.post('merchantRoomConsumptionBill',{roomId: this.$route.params.roomId,num:this.orderInfo.dayNum}).then(function(res){
+                if(res.isSuccess()){
+                    that.room.data=res.data().list;
+                    that.defaultTotalAmount=res.data().totalAmount.toString();
+                }else{
+                    this.$Notice.info({
+                        title: '错误提示',
+                        desc: res.error()
+                    })
+                }
+            })
+		},
+		searchMember(){
+		    var that=this;
+		    this.host.post('merchantMemberSearch',{mobile:this.orderInfo.mobile}).then(function(res){
+		        if(res.isSuccess()){
+                    that.member.data=res.data();
+		        }else{
+		            this.$Notice.info({
+		                title: '错误提示',
+		                desc:res.error()
+		            })
+		        }
+		    })
+		},
+		refreshActivityForOrder(){
+		    this.host.post('merchantOrderActivity',this.orderInfo).then(function(res){
+                if(res.isSuccess()){
+                    that.activities=res.data();
+		        }else{
+		            this.$Notice.info({
+		                title: '错误提示',
+		                desc:res.error()
+		            })
+		        }
+		    })
 		}
-	}
+	},
+    watch:{
+        'orderInfo.dayNum'(){
+            this.refreshRoomConsumptionList();
+        }
+    }
 }
 </script>

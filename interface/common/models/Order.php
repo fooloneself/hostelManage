@@ -12,6 +12,7 @@ use Yii;
  * @property integer $guest_id
  * @property integer $place_time
  * @property integer $channel
+ * @property integer $is_temporary
  * @property integer $status
  * @property integer $is_reverse
  * @property integer $is_settlement
@@ -24,12 +25,12 @@ use Yii;
  */
 class Order extends \common\components\ActiveRecord
 {
-    const STATUS_ABNORMAL  =0;//异常
-    const STATUS_NORMAL    =1;//正常
-    const SETTLE_NO        =0;//未结单
-    const SETTLE_YES       =1;//已结单
-    const REVERSE_NO       =0;//非预订单
-    const REVERSE_YES      =1;//预订单
+    const STATUS_ABNORMAL =0;//异常
+    const STATUS_NORMAL   =1;//正常
+    const SETTLE_NO       =0;//未结单
+    const SETTLE_YES      =1;//已结单
+    const REVERSE_NO      =0;//非预订单
+    const REVERSE_YES     =1;//预订单
     /**
      * @inheritdoc
      */
@@ -45,7 +46,7 @@ class Order extends \common\components\ActiveRecord
     {
         return [
             [['mch_id', 'guest_id', 'place_time', 'order_no'], 'required'],
-            [['mch_id', 'guest_id', 'place_time', 'channel', 'status', 'is_reverse', 'is_settlement'], 'integer'],
+            [['mch_id', 'guest_id', 'place_time', 'channel', 'is_temporary', 'status', 'is_reverse', 'is_settlement'], 'integer'],
             [['amount_payable', 'amount_paid', 'amount_deffer'], 'number'],
             [['abnormal_type'], 'string', 'max' => 100],
             [['order_no'], 'string', 'max' => 20],
@@ -64,6 +65,7 @@ class Order extends \common\components\ActiveRecord
             'guest_id' => 'Guest ID',
             'place_time' => 'Place Time',
             'channel' => 'Channel',
+            'is_temporary' => 'Is Temporary',
             'status' => 'Status',
             'is_reverse' => 'Is Reverse',
             'is_settlement' => 'Is Settlement',

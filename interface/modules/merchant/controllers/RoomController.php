@@ -310,4 +310,31 @@ class RoomController extends Controller{
             ->asArray()->all();
         return \Yii::$app->responseHelper->success($rooms)->response();
     }
+
+    public function actionConsumptionBill(){
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
+        $num=\Yii::$app->requestHelper->post('num',1,'int');
+        $room=\service\order\Room::byId($merchant,$roomId);
+        if(empty($room)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $start=$_SERVER['REQUEST_TIME'];
+        $end=strtotime(date('Y-m-d',$start+86400*$num).' '.$merchant->getSetting()->check_out_time);
+        $bill=$room->generateDaysBill($start,$end,-1);
+        $billList=$bill->getList();
+        $res=[];
+        foreach ($billList as $billItem){
+            $res[]=[
+                'date'=>implode('/',[$billItem->year,$billItem->month,$billItem->day]),
+                'number'=>$room->getNumber(),
+                'amount'=>$billItem->amount,
+                'typeName'=>$room->getTypeName()
+            ];
+        }
+        return \Yii::$app->responseHelper->success([
+            'list'=>$res,
+            'totalAmount'=>$bill->getTotalAmount()
+        ])->response();
+    }
 }

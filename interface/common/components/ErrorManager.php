@@ -52,6 +52,16 @@ class ErrorManager extends Component{
     const ERROR_DEL_MEMBER_FAIL              =100044;
     const ERROR_REMOVE_BLACK_FAIL              =100045;
     const ERROR_NOT_SET_MERCHANT                =100046;//未设置商户信息
+    const ERROR_NO_GUEST_INFO           =100047;
+    const ERROR_ROOM_HAS_PLACE           =100048;
+    const ERROR_ROOM_DENY_CLOCK           =100049;
+    const ERROR_OVER_CLOCK_MAX           =100050;
+    const ERROR_ROOM_CLOCK_OVER_LIMIT           =100051;
+    const ERROR_ROOM_STATUS_CHANGE_FAIL           =100052;
+    const ERROR_OCCUPANCY_RECORD_ADD_FAIL           =100053;
+    const ERROR_ROOM_PLACE_ADD_FAIL           =100054;
+    const ERROR_ROOM_PLACE_UPDATE_FAIL           =100055;
+    const ERROR_ORDER_PAY_RECORD_FAIL           =100056;
     //错误信息 common\components\Error的实例
     private $_error;
 

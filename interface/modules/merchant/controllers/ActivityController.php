@@ -5,6 +5,7 @@ use common\components\ErrorManager;
 use common\models\MerchantActiveDate;
 use common\models\MerchantActivity;
 use common\models\MerchantActivityCondition;
+use common\models\MerchantMemberBirthdayWelfare;
 use common\models\MerchantMemberRankDivide;
 use common\models\Room;
 use common\models\RoomType;
@@ -469,5 +470,79 @@ class ActivityController extends Controller{
         return \Yii::$app->responseHelper->success([
             ['title'=>'全部房间','expand'=>true,'children'=>$res]
         ])->response();
+    }
+
+    /**
+     * 生日福利
+     * @return mixed
+     */
+    public function actionBirthdayWelfare(){
+        $rankId=\Yii::$app->requestHelper->post('rankId',0,'int');
+        if($rankId<1){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $rank=MerchantMemberRankDivide::findOne(['id'=>$rankId,'mch_id'=>$mchId]);
+        if(empty($rank)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $selected=MerchantMemberBirthdayWelfare::find()
+            ->alias('mbw')
+            ->select('ma.id')
+            ->leftJoin(MerchantActivity::tableName().' ma','mbw.activity_id=ma.id')
+            ->where(['ma.mch_id'=>$mchId,'mbw.member_rank_id'=>$rankId])
+            ->column();
+        $activities=MerchantActivity::find()
+            ->alias('ma')
+            ->select('ma.id,ma.name,ma.mark')
+            ->where(['ma.mch_id'=>$mchId])
+            ->asArray()->all();
+        return \Yii::$app->responseHelper->success([
+            'activities'=>$activities,
+            'selected'=>$selected,
+            'expire'=>intval($rank->birthday_welfare_expire)
+        ])->response();
+    }
+
+    /**
+     * 设置生日福利
+     * @return mixed
+     */
+    public function actionSetBirthdayWelfare(){
+        $rankId=\Yii::$app->requestHelper->post('rankId',0,'int');
+        $expire=\Yii::$app->requestHelper->post('expire',0,'int');
+        $activityIds=\Yii::$app->requestHelper->post('activityIds',[],'array');
+        if($rankId<1 || empty($activityIds)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+        $rank=MerchantMemberRankDivide::findOne(['id'=>$rankId,'mch_id'=>$mchId]);
+        if(empty($rank)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $birthdayActivities=[];
+        foreach ($activityIds as $activityId){
+            $birthdayActivities[]=[$rankId,$activityId];
+        }
+        $transaction=\Yii::$app->db->beginTransaction();
+        MerchantMemberBirthdayWelfare::deleteAll(['member_rank_id'=>$rankId]);
+        if($rank->birthday_welfare_expire!=$expire){
+            $rank->birthday_welfare_expire=$expire;
+            if(!$rank->update()){
+                $transaction->rollBack();
+                return \Yii::$app->responseHelper->error(ErrorManager::ERROR_UPDATE_FAIL)->response();
+            }
+        }
+        $res=\Yii::$app->db->createCommand()
+            ->batchInsert(MerchantMemberBirthdayWelfare::tableName(),[
+                'member_rank_id','activity_id'
+            ],$birthdayActivities)->execute();
+        if($res){
+            $transaction->commit();
+            return \Yii::$app->responseHelper->success()->response();
+        }else{
+            $transaction->rollBack();
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_UPDATE_FAIL)->response();
+        }
     }
 }

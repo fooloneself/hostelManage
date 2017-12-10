@@ -23,10 +23,10 @@ class OrderController extends Controller{
         $merchant=\Yii::$app->user->getAdmin()->getMerchant();
         $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
         $activeId=\Yii::$app->requestHelper->post('activeId',0,'int');
-        $pays=\Yii::$app->requestHelper->post('pays',[],'array');
+        $pays=\Yii::$app->requestHelper->post('pay',[],'array');
         $mobile=\Yii::$app->requestHelper->post('mobile','','string');
         $name=\Yii::$app->requestHelper->post('name','','string');
-        $guest=\Yii::$app->requestHelper->post('guest',[],'array');
+        $lodgers=\Yii::$app->requestHelper->post('lodgers',[],'array');
         $channel=\Yii::$app->requestHelper->post('channel',0,'int');
         $type=\Yii::$app->requestHelper->post('type',1,'int');
         $number=\Yii::$app->requestHelper->post('number',0,'int');
@@ -39,15 +39,22 @@ class OrderController extends Controller{
         }else{
             $unitQuantity=3600;
         }
+        if(empty($mobile) || empty($name)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $lodgers[]=['mobile'=>$mobile,'name'=>$name];
         $end=$start+$unitQuantity*$number;
+        $transaction=\Yii::$app->db->beginTransaction();
         $res=$order->from($channel)
             ->byGuest($mobile,$name)
             ->mark($mark)->pay($pays)
-            ->occupancy($roomId,$type,$start,$end,$guest,$totalAmount);
+            ->occupancy($roomId,$type,$start,$end,$lodgers,$totalAmount);
         if($res){
-            return \Yii::$app->requestHelper->success()->response();
+            $transaction->commit();
+            return \Yii::$app->responseHelper->success()->response();
         }else{
-            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
+            $transaction->rollBack();
+            return \Yii::$app->responseHelper->error($order->getError())->response();
         }
     }
 
@@ -71,9 +78,9 @@ class OrderController extends Controller{
             ->mark($mark)
             ->reverse($rooms,$totalAmount);
         if($res){
-            return \Yii::$app->requestHelper->success()->response();
+            return \Yii::$app->responseHelper->success()->response();
         }else{
-            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
         }
     }
 
@@ -88,13 +95,13 @@ class OrderController extends Controller{
         $guest=\Yii::$app->requestHelper->post('guest',[],'array');
         $order=\service\order\Order::byId($merchant,$orderId);
         if(empty($order)){
-            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_NOT_EXISTS)->response();
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ORDER_NOT_EXISTS)->response();
         }
         $res=$order->occupancyPredetermined($roomId,$guest);
         if($res){
-            return \Yii::$app->requestHelper->success()->response();
+            return \Yii::$app->responseHelper->success()->response();
         }else{
-            return \Yii::$app->requestHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ORDER_ROOM_PLACE_FAIL)->response();
         }
     }
 
@@ -185,6 +192,12 @@ class OrderController extends Controller{
         ])->response();
     }
 
+    /**
+     * 订单活动
+     */
+    public function actionActivity(){
+
+    }
     public function actionInfo(){
         
     }

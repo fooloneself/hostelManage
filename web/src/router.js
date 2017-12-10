@@ -50,7 +50,7 @@ const admin = [
     	component: (resolve) => require(['./views/market/MemberRankEdit.vue'], resolve)
 	},
 	{
-		path: 'memberRankBirthday',
+		path: 'memberRankBirthday/:rankId',
         meta: {
             title: '会员等级 - 生日福利'
         },
@@ -436,14 +436,14 @@ const admin = [
                 component: (resolve) => require(['./views/checkstand/In.vue'], resolve)
             },
             {
-                path: 'checkstandEdit/:id/:orderId',
+                path: 'checkstandEdit/:roomId/:orderId',
                 meta: {
                     title: '客房登记 - 入住 - 订单编辑'
                 },
                 component: (resolve) => require(['./views/checkstand/Edit.vue'], resolve)
             },
             {
-                path: 'checkstandView/:id/:orderId',
+                path: 'checkstandView/:roomId/:orderId',
                 meta: {
                     title: '客房登记 - 入住 - 订单编辑'
                 },
