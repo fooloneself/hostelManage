@@ -159,7 +159,8 @@ class Order extends Server{
         }
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();
-        if(!$this->addOrder($total,$payingAmount,1,$totalAmount>=0)){
+        $isTemporary=$totalAmount>=0?1:0;
+        if(!$this->addOrder($total,$payingAmount,1,$isTemporary)){
             return false;
         }
         foreach ($orderRooms as $orderRoom){
@@ -203,8 +204,9 @@ class Order extends Server{
         }
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();
-        if(!$this->addOrder($bill->getTotalAmount(),$payingAmount,0,$totalAmount>=0)){
-            $this->setError(ErrorManager::ERROR_ORDER_CREATE_FAIL);
+        $isTemporary=$totalAmount>=0?1:0;
+        if(!$this->addOrder($bill->getTotalAmount(),$payingAmount,0,$isTemporary)){
+            $this->setError(ErrorManager::ERROR_ORDER_CREATE_FAIL,json_encode($this->_order->getErrors()));
             return false;
         }
         if(!$r->occupancy($this,$guests)){

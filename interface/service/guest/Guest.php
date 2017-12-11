@@ -69,4 +69,27 @@ class Guest extends Server{
         }
         return new static($guest);
     }
+
+    /**
+     * 是否生日
+     * @return bool
+     */
+    public function isBirthday(){
+        return $this->guest==intval(date('Ymd'));
+    }
+
+    /**
+     * 是否会员
+     */
+    public function isMember(){
+        return $this->guest->is_member==1? true: false;
+    }
+
+    /**
+     * 获取会员等级
+     * @return int
+     */
+    public function getMemberRank(){
+        return intval($this->guest->rank);
+    }
 }
