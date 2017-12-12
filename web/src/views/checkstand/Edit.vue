@@ -82,10 +82,10 @@ span.extra{
 				                <Option :value="2" v-if="room.allow_hour_room">钟点房</Option>
 				            </Select>
 						</Col>
-						<Col span="4" v-show="orderInfo.type==1">
-				             <InputNumber class="icon-mr" v-model="orderInfo.dayNum" :max="360" :min="1" :step="1"></InputNumber>天
+						<Col span="4">
+				             <InputNumber class="icon-mr" v-model="orderInfo.quantity" :max="360" :min="1" :step="1"></InputNumber>天
 						</Col>
-						<Col span="4" v-show="orderInfo.type==2">
+						<Col span="4" v-show="false">
 				             <TimePicker v-model="orderInfo.hour" type="time" placement="bottom-end" placeholder="入住时间选择"></TimePicker>
 						</Col>
 					</Row>
@@ -229,7 +229,7 @@ export default{
 			    name:null,
 			    lodgers: [{mobile: '',name: ''}],
                 type: 1,
-                dayNum: 1,
+                quantity: 1,
                 totalAmount:null,
                 activeId:0,
                 pay: [{expenseItem:null,channel:null,amount:null}],
@@ -332,7 +332,7 @@ export default{
                 mark: this.orderInfo.mark,
                 pay: this.orderInfo.pay,
                 type: this.orderInfo.type,
-                number:number,
+                quantity:this.orderInfo.quantity,
                 channel: this.orderInfo.channel,
                 name:this.orderInfo.name,
                 mobile:this.orderInfo.mobile,
@@ -351,7 +351,7 @@ export default{
 		},
 		refreshRoomConsumptionList(){
 		    var that=this;
-		    this.host.post('merchantRoomConsumptionBill',{roomId: this.$route.params.roomId,num:this.orderInfo.dayNum}).then(function(res){
+		    this.host.post('merchantRoomConsumptionBill',{roomId: this.$route.params.roomId,quantity:this.orderInfo.quantity}).then(function(res){
                 if(res.isSuccess()){
                     that.room.data=res.data().list;
                     that.defaultTotalAmount=res.data().totalAmount.toString();
@@ -390,7 +390,7 @@ export default{
 		}
 	},
     watch:{
-        'orderInfo.dayNum'(){
+        'orderInfo.quantity'(){
             this.refreshRoomConsumptionList();
         }
     }

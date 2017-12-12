@@ -7,7 +7,9 @@ use common\models\Dictionary;
 use common\models\DictionaryItem;
 use common\models\Guest;
 use common\models\MerchantMember;
+use common\models\OccupancyRecord;
 use common\models\Order;
+use common\models\OrderCostDetail;
 use common\models\OrderRoom;
 use service\order\OrderManger;
 use service\order\Room;
@@ -29,26 +31,19 @@ class OrderController extends Controller{
         $lodgers=\Yii::$app->requestHelper->post('lodgers',[],'array');
         $channel=\Yii::$app->requestHelper->post('channel',0,'int');
         $type=\Yii::$app->requestHelper->post('type',1,'int');
-        $number=\Yii::$app->requestHelper->post('number',0,'int');
+        $quantity=\Yii::$app->requestHelper->post('quantity',0,'int');
         $totalAmount=\Yii::$app->requestHelper->post('totalAmount',-1,'int');
         $mark=\Yii::$app->requestHelper->post('mark','');
         $order=\service\order\Order::newOne($merchant);
-        $start=$_SERVER['REQUEST_TIME'];
-        if($type==OrderRoom::TYPE_DAY){
-            $unitQuantity=86400;
-        }else{
-            $unitQuantity=3600;
-        }
         if(empty($mobile) || empty($name)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
         $lodgers[]=['mobile'=>$mobile,'name'=>$name];
-        $end=$start+$unitQuantity*$number;
         $transaction=\Yii::$app->db->beginTransaction();
         $res=$order->from($channel)
             ->byGuest($mobile,$name)
             ->mark($mark)->pay($pays)
-            ->occupancy($roomId,$type,$start,$end,$lodgers,$totalAmount);
+            ->occupancy($roomId,$type,$quantity,$lodgers,$totalAmount);
         if($res){
             $transaction->commit();
             return \Yii::$app->responseHelper->success()->response();
@@ -198,8 +193,28 @@ class OrderController extends Controller{
     public function actionActivity(){
 
     }
-    public function actionInfo(){
-        
+
+    /**
+     * 房间订单信息
+     */
+    public function actionRoomOrder(){
+        $orderId=\Yii::$app->requestHelper->post('orderId',0,'int');
+        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
+        $orderRoom=OrderRoom::find()
+            ->alias('oo')
+            ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
+            ->where(['o.id'=>$orderId,'oo.room_id'=>$roomId])
+            ->asArray()->one();
+        if(empty($orderRoom)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $occupancyRecord=OccupancyRecord::find()->where(['order_id'=>$orderId,'room_id'=>$roomId])->asArray()->all();
+        $costRecord=OrderCostDetail::find()->where(['order_id'=>$orderId,'room_id'=>$roomId])->asArray()->all();
+        return \Yii::$app->responseHelper->success([
+            'order'=>$orderRoom,
+            'occupancyRecord'=>$occupancyRecord,
+            'costRecord'=>$costRecord
+        ])->response();
     }
 
     public function actionRoomCostList(){

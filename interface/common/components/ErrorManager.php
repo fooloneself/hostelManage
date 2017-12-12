@@ -62,6 +62,8 @@ class ErrorManager extends Component{
     const ERROR_ROOM_PLACE_ADD_FAIL           =100054;
     const ERROR_ROOM_PLACE_UPDATE_FAIL           =100055;
     const ERROR_ORDER_PAY_RECORD_FAIL           =100056;
+    const ERROR_ROOM_UNLOCK_FAIL           =100057;
+    const ERROR_ORDER_BILL_INSERT_FAIL           =100058;
     //错误信息 common\components\Error的实例
     private $_error;
 

@@ -116,7 +116,8 @@ const interfaces={
     'merchantRoomConsumptionBill':'merchant/room/consumption-bill',
     'merchantOrderActivity':'merchant/order/activity',
     'merchantMemberBirthdayWelfare':'merchant/activity/birthday-welfare',
-    'merchantMemberBirthdayWelfareSet':'merchant/activity/set-birthday-welfare'
+    'merchantMemberBirthdayWelfareSet':'merchant/activity/set-birthday-welfare',
+    'merchantEmptyRoom':'merchant/checkstand/empty-room'
 };
 const server={
     'host': 'http://www.hotel.com',

@@ -15,8 +15,6 @@ class Room extends Server{
     protected $room;
     protected $roomType;
 
-    protected $startTime;
-    protected $endTime;
     protected $bill;
     protected $type;
     public function __construct(Merchant $merchant,\common\models\Room $room,RoomType $roomType=null)
@@ -219,41 +217,40 @@ class Room extends Server{
     public function setDirty(){
         $this->room->status=\common\models\Room::STATUS_DIRTY;
         $this->room->order_id=0;
-        return $this->room->update(false);
+        if($this->room->update(false)){
+            return true;
+        }else{
+            $this->setError(ErrorManager::ERROR_ROOM_STATUS_CHANGE_FAIL);
+            return false;
+        }
     }
 
     /**
      * 生成消费清单-钟点
-     * @param $start
-     * @param $end
-     * @param $totalAmount
-     * @return RoomBill
+     * @param $quantity
+     * @return \service\order\RoomBill
      */
-    public function generateHoursBill($start,$end,$totalAmount){
-        $this->startTime=$start;
-        $this->endTime=$end;
-        return $this->bill=RoomBill::generateHoursBill($this,$start,$end,$totalAmount);
+    public function newHoursBill($quantity){
+        return $this->bill=RoomBill::byRoom($this)->hours($quantity);
     }
 
     /**
      * 生成消费清单-整日
-     * @param $start
-     * @param $end
-     * @param $totalAmount
-     * @return RoomBill
+     * @param $quantity
+     * @return \service\order\RoomBill
      */
-    public function generateDaysBill($start,$end,$totalAmount){
-        $this->startTime=$start;
-        $this->endTime=$end;
-        return $this->bill=RoomBill::generateDaysBill($this,$start,$end,$totalAmount);
+    public function newDaysBill($quantity){
+        return $this->bill=RoomBill::byRoom($this)->days($quantity);
     }
+
     /**
      * 入住
      * @param \service\order\Order $order
+     * @param $quantity
      * @param array $guests
-     * @return false|int
+     * @return bool
      */
-    public function occupancy(\service\order\Order $order,array $guests){
+    public function occupancy(\service\order\Order $order,$quantity,array $guests){
         $this->room->status=\common\models\Room::STATUS_OCCUPANCY;
         $this->room->order_id=$order->getId();
         if(!$this->room->update(false)){
@@ -262,7 +259,7 @@ class Room extends Server{
         }else if(!$this->addOccupancyRecord($order,$guests)){
             $this->setError(ErrorManager::ERROR_OCCUPANCY_RECORD_ADD_FAIL);
             return false;
-        }else if(!$order->occupancyRoom($this)){
+        }else if(!$order->occupancyRoom($this,$quantity)){
             $this->setError($order->getError());
             return false;
         }else{

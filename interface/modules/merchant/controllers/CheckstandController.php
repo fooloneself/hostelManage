@@ -1,6 +1,7 @@
 <?php
 namespace modules\merchant\controllers;
 use common\components\Controller;
+use common\components\ErrorManager;
 use common\models\MerchantMember;
 use common\models\Order;
 use common\models\OrderRoom;
@@ -57,9 +58,47 @@ class CheckstandController extends Controller{
         return \Yii::$app->responseHelper->success($guests)->response();
     }
 
-    public function actionRoomInfo(){
-        $mchId=\Yii::$app->user->getAdmin()->getMchId();
+    /**
+     * 房间状态置空
+     * @return mixed
+     */
+    public function actionEmptyRoom(){
         $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
-        $time=\Yii::$app->requestHelper->post('');
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $room=\service\order\Room::byId($merchant,$roomId);
+        if(empty($room)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        if($room->setEmpty()){
+            return \Yii::$app->responseHelper->success()->response();
+        }else{
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_ROOM_UNLOCK_FAIL)->response();
+        }
+    }
+
+    /**
+     * 退房
+     * @return mixed
+     */
+    public function actionCheckOutRoom(){
+        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
+        $orderId=\Yii::$app->requestHelper->post('orderId',0,'int');
+        if($roomId<1 || $orderId<1){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $room=\service\order\Room::byId($merchant,$roomId);
+        if(empty($room)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $order=\service\order\Order::byId($merchant,$orderId);
+        if(empty($order)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        if($room->checkOut($order)){
+            return \Yii::$app->responseHelper->success()->response();
+        }else{
+            return \Yii::$app->responseHelper->error($room->getError())->response();
+        }
     }
 }

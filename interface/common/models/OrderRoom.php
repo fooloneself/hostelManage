@@ -13,17 +13,18 @@ use Yii;
  * @property integer $end_time
  * @property integer $status
  * @property integer $type
+ * @property integer $quantity
  * @property string $amount
  */
 class OrderRoom extends \common\components\ActiveRecord
 {
-    const STATUS_CANCEL    =0;//撤销
-    const STATUS_REVERSE   =1;//预定
+    const STATUS_CANCEL   =0;//撤销
+    const STATUS_REVERSE  =1;//预定
     const STATUS_OCCUPANCY =2;//入住
     const STATUS_CHECK_OUT =3;//退房
     //类型
-    const TYPE_DAY     =1;//天
-    const TYPE_CLOCK   =2;//钟点
+    const TYPE_DAY    =1;//天
+    const TYPE_CLOCK  =2;//钟点
     /**
      * @inheritdoc
      */
@@ -39,7 +40,7 @@ class OrderRoom extends \common\components\ActiveRecord
     {
         return [
             [['order_id', 'room_id'], 'required'],
-            [['order_id', 'room_id', 'start_time', 'end_time', 'status', 'type'], 'integer'],
+            [['order_id', 'room_id', 'start_time', 'end_time', 'status', 'type', 'quantity'], 'integer'],
             [['amount'], 'number'],
         ];
     }
@@ -56,6 +57,7 @@ class OrderRoom extends \common\components\ActiveRecord
             'end_time' => 'End Time',
             'status' => 'Status',
             'type' => 'Type',
+            'quantity' => 'Quantity',
             'amount' => 'Amount',
         ];
     }

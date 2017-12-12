@@ -149,11 +149,7 @@ class Order extends Server{
             }else if(!$r->canPlaceOrder($room['start'],$room['end'])){
                 return false;
             }
-            if($room['type']==OrderRoom::TYPE_CLOCK){
-                $bill=$r->generateHoursBill($room['start'],$room['end'],$totalAmount);
-            }else{
-                $bill=$r->generateDaysBill($room['start'],$room['end'],$totalAmount);
-            }
+            $bill=$this->generateRoomBill($r,$room['type'],$room['start'],$room['end'],$totalAmount);
             $orderRooms[]=$r;
             $total+=$bill->getTotalAmount();
         }
@@ -178,29 +174,33 @@ class Order extends Server{
      * 单房间下单入住
      * @param $roomId
      * @param $type
-     * @param $startTime
-     * @param $endTime
+     * @param $quantity
      * @param array $guests
      * @param int $totalAmount
      * @return bool
      */
-    public function occupancy($roomId,$type,$startTime,$endTime,array $guests,$totalAmount=-1){
+    public function occupancy($roomId,$type,$quantity,array $guests,$totalAmount=-1){
         if(empty($this->guest)){
             $this->setError(ErrorManager::ERROR_NO_GUEST_INFO);
             return false;
         }
         $r=Room::byId($this->merchant,$roomId);
+        if($type==OrderRoom::TYPE_DAY){
+            $bill=$r->newDaysBill($quantity);
+        }else{
+            $bill=$r->newHoursBill($quantity);
+        }
         if(empty($r)){
             $this->setError(ErrorManager::ERROR_ROOM_NOT_EXISTS);
             return false;
-        }else if(!$r->canPlaceOrder($startTime,$endTime)){
+        }else if(!$r->canPlaceOrder($bill->getStartTime(),$bill->getEndTime())){
             $this->setError($r->getError());
             return false;
         }
-        if($type==OrderRoom::TYPE_CLOCK){
-            $bill=$r->generateHoursBill($startTime,$endTime,$totalAmount);
+        if($type==OrderRoom::TYPE_DAY){
+            $bill->generateDaysBill($totalAmount);
         }else{
-            $bill=$r->generateDaysBill($startTime,$endTime,$totalAmount);
+            $bill->generateHoursBill($totalAmount);
         }
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();
@@ -209,8 +209,12 @@ class Order extends Server{
             $this->setError(ErrorManager::ERROR_ORDER_CREATE_FAIL,json_encode($this->_order->getErrors()));
             return false;
         }
-        if(!$r->occupancy($this,$guests)){
+        if(!$r->occupancy($this,$quantity,$guests)){
             $this->setError($r->getError());
+            return false;
+        }
+        if(!$bill->insert($this)){
+            $this->setError($bill->getError());
             return false;
         }
         if(!$pay->insert()){
@@ -264,9 +268,10 @@ class Order extends Server{
     /**
      * 入住房间
      * @param Room $room
-     * @return bool|false|int
+     * @param $quantity
+     * @return bool
      */
-    public function occupancyRoom(Room $room){
+    public function occupancyRoom(Room $room,$quantity){
         if($this->isNew){
             $orderRoom=new OrderRoom();
             $orderRoom->order_id=$this->getId();
@@ -276,6 +281,7 @@ class Order extends Server{
             $orderRoom->status=OrderRoom::STATUS_OCCUPANCY;
             $orderRoom->amount=$room->getBill()->getTotalAmount();
             $orderRoom->type=$room->getBill()->getType();
+            $orderRoom->quantity=$quantity;
             if($orderRoom->insert(false)){
                 return true;
             }else{
@@ -325,13 +331,21 @@ class Order extends Server{
     public function checkOutRoom(Room $room){
         $orderRoom=OrderRoom::findOne(['order_id'=>$this->getId(),'room_id'=>$room->getId()]);
         if(empty($orderRoom)){
+            $this->setError(ErrorManager::ERROR_ORDER_ROOM_UN_PLACE);
             return false;
         }
         $orderRoom->status=OrderRoom::STATUS_CHECK_OUT;
         $orderRoom->end_time=$_SERVER['REQUEST_TIME'];
-        return $orderRoom->update(false);
+        if($orderRoom->update(false)){
+            return true;
+        }else{
+            $this->setError(ErrorManager::ERROR_ORDER_ROOM_CHANGE_FAIL);
+            return false;
+        }
     }
 
+    public function continueRoom(Room $room,$type,$quantity,$totalAmount){
+    }
     /**
      * 获取下单客户
      * @return Guest

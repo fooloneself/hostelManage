@@ -190,7 +190,7 @@ export default{
                 title: '提示',
                 content: '是否切换为空房？',
                 onOk (){
-                    that.setRoomStatus(room,0);
+                    that.setRoomStatusToEmpty(room);
                 }
             })
         },
@@ -200,17 +200,23 @@ export default{
                 title: '提示',
                 content: '是否解锁房间？',
                 onOk (){
-                    that.setRoomStatus(room,0);
+                    that.setRoomStatusToEmpty(room);
                 }
             })
         },
-        setRoomStatus(room,status){
-            this.host.post('',{roomId:room.roomId,status:status}).then(function(res){
+        setRoomStatusToEmpty(room){
+            var that=this;
+            console.log(room);
+            this.host.post('merchantEmptyRoom',{roomId:room.roomId}).then(function(res){
                 if(res.isSuccess()){
-                    room.roomStatus=status
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: '房间已可入住'
+                    })
+                    room.roomStatus=0;
                 }else{
                     this.$Notice.info({
-                        title:'错误提示',
+                        title: '提示',
                         desc: res.error()
                     })
                 }

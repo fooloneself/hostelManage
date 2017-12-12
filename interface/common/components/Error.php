@@ -44,6 +44,8 @@ class Error{
         ErrorManager::ERROR_ROOM_PLACE_UPDATE_FAIL=>'房间预定信息修改失败',
         ErrorManager::ERROR_ORDER_PAY_RECORD_FAIL=>'房订单支付信息录入失败',
         ErrorManager::ERROR_ROOM_NOT_EXISTS=>'房间不存在',
+        ErrorManager::ERROR_ROOM_UNLOCK_FAIL=>'房间解锁失败',
+        ErrorManager::ERROR_ORDER_BILL_INSERT_FAIL=>'订单消费详情插入失败',
     ];
     //错误码
     public $status;
