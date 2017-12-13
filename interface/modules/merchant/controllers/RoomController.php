@@ -319,10 +319,8 @@ class RoomController extends Controller{
         if(empty($room)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
-        $start=$_SERVER['REQUEST_TIME'];
-        $end=strtotime(date('Y-m-d',$start+86400*$quantity).' '.$merchant->getSetting()->check_out_time);
-        $bill=$room->generateDaysBill($start,$end,-1);
-        $billList=$bill->getList();
+        $bill=$room->newBill()->days($quantity);
+        $billList=$bill->generate(-1)->getList();
         $res=[];
         foreach ($billList as $billItem){
             $res[]=[

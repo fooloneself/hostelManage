@@ -144,6 +144,7 @@ class Order extends Server{
         $total=0;
         foreach ($rooms as $room){
             $r=Room::byId($this->merchant,$room['roomId']);
+            $bill=$r->newHoursBill($room['quantity']);
             if(empty($r)){
                 return false;
             }else if(!$r->canPlaceOrder($room['start'],$room['end'])){
@@ -185,10 +186,11 @@ class Order extends Server{
             return false;
         }
         $r=Room::byId($this->merchant,$roomId);
+        $bill=$r->newBill();
         if($type==OrderRoom::TYPE_DAY){
-            $bill=$r->newDaysBill($quantity);
+            $bill->days($quantity);
         }else{
-            $bill=$r->newHoursBill($quantity);
+            $bill->hours($quantity);
         }
         if(empty($r)){
             $this->setError(ErrorManager::ERROR_ROOM_NOT_EXISTS);
@@ -198,9 +200,9 @@ class Order extends Server{
             return false;
         }
         if($type==OrderRoom::TYPE_DAY){
-            $bill->generateDaysBill($totalAmount);
+            $bill->generate($totalAmount);
         }else{
-            $bill->generateHoursBill($totalAmount);
+            $bill->generate($totalAmount);
         }
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();

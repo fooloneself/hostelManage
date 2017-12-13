@@ -227,20 +227,10 @@ class Room extends Server{
 
     /**
      * 生成消费清单-钟点
-     * @param $quantity
      * @return \service\order\RoomBill
      */
-    public function newHoursBill($quantity){
-        return $this->bill=RoomBill::byRoom($this)->hours($quantity);
-    }
-
-    /**
-     * 生成消费清单-整日
-     * @param $quantity
-     * @return \service\order\RoomBill
-     */
-    public function newDaysBill($quantity){
-        return $this->bill=RoomBill::byRoom($this)->days($quantity);
+    public function newBill(){
+        return $this->bill=RoomBill::byRoom($this);
     }
 
     /**

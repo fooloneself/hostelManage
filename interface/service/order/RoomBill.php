@@ -89,21 +89,6 @@ class RoomBill extends Server{
     }
 
     /**
-     * 生成消费清单--钟点
-     * @param Room $room
-     * @param $start
-     * @param $end
-     * @param int $totalAmount
-     * @return static
-     */
-    public function generateHoursBill($totalAmount=-1){
-        $totalAmount=$totalAmount<0 ? $this->room->getHourPrice()*$this->quantity : $totalAmount;
-        $this->totalAmount=$totalAmount;
-        $this->bill=[self::newBillModel($this->room->getId(),$this->startTime,$totalAmount)];
-        return $this;
-    }
-
-    /**
      * 实例化单房间的消费清单
      * @param Room $room
      * @param $start
@@ -117,6 +102,20 @@ class RoomBill extends Server{
     }
 
     /**
+     * 生成消费清单--钟点
+     * @param Room $room
+     * @param $start
+     * @param $end
+     * @param int $totalAmount
+     * @return static
+     */
+    protected function generateHoursBill($totalAmount=-1){
+        $totalAmount=$totalAmount<0 ? $this->room->getHourPrice()*$this->quantity : $totalAmount;
+        $this->totalAmount=$totalAmount;
+        $this->bill=[self::newBillModel($this->room->getId(),$this->startTime,$totalAmount)];
+        return $this;
+    }
+    /**
      * 生成消费清单--整天
      * @param Room $room
      * @param $start
@@ -124,7 +123,7 @@ class RoomBill extends Server{
      * @param int $totalAmount
      * @return RoomBill
      */
-    public function generateDaysBill($totalAmount=-1){
+    protected function generateDaysBill($totalAmount=-1){
         $timestamp=$this->startTime;
         $bills=[];
         $roomId=$this->room->getId();
@@ -160,6 +159,20 @@ class RoomBill extends Server{
         $this->bill=$bills;
         $this->totalAmount=$totalAmount;
         return $this;
+    }
+
+    /**
+     * 生成订单
+     * @param $totalAmount
+     * @return RoomBill
+     */
+    public function generate($totalAmount){
+        if($this->type==OrderRoom::TYPE_DAY){
+            return $this->generateDaysBill($totalAmount);
+        }else{
+            return $this->generateHoursBill($totalAmount);
+
+        }
     }
 
     /**
