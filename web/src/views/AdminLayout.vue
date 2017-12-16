@@ -3,23 +3,23 @@
     min-width: 1280px;
     .layout-header{
         padding: 0 24px;
-        height: 60px;
-        line-height: 60px;
+        height: 70px;
+        line-height: 70px;
         background: #2C3E50;
         font-size: 14px;
         a{
             color: #FFF;
         }
         img{
-            height: 30px;
-            margin-top: 15px;
+            height: 38px;
+            margin-top: 16px;
         }
     }
     .layout-left{
         width: 220px;
         position: absolute;
         left: 0px;
-        top: 60px;
+        top: 70px;
         bottom: 0px;
         &:after{
             content: "";
@@ -35,7 +35,7 @@
     .layout-right{
         position: absolute;
         left: 220px;
-        top: 60px;
+        top: 70px;
         right: 0;
         bottom: 0;
         background: #FFF;

@@ -1,18 +1,18 @@
 <style scoped>
 .layout-nav{
-    height: 60px;
-    line-height: 60px;
+    height: 70px;
+    line-height: 70px;
     background: rgba(44,62,80,0.5);
     min-width: 1280px;
     position: relative;
     z-index: 999;
     .logo{
         margin-left: 24px;
-        height: 60px;
-        line-height: 60px;
+        height: 70px;
+        line-height: 70px;
         img{
-            height: 30px;
-            margin-top: 15px;
+            height: 38px;
+            margin-top: 16px;
         }
     }
     a{
