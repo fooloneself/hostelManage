@@ -171,7 +171,7 @@
                     <MenuItem name="/admin/basicLinkage">
                         <i class="fa fa-tags fa-fw" aria-hidden="true"></i>联动菜单
                     </MenuItem>
-                    <MenuItem name="/admin/basicLinkage">
+                    <MenuItem name="/admin/basicRmdGoods">
                         <i class="fa fa-cart-plus fa-fw" aria-hidden="true"></i>优品添加
                     </MenuItem>
                     <MenuItem name="/admin/basicNotice">

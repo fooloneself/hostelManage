@@ -57,7 +57,7 @@
                     },
                     {
                         title: '手机号',
-                        width: 100,
+                        width: 130,
                         key: 'mobile'
                     },
                     {
