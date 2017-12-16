@@ -74,7 +74,7 @@
 .footer{
     height: 80px;
     line-height: 80px;
-    border-top: 1px dotted #dddee1;
+    border-top: 1px solid #dddee1;
     .footer-info{
         width: 1000px;
         margin: 0 auto;

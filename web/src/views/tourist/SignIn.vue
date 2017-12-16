@@ -2,7 +2,7 @@
 .layout-nav{
     height: 70px;
     line-height: 70px;
-    background: rgba(44,62,80,0.5);
+    background: rgba(44,62,80,1);
     min-width: 1280px;
     position: relative;
     z-index: 999;
@@ -20,60 +20,79 @@
         color: #FFF;
     }
 }
-.form-container{
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: #2C3E50;
-}
 .form{
 	width: 360px;
     position: absolute;
     z-index: auto;
     left: 50%;
     top: 50%;
-    margin-top: -154px;
+    margin-top: -170px;
     margin-left: -180px;
-	color: #ffffff;
 	.form-table{
 		p{
-			font-size: 16px;
-			margin-bottom: 20px;
-			letter-spacing: 0.1em;
+			font-size: 18px;
+			margin-bottom: 24px;
+			font-weight: 600;
+			letter-spacing: 1px;
 		}
 		.input{
-			border: none;
-			color: #ffffff;
-			border-radius: 0;
-			border-bottom: 1px solid #34495E;
-			background: transparent;
-			padding: 0 0 0 10px;
-			height: 40px;
-			line-height: 40px;
-			font-size: 14px;
-			margin-bottom: 20px;
-			width: 100%;
-		}
-		.code{
-			height: 40px;
-			line-height: 40px;
-			text-align: center;
-			font-style: italic;
-			font-weight: bolder;
-			font-size: 14px;
-			border-bottom: 1px solid #34495E;
+	        height: 40px;
+	        line-height: 40px;
+	        border-bottom: 1px solid #dddee1;
+	        position: relative;
+	        margin-bottom: 16px;
+	        input{
+	        	background: transparent;
+	        	border: none;
+	        	width: 100%;
+	        	padding-left: 8px;
+	        }
+	        .fa{
+	        	position: absolute;
+	        	right: 10px;
+	        	top: 9px;
+	        	font-size: 22px;
+	        	color: #bbbec4;
+	        }
+	        .code{
+	        	font-size: 16px;
+	        	font-weight: bold;
+	        	text-align: right;
+	        	font-style: italic;
+	        	color: #bbbec4;
+	        }
 		}
 		a{
 			color: #16a085;
 		}
 	}
 }
+.footer{
+    position: absolute;
+    bottom: 0px;
+    height: 80px;
+    line-height: 80px;
+    width: 100%;
+	&:before{
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: #dddee1;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+    .footer-info{
+        width: 1000px;
+        margin: 0 auto;
+    }
+}
 </style>
 
 <template>
-<div class="form-container">
+<div>
 	<div class="layout-nav">
         <div class="container-body">
             <Row>
@@ -92,12 +111,20 @@
 			<Col span="24">
 				<form class="form-table">
 					<p>登录 / Sign In</p>
-					<input v-model="userName" type="text" class="input" placeholder="请输入用户名">
-					<input v-model="password" type="password" class="input" placeholder="请输入密码">
-					<Row>
-						<Col span="16"><input v-model="code" type="text" class="input input_code" placeholder="请输入验证码"></Col>
-						<Col span="8"><div class="code">ASDAFG</div></Col>
-					</Row>
+					<div class="input">
+						<input v-model="userName" type="text" placeholder="请输入用户名">
+						<i class="fa fa-user" aria-hidden="true"></i>
+					</div>
+					<div class="input">
+						<input v-model="password" type="password" placeholder="请输入密码">
+						<i class="fa fa-lock" aria-hidden="true"></i>
+					</div>
+					<div class="input">
+						<Row>
+							<Col span="18"><input v-model="code" type="text" placeholder="请输入验证码"></Col>
+							<Col span="6"><div class="code">ASDAFG</div></Col>
+						</Row>
+					</div>
 					<Button size="large" type="primary" @click='submit' long shape="circle" class="mt">登&nbsp;&nbsp;录</Button>
 					<div class="mb"></div>
 					<Row>
@@ -108,6 +135,12 @@
 			</Col>
 		</Row>
 	</div>
+    <div class="footer">
+        <Row class="footer-info">
+            <Col span="16">静静的为自己许下一个愿望，为此而努力，万一就实现了岂不是惊喜！</Col>
+            <Col span="8" class="tr">Copyright@TwoBoys.</Col>
+        </Row>
+    </div>
 </div>
 </template>
 

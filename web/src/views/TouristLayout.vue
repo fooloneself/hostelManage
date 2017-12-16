@@ -1,7 +1,6 @@
 <style scoped>
 .layout-nav{
     background: rgba(44,62,80,.7);
-    min-width: 1280px;
     position: fixed;
     padding: 0 24px;
     width: 100%;
@@ -18,6 +17,12 @@
         line-height: 70px;
         font-size: 14px;
         color: #FFF;
+        &.login{
+            display: inline-block;
+            padding: 0 24px;
+            background: #16A085;
+            margin-right: 24px;
+        }
     }
 }
 </style>
@@ -35,8 +40,8 @@
                         </div>
                     </Col>
                     <Col span="4" offset="16" class="tr">
-                        <router-link to="login">登录</router-link>
-                        <router-link to="register" style="margin-left: 16px;">注册</router-link>
+                        <router-link to="login" class="login">登录</router-link>
+                        <router-link to="register">注册</router-link>
                     </Col>
                 </Row>
             </div>
