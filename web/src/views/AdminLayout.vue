@@ -11,8 +11,8 @@
             color: #FFF;
         }
         img{
-            height: 38px;
-            margin-top: 16px;
+            height: 36px;
+            margin: 17px 0;
         }
     }
     .layout-left{

@@ -14,7 +14,7 @@
         .banner-flyover{
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,.6);
+            background: rgba(0,0,0,.7);
         }
     }
 }
@@ -27,7 +27,7 @@
     color: #ffffff;
     text-align: center;
     .info{
-        font-size: 46px;
+        font-size: 66px;
         margin-bottom: 16px;
     }
     .desc{
