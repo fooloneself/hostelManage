@@ -11,8 +11,8 @@
             color: #FFF;
         }
         img{
-            height: 36px;
-            margin: 17px 0;
+            height: 34px;
+            margin: 18px 0;
         }
     }
     .layout-left{
@@ -205,7 +205,7 @@
                 this.host.post('loginOut').then(function(res){
                     if(res.isSuccess()){
 
-                        this.$router.push('/login');
+                        this.$router.push('/');
                     }else{
                         this.$Notice.info({
                             title: '错误提示',

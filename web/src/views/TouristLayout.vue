@@ -10,8 +10,8 @@
         height: 70px;
         line-height: 70px;
         img{
-            height: 36px;
-            margin: 17px 0;
+            height: 34px;
+            margin: 18px 0;
         }
     }
     a{
