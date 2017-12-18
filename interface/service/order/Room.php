@@ -217,10 +217,11 @@ class Room extends Server{
     public function setDirty(){
         $this->room->status=\common\models\Room::STATUS_DIRTY;
         $this->room->order_id=0;
-        if($this->room->update(false)){
+        if($this->room->update(true)){
             return true;
         }else{
-            $this->setError(ErrorManager::ERROR_ROOM_STATUS_CHANGE_FAIL);
+            echo json_encode($this->room->getAttributes());
+            $this->setError(ErrorManager::ERROR_ROOM_STATUS_CHANGE_FAIL,'退房失败');
             return false;
         }
     }
@@ -238,9 +239,10 @@ class Room extends Server{
      * @param \service\order\Order $order
      * @param $quantity
      * @param array $guests
+     * @param $isNew
      * @return bool
      */
-    public function occupancy(\service\order\Order $order,$quantity,array $guests){
+    public function occupancy(\service\order\Order $order,$quantity,array $guests,$isNew){
         $this->room->status=\common\models\Room::STATUS_OCCUPANCY;
         $this->room->order_id=$order->getId();
         if(!$this->room->update(false)){
@@ -249,7 +251,7 @@ class Room extends Server{
         }else if(!$this->addOccupancyRecord($order,$guests)){
             $this->setError(ErrorManager::ERROR_OCCUPANCY_RECORD_ADD_FAIL);
             return false;
-        }else if(!$order->occupancyRoom($this,$quantity)){
+        }else if(!$order->occupancyRoom($this,$quantity,$isNew)){
             $this->setError($order->getError());
             return false;
         }else{
@@ -307,5 +309,17 @@ class Room extends Server{
         }else {
             return true;
         }
+    }
+
+    /**
+     * 获取房间入住人信息
+     * @param Order $order
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getOccupancyGuest(\service\order\Order $order){
+        return OccupancyRecord::find()
+            ->select('mobile,person_name as name')
+            ->where(['room_id'=>$this->getId(),'order_id'=>$order->getId()])
+            ->asArray()->all();
     }
 }

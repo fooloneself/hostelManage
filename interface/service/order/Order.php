@@ -3,6 +3,7 @@ namespace service\order;
 use common\components\ErrorManager;
 use common\components\Server;
 use common\models\MerchantMember;
+use common\models\OrderCostDetail;
 use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
@@ -207,11 +208,11 @@ class Order extends Server{
         $pay=PayBill::byOrder($this);
         $payingAmount=$pay->pay($this->paying)->getPayingAmount();
         $isTemporary=$totalAmount>=0?1:0;
-        if(!$this->addOrder($bill->getTotalAmount(),$payingAmount,0,$isTemporary)){
+        if(!$this->addOrder($bill->getTotalAmount(),$bill->getTotalAmount(),$payingAmount,0,$isTemporary)){
             $this->setError(ErrorManager::ERROR_ORDER_CREATE_FAIL,json_encode($this->_order->getErrors()));
             return false;
         }
-        if(!$r->occupancy($this,$quantity,$guests)){
+        if(!$r->occupancy($this,$quantity,$guests,true)){
             $this->setError($r->getError());
             return false;
         }
@@ -249,13 +250,15 @@ class Order extends Server{
     /**
      * 新增订单
      * @param $totalAmount
+     * @param $payableAmount
      * @param $paidAmount
      * @param int $isReverse
      * @param int $isTemporary
      * @return bool
      */
-    protected function addOrder($totalAmount,$paidAmount,$isReverse=0,$isTemporary=0){
-        $this->_order->amount_payable=$totalAmount;
+    protected function addOrder($totalAmount,$payableAmount,$paidAmount,$isReverse=0,$isTemporary=0){
+        $this->_order->amount=$totalAmount;
+        $this->_order->amount_payable=$payableAmount;
         $this->_order->is_reverse=$isReverse?\common\models\Order::REVERSE_YES:\common\models\Order::REVERSE_NO;
         $this->_order->amount_paid=$paidAmount;
         $this->_order->place_time=$_SERVER['REQUEST_TIME'];
@@ -268,13 +271,22 @@ class Order extends Server{
     }
 
     /**
+     * 修改订单
+     * @return false|int
+     */
+    protected function updateOrder(){
+        return $this->_order->update();
+    }
+
+    /**
      * 入住房间
      * @param Room $room
      * @param $quantity
+     * @param $isNew
      * @return bool
      */
-    public function occupancyRoom(Room $room,$quantity){
-        if($this->isNew){
+    public function occupancyRoom(Room $room,$quantity,$isNew){
+        if($isNew){
             $orderRoom=new OrderRoom();
             $orderRoom->order_id=$this->getId();
             $orderRoom->room_id=$room->getId();
@@ -325,11 +337,6 @@ class Order extends Server{
         return $orderRoom->insert(false);
     }
 
-    /**
-     * 退房
-     * @param Room $room
-     * @return bool|false|int
-     */
     public function checkOutRoom(Room $room){
         $orderRoom=OrderRoom::findOne(['order_id'=>$this->getId(),'room_id'=>$room->getId()]);
         if(empty($orderRoom)){
@@ -345,9 +352,41 @@ class Order extends Server{
             return false;
         }
     }
+    /**
+     * 退房
+     * @param Room $room
+     * @return bool|false|int
+     */
+    public function checkOut(Room $room){
+        if(!$room->checkOut($this)){
+            $this->setError($room->getError());
+            return false;
+        }
+        $pay=PayBill::byOrder($this)->pay($this->paying);
+        $this->_order->amount_paid+=$pay->getPayingAmount();
+        $this->_order->amount_deffer-=$pay->getPayingAmount();
+        $this->_order->is_settlement=\common\models\Order::SETTLE_YES;
+        if($this->_order->amount_deffer==0){
+            $this->_order->status=\common\models\Order::STATUS_NORMAL;
+        }else{
+            $this->_order->status=\common\models\Order::STATUS_ABNORMAL;
+            $this->_order->abnormal_type=\common\models\Order::ABNORMAL_DEFFER;
+        }
+        if(!$this->_order->update(false)){
+            $this->setError(ErrorManager::ERROR_ORDER_STATUS_CHANGE_FAIL);
+            return false;
+        }else if(!$pay->insert()){
+            $this->setError(ErrorManager::ERROR_ORDER_PAY_RECORD_FAIL);
+            return false;
+        }else{
+            return true;
+        }
+    }
 
     public function continueRoom(Room $room,$type,$quantity,$totalAmount){
+
     }
+
     /**
      * 获取下单客户
      * @return Guest
@@ -358,5 +397,71 @@ class Order extends Server{
             $this->guest=new Guest($member);
         }
         return $this->guest;
+    }
+
+    /**
+     * 换房间
+     * @param Room $fromRoom
+     * @param Room $toRoom
+     * @param $start
+     * @param $totalAmount
+     * @return bool
+     */
+    public function changeRoom(Room $fromRoom,Room $toRoom,$start,$totalAmount){
+        $start=intval(date('Ymd',$start));
+        $count=OrderCostDetail::find()->where([
+            'and',
+            ['order_id'=>$this->getId()],
+            ['room_id'=>$fromRoom->getId()],
+            ['>=','date',$start]
+        ])->count();
+        if($count<=0){
+            $this->setError(ErrorManager::ERROR_ORDER_ROOM_NO_TIME);
+            return false;
+        }
+        $bill=$toRoom->newBill()->days($count)->generate($totalAmount);
+        if(!$fromRoom->checkOut($this)){
+            $this->setError($fromRoom->getError());
+            return false;
+        }else if(!$toRoom->occupancy($this,$count,$fromRoom->getOccupancyGuest($this),true)){
+            $this->setError($toRoom->getError());
+            return false;
+        }
+        $pay=PayBill::byOrder($this)->pay($this->paying);
+        if($totalAmount>=0){
+            $this->_order->amount=$totalAmount;
+            $this->_order->amount_payable=$totalAmount;
+        }
+        $this->_order->amount_paid+=$pay->getPayingAmount();
+        $this->_order->amount_deffer-=$pay->getPayingAmount();
+        if(!$this->updateOrder()){
+            $this->setError(ErrorManager::ERROR_ORDER_ROOM_CHANGE_FAIL);
+            return false;
+        }else if(!$pay->insert()){
+            $this->setError(ErrorManager::ERROR_ORDER_PAY_RECORD_FAIL);
+            return false;
+        }else if(!$this->deleteRoomCostRecord($fromRoom,$start)){
+            return false;
+        }else if(!$bill->insert($this)){
+            $this->setError($bill->getError());
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    protected function deleteRoomCostRecord(Room $fromRoom,$start){
+        $res=OrderCostDetail::deleteAll([
+            'and',
+            ['order_id'=>$this->getId()],
+            ['room_id'=>$fromRoom->getId()],
+            ['>=','date',$start]
+        ]);
+        if($res){
+            return true;
+        }else{
+            $this->setError(ErrorManager::ERROR_ORDER_ROOM_CHANGE_FAIL);
+            return false;
+        }
     }
 }

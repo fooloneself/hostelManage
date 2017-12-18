@@ -32,13 +32,13 @@ span.extra{
 		<Row>
 			<Col span="4">
 			    <Form label-position="top" class="order-info">
-					<FormItem label="订单总价："><span>￥168.00</span></FormItem>
+					<FormItem label="订单总价："><span>￥{{order.amount}}</span></FormItem>
 					<FormItem label="优惠活动：">
 						<p>九折优惠</p>
 					</FormItem>
-					<FormItem label="应收金额："><span class="strong">￥141.20</span></FormItem>
-					<FormItem label="已收金额："><span class="strong">￥200.00</span></FormItem>
-					<FormItem label="待收金额："><span class="strong">￥-58.80</span></FormItem>
+					<FormItem label="应收金额："><span class="strong">￥{{order.amount_payable}}</span></FormItem>
+					<FormItem label="已收金额："><span class="strong">￥{{order.amount_paid}}</span></FormItem>
+					<FormItem label="待收金额："><span class="strong">￥{{order.amount_deffer}}</span></FormItem>
 			    </Form>
 			</Col>
 			<Col span="20">
@@ -46,7 +46,7 @@ span.extra{
 					<FormItem label="预订人信息">
 						<Row :gutter="8">
 							<Col span="24">
-								<span class="extra">客人来源：</span>美团
+								<span class="extra">客人来源：</span>{{order.channel_name}}
 							</Col>
 						</Row>
 						<Table size="small" :columns="member.columns" :data="member.data" stripe></Table>
@@ -138,8 +138,25 @@ export default{
 	                }
 	            ],
 	            data: []
-	        }
+	        },
+	        order:{}
 		}
+	},
+	mounted(){
+	    var that=this;
+        this.host.post('merchantOrderInfo',{orderId:this.$route.params.orderId,roomId:this.$route.params.roomId}).then(function(res){
+            if(res.isSuccess()){
+                that.order=res.data().order;
+                that.member.data=res.data().occupancyRecord;
+                that.room.data=res.data().costRecord;
+                that.cost.data=res.data().payRecord;
+            }else{
+                this.$Notice.info({
+                    title:'提示',
+                    desc:res.error()
+                });
+            }
+        })
 	},
 	methods:{
 		goBack(){

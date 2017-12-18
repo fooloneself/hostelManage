@@ -13,7 +13,8 @@ const interfaces={
     'roomLock':'merchant/room/lock',
     'roomEditPageInfo':'merchant/room/edit-page-info',
     'roomTypes':'merchant/room-type/list',
-    'roomType':'merchant/room-type/view','roomTypeEdit':'merchant/room-type/record',
+    'roomType':'merchant/room-type/view',
+    'roomTypeEdit':'merchant/room-type/record',
     'roomTypeDelete':'merchant/room-type/delete',
     'roomWeekPrice':'merchant/room-price/view-week',
     'roomWeekPriceSave':'merchant/room-price/record',
@@ -117,7 +118,11 @@ const interfaces={
     'merchantOrderActivity':'merchant/order/activity',
     'merchantMemberBirthdayWelfare':'merchant/activity/birthday-welfare',
     'merchantMemberBirthdayWelfareSet':'merchant/activity/set-birthday-welfare',
-    'merchantEmptyRoom':'merchant/checkstand/empty-room'
+    'merchantEmptyRoom':'merchant/checkstand/empty-room',
+    'merchantOrderInfo':'merchant/order/room-info',
+    'merchantRoomListOfType':'merchant/room/select-of-type',
+    'merchantOrderConvertRoom':'merchant/order/convert-room',
+    'merchantOrderRoomCheckOut':'merchant/order/check-out'
 };
 const server={
     'host': 'http://www.hotel.com',

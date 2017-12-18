@@ -450,14 +450,14 @@ const admin = [
                 component: (resolve) => require(['./views/checkstand/View.vue'], resolve)
             },
             {
-                path: 'checkstandChange',
+                path: 'checkstandChange/:orderId/:roomId',
                 meta: {
                     title: '客房登记 - 入住 - 换房'
                 },
                 component: (resolve) => require(['./views/checkstand/Change.vue'], resolve)
             },
             {
-                path: 'checkstandOut',
+                path: 'checkstandOut/:orderId/:roomId',
                 meta: {
                     title: '客房登记 - 入住 - 退房'
                 },

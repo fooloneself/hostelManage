@@ -335,4 +335,14 @@ class RoomController extends Controller{
             'totalAmount'=>$bill->getTotalAmount()
         ])->response();
     }
+
+    public function actionSelectOfType(){
+        $merchantId=\Yii::$app->user->getAdmin()->getMchId();
+        $type=\Yii::$app->requestHelper->post('type',0,'int');
+        $list=Room::find()
+            ->select('id,number')
+            ->where(['type'=>$type,'mch_id'=>$merchantId])
+            ->asArray()->all();
+        return \Yii::$app->responseHelper->success($list)->response();
+    }
 }

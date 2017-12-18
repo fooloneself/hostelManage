@@ -7,10 +7,13 @@ use common\models\Dictionary;
 use common\models\DictionaryItem;
 use common\models\Guest;
 use common\models\MerchantMember;
+use common\models\MerchantMemberRankDivide;
 use common\models\OccupancyRecord;
 use common\models\Order;
 use common\models\OrderCostDetail;
+use common\models\OrderPayDetail;
 use common\models\OrderRoom;
+use common\models\RoomType;
 use service\order\OrderManger;
 use service\order\Room;
 use service\Pager;
@@ -197,27 +200,125 @@ class OrderController extends Controller{
     /**
      * 房间订单信息
      */
-    public function actionRoomOrder(){
+    public function actionRoomInfo(){
         $orderId=\Yii::$app->requestHelper->post('orderId',0,'int');
         $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
         $orderRoom=OrderRoom::find()
             ->alias('oo')
+            ->select('o.amount,o.amount_paid,o.amount_payable,o.amount_deffer,c.name as channel_name,oo.type,
+            oo.quantity,o.mark,o.is_reverse,mm.name as guest_name,mm.mobile,mmrd.name as rank_name,r.type as room_type')
             ->leftJoin(Order::tableName().' o','oo.order_id=o.id')
+            ->leftJoin(\common\models\Room::tableName().' r','r.id=oo.room_id')
+            ->leftJoin(Channel::tableName().' c','c.id=o.channel')
+            ->leftJoin(MerchantMember::tableName().' mm','mm.id=o.guest_id')
+            ->leftJoin(MerchantMemberRankDivide::tableName().' mmrd','mmrd.id=mm.rank')
             ->where(['o.id'=>$orderId,'oo.room_id'=>$roomId])
             ->asArray()->one();
         if(empty($orderRoom)){
             return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
         }
-        $occupancyRecord=OccupancyRecord::find()->where(['order_id'=>$orderId,'room_id'=>$roomId])->asArray()->all();
-        $costRecord=OrderCostDetail::find()->where(['order_id'=>$orderId,'room_id'=>$roomId])->asArray()->all();
+        $occupancyRecord=OccupancyRecord::find()
+            ->alias('ord')
+            ->select('ord.*,mm.is_member,mmrd.name as rank_name')
+            ->leftJoin(MerchantMember::tableName().' mm','CONVERT(ord.mobile USING utf8) COLLATE utf8_general_ci=mm.mobile')
+            ->leftJoin(MerchantMemberRankDivide::tableName().' mmrd','mm.rank=mmrd.id')
+            ->where(['ord.order_id'=>$orderId,'ord.room_id'=>$roomId])
+            ->asArray()->all();
+        $costRecord=OrderCostDetail::find()
+            ->alias('ocd')
+            ->select('ocd.year,ocd.month,ocd.day,ocd.amount,r.number,rt.name as type_name')
+            ->leftJoin(\common\models\Room::tableName().' r','ocd.room_id=r.id')
+            ->leftJoin(RoomType::tableName().' rt','r.type=rt.id')
+            ->where(['ocd.order_id'=>$orderId,'ocd.room_id'=>$roomId])->asArray()->all();
+        $payRecord=OrderPayDetail::find()
+            ->alias('opd')
+            ->select('opd.amount,expense.value as expense_name,channel.value as channel_name')
+            ->leftJoin(DictionaryItem::tableName().' expense','opd.expense_item=expense.key')
+            ->leftJoin(DictionaryItem::tableName().' channel','opd.channel=channel.key')
+            ->where(['opd.order_id'=>$orderId])->asArray()->all();
+        $order=[
+            'channel_name'=>$orderRoom['channel_name'],
+            'amount'=>$orderRoom['amount'],
+            'amount_payable'=>$orderRoom['amount_payable'],
+            'amount_paid'=>$orderRoom['amount_paid'],
+            'amount_deffer'=>$orderRoom['amount_deffer'],
+            'type'=>$orderRoom['type']==1?'整天':'钟点',
+            'quantity'=>$orderRoom['quantity'].($orderRoom['type']==1?'晚':'小时'),
+            'mark'=>$orderRoom['mark'],
+            'guest_name'=>$orderRoom['guest_name'],
+            'mobile'=>$orderRoom['mobile'],
+            'rank_name'=>empty($orderRoom['rank_name'])?'非会员':$orderRoom['rank_name'],
+            'room_type'=>$orderRoom['room_type']
+        ];
+        foreach ($occupancyRecord as &$record){
+            $record['occupancy_date']=date('Y-m-d H:i:s',$record['check_in_time']);
+        }
+        foreach ($costRecord as &$record){
+            $record['date']=$record['year'].'/'.$record['month'].'/'.$record['day'];
+        }
         return \Yii::$app->responseHelper->success([
-            'order'=>$orderRoom,
+            'order'=>$order,
             'occupancyRecord'=>$occupancyRecord,
-            'costRecord'=>$costRecord
+            'costRecord'=>$costRecord,
+            'payRecord'=>$payRecord
         ])->response();
     }
 
     public function actionRoomCostList(){
 
+    }
+
+    /**
+     * 换房间
+     * @return mixed
+     */
+    public function actionConvertRoom(){
+        $fromRoomId=\Yii::$app->requestHelper->post('fromRoomId',0,'int');
+        $toRoomId=\Yii::$app->requestHelper->post('toRoomId',0,'int');
+        $orderId=\Yii::$app->requestHelper->post('orderId',0,'int');
+        $pays=\Yii::$app->requestHelper->post('pays',[],'array');
+        $totalAmount=\Yii::$app->requestHelper->post('totalAmount',-1,'int');
+        $activeId=\Yii::$app->requestHelper->post('activeId',0,'int');
+        $mark=\Yii::$app->requestHelper->post('mark');
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $server=\service\order\Order::byId($merchant,$orderId);
+        if(empty($server)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $fromRoom=Room::byId($merchant,$fromRoomId);
+        $toRoom=Room::byId($merchant,$toRoomId);
+        if(empty($fromRoom) || empty($toRoom)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $server->pay($pays)->mark($mark);
+        $transaction=\Yii::$app->db->beginTransaction();
+        if($server->changeRoom($fromRoom,$toRoom,time(),$totalAmount)){
+            $transaction->commit();
+            return \Yii::$app->responseHelper->success()->response();
+        }else{
+            $transaction->rollBack();
+            return \Yii::$app->responseHelper->error($server->getError())->response();
+        }
+    }
+
+    public function actionCheckOut(){
+        $merchant=\Yii::$app->user->getAdmin()->getMerchant();
+        $roomId=\Yii::$app->requestHelper->post('roomId',0,'int');
+        $orderId=\Yii::$app->requestHelper->post('orderId',0,'int');
+        $pays=\Yii::$app->requestHelper->post('pays',[],'array');
+        $order=\service\order\Order::byId($merchant,$orderId);
+        $room=Room::byId($merchant,$roomId);
+        if(empty($order) || empty($room)){
+            return \Yii::$app->responseHelper->error(ErrorManager::ERROR_PARAM_WRONG)->response();
+        }
+        $order->pay($pays);
+        $transaction=\Yii::$app->db->beginTransaction();
+        if($order->checkOut($room)){
+            $transaction->commit();
+            return \Yii::$app->responseHelper->success()->response();
+        }else{
+            $transaction->rollBack();
+            return \Yii::$app->responseHelper->error($order->getError())->response();
+        }
     }
 }

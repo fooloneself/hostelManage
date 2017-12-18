@@ -30,6 +30,7 @@ class PayBill extends Server{
      */
     public function pay(array $bills){
         foreach ($bills as $bill){
+            if($bill['amount']<=0)continue;
             $this->paying+=$bill['amount'];
             $model=new OrderPayDetail();
             $model->amount=$bill['amount'];
