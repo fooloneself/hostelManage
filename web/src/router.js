@@ -394,6 +394,20 @@ const admin = [
         },
     	component: (resolve) => require(['./views/platform/BasicTips.vue'], resolve)			
 	},
+    {
+        path: 'basicRmdGoods',
+        meta: {
+            title: '推荐商品'
+        },
+        component: (resolve) => require(['./views/platform/BasicRmdGoods.vue'], resolve)            
+    },
+    {
+        path: 'basicRmdGoodEdit',
+        meta: {
+            title: '推荐商品 - 编辑'
+        },
+        component: (resolve) => require(['./views/platform/BasicRmdGoodEdit.vue'], resolve)            
+    },
     // 增值服务
     {
         path: 'message',

@@ -1,27 +1,28 @@
 <style scoped>
 .layout-nav{
-    height: 60px;
-    line-height: 60px;
-    background: rgba(44,62,80,0.5);
-    min-width: 1280px;
-    position: relative;
+    background: rgba(44,62,80,.7);
+    position: fixed;
+    padding: 0 24px;
+    width: 100%;
     z-index: 999;
     .logo{
-        margin-left: 24px;
-        height: 60px;
-        line-height: 60px;
+        height: 70px;
+        line-height: 70px;
         img{
-            height: 30px;
-            margin-top: 15px;
+            height: 34px;
+            margin: 18px 0;
         }
     }
     a{
+        line-height: 70px;
         font-size: 14px;
         color: #FFF;
-    }
-    .menu{
-        background: #2C3E50;
-        font-size: 16px;
+        &.login{
+            display: inline-block;
+            padding: 0 24px;
+            background: #16A085;
+            margin-right: 24px;
+        }
     }
 }
 </style>
@@ -38,9 +39,9 @@
                             </router-link>
                         </div>
                     </Col>
-                    <Col span="4" offset="16" class="tr" style="padding-right: 24px;">
-                        <router-link to="register" style="margin-right: 16px;">注册</router-link>
-                        <router-link to="login">登录</router-link>
+                    <Col span="4" offset="16" class="tr">
+                        <router-link to="login" class="login">登录</router-link>
+                        <router-link to="register">注册</router-link>
                     </Col>
                 </Row>
             </div>
