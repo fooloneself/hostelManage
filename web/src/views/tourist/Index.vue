@@ -52,22 +52,46 @@
     }
 }
 .content{
-    width: 1000px;
-    margin: 60px auto;
+    width: 1200px;
+    margin: 50px auto 0;
     .content-info{
-        padding: 60px 0;
+        padding: 50px 0;
         .title{
             font-size: 28px;
             color: #495060;
             margin-bottom: 16px;
+            font-weight: 600;
         }
         .desc{
             font-size: 16px;
             color: #80848f;
             line-height: 30px;
+            letter-spacing: 1px;
         }
         .fa{
             font-size: 120px;
+        }
+    }
+}
+.content-dark{
+    background: rgba(44,62,80,1);
+    .content-info{
+        padding: 50px 0;
+        .title{
+            font-size: 26px;
+            color: #f0f0f0;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        .desc{
+            font-size: 16px;
+            color: #f0f0f0;
+            line-height: 30px;
+            letter-spacing: 1px;
+        }
+        .fa{
+            font-size: 26px;
+            margin-right: 16px;
         }
     }
 }
@@ -102,12 +126,12 @@
                     <div class="title">支持房间房态便捷管理</div>
                     <div class="desc">支持房间房态便捷管理支持房间房态便捷管理支持房间房态便捷管理支持房间房态便捷管理支持房间房态便捷管理支持房间房态便捷管理支持房间房态便捷管理支持房间房态便捷管理</div>
                 </Col>
-                <Col span="8" class="tr">
+                <Col span="8" class="tc">
                     <i class="fa fa-area-chart" aria-hidden="true"></i>
                 </Col>
             </Row>
             <Row class="content-info">
-                <Col span="8">
+                <Col span="8" class="tc">
                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                 </Col>
                 <Col span="16">
@@ -120,12 +144,12 @@
                     <div class="title">支持多方位的营销活动</div>
                     <div class="desc">支持多方位的营销活动支持多方位的营销活动支持多方位的营销活动支持多方位的营销活动支持多方位的营销活动支持多方位的营销活动支持多方位的营销活动支持多方位的营销活动</div>
                 </Col>
-                <Col span="8" class="tr">
+                <Col span="8" class="tc">
                     <i class="fa fa-pie-chart" aria-hidden="true"></i>
                 </Col>
             </Row>
             <Row class="content-info">
-                <Col span="8">
+                <Col span="8" class="tc">
                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                 </Col>
                 <Col span="16">
@@ -133,6 +157,24 @@
                     <div class="desc">支持门店多人分工合作支持门店多人分工合作支持门店多人分工合作支持门店多人分工合作支持门店多人分工合作支持门店多人分工合作支持门店多人分工合作支持门店多人分工合作</div>
                 </Col>
             </Row>
+        </div>
+        <div class="content-dark">
+            <div class="content">
+                <Row class="content-info" :gutter="60">
+                    <Col span="8">
+                        <div class="title tc"><i class="fa fa-jpy" aria-hidden="true"></i>免费</div>
+                        <div class="desc">文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想</div>
+                    </Col>
+                    <Col span="8">
+                        <div class="title tc"><i class="fa fa-diamond" aria-hidden="true"></i>稳定</div>
+                        <div class="desc">文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想</div>
+                    </Col>
+                    <Col span="8">
+                        <div class="title tc"><i class="fa fa-shield" aria-hidden="true"></i>安全</div>
+                        <div class="desc">文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想文案还需要想</div>
+                    </Col>
+                </Row>
+            </div>
         </div>
         <div class="footer">
             <Row class="footer-info">
