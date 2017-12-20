@@ -26,7 +26,7 @@
     z-index: auto;
     left: 50%;
     top: 50%;
-    margin-top: -170px;
+    margin-top: -180px;
     margin-left: -180px;
 	.form-table{
 		p{

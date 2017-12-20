@@ -21,47 +21,34 @@
     }
 }
 .form{
-    width: 360px;
-    position: absolute;
-    z-index: auto;
-    left: 50%;
-    top: 50%;
-    margin-top: -170px;
-    margin-left: -180px;
-    .form-table{
-        p{
-            font-size: 18px;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: 1px;
+    margin-top: 60px;
+    .container{
+        width: 500px;
+        margin: 0 auto;
+    }
+    a{
+        color: #16A085;
+    }
+    p{
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+    .step{
+        margin: 60px auto;
+        width: 1000px;
+        padding-left: 210px;
+    }
+    .successs{
+        text-align: center;
+        .fa{
+            font-size: 68px;
+            color: #16A085;
         }
-        .input{
-            height: 40px;
-            line-height: 40px;
-            border-bottom: 1px solid #dddee1;
-            position: relative;
-            margin-bottom: 16px;
-            input{
-                background: transparent;
-                border: none;
-                width: 100%;
-                padding-left: 8px;
-            }
-            .fa{
-                position: absolute;
-                right: 10px;
-                top: 9px;
-                font-size: 22px;
-                color: #bbbec4;
-            }
-            .code{
-                font-size: 16px;
-                font-weight: bold;
-                text-align: center;
-            }
-        }
-        a{
-            color: #16a085;
+        .info{
+            font-size: 20px;
+            line-height: 32px;
         }
     }
 }
@@ -104,30 +91,72 @@
             </Row>
         </div>
     </div>
-	<div class="form">
-		<Row>
-			<Col span="24">
-				<form v-model="form" class="form-table">
-					<p>注册 / Sign Up </p>
-                    <div class="input">
-					   <input v-model="form.userName" type="text" placeholder="请输入用户名">
-                    </div>
-                    <div class="input">
-					   <input v-model="form.password" type="password" placeholder="请输入密码">
-                    </div>
-                    <div class="input">
-					   <input v-model="form.confirmPassword" type="password" placeholder="请再次输入密码">
-                    </div>
-					<Button size="large" type="primary" @click='submit' long shape="circle" class="mt">注&nbsp;&nbsp;册</Button>
-					<div class="mb"></div>
-					<Row>
-						<Col span="12"><router-link to="login">已有帐号？点击登录</router-link></Col>
-						<Col span="12" class="tr"><router-link to="/">返回首页</router-link></Col>
-					</Row>
-				</form>
-			</Col>
-		</Row>
-	</div>
+    <div class="form">
+        <div class="container">
+            <p>注册 / Sign Up </p>
+        </div>
+        <div class="step">
+            <Steps :current="current" size="small">
+                <Step title="登陆账号"></Step>
+                <Step title="酒店信息"></Step>
+                <Step title="完成注册"></Step>
+            </Steps>
+        </div>
+        <div class="container" v-if="current==0">
+            <Form v-model="form" :label-width="80" class="form-table">
+                <FormItem label="用户名：">
+                    <Input v-model="form.userName" type="text" placeholder="请输入用户名"></Input>
+                </FormItem>
+                <FormItem label="密码：">
+                    <Input v-model="form.password" type="password" placeholder="请输入密码"></Input>
+                </FormItem>
+                <FormItem label="重复密码：">
+                    <Input v-model="form.confirmPassword" type="password" placeholder="请再次输入密码"></Input>
+                </FormItem>
+                <FormItem class="tr">
+                    <Button type="primary" @click='next' class="mt">下&nbsp;一&nbsp;步</Button>
+                </FormItem>
+                <div class="mb"></div>
+                <Row>
+                    <Col span="12"><router-link to="login">已有帐号？点击登录</router-link></Col>
+                    <Col span="12" class="tr"><router-link to="/">返回首页</router-link></Col>
+                </Row>
+            </Form>
+        </div>
+        <div class="container" v-else-if="current==1">
+            <Form v-model="form" :label-width="100" class="form-table">
+                <FormItem label="门店名称：">
+                    <Input v-model="form.userName" type="text" placeholder="请输入门店名称"></Input>
+                </FormItem>
+                <FormItem label="联系人：">
+                    <Input v-model="form.password" type="text" placeholder="请输入联系人"></Input>
+                </FormItem>
+                <FormItem label="联系方式：">
+                    <Input v-model="form.confirmPassword" type="text" placeholder="请输入联系方式"></Input>
+                </FormItem>
+                <FormItem label="每日退房时间：">
+                    <TimePicker v-model="form.confirmPassword" type="time" placeholder="请输入退房时间"></TimePicker>
+                </FormItem>
+                <FormItem class="tr">
+                    <Button type="primary" @click='pre' class="mt icon-mr">上&nbsp;一&nbsp;步</Button>
+                    <Button type="primary" @click='next' class="mt">下&nbsp;一&nbsp;步</Button>
+                </FormItem>
+                <div class="mb"></div>
+                <Row>
+                    <Col span="12"><router-link to="login">已有帐号？点击登录</router-link></Col>
+                    <Col span="12" class="tr"><router-link to="/">返回首页</router-link></Col>
+                </Row>
+            </Form>
+        </div>
+        <div class="container" v-else-if="current==2">
+            <Row class="successs" type="flex" justify="center" align="middle">
+                <Col span="6"><i class="fa fa-check" aria-hidden="true"></i></Col>
+                <Col span="18">
+                    <span class="info">恭喜您，账号注册成功，<br/><router-link to="/login">点击马上登陆！</router-link></span>
+                </Col>
+            </Row>
+        </div>
+    </div>
     <div class="footer">
         <Row class="footer-info">
             <Col span="16">静静的为自己许下一个愿望，为此而努力，万一就实现了岂不是惊喜！</Col>
@@ -145,30 +174,16 @@ export default{
                 userName: '',
                 password: '',
                 confirmPassword:''
-            }
+            },
+            current: 0
         }
     },
     methods:{
-        submit(){
-            console.log(this.form);
-            var that=this;
-            if(this.form.password!=this.form.confirmPassword){
-                this.$Notice.info({
-                    title:'错误提示',
-                    desc: '两次密码输入不一致'
-                });
-                return;
-            }
-            this.host.post('register',this.form).then(function(res){
-                if(res.isSuccess()){
-                    this.$router.push('/login')
-                }else{
-                    this.$Notice.info({
-                        title:'错误提示',
-                        desc: res.error()
-                    })
-                }
-            })
+        pre(){
+            this.current--;
+        },
+        next(){
+            this.current++;
         }
     }
 }
