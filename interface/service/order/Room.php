@@ -9,6 +9,7 @@ use common\models\RoomDayPrice;
 use common\models\RoomType;
 use common\models\RoomWeekPrice;
 use service\merchant\Merchant;
+use service\order\place\Order;
 
 class Room extends Server{
     protected $merchant;
@@ -298,10 +299,10 @@ class Room extends Server{
 
     /**
      * 退房
-     * @param \service\order\Order $order
+     * @param \service\order\place\Order $order
      * @return bool
      */
-    public function checkOut(\service\order\Order $order){
+    public function checkOut(Order $order){
         if(!$order->checkOutRoom($this)){
             return false;
         }else if(!$this->setDirty()){

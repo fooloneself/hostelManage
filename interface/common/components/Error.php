@@ -49,6 +49,8 @@ class Error{
         ErrorManager::ERROR_ORDER_COST_CHANGE_FAIL=>'订单消费情况修改失败',
         ErrorManager::ERROR_ORDER_ROOM_NO_TIME=>'房间入住已满期',
         ErrorManager::ERROR_ORDER_STATUS_CHANGE_FAIL=>'订单状态修改失败',
+        ErrorManager::ERROR_ORDER_UPDATE_FAIL=>'订单修改失败',
+        ErrorManager::ERROR_ORDER_INSERT_FAIL=>'订单新增失败',
     ];
     //错误码
     public $status;

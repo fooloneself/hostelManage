@@ -71,6 +71,21 @@ class Guest extends Server{
     }
 
     /**
+     * 通过ID实例化
+     * @param Merchant $merchant
+     * @param $id
+     * @return null|static
+     */
+    public static function byId(Merchant $merchant,$id){
+        $guest=\common\models\MerchantMember::findOne(['id'=>$id,'mch_id'=>$merchant->getId()]);
+        if(empty($guest)){
+            return null;
+        }else{
+            return new static($guest);
+        }
+    }
+
+    /**
      * 是否生日
      * @return bool
      */
