@@ -4,6 +4,7 @@ use common\components\ErrorManager;
 use common\components\Server;
 use common\models\OrderCostDetail;
 use common\models\OrderRoom;
+use service\order\activity\Activity;
 use service\order\place\Order;
 use service\order\Room;
 
@@ -14,20 +15,23 @@ abstract class RoomBill extends Server {
     protected $startTime;
     protected $endTime;
     private $bill=[];
-    protected function __construct(Room $room,OrderRoom $orderRoom)
+    protected $activity;
+    protected function __construct(Room $room,OrderRoom $orderRoom,Activity $activity)
     {
         $this->room=$room;
         $this->orderRoom=$orderRoom;
         $this->orderRoom->room_id=$room->getId();
+        $this->activity=$activity;
     }
 
     /**
      * 新实例
      * @param Room $room
+     * @param Activity $activity
      * @return static
      */
-    public static function newOne(Room $room){
-        return new static($room,new OrderRoom());
+    public static function newOne(Room $room,Activity $activity){
+        return new static($room,new OrderRoom(),$activity);
     }
 
     /**
@@ -54,6 +58,9 @@ abstract class RoomBill extends Server {
         $model->day=intval($day);
         $model->amount=floatval($amount);
         $model->room_id=$this->room->getId();
+        if($this->activity){
+            $this->activity->putSuitCostBill($model);
+        }
         $this->bill[]=$model;
     }
 
@@ -123,6 +130,13 @@ abstract class RoomBill extends Server {
         }
     }
 
+    public function getStartTime(){
+        return $this->startTime;
+    }
+
+    public function getEndTime(){
+        return $this->endTime;
+    }
     /**
      * 生成清单
      * @param OrderBill $orderBill

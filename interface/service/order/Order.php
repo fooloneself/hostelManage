@@ -1,15 +1,16 @@
 <?php
-namespace service\order\place;
+namespace service\order;
 use common\components\ErrorManager;
 use common\components\Server;
 use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
 use service\order\bill\OrderBill;
-use service\order\PayBill;
-use service\order\Room;
+use service\order\activity\DiscountActivity;
+use service\order\activity\FullCutActivity;
+use service\order\activity\SpecialActivity;
 
-abstract  class Order extends Server{
+class Order extends Server{
     protected $order;
     protected $merchant;
     protected $costBill;
@@ -19,18 +20,6 @@ abstract  class Order extends Server{
     {
         $this->order=$order;
         $this->merchant=$merchant;
-    }
-
-    /**
-     * 新增实例化
-     * @param Merchant $merchant
-     * @return static
-     */
-    public static function newOne(Merchant $merchant){
-        $order=new \common\models\Order();
-        $order->order_no=self::makeOrderNo($merchant->getId());
-        $order->mch_id=$merchant->getId();
-        return new static($merchant,$order);
     }
 
     /**
@@ -102,30 +91,6 @@ abstract  class Order extends Server{
     }
 
     /**
-     * 房间消费清单
-     * @param OrderBill $orderBill
-     * @return $this
-     */
-    public function roomBill(OrderBill $orderBill){
-        $this->costBill=$orderBill;
-        return $this;
-    }
-
-    /**
-     * 计算金额
-     */
-    protected function calculateMoney(){
-        if($this->costBill){
-            $this->order->amount=$this->costBill->getTotalAmount();
-            $this->order->amount_payable=$this->costBill->getPayableAmount();
-        }
-        if($this->payBill){
-            $this->order->amount_paid+=$this->payBill->getPayingAmount();
-        }
-        $this->order->amount_deffer=$this->order->amount_payable-$this->order->amount_paid;
-    }
-
-    /**
      * 修改
      * @return bool
      */
@@ -156,7 +121,7 @@ abstract  class Order extends Server{
      * @param Room $room
      * @return bool
      */
-    public function checkOutRoom(Room $room){
+    protected function checkOutRoom(Room $room){
         $orderRoom=OrderRoom::findOne(['order_id'=>$this->getId(),'room_id'=>$room->getId()]);
         if(empty($orderRoom)){
             $this->setError(ErrorManager::ERROR_ORDER_ROOM_UN_PLACE);
@@ -177,11 +142,20 @@ abstract  class Order extends Server{
      * @return bool|false|int
      */
     public function checkOut(Room $room){
-        if(!$room->checkOut($this)){
+        if(!$room->setDirty()){
             $this->setError($room->getError());
             return false;
+        }else if(!$this->checkOutRoom($room)){
+            return false;
         }
-        $this->calculateMoney();
+        if($this->payBill){
+            $this->order->amount_paid+=$this->payBill->getPayingAmount();
+            if(!$this->payBill->insert()){
+                $this->setError(ErrorManager::ERROR_ORDER_PAY_RECORD_FAIL);
+                return false;
+            }
+        }
+        $this->order->amount_deffer=$this->order->amount_payable-$this->order->amount_paid;
         if($this->isSettle()){
             $this->_order->is_settlement=\common\models\Order::SETTLE_YES;
             if($this->_order->amount_deffer==0){
@@ -215,16 +189,37 @@ abstract  class Order extends Server{
      * @param $amount
      */
     public function addAmount($amount){
-        $this->order->amount+=$amount;
-        $this->order->amount_payable+=$amount;
+        if(!$this->isTemporary()){
+            $this->order->amount+=$amount;
+            $this->order->amount_payable+=$amount;
+        }
     }
 
+    /**
+     * 是否是临时定价
+     * @return bool
+     */
+    protected function isTemporary(){
+        return $this->order->is_temporary==1;
+    }
+
+    /**
+     * 设置临时总价格
+     * @param $amount
+     */
+    protected function setTemporaryAmount($amount){
+        $this->order->amount=$amount;
+        $this->order->amount_payable=$amount;
+        $this->order->is_temporary=1;
+    }
     /**
      * 新增应收费用
      * @param $amount
      */
     public function addPayableAmount($amount){
-        $this->order->amount_payable-=$amount;
+        if(!$this->isTemporary()){
+            $this->order->amount_payable-=$amount;
+        }
     }
 
     /**
@@ -234,9 +229,92 @@ abstract  class Order extends Server{
     public function getAmount(){
         return floatval($this->order->amount);
     }
+
+    /**
+     * 获取活动
+     * @param $activityId
+     * @return bool|DiscountActivity|FullCutActivity|SpecialActivity
+     */
+    public function findActivity($activityId){
+        $activity=\common\models\MerchantActivity::findOne(['id'=>$activityId,'mch_id'=>$this->merchant->getId()]);
+        if(empty($activity)){
+            $this->setError(ErrorManager::ERROR_ACTIVITY_NOT_FOUND);
+            return false;
+        }else{
+            switch ($activity->type){
+                case \common\models\MerchantActivity::TYPE_DISCOUNT:
+                    return new DiscountActivity($this->merchant,$activity);
+                case \common\models\MerchantActivity::TYPE_FULL_CUT:
+                    return new FullCutActivity($this->merchant,$activity);
+                case \common\models\MerchantActivity::TYPE_SPECIAL_OFFER:
+                    return new SpecialActivity($this->merchant,$activity);
+                default:
+                    $this->setError(ErrorManager::ERROR_ACTIVITY_WRONG);
+                    return false;
+            }
+        }
+    }
+
     /**
      * 下单
-     * @return mixed
+     * @param array $rooms
+     * @param $totalAmount
+     * @param $activityId
+     * @return bool
      */
-    abstract public function doPlay();
+    protected function doPlay(array $rooms,$totalAmount,$activityId){
+        if($totalAmount>=0){
+            $this->setTemporaryAmount($totalAmount);
+        }
+        if($activityId>0){
+            $activity=$this->findActivity($activityId);
+            if(!$activity){
+                return false;
+            }
+        }else{
+            $activity=null;
+        }
+        $bill=$this->generateBill($rooms,$activity);
+        if(!$bill){
+            return false;
+        }
+        if($activity){
+            $activity->active();
+        }
+        if(!$this->add()){
+            $this->setError(ErrorManager::ERROR_ORDER_INSERT_FAIL);
+            return false;
+        }else if(!$bill->reverse()){
+
+        }
+    }
+
+    protected function generateBill(array $rooms,$activity){
+        $orderBill=new OrderBill($this);
+        foreach ($rooms as $room){
+            $room=Room::byId($this->merchant,$room['roomId']);
+            if(empty($room)){
+                $this->setError(ErrorManager::ERROR_ROOM_UN_FIND);
+                return false;
+            }else{
+                if($room['type']==OrderRoom::TYPE_DAY){
+                    $orderBill->generateDay($room,$room['startTime'],$room['quantity'],$activity);
+                }else{
+                    $orderBill->generateHour($room,$room['startTime'],$room['quantity'],$activity);
+                }
+            }
+        }
+        return $orderBill;
+    }
+    public function reverse(){
+
+    }
+
+    public function occupancy(){
+
+    }
+
+    public function recordOccupancy(array $guests){
+
+    }
 }

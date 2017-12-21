@@ -1,5 +1,6 @@
 <?php
 namespace service\order\bill;
+
 class DayRoomBill extends RoomBill{
     public function quantity($startTime, $quantity)
     {

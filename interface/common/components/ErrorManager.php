@@ -69,6 +69,9 @@ class ErrorManager extends Component{
     const ERROR_ORDER_STATUS_CHANGE_FAIL              =100061;
     const ERROR_ORDER_UPDATE_FAIL              =100062;
     const ERROR_ORDER_INSERT_FAIL              =100063;
+    const ERROR_ACTIVITY_NOT_FOUND              =100064;
+    const ERROR_ACTIVITY_WRONG              =100065;
+    const ERROR_ROOM_UN_FIND              =100066;
     //错误信息 common\components\Error的实例
     private $_error;
 

@@ -298,21 +298,6 @@ class Room extends Server{
     }
 
     /**
-     * 退房
-     * @param \service\order\place\Order $order
-     * @return bool
-     */
-    public function checkOut(Order $order){
-        if(!$order->checkOutRoom($this)){
-            return false;
-        }else if(!$this->setDirty()){
-            return false;
-        }else {
-            return true;
-        }
-    }
-
-    /**
      * 获取房间入住人信息
      * @param Order $order
      * @return array|\yii\db\ActiveRecord[]
