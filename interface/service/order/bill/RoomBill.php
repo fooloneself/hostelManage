@@ -4,34 +4,20 @@ use common\components\ErrorManager;
 use common\components\Server;
 use common\models\OrderCostDetail;
 use common\models\OrderRoom;
-use service\order\activity\Activity;
-use service\order\place\Order;
 use service\order\Room;
 
-abstract class RoomBill extends Server {
+class RoomBill extends Server {
     protected $room;
     private $orderRoom;
     protected $quantity=0;
-    protected $startTime;
-    protected $endTime;
+    protected $totalAmount;
     private $bill=[];
-    protected $activity;
-    protected function __construct(Room $room,OrderRoom $orderRoom,Activity $activity)
+
+    public function __construct(Room $room,OrderRoom $orderRoom)
     {
         $this->room=$room;
         $this->orderRoom=$orderRoom;
         $this->orderRoom->room_id=$room->getId();
-        $this->activity=$activity;
-    }
-
-    /**
-     * 新实例
-     * @param Room $room
-     * @param Activity $activity
-     * @return static
-     */
-    public static function newOne(Room $room,Activity $activity){
-        return new static($room,new OrderRoom(),$activity);
     }
 
     /**
@@ -43,11 +29,12 @@ abstract class RoomBill extends Server {
     }
 
     /**
-     * 新增消费记录
+     * 生成清单模型
      * @param $timestamp
      * @param $amount
+     * @return OrderCostDetail
      */
-    protected function addBill($timestamp,$amount){
+    protected function newBillModel($timestamp,$amount){
         $date=date('Y-m-d',$timestamp);
         list($year,$month,$day)=explode('-',$date);
         $date=str_replace('-','',$date);
@@ -58,12 +45,25 @@ abstract class RoomBill extends Server {
         $model->day=intval($day);
         $model->amount=floatval($amount);
         $model->room_id=$this->room->getId();
-        if($this->activity){
-            $this->activity->putSuitCostBill($model);
-        }
-        $this->bill[]=$model;
+        return $model;
+    }
+    /**
+     * 新增消费记录
+     * @param $timestamp
+     * @param $amount
+     */
+    public function generateBill($timestamp,$amount){
+       $this->addDayBill($this->newBillModel($timestamp,$amount));
     }
 
+    /**
+     * 添加一个清单
+     * @param OrderCostDetail $model
+     */
+    protected function addBill(OrderCostDetail $model){
+        $this->totalAmount+=$model->amount;
+        $this->bill[]=$model;
+    }
     /**
      * 插入
      * @param Order $order
@@ -130,24 +130,42 @@ abstract class RoomBill extends Server {
         }
     }
 
-    public function getStartTime(){
-        return $this->startTime;
-    }
-
-    public function getEndTime(){
-        return $this->endTime;
-    }
     /**
-     * 生成清单
-     * @param OrderBill $orderBill
+     * 获取开始时间
      * @return mixed
      */
-    abstract public function generate(OrderBill $orderBill);
+    public function getStartTime(){
+        return $this->orderRoom->start_time;
+    }
 
     /**
-     * @param $startTime
-     * @param $quantity
-     * @return static
+     * 获取结束时间
+     * @return mixed
      */
-    abstract public function quantity($startTime,$quantity);
+    public function getEndTime(){
+        return $this->orderRoom->end_time;
+    }
+
+    /**
+     * 获取数量
+     * @return int
+     */
+    public function getQuantity(){
+        return $this->orderRoom->quantity;
+    }
+    /**
+     * 获取房间总房价
+     * @return mixed
+     */
+    public function getTotalAmount(){
+        return $this->totalAmount;
+    }
+
+    /**
+     * 获取房间对象
+     * @return Room
+     */
+    public function getRoom(){
+        return $this->room;
+    }
 }
