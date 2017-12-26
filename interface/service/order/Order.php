@@ -5,16 +5,13 @@ use common\components\Server;
 use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
+use service\order\activity\ActiveIncubator;
+use service\order\activity\Activity;
 use service\order\bill\OrderBill;
-use service\order\activity\DiscountActivity;
-use service\order\activity\FullCutActivity;
-use service\order\activity\SpecialActivity;
 
 class Order extends Server{
     protected $order;
     protected $merchant;
-    protected $costBill;
-    protected $payBill;
     protected $guest;
     public function __construct(Merchant $merchant,\common\models\Order $order)
     {
@@ -37,6 +34,16 @@ class Order extends Server{
         }
     }
 
+    /**
+     * 新增订单
+     * @param Merchant $merchant
+     * @return static
+     */
+    public static function newOne(Merchant $merchant){
+        $order=new \common\models\Order();
+        $order->mch_id=$merchant->getId();
+        return new static($merchant,$order);
+    }
     /**
      * 生成订单号
      * @param $merchantId
@@ -66,11 +73,16 @@ class Order extends Server{
      * 下单人
      * @param $mobile
      * @param $name
-     * @return $this
+     * @return bool
      */
     public function byGuest($mobile,$name){
         $this->guest=Guest::by($this->merchant,$mobile,$name);
-        return $this;
+        if($this->guest){
+            $this->order->guest_id=$this->guest->getId();
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -80,21 +92,13 @@ class Order extends Server{
     public function getGuest(){
         return $this->guest;
     }
-    /**
-     * 订单支付清单
-     * @param PayBill $payBill
-     * @return $this
-     */
-    public function pay(PayBill $payBill){
-        $this->payBill=$payBill;
-        return $this;
-    }
+
 
     /**
      * 修改
      * @return bool
      */
-    protected function update(){
+    public function update(){
         if($this->order->update(false)){
             return true;
         }else{
@@ -107,7 +111,7 @@ class Order extends Server{
      * 新增
      * @return bool
      */
-    protected function add(){
+    public function add(){
         if($this->order->insert(false)){
             return true;
         }else{
@@ -176,7 +180,7 @@ class Order extends Server{
      * 判断是否结单
      * @return bool
      */
-    protected function isSettle(){
+    public function isSettle(){
         $count=OrderRoom::find()->where([
             'order_id'=>$this->getId(),
             'status'=>[OrderRoom::STATUS_REVERSE,OrderRoom::STATUS_OCCUPANCY]
@@ -188,10 +192,9 @@ class Order extends Server{
      * 添加消费金额
      * @param $amount
      */
-    public function addAmount($amount){
+    public function setAmount($amount){
         if(!$this->isTemporary()){
-            $this->order->amount+=$amount;
-            $this->order->amount_payable+=$amount;
+            $this->order->amount=$amount;
         }
     }
 
@@ -207,18 +210,20 @@ class Order extends Server{
      * 设置临时总价格
      * @param $amount
      */
-    protected function setTemporaryAmount($amount){
-        $this->order->amount=$amount;
-        $this->order->amount_payable=$amount;
-        $this->order->is_temporary=1;
+    public function setTemporaryAmount($amount){
+        if($amount>=0){
+            $this->order->amount=$amount;
+            $this->order->amount_payable=$amount;
+            $this->order->is_temporary=1;
+        }
     }
     /**
      * 新增应收费用
      * @param $amount
      */
-    public function addPayableAmount($amount){
+    public function setPayableAmount($amount){
         if(!$this->isTemporary()){
-            $this->order->amount_payable-=$amount;
+            $this->order->amount_payable=$amount;
         }
     }
 
@@ -231,90 +236,28 @@ class Order extends Server{
     }
 
     /**
-     * 获取活动
-     * @param $activityId
-     * @return bool|DiscountActivity|FullCutActivity|SpecialActivity
+     * 设置订单为预定
      */
-    public function findActivity($activityId){
-        $activity=\common\models\MerchantActivity::findOne(['id'=>$activityId,'mch_id'=>$this->merchant->getId()]);
-        if(empty($activity)){
-            $this->setError(ErrorManager::ERROR_ACTIVITY_NOT_FOUND);
-            return false;
-        }else{
-            switch ($activity->type){
-                case \common\models\MerchantActivity::TYPE_DISCOUNT:
-                    return new DiscountActivity($this->merchant,$activity);
-                case \common\models\MerchantActivity::TYPE_FULL_CUT:
-                    return new FullCutActivity($this->merchant,$activity);
-                case \common\models\MerchantActivity::TYPE_SPECIAL_OFFER:
-                    return new SpecialActivity($this->merchant,$activity);
-                default:
-                    $this->setError(ErrorManager::ERROR_ACTIVITY_WRONG);
-                    return false;
-            }
-        }
+    public function setIsReverse(){
+        $this->order->is_reverse=1;
     }
 
     /**
-     * 下单
-     * @param array $rooms
-     * @param $totalAmount
-     * @param $activityId
-     * @return bool
+     * 结单
      */
-    protected function doPlay(array $rooms,$totalAmount,$activityId){
-        if($totalAmount>=0){
-            $this->setTemporaryAmount($totalAmount);
-        }
-        if($activityId>0){
-            $activity=$this->findActivity($activityId);
-            if(!$activity){
-                return false;
-            }
-        }else{
-            $activity=null;
-        }
-        $bill=$this->generateBill($rooms,$activity);
-        if(!$bill){
-            return false;
-        }
-        if($activity){
-            $activity->active();
-        }
-        if(!$this->add()){
-            $this->setError(ErrorManager::ERROR_ORDER_INSERT_FAIL);
-            return false;
-        }else if(!$bill->reverse()){
-
-        }
+    public function setIsSettle(){
+        $this->order->is_settlement=1;
     }
 
-    protected function generateBill(array $rooms,$activity){
-        $orderBill=new OrderBill($this);
-        foreach ($rooms as $room){
-            $room=Room::byId($this->merchant,$room['roomId']);
-            if(empty($room)){
-                $this->setError(ErrorManager::ERROR_ROOM_UN_FIND);
-                return false;
-            }else{
-                if($room['type']==OrderRoom::TYPE_DAY){
-                    $orderBill->generateDay($room,$room['startTime'],$room['quantity'],$activity);
-                }else{
-                    $orderBill->generateHour($room,$room['startTime'],$room['quantity'],$activity);
-                }
-            }
-        }
-        return $orderBill;
-    }
-    public function reverse(){
-
+    /**
+     * 设置订单来源渠道
+     * @param $channelId
+     */
+    public function setChannel($channelId){
+        $this->order->channel=$channelId;
     }
 
-    public function occupancy(){
-
-    }
-
-    public function recordOccupancy(array $guests){
-
+    public function addPaidAmount($amount){
+        $this->order->amount_paid+=$amount;
     }
 }

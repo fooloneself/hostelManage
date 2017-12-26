@@ -7,11 +7,11 @@ use common\models\OrderRoom;
 
 class OrderBill extends \common\components\Server{
     private $roomBill=[];
-    protected $order;
     protected $activity;
-    public function __construct(Order $order,Activity $activity=null)
+    protected $totalAmount=0;
+
+    public function __construct(Activity $activity=null)
     {
-        $this->order=$order;
         $this->activity=$activity;
     }
 
@@ -19,14 +19,18 @@ class OrderBill extends \common\components\Server{
         return isset($this->roomBill[$room->getId()]) ? $this->roomBill[$room->getId()] : null;
     }
 
-
     protected function addRoomBill(RoomBill $roomBill){
+        $this->totalAmount+=$roomBill->getTotalAmount();
         $this->roomBill[$roomBill->getRoom()->getId()]=$roomBill;
     }
 
+    public function getTotalAmount(){
+        return $this->totalAmount;
+    }
     public function generateDay(Room $room,$start,$quantity){
         $bill=DayRoomBillGenerator::instance($this->activity)->generate($room,$start,$quantity);
         if(!$room->canPlaceOrder($bill->getStartTime(),$bill->getEndTime(),OrderRoom::TYPE_CLOCK)){
+            $this->setError($room->getError());
             return false;
         }else{
             $this->addRoomBill($bill);
@@ -37,15 +41,17 @@ class OrderBill extends \common\components\Server{
     public function generateHour(Room $room,$start,$quantity){
         $bill=HourRoomBillGenerator::instance($this->activity)->generate($room,$start,$quantity);
         if(!$room->canPlaceOrder($bill->getStartTime(),$bill->getEndTime(),OrderRoom::TYPE_CLOCK)){
+            $this->setError($room->getError());
             return false;
         }else{
             $this->addRoomBill($bill);
             return true;
         }
     }
-    public function reverse(){
+
+    public function reverse(Order $order){
         foreach ($this->roomBill as $roomBill){
-            if(!$roomBill->reverse($this->order)){
+            if(!$roomBill->reverse($order)){
                 $this->setError($roomBill->getError());
                 return false;
             }
@@ -53,20 +59,13 @@ class OrderBill extends \common\components\Server{
         return true;
     }
 
-    public function occupancy(){
+    public function occupancy(Order $order){
         foreach ($this->roomBill as $roomBill){
-            if(!$roomBill->occupancy($this->order)){
+            if(!$roomBill->occupancy($order)){
                 $this->setError($roomBill->getError());
                 return false;
             }
         }
         return true;
-    }
-    public function addAmount($amount){
-        $this->order->addAmount($amount);
-    }
-
-    public function addPayableAmount($amount){
-        $this->order->addPayableAmount($amount);
     }
 }

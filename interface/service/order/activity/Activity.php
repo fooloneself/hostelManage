@@ -1,11 +1,13 @@
 <?php
 namespace service\order\activity;
+use common\components\ErrorManager;
 use common\components\Server;
 use common\models\MerchantActiveDate;
 use common\models\MerchantActivity;
 use common\models\MerchantActivityCondition;
+use common\models\OrderActivity;
 use common\models\OrderCostDetail;
-use service\order\place\Order;
+use service\order\Order;
 
 abstract class Activity extends Server{
     protected $activity;
@@ -13,6 +15,7 @@ abstract class Activity extends Server{
     protected $order;
     private $dates=[];
     protected $activityBill=[];
+    protected $discount=0;
 
     /**
      * 构造函数
@@ -32,7 +35,7 @@ abstract class Activity extends Server{
      * 获取学校ID
      * @return int
      */
-    protected function getId(){
+    public function getId(){
         return intval($this->activity->id);
     }
 
@@ -141,13 +144,20 @@ abstract class Activity extends Server{
         }
         if(!empty($this->activityBill)){
             foreach ($this->activityBill as $bill){
-                $deffer=$this->getBillDeffer($bill);
-                $this->order->addPayableAmount($deffer);
+                $this->discount+=$this->getBillDeffer($bill);
             }
-            $this->order->addPayableAmount($this->getOrderDeffer());
+            return true;
         }else{
             return false;
         }
+    }
+
+    /**
+     * 获取总优惠金额
+     * @return int
+     */
+    public function getTotalDiscount(){
+        return $this->discount;
     }
     /**
      * 单挑消费记录差价
@@ -161,4 +171,21 @@ abstract class Activity extends Server{
      * @return mixed
      */
     abstract protected function getOrderDeffer();
+
+    /**
+     *保存订单活动
+     * @return bool
+     */
+    public function saveOrderActivity(){
+        $model=new OrderActivity();
+        $model->order_id=$this->order->getId();
+        $model->activity_id=$this->getId();
+        $model->discount_amount=$this->getTotalDiscount();
+        if(!$model->insert(false)){
+            $this->setError(ErrorManager::ERROR_ORDER_ACTIVITY_SAVE_FAIL);
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

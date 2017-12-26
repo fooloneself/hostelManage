@@ -72,6 +72,7 @@ class ErrorManager extends Component{
     const ERROR_ACTIVITY_NOT_FOUND              =100064;
     const ERROR_ACTIVITY_WRONG              =100065;
     const ERROR_ROOM_UN_FIND              =100066;
+    const ERROR_ORDER_ACTIVITY_SAVE_FAIL              =100067;
     //错误信息 common\components\Error的实例
     private $_error;
 
