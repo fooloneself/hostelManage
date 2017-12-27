@@ -11,7 +11,7 @@ class RoomBill extends Server {
     private $orderRoom;
     protected $quantity=0;
     protected $totalAmount;
-    private $bill=[];
+    protected $bill=[];
 
     public function __construct(Room $room,OrderRoom $orderRoom)
     {
@@ -47,6 +47,7 @@ class RoomBill extends Server {
         $model->room_id=$this->room->getId();
         return $model;
     }
+
     /**
      * 新增消费记录
      * @param $timestamp

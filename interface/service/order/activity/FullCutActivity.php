@@ -1,6 +1,7 @@
 <?php
 namespace service\order\activity;
 use common\models\OrderCostDetail;
+use service\order\Order;
 
 class FullCutActivity extends Activity{
     /**
@@ -21,11 +22,12 @@ class FullCutActivity extends Activity{
 
     /**
      * 是否适合此订单
+     * @param Order $order
      * @return bool
      */
-    protected function isSuitToOrder()
+    protected function isSuitToOrder(Order $order)
     {
-        if($this->isInMemberRank() && $this->isFull()){
+        if($this->isInMemberRank($order->getGuest()) && $this->isFull()){
             return true;
         }else{
             return false;

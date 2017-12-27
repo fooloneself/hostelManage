@@ -12,6 +12,7 @@ use service\merchant\Merchant;
 use service\order\place\Order;
 
 class Room extends Server{
+    private static $_rooms=[];
     protected $merchant;
     protected $room;
     protected $roomType;
@@ -32,12 +33,15 @@ class Room extends Server{
      * @return null|static
      */
     public static function byId(Merchant $merchant,$id){
-        $room=\common\models\Room::findOne(['id'=>$id,'mch_id'=>$merchant->getId()]);
-        if(empty($room)){
-            return null;
+        if(empty(self::$_rooms[$id])){
+            $room=\common\models\Room::findOne(['id'=>$id,'mch_id'=>$merchant->getId()]);
+            if(empty($room)){
+                return null;
+            }
+            $roomType=RoomType::findOne(['id'=>$room->type]);
+            self::$_rooms[$id]= new static($merchant,$room,$roomType);
         }
-        $roomType=RoomType::findOne(['id'=>$room->type]);
-        return new static($merchant,$room,$roomType);
+        return self::$_rooms[$id];
     }
 
     /**
@@ -238,12 +242,10 @@ class Room extends Server{
     /**
      * 入住
      * @param \service\order\Order $order
-     * @param $quantity
      * @param array $guests
-     * @param $isNew
      * @return bool
      */
-    public function occupancy(\service\order\Order $order,$quantity,array $guests,$isNew){
+    public function occupancy(\service\order\Order $order,array $guests){
         $this->room->status=\common\models\Room::STATUS_OCCUPANCY;
         $this->room->order_id=$order->getId();
         if(!$this->room->update(false)){
@@ -251,9 +253,6 @@ class Room extends Server{
             return false;
         }else if(!$this->addOccupancyRecord($order,$guests)){
             $this->setError(ErrorManager::ERROR_OCCUPANCY_RECORD_ADD_FAIL);
-            return false;
-        }else if(!$order->occupancyRoom($this,$quantity,$isNew)){
-            $this->setError($order->getError());
             return false;
         }else{
             return true;

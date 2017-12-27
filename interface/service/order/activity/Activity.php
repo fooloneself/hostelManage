@@ -8,6 +8,7 @@ use common\models\MerchantActivityCondition;
 use common\models\OrderActivity;
 use common\models\OrderCostDetail;
 use service\order\Order;
+use service\guest\Guest;
 
 abstract class Activity extends Server{
     protected $activity;
@@ -95,10 +96,11 @@ abstract class Activity extends Server{
 
     /**
      * 是否在会员范围内
+     * @param Guest $guest
      * @return bool
      */
-    protected function isInMemberRank(){
-        return in_array($this->order->getGuest()->getMemberRank(),$this->getCondition(MerchantActivityCondition::TYPE_MEMBER_RANK));
+    protected function isInMemberRank(Guest $guest){
+        return in_array($guest->getMemberRank(),$this->getCondition(MerchantActivityCondition::TYPE_MEMBER_RANK));
     }
 
     /**
@@ -120,9 +122,10 @@ abstract class Activity extends Server{
 
     /**
      * 订单是否适合此活动
+     * @param Order $order
      * @return mixed
      */
-    abstract protected function isSuitToOrder();
+    abstract protected function isSuitToOrder(Order $order);
 
     /**
      * 放入符合活动的消费
@@ -137,9 +140,11 @@ abstract class Activity extends Server{
 
     /**
      * 激活
+     * @param Order $order
+     * @return bool
      */
-    public function active(){
-        if(!$this->isSuitToOrder()){
+    public function active(Order $order){
+        if(!$this->isSuitToOrder($order)){
             return false;
         }
         if(!empty($this->activityBill)){
@@ -173,19 +178,31 @@ abstract class Activity extends Server{
     abstract protected function getOrderDeffer();
 
     /**
-     *保存订单活动
+     * 保存订单活动
+     * @param Order $order
      * @return bool
      */
-    public function saveOrderActivity(){
-        $model=new OrderActivity();
-        $model->order_id=$this->order->getId();
-        $model->activity_id=$this->getId();
-        $model->discount_amount=$this->getTotalDiscount();
-        if(!$model->insert(false)){
-            $this->setError(ErrorManager::ERROR_ORDER_ACTIVITY_SAVE_FAIL);
-            return false;
+    public function saveOrderActivity(Order $order){
+        $model=OrderActivity::findOne(['order_id'=>$order->getId()]);
+        if($model){
+            if($model->activity_id!=$this->activity->id || $model->discount_amount!=$this->discount){
+                $model->activity_id=$this->getId();
+                $model->discount_amount=$this->discount;
+                if(!$model->update(false)){
+                    $this->setError(ErrorManager::ERROR_ORDER_ACTIVITY_SAVE_FAIL);
+                    return false;
+                }
+            }
         }else{
-            return true;
+            $model=new OrderActivity();
+            $model->order_id=$order->getId();
+            $model->activity_id=$this->getId();
+            $model->discount_amount=$this->getTotalDiscount();
+            if(!$model->insert(false)){
+                $this->setError(ErrorManager::ERROR_ORDER_ACTIVITY_SAVE_FAIL);
+                return false;
+            }
         }
+        return true;
     }
 }

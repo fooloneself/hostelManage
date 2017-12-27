@@ -13,4 +13,12 @@ class ActivityRoomBill extends RoomBill{
         $this->activity->putSuitCostBill($model);
         $this->addBill($model);
     }
+
+    public function loadBill(Order $order)
+    {
+        parent::loadBill($order);
+        foreach ($this->bill as $bill){
+            $this->activity->putSuitCostBill($bill);
+        }
+    }
 }

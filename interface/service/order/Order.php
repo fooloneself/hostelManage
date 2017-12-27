@@ -5,14 +5,13 @@ use common\components\Server;
 use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
-use service\order\activity\ActiveIncubator;
 use service\order\activity\Activity;
-use service\order\bill\OrderBill;
 
 class Order extends Server{
     protected $order;
     protected $merchant;
     protected $guest;
+    protected $activity;
     public function __construct(Merchant $merchant,\common\models\Order $order)
     {
         $this->order=$order;
@@ -93,86 +92,55 @@ class Order extends Server{
         return $this->guest;
     }
 
-
+    public function setDefferAmount($amount){
+        $this->order->amount_deffer=$amount;
+        return $this;
+    }
     /**
-     * 修改
-     * @return bool
+     * 计算优惠
+     * @return bool|int
      */
-    public function update(){
-        if($this->order->update(false)){
-            return true;
-        }else{
-            $this->setError(ErrorManager::ERROR_ORDER_UPDATE_FAIL);
-            return false;
+    public function calculateDiscount(){
+        $discount=0;
+        if($this->activity){
+            if($this->activity->active($this)){
+                $this->setError($this->activity->getError());
+                return false;
+            }else{
+                $discount=$this->activity->getTotalDiscount();
+            }
         }
+        return $discount;
     }
 
+    /**
+     * 保存优惠活动
+     * @return bool
+     */
+    public function saveActivity(){
+        if($this->activity){
+            if($this->activity->saveOrderActivity($this)){
+                $this->setError($this->activity->getError());
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * 新增
      * @return bool
      */
-    public function add(){
-        if($this->order->insert(false)){
+    public function save(){
+        if($this->getId()>0){
+            $res=$this->order->update(false);
+        }else{
+            $res=$this->order->insert(false);
+        }
+        if($res){
             return true;
         }else{
             $this->setError(ErrorManager::ERROR_ORDER_PLACE_FAIL);
             return false;
-        }
-    }
-
-    /**
-     * 修改订单中房间的状态
-     * @param Room $room
-     * @return bool
-     */
-    protected function checkOutRoom(Room $room){
-        $orderRoom=OrderRoom::findOne(['order_id'=>$this->getId(),'room_id'=>$room->getId()]);
-        if(empty($orderRoom)){
-            $this->setError(ErrorManager::ERROR_ORDER_ROOM_UN_PLACE);
-            return false;
-        }
-        $orderRoom->status=OrderRoom::STATUS_CHECK_OUT;
-        $orderRoom->end_time=$_SERVER['REQUEST_TIME'];
-        if($orderRoom->update(false)){
-            return true;
-        }else{
-            $this->setError(ErrorManager::ERROR_ORDER_ROOM_CHANGE_FAIL);
-            return false;
-        }
-    }
-    /**
-     * 退房
-     * @param Room $room
-     * @return bool|false|int
-     */
-    public function checkOut(Room $room){
-        if(!$room->setDirty()){
-            $this->setError($room->getError());
-            return false;
-        }else if(!$this->checkOutRoom($room)){
-            return false;
-        }
-        if($this->payBill){
-            $this->order->amount_paid+=$this->payBill->getPayingAmount();
-            if(!$this->payBill->insert()){
-                $this->setError(ErrorManager::ERROR_ORDER_PAY_RECORD_FAIL);
-                return false;
-            }
-        }
-        $this->order->amount_deffer=$this->order->amount_payable-$this->order->amount_paid;
-        if($this->isSettle()){
-            $this->_order->is_settlement=\common\models\Order::SETTLE_YES;
-            if($this->_order->amount_deffer==0){
-                $this->_order->status=\common\models\Order::STATUS_NORMAL;
-            }else{
-                $this->_order->status=\common\models\Order::STATUS_ABNORMAL;
-                $this->_order->abnormal_type=\common\models\Order::ABNORMAL_DEFFER;
-            }
-        }
-        if(!$this->update()){
-            return false;
-        }else{
-            return true;
         }
     }
 
@@ -236,17 +204,42 @@ class Order extends Server{
     }
 
     /**
-     * 设置订单为预定
+     * 获取剩余需支付金额
+     * @return float
      */
-    public function setIsReverse(){
-        $this->order->is_reverse=1;
+    public function getDefferAmount(){
+        return floatval($this->order->amount_deffer);
+    }
+
+    /**
+     * 获取已付金额
+     * @return float
+     */
+    public function getPaidAmount(){
+        return floatval($this->order->amount_paid);
+    }
+    /**
+     * 设置订单为预定
+     * @param bool $is
+     */
+    public function setIsReverse($is=true){
+        $this->order->is_reverse=$is?1:0;
     }
 
     /**
      * 结单
      */
     public function setIsSettle(){
-        $this->order->is_settlement=1;
+        if($this->isSettle()){
+            $this->order->is_settlement=\common\models\Order::SETTLE_YES;
+            if($this->order->amount_deffer==0){
+                $this->order->status=\common\models\Order::STATUS_NORMAL;
+            }else{
+                $this->order->status=\common\models\Order::STATUS_ABNORMAL;
+                $this->order->abnormal_type=\common\models\Order::ABNORMAL_DEFFER;
+            }
+            $this->order->is_settlement=1;
+        }
     }
 
     /**
@@ -257,7 +250,25 @@ class Order extends Server{
         $this->order->channel=$channelId;
     }
 
-    public function addPaidAmount($amount){
-        $this->order->amount_paid+=$amount;
+    public function setPaidAmount($amount){
+        $this->order->amount_paid=$amount;
+    }
+
+    /**
+     * 设置活动
+     * @param Activity $activity
+     * @return $this
+     */
+    public function activity(Activity $activity){
+        $this->activity=$activity;
+        return $this;
+    }
+
+    /**
+     * 获取订单活动
+     * @return mixed
+     */
+    public function getActivity(){
+        return $this->activity;
     }
 }

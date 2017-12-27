@@ -27,6 +27,7 @@ class OrderBill extends \common\components\Server{
     public function getTotalAmount(){
         return $this->totalAmount;
     }
+
     public function generateDay(Room $room,$start,$quantity){
         $bill=DayRoomBillGenerator::instance($this->activity)->generate($room,$start,$quantity);
         if(!$room->canPlaceOrder($bill->getStartTime(),$bill->getEndTime(),OrderRoom::TYPE_CLOCK)){
