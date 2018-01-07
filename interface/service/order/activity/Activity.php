@@ -13,7 +13,6 @@ use service\guest\Guest;
 abstract class Activity extends Server{
     protected $activity;
     private $condition;
-    protected $order;
     private $dates=[];
     protected $activityBill=[];
     protected $discount=0;
@@ -24,9 +23,8 @@ abstract class Activity extends Server{
      * @param Order $order
      * @param MerchantActivity $activity
      */
-    public function __construct(Order $order,MerchantActivity $activity)
+    public function __construct(MerchantActivity $activity)
     {
-        $this->order=$order;
         $this->activity=$activity;
         $this->dates=$this->getDate();
         $this->initCondition();

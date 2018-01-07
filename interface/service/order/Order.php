@@ -2,16 +2,16 @@
 namespace service\order;
 use common\components\ErrorManager;
 use common\components\Server;
+use common\models\OrderActivity;
 use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
-use service\order\activity\Activity;
+use service\order\activity\ActiveIncubator;
 
 class Order extends Server{
     protected $order;
     protected $merchant;
     protected $guest;
-    protected $activity;
     public function __construct(Merchant $merchant,\common\models\Order $order)
     {
         $this->order=$order;
@@ -29,7 +29,13 @@ class Order extends Server{
         if(empty($order)){
             return null;
         }else{
-            return new static($merchant,$orderId);
+            $activity=OrderActivity::findOne(['order_id'=>$orderId]);
+            if(empty($activity)){
+                return new Order($merchant,$order);
+            }else{
+                $activity=ActiveIncubator::incubator($merchant)->get($activity->activity_id);
+                return new ActivityOrder($merchant,$order,$activity);
+            }
         }
     }
 
@@ -41,7 +47,7 @@ class Order extends Server{
     public static function newOne(Merchant $merchant){
         $order=new \common\models\Order();
         $order->mch_id=$merchant->getId();
-        return new static($merchant,$order);
+        return new Order($merchant,$order);
     }
     /**
      * 生成订单号
@@ -96,41 +102,12 @@ class Order extends Server{
         $this->order->amount_deffer=$amount;
         return $this;
     }
-    /**
-     * 计算优惠
-     * @return bool|int
-     */
-    public function calculateDiscount(){
-        $discount=0;
-        if($this->activity){
-            if($this->activity->active($this)){
-                $this->setError($this->activity->getError());
-                return false;
-            }else{
-                $discount=$this->activity->getTotalDiscount();
-            }
-        }
-        return $discount;
-    }
 
     /**
-     * 保存优惠活动
+     * 保存订单
      * @return bool
      */
-    public function saveActivity(){
-        if($this->activity){
-            if($this->activity->saveOrderActivity($this)){
-                $this->setError($this->activity->getError());
-                return false;
-            }
-        }
-        return true;
-    }
-    /**
-     * 新增
-     * @return bool
-     */
-    public function save(){
+    public function saveOrder(){
         if($this->getId()>0){
             $res=$this->order->update(false);
         }else{
@@ -144,6 +121,15 @@ class Order extends Server{
         }
     }
 
+    /**
+     * 保存
+     * @return bool
+     */
+    public function save(){
+        $this->setPayableAmount($this->getAmount());
+        $this->setDefferAmount($this->getAmount()-$this->getPaidAmount());
+        return $this->saveOrder();
+    }
     /**
      * 判断是否结单
      * @return bool
@@ -161,9 +147,7 @@ class Order extends Server{
      * @param $amount
      */
     public function setAmount($amount){
-        if(!$this->isTemporary()){
-            $this->order->amount=$amount;
-        }
+        $this->order->amount=$amount;
     }
 
     /**
@@ -180,7 +164,6 @@ class Order extends Server{
      */
     public function setTemporaryAmount($amount){
         if($amount>=0){
-            $this->order->amount=$amount;
             $this->order->amount_payable=$amount;
             $this->order->is_temporary=1;
         }
@@ -254,21 +237,4 @@ class Order extends Server{
         $this->order->amount_paid=$amount;
     }
 
-    /**
-     * 设置活动
-     * @param Activity $activity
-     * @return $this
-     */
-    public function activity(Activity $activity){
-        $this->activity=$activity;
-        return $this;
-    }
-
-    /**
-     * 获取订单活动
-     * @return mixed
-     */
-    public function getActivity(){
-        return $this->activity;
-    }
 }

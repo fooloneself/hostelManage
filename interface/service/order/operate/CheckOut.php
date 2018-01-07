@@ -42,9 +42,7 @@ class CheckOut extends Operate{
         }
         $paying=$this->payBill->getPayingAmount();
         $paid=$order->getPaidAmount();
-        $deffer=$order->getDeffer();
         $order->setPaidAmount($paying+$paid);
-        $order->setDefferAmount($deffer-$paying);
     }
 
     protected function afterOrder(Order $order)
@@ -53,5 +51,10 @@ class CheckOut extends Operate{
             return false;
         }
         return true;
+    }
+
+    public function getOrderBill()
+    {
+        // TODO: Implement getOrderBill() method.
     }
 }

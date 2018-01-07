@@ -14,10 +14,11 @@ class FullCutActivity extends Activity{
 
     /**
      * 是否达到消费金额
+     * @param Order $order
      * @return bool
      */
-    protected function isFull(){
-        return $this->order->getAmount()>=$this->getConditionAmount();
+    protected function isFull(Order $order){
+        return $order->getAmount()>=$this->getConditionAmount();
     }
 
     /**
@@ -27,7 +28,7 @@ class FullCutActivity extends Activity{
      */
     protected function isSuitToOrder(Order $order)
     {
-        if($this->isInMemberRank($order->getGuest()) && $this->isFull()){
+        if($this->isInMemberRank($order->getGuest()) && $this->isFull($order)){
             return true;
         }else{
             return false;

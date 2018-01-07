@@ -1,18 +1,42 @@
 <?php
 namespace service\order\bill;
-use service\order\activity\Activity;
-class RoomBillGenerator{
+use common\models\OrderRoom;
+use service\order\Room;
+abstract class RoomBillGenerator{
     private static $_instance;
-    protected $activity;
-    protected function __construct(Activity $activity=null)
-    {
-        $this->activity=$activity;
-    }
 
-    public static function instance(Activity $activity=null){
+    public static function instance(){
         if(self::$_instance===null){
-            self::$_instance=new static($activity);
+            self::$_instance=new static();
         }
         return self::$_instance;
     }
+
+    /**
+     * 生成清单
+     * @param Room $room
+     * @param $start
+     * @param $quantity
+     */
+    public function generate(Room $room,$start,$quantity){
+        $orderRoom=$this->newOrderRoom($start,$quantity);
+        $roomBill=new RoomBill($room,$orderRoom);
+        return $this->fillBill($roomBill);
+    }
+
+    /**
+     * 装填记录
+     * @param RoomBill $roomBill
+     * @return RoomBill
+     */
+    abstract protected function fillBill(RoomBill $roomBill);
+
+    /**
+     * 新实例
+     * @param Room $room
+     * @param $start
+     * @param $quantity
+     * @return OrderRoom
+     */
+    abstract protected function newOrderRoom(Room $room,$start,$quantity);
 }

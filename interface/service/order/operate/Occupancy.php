@@ -20,21 +20,7 @@ class Occupancy extends Operate {
     }
     protected function beforeOrder(Order $order)
     {
-        $this->costBill=$this->generateBill($order);
-        if(!$this->costBill){
-            return false;
-        }
-        if(($discount=$order->calculateDiscount())===false){
-            $this->setError($order->getError());
-            return false;
-        }
-        $totalAmount=$this->costBill->getTotalAmount();
-        $payableAmount=$totalAmount-$discount;
         $order->setIsReverse(false);
-        $order->setAmount($totalAmount);
-        $order->setPayableAmount($payableAmount);
-        $order->setPaidAmount($this->getPayingAmount());
-        $order->setDefferAmount($payableAmount-$this->getPayingAmount());
         return true;
     }
 
@@ -51,5 +37,15 @@ class Occupancy extends Operate {
             return false;
         }
         return true;
+    }
+
+    protected function getOrderBill(Order $order)
+    {
+        $this->costBill=$this->generateBill($order->getMerchant(),$this->room);
+        if(!$this->costBill){
+            return false;
+        }else{
+            return $this->costBill;
+        }
     }
 }

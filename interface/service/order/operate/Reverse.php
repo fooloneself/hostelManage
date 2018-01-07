@@ -9,22 +9,10 @@ class Reverse extends Operate{
         $this->rooms=$rooms;
         return $this;
     }
+
     protected function beforeOrder(Order $order)
     {
-        $this->costBill=$this->generateBill($order);
-        if(!$this->costBill){
-            return false;
-        }
-        if(($discount=$order->calculateDiscount())===false){
-            $this->setError($order->getError());
-            return false;
-        }
-        $totalAmount=$this->costBill->getTotalAmount();
-        $payableAmount=$totalAmount-$discount;
         $order->setIsReverse();
-        $order->setAmount($totalAmount);
-        $order->setPayableAmount($payableAmount);
-        $order->setDefferAmount($payableAmount-$this->getPayingAmount());
         return true;
     }
 
@@ -38,5 +26,15 @@ class Reverse extends Operate{
             return false;
         }
         return true;
+    }
+
+    protected function getOrderBill(Order $order)
+    {
+        $this->costBill=$this->generateBill($order->getMerchant(),$this->rooms);
+        if(!$this->costBill){
+            return false;
+        }else{
+            return $this->costBill;
+        }
     }
 }

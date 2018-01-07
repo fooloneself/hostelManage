@@ -6,7 +6,7 @@ use service\order\PayBill;
 use service\order\Room;
 use common\models\OccupancyRecord;
 use service\order\bill\OrderBill;
-use common\models\OrderRoom;
+use service\merchant\Merchant;
 abstract class Operate extends Server{
     protected $payBill;
     /**
@@ -19,32 +19,28 @@ abstract class Operate extends Server{
         return $this;
     }
 
+    /**
+     * 获取将要支付的金额
+     * @return int|mixed
+     */
     protected function getPayingAmount(){
         return empty($this->payBill)?0:$this->getPayingAmount();
     }
 
     /**
      * 生成订单消费清单
-     * @param Order $order
+     * @param Merchant $merchant
      * @param array $rooms
      * @return bool|OrderBill
      */
-    protected function generateBill(Order $order,array $rooms){
-        $orderBill=new OrderBill($order->getActivity());
-        foreach ($rooms as $room){
-            $room=Room::byId($order->getMerchant(),$room['roomId']);
-            if(empty($room)){
-                $this->setError(ErrorManager::ERROR_ROOM_UN_FIND);
-                return false;
-            }else{
-                if($room['type']==OrderRoom::TYPE_DAY){
-                    $orderBill->generateDay($room,$room['startTime'],$room['quantity']);
-                }else{
-                    $orderBill->generateHour($room,$room['startTime'],$room['quantity']);
-                }
-            }
+    protected function generateBill(Merchant $merchant,array $rooms){
+        $orderBill=new OrderBill($merchant);
+        if(!$orderBill->generate($rooms)){
+            $this->setError($orderBill->getError());
+            return false;
+        }else{
+            return $orderBill;
         }
-        return $orderBill;
     }
 
     /**
@@ -86,11 +82,23 @@ abstract class Operate extends Server{
         }
     }
 
+    /**
+     * 执行
+     * @param Order $order
+     * @return bool
+     */
     public function doOrder(Order $order){
         if(!$this->beforeOrder($order)){
             return false;
         }
-        if(!$order->save()){
+        $orderBill=$this->getOrderBill($order);
+        if(!$orderBill){
+            return false;
+        }
+        $totalAmount=$orderBill->getTotalAmount();
+        $order->setAmount($totalAmount);
+        $order->setPaidAmount($order->getPaidAmount()+$this->getPayingAmount());
+        if(!$order->save($orderBill)){
             $this->setError($order->getError());
             return false;
         }
@@ -99,7 +107,6 @@ abstract class Operate extends Server{
         }
         return true;
     }
-
     /**
      * 保存订单前
      * @param Order $order
@@ -113,4 +120,11 @@ abstract class Operate extends Server{
      * @return mixed
      */
     abstract protected function afterOrder(Order $order);
+
+    /*
+     * 获取订单消费明细
+     * @param Order $order
+     * @return \service\order\bill\OrderBill|bool
+     */
+    abstract protected function getOrderBill(Order $order);
 }

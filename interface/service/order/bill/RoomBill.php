@@ -9,10 +9,7 @@ use service\order\Room;
 class RoomBill extends Server {
     protected $room;
     private $orderRoom;
-    protected $quantity=0;
-    protected $totalAmount;
     protected $bill=[];
-
     public function __construct(Room $room,OrderRoom $orderRoom)
     {
         $this->room=$room;
@@ -28,6 +25,24 @@ class RoomBill extends Server {
         $this->bill=OrderCostDetail::find()->where(['order_id'=>$order->getId(),'room_id'=>$this->room->getId()])->all();
     }
 
+    /**
+     * 遍历账单
+     * @param $func
+     */
+    public function iterateBill($func){
+        list($obj,$funcName)=$func;
+        foreach ($this->bill as $key=>$bill){
+            $obj->$funcName($bill,$key);
+        }
+    }
+
+    /**
+     * 删除账单
+     * @param $index
+     */
+    public function delBill($index){
+        unset($this->bill[$index]);
+    }
     /**
      * 生成清单模型
      * @param $timestamp
@@ -54,7 +69,7 @@ class RoomBill extends Server {
      * @param $amount
      */
     public function generateBill($timestamp,$amount){
-       $this->addDayBill($this->newBillModel($timestamp,$amount));
+       $this->addBill($this->newBillModel($timestamp,$amount));
     }
 
     /**
@@ -119,9 +134,6 @@ class RoomBill extends Server {
      */
     protected function saveOrderRoom(Order $order,$status){
         $this->orderRoom->order_id=$order->getId();
-        $this->orderRoom->start_time=$this->startTime;
-        $this->orderRoom->end_time=$this->endTime;
-        $this->orderRoom->quantity=$this->quantity;
         $this->orderRoom->status=$status;
         if($this->orderRoom->save(false)){
             return true;
@@ -136,7 +148,7 @@ class RoomBill extends Server {
      * @return mixed
      */
     public function getStartTime(){
-        return $this->orderRoom->start_time;
+        return intval($this->orderRoom->start_time);
     }
 
     /**
@@ -144,7 +156,7 @@ class RoomBill extends Server {
      * @return mixed
      */
     public function getEndTime(){
-        return $this->orderRoom->end_time;
+        return intval($this->orderRoom->end_time);
     }
 
     /**
@@ -152,14 +164,14 @@ class RoomBill extends Server {
      * @return int
      */
     public function getQuantity(){
-        return $this->orderRoom->quantity;
+        return intval($this->orderRoom->quantity);
     }
     /**
      * 获取房间总房价
      * @return mixed
      */
     public function getTotalAmount(){
-        return $this->totalAmount;
+        return floatval($this->orderRoom->amount);
     }
 
     /**

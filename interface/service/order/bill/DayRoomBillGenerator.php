@@ -6,22 +6,6 @@ use service\order\Room;
 class DayRoomBillGenerator extends RoomBillGenerator {
 
     /**
-     * 生成清单
-     * @param Room $room
-     * @param $start
-     * @param $quantity
-     */
-    public function generate(Room $room,$start,$quantity){
-        $orderRoom=$this->newOrderRoom($room,$start,$quantity);
-        if($this->activity){
-            $roomBill=new ActivityRoomBill($room,$orderRoom,$this->activity);
-        }else{
-            $roomBill=new RoomBill($room,$orderRoom);
-        }
-        return $this->fillBill($roomBill);
-    }
-
-    /**
      * 装填记录
      * @param RoomBill $roomBill
      * @return RoomBill
