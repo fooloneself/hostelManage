@@ -11,28 +11,6 @@ class CheckOut extends Operate{
     public function __construct(Room $room){
         $this->room=$room;
     }
-
-    protected function plusSurplus(OrderBill $orderBill,RoomBill $roomBill){
-        $date=date('Ymd');
-        $operate=$this;
-        return $roomBill->iterateBill(function (OrderCostDetail $bill,$index)use($operate,$orderBill,$roomBill,$date){
-            if($roomBill->isDay() && $bill->date>=$date){
-                if(!$roomBill->removeBill($index)){
-                    $operate->setError($roomBill->getError());
-                    return false;
-                }else{
-                    $orderBill->plusAmount($bill->amount);
-                }
-            }else if($roomBill->isHour()){
-                $diffHour=floor(($roomBill->getEndTime()-time())/6400);
-                if($diffHour>0){
-                    $diffAmount=($roomBill->getTotalAmount()/$roomBill->getQuantity())*$diffHour;
-                    $roomBill->addDiffAmount(-$diffAmount);
-                    $bill->amount-=$diffAmount;
-                }
-            }
-        });
-    }
     /**
      * @param Order $order
      * @param OrderBill $bill
@@ -45,11 +23,7 @@ class CheckOut extends Operate{
             $this->setError(ErrorManager::ERROR_ORDER_ROOM_UN_PLACE);
             return false;
         }
-        if(!$this->room->setDirty()){
-            $this->setError($this->room->getError());
-            return false;
-        }
-        if(!$this->plusSurplus($bill,$roomBill)){
+        if($roomBill->plusSurplus($bill,$_SERVER['REQUEST_TIME'])===false){
             return false;
         }
         if(!$roomBill->checkOut()){
@@ -65,6 +39,10 @@ class CheckOut extends Operate{
      */
     protected function afterOrder(Order $order,OrderBill $bill)
     {
+        if(!$this->room->setDirty()){
+            $this->setError($this->room->getError());
+            return false;
+        }
         if(!$this->savePay($order)){
             return false;
         }

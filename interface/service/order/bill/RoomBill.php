@@ -39,14 +39,6 @@ class RoomBill extends Server {
         }
         return true;
     }
-
-    /**
-     * 新增差价
-     * @param $diff
-     */
-    public function addDiffAmount($diff){
-        $this->orderRoom->amount+=$diff;
-    }
     /**
      * 异常消费记录
      * @param $index
@@ -269,39 +261,31 @@ class RoomBill extends Server {
     }
 
     /**
-     * 换房
-     * @param OrderBill $bill
-     * @param Room $toRoom
+     * @param OrderBill $orderBill
      * @param $time
-     * @return bool
+     * @return bool|float|int
      */
-    public function change(OrderBill $bill,Room $toRoom,$time){
-
-        return true;
-    }
-
-    protected function splice($endTime,$func){
-        $date=date('Ymd');
-        $operate=$this;
-        foreach ($this->bill as $orderCostDetail){
-            if($roomBill->isDay() && $bill->date>=$date){
-                if(!$roomBill->removeBill($index)){
-                    $operate->setError($roomBill->getError());
+    public function plusSurplus(OrderBill $orderBill,$time){
+        $date=date('Ymd',$time);
+        $quantity=0;
+        foreach ($this->bill as $index=>$orderCostDetail){
+            if($$this->isDay() && $orderCostDetail->date>=$date){
+                $quantity++;
+                if(!$this->removeBill($index)){
                     return false;
                 }else{
-                    $orderBill->plusAmount($bill->amount);
+                    $orderBill->plusAmount($orderCostDetail->amount);
                 }
-            }else if($roomBill->isHour()){
-                $diffHour=floor(($roomBill->getEndTime()-time())/6400);
+            }else if($this->isHour()){
+                $diffHour=floor(($this->getEndTime()-time())/6400);
                 if($diffHour>0){
-                    $diffAmount=($roomBill->getTotalAmount()/$roomBill->getQuantity())*$diffHour;
-                    $roomBill->addDiffAmount(-$diffAmount);
-                    $bill->amount-=$diffAmount;
+                    $diffAmount=($this->getTotalAmount()/$this->getQuantity())*$diffHour;
+                    $this->orderRoom->amount-=$diffAmount;
+                    $orderBill->plusAmount($diffAmount);
+                    $quantity+=$diffHour;
                 }
             }
         }
-        return $roomBill->iterateBill(function (OrderCostDetail $bill,$index)use($operate,$orderBill,$roomBill,$date){
-
-        });
+        return $quantity;
     }
 }

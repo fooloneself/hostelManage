@@ -16,11 +16,22 @@ class Change extends Operate{
         $this->toRoom=$room;
         return $this;
     }
+
     protected function beforeOrder(Order $order, OrderBill $orderBill)
     {
         $fromRoomBill=$orderBill->getRoomBill($this->fromRoom);
-        if(!$fromRoomBill->change($orderBill,$this->toRoom,$_SERVER['REQUEST_TIME'])){
+        $quantity=$fromRoomBill->plusSurplus($orderBill,$_SERVER['REQUEST_TIME']);
+        if($quantity===false){
             $this->setError($fromRoomBill->getError());
+            return false;
+        }
+        if($fromRoomBill->isDay()){
+            $res=$orderBill->generateDay($this->toRoom,$_SERVER['REQUEST_TIME'],$quantity);
+        }else{
+            $res=$orderBill->generateHour($this->toRoom,$_SERVER['REQUEST_TIME'],$quantity);
+        }
+        if($res==false){
+            $this->setError($orderBill->getError());
             return false;
         }
         return true;

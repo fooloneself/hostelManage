@@ -91,7 +91,7 @@ class OrderBill extends Server{
      * @param $quantity
      * @return bool
      */
-    protected function generateDay(Room $room,$start,$quantity){
+    public function generateDay(Room $room,$start,$quantity){
         $bill=DayRoomBillGenerator::instance()->generate($room,$start,$quantity);
         if(!$room->canPlaceOrder($bill->getStartTime(),$bill->getEndTime(),OrderRoom::TYPE_CLOCK)){
             $this->setError($room->getError());
@@ -109,7 +109,7 @@ class OrderBill extends Server{
      * @param $quantity
      * @return bool
      */
-    protected function generateHour(Room $room,$start,$quantity){
+    public function generateHour(Room $room,$start,$quantity){
         $bill=HourRoomBillGenerator::instance()->generate($room,$start,$quantity);
         if(!$room->canPlaceOrder($bill->getStartTime(),$bill->getEndTime(),OrderRoom::TYPE_CLOCK)){
             $this->setError($room->getError());
