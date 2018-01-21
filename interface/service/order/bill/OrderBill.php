@@ -7,10 +7,28 @@ use common\models\OrderRoom;
 use common\components\Server;
 use service\merchant\Merchant;
 
+/**
+ * Class OrderBill
+ * @package service\order\bill
+ */
+
 class OrderBill extends Server{
+    /**
+     * 房间账单
+     * @var array
+     */
     private $roomBill=[];
+    /**
+     * 总消费
+     * @var float
+     */
     protected $totalAmount=0;
+    /**
+     * 商户对象
+     * @var \service\merchant\Merchant Merchant
+     */
     protected $merchant;
+
     public function __construct(Merchant $merchant)
     {
         $this->merchant=$merchant;
@@ -19,7 +37,7 @@ class OrderBill extends Server{
     /**
      * 获取下单房间的消费记录
      * @param Room $room
-     * @return mixed|null
+     * @return RoomBill
      */
     public function getRoomBill(Room $room){
         return isset($this->roomBill[$room->getId()]) ? $this->roomBill[$room->getId()] : null;
@@ -198,5 +216,21 @@ class OrderBill extends Server{
      */
     protected static function getOrderRooms(Order $order){
         return OrderRoom::find()->where(['order_id'=>$order->getId()])->all();
+    }
+
+    /**
+     * 减去总消费
+     * @param $amount
+     */
+    public function plusAmount($amount){
+        $this->totalAmount-=$amount;
+    }
+
+    /**
+     * 增加费用
+     * @param $amount
+     */
+    public function addAmount($amount){
+        $this->totalAmount+=$amount;
     }
 }

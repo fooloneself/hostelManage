@@ -17,6 +17,7 @@ abstract class RoomBillGenerator{
      * @param Room $room
      * @param $start
      * @param $quantity
+     * @return RoomBill
      */
     public function generate(Room $room,$start,$quantity){
         $orderRoom=$this->newOrderRoom($start,$quantity);

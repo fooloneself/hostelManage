@@ -7,6 +7,7 @@ use common\models\OrderRoom;
 use service\guest\Guest;
 use service\merchant\Merchant;
 use service\order\activity\ActiveIncubator;
+use service\order\bill\OrderBill;
 
 class Order extends Server{
     protected $order;
@@ -108,12 +109,7 @@ class Order extends Server{
      * @return bool
      */
     public function saveOrder(){
-        if($this->getId()>0){
-            $res=$this->order->update(false);
-        }else{
-            $res=$this->order->insert(false);
-        }
-        if($res){
+        if($this->order->save(false)){
             return true;
         }else{
             $this->setError(ErrorManager::ERROR_ORDER_PLACE_FAIL);

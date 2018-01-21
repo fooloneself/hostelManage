@@ -1,10 +1,10 @@
 <?php
 namespace service\order\operate;
+use service\order\bill\OrderBill;
 use service\order\Order;
 use service\order\Room;
 
 class Occupancy extends Operate {
-    protected $costBill;
     protected $room;
     protected $guest;
     protected $roomId;
@@ -18,22 +18,19 @@ class Occupancy extends Operate {
         $this->guest=$guests;
         return $this;
     }
-    protected function beforeOrder(Order $order)
+    protected function beforeOrder(Order $order,OrderBill $bill)
     {
         $order->setIsReverse(false);
         return true;
     }
 
-    protected function afterOrder(Order $order)
+    protected function afterOrder(Order $order,OrderBill $bill)
     {
-        if(!$this->costBill->occupancy($order)){
-            $this->setError($this->costBill->getError());
+        if(!$bill->occupancy($order)){
+            $this->setError($bill->getError());
             return false;
         }
         if(!$this->recordOccupancy($order,Room::byId($order->getMerchant(),$this->roomId),$this->guest)){
-            return false;
-        }
-        if(!$this->savePay($order)){
             return false;
         }
         return true;
@@ -41,11 +38,6 @@ class Occupancy extends Operate {
 
     protected function getOrderBill(Order $order)
     {
-        $this->costBill=$this->generateBill($order->getMerchant(),$this->room);
-        if(!$this->costBill){
-            return false;
-        }else{
-            return $this->costBill;
-        }
+        return $this->generateBill($order->getMerchant(),$this->room);
     }
 }

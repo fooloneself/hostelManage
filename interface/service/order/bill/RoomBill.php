@@ -28,21 +28,55 @@ class RoomBill extends Server {
     /**
      * 遍历账单
      * @param $func
+     * @return bool
      */
     public function iterateBill($func){
         list($obj,$funcName)=$func;
         foreach ($this->bill as $key=>$bill){
-            $obj->$funcName($bill,$key);
+            if($obj->$funcName($bill,$key)===false){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 新增差价
+     * @param $diff
+     */
+    public function addDiffAmount($diff){
+        $this->orderRoom->amount+=$diff;
+    }
+    /**
+     * 异常消费记录
+     * @param $index
+     * @return bool
+     */
+    public function removeBill($index){
+        $model=$this->bill[$index];
+        if($this->delBill($model)){
+            unset($this->bill[$index]);
+            return true;
+        }else{
+            return false;
         }
     }
 
     /**
-     * 删除账单
-     * @param $index
+     * 删除消费记录
+     * @param OrderCostDetail $costDetail
+     * @return bool
      */
-    public function delBill($index){
-        unset($this->bill[$index]);
+    protected function delBill(OrderCostDetail $costDetail){
+        if($costDetail->delete()){
+            $this->orderRoom->amount-=$costDetail->amount;
+            return true;
+        }else{
+            $this->setError(ErrorManager::ERROR_DELETE_FAIL);
+            return false;
+        }
     }
+
     /**
      * 生成清单模型
      * @param $timestamp
@@ -77,7 +111,7 @@ class RoomBill extends Server {
      * @param OrderCostDetail $model
      */
     protected function addBill(OrderCostDetail $model){
-        $this->totalAmount+=$model->amount;
+        $this->orderRoom->amount += $model->amount;
         $this->bill[]=$model;
     }
     /**
@@ -85,10 +119,10 @@ class RoomBill extends Server {
      * @param Order $order
      * @return bool
      */
-    protected function insert(Order $order){
+    protected function save(Order $order){
         foreach ($this->bill as $bill){
             $bill->order_id=$order->getId();
-            if(!$bill->insert(false)){
+            if(!$bill->save(false)){
                 $this->setError(ErrorManager::ERROR_ORDER_BILL_INSERT_FAIL);
                 return false;
             }
@@ -102,7 +136,7 @@ class RoomBill extends Server {
      * @return bool
      */
     public function reverse(Order $order){
-        if(!$this->insert($order)){
+        if(!$this->save($order)){
             return false;
         }else if(!$this->saveOrderRoom($order,OrderRoom::STATUS_REVERSE)){
             return false;
@@ -117,7 +151,7 @@ class RoomBill extends Server {
      * @return bool
      */
     public function occupancy(Order $order){
-        if(!$this->insert($order)){
+        if(!$this->save($order)){
             return false;
         }else if(!$this->saveOrderRoom($order,OrderRoom::STATUS_OCCUPANCY)){
             return false;
@@ -180,5 +214,94 @@ class RoomBill extends Server {
      */
     public function getRoom(){
         return $this->room;
+    }
+
+    /**
+     * 是否整天
+     * @return bool
+     */
+    public function isDay(){
+        return $this->orderRoom->type==OrderRoom::TYPE_DAY;
+    }
+
+    /**
+     * 是否钟点
+     * @return bool
+     */
+    public function isHour(){
+        return $this->orderRoom->type==OrderRoom::TYPE_CLOCK;
+    }
+    /**
+     * 退房
+     * @return bool
+     */
+    public function checkOut(){
+        $this->orderRoom->status=OrderRoom::STATUS_CHECK_OUT;
+        $this->orderRoom->end_time=$_SERVER['REQUEST_TIME'];
+        if($this->orderRoom->update(false)){
+            return true;
+        }else{
+            $this->setError(ErrorManager::ERROR_ORDER_ROOM_CHANGE_FAIL);
+            return false;
+        }
+    }
+
+    /**
+     * 续房
+     * @param OrderBill $orderBill
+     * @param Room $room
+     * @param $quantity
+     * @return bool
+     */
+    public function goOn(OrderBill $orderBill,Room $room,$quantity){
+        if($this->orderRoom->type==OrderRoom::TYPE_DAY){
+            $roomBill=DayRoomBillGenerator::instance()->generate($room,$this->orderRoom->end_time,$quantity);
+        }else{
+            $roomBill=HourRoomBillGenerator::instance()->generate($room,$this->orderRoom->end_time,$quantity);
+        }
+        $self=$this;
+        $roomBill->iterateBill(function (OrderCostDetail $model)use($self,$orderBill){
+            $self->addBill($model);
+            $orderBill->addAmount($model->amount);
+        });
+        $this->orderRoom->end_time=$roomBill->getEndTime();
+        return true;
+    }
+
+    /**
+     * 换房
+     * @param OrderBill $bill
+     * @param Room $toRoom
+     * @param $time
+     * @return bool
+     */
+    public function change(OrderBill $bill,Room $toRoom,$time){
+
+        return true;
+    }
+
+    protected function splice($endTime,$func){
+        $date=date('Ymd');
+        $operate=$this;
+        foreach ($this->bill as $orderCostDetail){
+            if($roomBill->isDay() && $bill->date>=$date){
+                if(!$roomBill->removeBill($index)){
+                    $operate->setError($roomBill->getError());
+                    return false;
+                }else{
+                    $orderBill->plusAmount($bill->amount);
+                }
+            }else if($roomBill->isHour()){
+                $diffHour=floor(($roomBill->getEndTime()-time())/6400);
+                if($diffHour>0){
+                    $diffAmount=($roomBill->getTotalAmount()/$roomBill->getQuantity())*$diffHour;
+                    $roomBill->addDiffAmount(-$diffAmount);
+                    $bill->amount-=$diffAmount;
+                }
+            }
+        }
+        return $roomBill->iterateBill(function (OrderCostDetail $bill,$index)use($operate,$orderBill,$roomBill,$date){
+
+        });
     }
 }

@@ -44,6 +44,16 @@ abstract class Operate extends Server{
     }
 
     /**
+     * 加载订单消费记录
+     * @param Order $order
+     * @return OrderBill
+     */
+    protected function loadBill(Order $order){
+        $orderBill=new OrderBill($order->getMerchant());
+        $orderBill->load($order);
+        return $orderBill;
+    }
+    /**
      * 记录房间入住人信息
      * @param Order $order
      * @param Room $room
@@ -88,11 +98,11 @@ abstract class Operate extends Server{
      * @return bool
      */
     public function doOrder(Order $order){
-        if(!$this->beforeOrder($order)){
-            return false;
-        }
         $orderBill=$this->getOrderBill($order);
         if(!$orderBill){
+            return false;
+        }
+        if(!$this->beforeOrder($order,$orderBill)){
             return false;
         }
         $totalAmount=$orderBill->getTotalAmount();
@@ -102,24 +112,30 @@ abstract class Operate extends Server{
             $this->setError($order->getError());
             return false;
         }
-        if(!$this->afterOrder($order)){
+        if(!$this->afterOrder($order,$orderBill)){
+            return false;
+        }
+        if(!$this->savePay($order)){
             return false;
         }
         return true;
     }
+
     /**
      * 保存订单前
      * @param Order $order
-     * @return bool
+     * @param OrderBill $orderBill
+     * @return mixed
      */
-    abstract protected function beforeOrder(Order $order);
+    abstract protected function beforeOrder(Order $order,OrderBill $orderBill);
 
     /**
      * 保存订单后
      * @param Order $order
+     * @param OrderBill $orderBill
      * @return mixed
      */
-    abstract protected function afterOrder(Order $order);
+    abstract protected function afterOrder(Order $order,OrderBill $orderBill);
 
     /*
      * 获取订单消费明细

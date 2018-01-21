@@ -1,28 +1,25 @@
 <?php
 namespace service\order\operate;
+use service\order\bill\OrderBill;
 use service\order\Order;
 
 class Reverse extends Operate{
-    protected $costBill;
     protected $rooms;
     public function room($rooms){
         $this->rooms=$rooms;
         return $this;
     }
 
-    protected function beforeOrder(Order $order)
+    protected function beforeOrder(Order $order,OrderBill $bill)
     {
         $order->setIsReverse();
         return true;
     }
 
-    protected function afterOrder(Order $order)
+    protected function afterOrder(Order $order,OrderBill $bill)
     {
-        if(!$this->costBill->reverse($order)){
-            $this->setError($this->costBill->getError());
-            return false;
-        }
-        if(!$this->savePay($order)){
+        if(!$bill->reverse($order)){
+            $this->setError($bill->getError());
             return false;
         }
         return true;
@@ -30,11 +27,6 @@ class Reverse extends Operate{
 
     protected function getOrderBill(Order $order)
     {
-        $this->costBill=$this->generateBill($order->getMerchant(),$this->rooms);
-        if(!$this->costBill){
-            return false;
-        }else{
-            return $this->costBill;
-        }
+        return $this->generateBill($order->getMerchant(),$this->rooms);
     }
 }
